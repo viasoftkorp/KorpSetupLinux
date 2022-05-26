@@ -1,0 +1,23 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  #TODO confirmar params
+  viasoft-authentication:
+    image: "korp/viasoft.authentication:1.4.x"
+    container_name: "Viasoft.Authentication"
+    restart: always
+    environment:
+      - URL_CONSUL=http://consul-agent:8500
+      - HOST_ADDRESS=172.40.0.9
+      - HTTP_PORT=14000
+    volumes:
+      - /home/korp/configs/korp.pfx:/app/korp.pfx
+    networks:
+      - servicos
+    ports:
+      - "14000:14000"

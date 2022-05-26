@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: true
+  # usar usuário korp(talvez)
+
+  roles:
+    - provisioning

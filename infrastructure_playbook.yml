@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  # usar usuário korp(talvez)
+
+  roles:
+    - infrastructure
+
+    - role: add_oauth_client
+      vars:
+        service_name: "test"
+        secret: "some guid"

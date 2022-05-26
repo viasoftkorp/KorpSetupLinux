@@ -1,0 +1,44 @@
+- name: instalação de dependências padrões
+  tags: always
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop:
+    # Bibliotecas usadas pelo Ansible para usar o Consul
+    - python-consul
+    - requests
+    # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
+    - pymssql
+
+- name: transferência de arquivos de configuração
+  tags: infrastructure, docker
+  ansible.builtin.copy:
+    dest: configs/
+    src: configs/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: transferência de arquivos de compose
+  tags: infrastructure, docker
+  ansible.builtin.copy:
+    dest: composes/
+    src: composes/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: criação e inicialização de composes
+  tags: infrastructure, docker
+  community.docker.docker_compose:
+    project_src: composes
+    files:
+      - infrastructure-default-compose.yml
+      - infrastructure-korp-compose.yml
+
+- name: adição de kv Global ao consul
+  tags: consul-kv, infrastructure
+  community.general.consul_kv:
+    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
+    cas: "0"
+    key: Global
+    value: "{{ lookup('file', 'files/consul_kv/global.json') | string }}"

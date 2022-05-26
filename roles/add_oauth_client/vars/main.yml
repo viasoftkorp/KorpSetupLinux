@@ -1,0 +1,5 @@
+---
+mssql_login_user: "admin.korp"
+mssql_login_password: "korp!451820080691"
+mssql_host: "192.168.1.183"
+mssql_port: ""

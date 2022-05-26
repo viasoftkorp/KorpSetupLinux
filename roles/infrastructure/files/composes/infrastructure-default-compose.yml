@@ -1,0 +1,76 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+volumes:
+  consul-server:
+    name: consul-server
+  postgres-data:
+    name: postgres-data
+  rabbitmq-data:
+    name: rabbitmq-data
+
+services:
+  consul-server:
+    image: "consul:1.12"
+    container_name: "consul-server"
+    restart: always
+    command: "agent -server -bootstrap-expect=1"
+    ports:
+      - "8300:8300"
+      - "8301:8301/tcp"
+      - "8301:8301/udp"
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    volumes:
+      - "/home/korp/configs/consul-server.json:/consul/config/server.json:ro"
+      - consul-server:/consul/data/
+
+  fabio:
+    image: "fabiolb/fabio:latest"
+    container_name: "fabio"
+    restart: always
+    depends_on:
+      - consul-server
+    environment:
+      - registry_consul_addr=http://consul-server:8500
+      - proxy_matcher=iprefix
+    ports:
+      - "9999:9999"
+      - "9998:9998"
+
+  postgres:
+    image: "postgres:14"
+    container_name: "postgres"
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: "korp/rabbitmq:1.1.0"
+    container_name: "rabbitmq"
+    # não remover esse hostname porque o RABBITMQ utiliza o hostname da máquina para compor as pastas internas
+    # e cada vez que um container inicia, seu nome é alterado caso não esteja especificado
+    hostname: "rabbitmq" 
+    restart: always
+    depends_on:
+      - consul-server
+    environment:
+      - TCP_PORTS=15672,5672
+      - RABBITMQ_NODENAME=rabbitmq
+    networks:
+      - servicos
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "5671:5671"
+      - "15671:15671"
+      - "9419:9419"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq

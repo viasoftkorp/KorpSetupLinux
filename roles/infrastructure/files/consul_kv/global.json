@@ -1,0 +1,7 @@
+{
+    "GatewayUrl": "https://gateway.korp.com.br",
+    "SecretManager": {
+        "Path": "/app/SecretManager/",
+        "RefreshRolesFrequencySeconds": "300"
+    }
+}
