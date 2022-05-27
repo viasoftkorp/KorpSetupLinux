@@ -34,7 +34,7 @@ read linux_pass
 printf """
 all:
   children:
-    ungrouped:
+    nodes:
       hosts:
         192.168.1.107:
           mssql:
@@ -47,6 +47,6 @@ all:
 """> ansible-inventory.yml
 
 # sudo ansible-playbook provisioning_playbook.yml --inventory-file ansible-inventory.yml
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git --inventory-file ansible-inventory.yml provisioning_playbook.yml
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git -C TD-828 --inventory-file ansible-inventory.yml provisioning_playbook.yml
 
 
