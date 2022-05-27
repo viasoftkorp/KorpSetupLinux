@@ -3,5 +3,12 @@
   become: true
   # usar usuário korp(talvez)
 
-  roles:
-    - provisioning
+  tasks:
+    - name: test debug
+      debug:
+        msg:
+          - "{{ mssql.address }}"
+          - "{{ linux.user }}"
+
+  # roles:
+  #   - provisioning
