@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: true
+  become_user: root
 
   roles:
     # - role: provisioning
@@ -14,19 +15,22 @@
           - "{{ mssql.address }}"
           - "{{ mssql.default_user }}"
           - "{{ mssql.default_password }}"
-          - "{{ ansible_become_password }}"
+          - "{{ linux_korp.password }}"
 
     - name: criação de usuário de uso da korp
       ansible.builtin.user:
-        name: "{{ ansible_become_user }}"
-        password : "{{ ansible_become_password }}"
+        name: "{{ linux_korp.user }}"
+        password : "{{ linux_korp.user }}"
         comment: Korp User
         group: sudo
         create_home: false
 
 - hosts: all
   become: true
-  become_user: "{{ ansible_become_user }}"
+  vars:
+    ansible_become_password: "{{ linux_korp.password }}"
+    # ansible_become_user: "{{ linux_korp.user }}"
+  become_user: "{{ linux_korp.user }}"
 
   roles:
     - role: infrastructure
