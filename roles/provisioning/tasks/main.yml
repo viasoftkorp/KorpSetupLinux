@@ -1,6 +1,7 @@
 - name: atualização de cache do repositório
   tags: always
   ansible.builtin.apt:
+    clean: yes
     update_cache: true
     cache_valid_time: 3600
     force_apt_get: true
@@ -23,7 +24,6 @@
   community.docker.docker_network:
     name: servicos
 
-# TODO validar opções de criação
 - name: criação de volume secret-manager no docker
   community.docker.docker_volume:
     name: secret-manager
