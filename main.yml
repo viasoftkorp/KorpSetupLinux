@@ -4,18 +4,17 @@
   # usar usuário korp(talvez)
 
   roles:
-  - role:
-    - provisioning
-    tags:
-      - provisioning
+    - role: provisioning
+      tags:
+        - provisioning
 
   tasks:
-    - name: debug
-      debug:
-      msg:
-        - "{{ mssql.address }}"
-        - "{{ mssql.default_user }}"
-        - "{{ linux_korp.password }}"
+    - name: Print the gateway for each host when defined
+      ansible.builtin.debug:
+        msg:
+          - "{{ mssql.address }}"
+          - "{{ mssql.default_user }}"
+          - "{{ linux_korp.password }}"
 
   #   - name: criação de usuário de uso da korp
   #     ansible.builtin.user:
@@ -27,12 +26,10 @@
 
 - hosts: all
   become: true
-  become_user: "{{ korp_user_name }}"
-  become_password: "{{ korp_user_password }}"
+  become_user: "{{ linux_korp.user }}"
+  # ansible_become_password: "{{ korp_user_password }}"
 
   roles:
-  - role:
-    - infrastructure
-    tags:
-      - infrastructure
-
+    - role: infrastructure
+      tags:
+        - infrastructure

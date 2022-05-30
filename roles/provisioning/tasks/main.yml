@@ -1,7 +1,7 @@
 - name: atualização de cache do repositório
   tags: always
   ansible.builtin.apt:
-    clean: yes
+    clean: true
     update_cache: true
     cache_valid_time: 3600
     force_apt_get: true
