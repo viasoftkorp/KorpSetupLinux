@@ -62,14 +62,11 @@ then
     sudo mkdir -p /etc/ansible/hosts/
     sudo chmod 0774 /etc/ansible/
 
-    echo "\n-----------------------\n"
+    echo -e "\n-----------------------\n"
     echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
-    echo "IP de acesso: "
-    read sql_ip
-    echo "Usuário com permissões administrativas: "
-    read sql_user
-    echo "Senha do usuário: "
-    read sql_pass
+    read -e -p "IP de acesso: " sql_ip
+    read -e -p "Usuário com permissões administrativas: " sql_user
+    read -e -p "Senha do usuário: " sql_pass
 
 
     # Criação de senhas aleatórios para o usuário do mssql e do linux
@@ -77,8 +74,8 @@ then
     linux_korp_pass="$(create_random_string)"
 
 
-    # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores
-    printf """
+    # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
+    echo """
 all:
   children:
     nodes:
