@@ -14,6 +14,7 @@
         msg:
           - "{{ mssql.address }}"
           - "{{ mssql.default_user }}"
+          - "{{ mssql.default_password }}"
           - "{{ linux_korp.password }}"
 
   #   - name: criação de usuário de uso da korp

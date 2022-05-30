@@ -12,6 +12,7 @@ create_random_string() {
 # Válida se o script está sendo rodado como root
 if [ $(/usr/bin/id -u) -ne 0 ]; then
     echo "$(tput setaf 3)Por favor, execute o scrip como administrador.$(tput setaf 7)"
+    exit 01
 fi
 
 
@@ -22,6 +23,7 @@ is_first_install=False
 if ! test -f /etc/korp/tenant  && [ $# = 0 ] ;
 then
     echo "$(tput setaf 1)Setup sendo executado pela primeira vez, porém o tenant não foi passado.$(tput setaf 7)"
+    exit 02
 else
     if test -f /etc/korp/tenant;
     then
@@ -31,6 +33,7 @@ else
             then
                 echo ""
                 echo "$(tput setaf 1)O setup já foi rodado uma vez com outro tenant. Por favor vefique o tenant e tente novamente.$(tput setaf 7)"
+                exit 03
             fi
         fi
     else
@@ -106,4 +109,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git -C TD-828 main.yml --limit localhost --vault-id /etc/ansible/.vault_key
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key

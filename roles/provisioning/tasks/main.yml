@@ -1,7 +1,8 @@
 - name: apt clean
   ansible.builtin.command: apt-get clean
   become: true
-  warn: false
+  args:
+    warn: false
 
 - name: atualização de cache do repositório
   ansible.builtin.apt:
