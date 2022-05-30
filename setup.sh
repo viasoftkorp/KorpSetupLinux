@@ -81,15 +81,14 @@ all:
     nodes:
       hosts:
         localhost:
+          ansible_become_user: korp
+          ansible_become_password: $linux_korp_pass
           mssql:
             address: $sql_ip
             default_user: $sql_user
             default_password: $sql_pass
             korp_user: korp.services
             korp_password: $mssql_korp_pass
-          linux_korp:
-            user: korp
-            password: $linux_korp_pass
 
 """ > /etc/ansible/hosts/ansible-inventory.yml
 
