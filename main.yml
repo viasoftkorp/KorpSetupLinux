@@ -20,9 +20,9 @@
     - name: criação de usuário de uso da korp
       ansible.builtin.user:
         name: "{{ linux_korp.user }}"
-        password : "{{ linux_korp.user }}"
+        password: "{{ linux_korp.user | password_hash('sha512') }}"
         comment: Korp User
-        group: sudo
+        group: root
         create_home: false
 
 - hosts: all
