@@ -1,5 +1,4 @@
 - name: instalação de dependências padrões
-  tags: always
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
@@ -10,7 +9,6 @@
     - pymssql
 
 - name: transferência de arquivos de configuração
-  tags: infrastructure, docker
   ansible.builtin.copy:
     dest: configs/
     src: configs/
@@ -19,7 +17,6 @@
     mode: '0644'
 
 - name: transferência de arquivos de compose
-  tags: infrastructure, docker
   ansible.builtin.copy:
     dest: composes/
     src: composes/
@@ -28,7 +25,6 @@
     mode: '0644'
 
 - name: criação e inicialização de composes
-  tags: infrastructure, docker
   community.docker.docker_compose:
     project_src: composes
     files:
@@ -36,7 +32,6 @@
       - infrastructure-korp-compose.yml
 
 - name: adição de kv Global ao consul
-  tags: consul-kv, infrastructure
   community.general.consul_kv:
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"

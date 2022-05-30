@@ -15,7 +15,7 @@ ansible-playbook <PlayBook_Name.yml>
 Parâmetros opcionais que podem ser utilizados são:
 
 - `-l <hosts>` = IP, dns, ou grupo (arquivo 'inventory')
-- `--tags <tags>` =  tags que estão associadas a cada task
+- `--tags <tags>` =  tags que estão associadas a cada role 'principal'
 
 ## Execução de testes de PlayBook
 

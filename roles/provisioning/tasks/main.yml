@@ -1,13 +1,14 @@
-- name: atualização de cache do repositório
-  tags: always
-  ansible.builtin.apt:
+- name: apt clean
+  apt:
     clean: true
+
+- name: atualização de cache do repositório
+  ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
     force_apt_get: true
 
 - name: instalação de dependências padrões
-  tags: always
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -16,11 +17,9 @@
     - python3-pip
 
 - name: Setup do Docker
-  tags: docker, setup
   import_tasks: docker_setup.yml
 
 - name: criação de network 'servicos' no docker
-  tags: network, docker
   community.docker.docker_network:
     name: servicos
 
