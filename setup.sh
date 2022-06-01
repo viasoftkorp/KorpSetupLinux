@@ -39,8 +39,9 @@ else
     else
         is_first_install=True
         sudo sudo mkdir -p /etc/korp/
+        sudo chmod 0774 /etc/korp/
         sudo echo $1 > /etc/korp/tenant
-        sudo chmod 0444 /etc/korp/tenant        
+        sudo chmod 0444 /etc/korp/tenant
     fi
 fi
 tenant=$(cat /etc/korp/tenant)
@@ -69,8 +70,9 @@ then
     read -e -p "Senha do usuário: " sql_pass
 
 
-    # Criação de senhas aleatórios para o usuário do mssql e do linux
+    # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
     mssql_korp_pass="$(create_random_string)"
+    postgres_korp_pass="$(create_random_string)"
     linux_korp_pass="$(create_random_string)"
 
 
@@ -81,15 +83,20 @@ all:
     nodes:
       hosts:
         localhost:
+          linux_korp:
+            user: korp
+            password: $linux_korp_pass
           mssql:
             address: $sql_ip
             default_user: $sql_user
             default_password: $sql_pass
             korp_user: korp.services
             korp_password: $mssql_korp_pass
-          linux_korp:
-            user: korp
-            password: $linux_korp_pass
+          postgres:
+            default_user: postgres
+            default_password: postgres
+            korp_user: korp.services
+            korp_password: $postgres_korp_pass
 
 """ > /etc/ansible/hosts/ansible-inventory.yml
 

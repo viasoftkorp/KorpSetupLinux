@@ -1,4 +1,4 @@
-- name: apt clean
+- name: limpeza de cache do repositório
   ansible.builtin.command: apt-get clean
   become: true
   args:
@@ -17,14 +17,48 @@
   loop:
     - python3
     - python3-pip
+    # necessário para o funcionamento de become_user
+    - acl
+    # necessário para o funcionamento de postgresql
+    - libpq-dev
+
+- name: instalação de dependências padrões usando pip
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop:
+    # Bibliotecas usadas pelo Ansible para usar o Postgres
+    - psycopg2
+
+- name: criação de usuário de uso da korp no Linux
+  ansible.builtin.user:
+    name: "{{ linux_korp.user }}"
+    password: "{{ linux_korp.password | password_hash('sha512') }}"
+    comment: Korp User
+    group: root
+    groups:
+      - sudo
+    state: present
+    system: true
+    create_home: true
+    shell: /bin/bash
+
+- name: criação de usuário de uso da korp no SQL Server
+  community.general.mssql_script:
+    login_user: "{{ mssql.default_user }}"
+    login_password: "{{ mssql.default_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'templates/sql/create_user.j2') | string }}"
+
+- name: criação de usuário de uso da korp no Postgres
+  community.postgresql.postgresql_user:
+    db: postgres
+    login_host: 127.0.0.1
+    name: "{{ postgres.korp_user }}"
+    password: "{{ postgres.korp_password }}"
+    login_user: "{{ postgres.default_user }}"
+    login_password: "{{ postgres.default_password }}"
+    role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml
-
-- name: criação de network 'servicos' no docker
-  community.docker.docker_network:
-    name: servicos
-
-- name: criação de volume secret-manager no docker
-  community.docker.docker_volume:
-    name: secret-manager
