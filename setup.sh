@@ -93,6 +93,8 @@ all:
             korp_user: korp.services
             korp_password: $mssql_korp_pass
           postgres:
+            default_user: postgres
+            default_password: postgres
             korp_user: korp.services
             korp_password: $postgres_korp_pass
 

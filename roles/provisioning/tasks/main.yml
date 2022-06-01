@@ -56,8 +56,8 @@
     login_host: 127.0.0.1
     name: "{{ postgres.korp_user }}"
     password: "{{ postgres.korp_password }}"
-    login_user: postgres
-    login_password: postgres
+    login_user: "{{ postgres.default_user }}"
+    login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
 - name: Setup do Docker

@@ -32,7 +32,7 @@
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
-  when: korp_compose_folder.stat.exists == false
+  when: korp_compose_folder.stat.exists
 
 # itera sobre todos os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
