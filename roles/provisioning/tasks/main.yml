@@ -51,7 +51,6 @@
     script: "{{ lookup('template', 'templates/sql/create_user.j2') | string }}"
 
 - name: criação de usuário de uso da korp no Postgres
-  tags: test
   community.postgresql.postgresql_user:
     db: postgres
     login_host: 127.0.0.1
