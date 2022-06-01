@@ -16,7 +16,7 @@ services:
       - HOST_ADDRESS=172.40.0.9
       - HTTP_PORT=14000
     volumes:
-      - /home/korp/configs/korp.pfx:/app/korp.pfx
+      - {{ korp_dir_path }}/configs/korp.pfx:/app/korp.pfx
     networks:
       - servicos
     ports:

@@ -27,7 +27,7 @@ services:
       - "8600:8600/tcp"
       - "8600:8600/udp"
     volumes:
-      - "/home/korp/configs/consul-server.json:/consul/config/server.json:ro"
+      - "{{ korp_dir_path }}/configs/consul-server.json:/consul/config/server.json"
       - consul-server:/consul/data/
 
   fabio:
@@ -47,6 +47,8 @@ services:
     image: "postgres:14"
     container_name: "postgres"
     restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
     volumes:
