@@ -1,0 +1,17 @@
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = '{{ db_name }}')
+BEGIN
+    CREATE DATABASE [{{ db_name }}]
+END
+SELECT 1
+GO
+
+USE [{{ db_name }}]
+IF NOT EXISTS (SELECT [name]
+                FROM [sys].[database_principals]
+                WHERE [type] = N'S' AND [name] = N'{{ mssql.korp_user }}')
+BEGIN
+	CREATE USER [{{ mssql.korp_user }}] FOR LOGIN [{{ mssql.korp_user }}]
+	ALTER USER [{{ mssql.korp_user }}] WITH DEFAULT_SCHEMA=[dbo]
+	ALTER ROLE [db_owner] ADD MEMBER [{{ mssql.korp_user }}]
+END
+SELECT 1

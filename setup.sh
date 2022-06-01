@@ -93,6 +93,7 @@ all:
             korp_user: korp.services
             korp_password: $mssql_korp_pass
           postgres:
+            address: 127.0.0.1
             default_user: postgres
             default_password: postgres
             korp_user: korp.services
