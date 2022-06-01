@@ -1,0 +1,19 @@
+# parâmetros enviados:
+#   db_name: string
+#
+# Exemplo de uso:
+#
+#   - name: criação de db
+#     include_role:
+#       name: utils
+#       tasks_from: create_db/mssql
+#     vars:
+#       db_name: test.database
+
+- name: "criação de database {{ db_name }} em SQL Server"
+  community.general.mssql_script:
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'templates/queries/create_db_mssql.j2') | string }}"

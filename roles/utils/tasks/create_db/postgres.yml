@@ -1,0 +1,19 @@
+# parâmetros enviados:
+#   db_name: string
+#
+# Exemplo de uso:
+#
+#   - name: criação de db
+#     include_role:
+#       name: utils
+#       tasks_from: create_db/postgres
+#     vars:
+#       db_name: test.database
+
+- name: "criação de database {{ db_name }} em PostgreSql"
+  community.postgresql.postgresql_db:
+    name: "{{ db_name }}"
+    owner: "{{ postgres.korp_user }}"
+    login_host: "{{ postgres.address }}"
+    login_user: "{{ postgres.korp_user }}"
+    login_password: "{{ postgres.korp_password }}"
