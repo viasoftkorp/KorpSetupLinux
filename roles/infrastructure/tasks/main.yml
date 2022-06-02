@@ -29,13 +29,11 @@
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: verificação de diretório de composes
-  tags: test
   stat:
     path: "{{ korp_dir_path }}/composes/"
   register: korp_compose_folder
 
 - name: criação de diretório de composes
-  tags: test
   file:
     path: "{{ korp_dir_path }}/composes/"
     state: directory
