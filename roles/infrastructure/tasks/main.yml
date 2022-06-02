@@ -18,21 +18,31 @@
     group: root
     mode: '0644'
 
+- name: criação de usuário de uso da korp no SQL Server
+  community.general.mssql_script:
+    login_user: "{{ mssql.default_user }}"
+    login_password: "{{ mssql.default_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'templates/sql/create_user.j2') | string }}"
+
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: verificação de diretório de composes
+  tags: test
   stat:
     path: "{{ korp_dir_path }}/composes/"
   register: korp_compose_folder
 
 - name: criação de diretório de composes
+  tags: test
   file:
     path: "{{ korp_dir_path }}/composes/"
     state: directory
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
-  when: korp_compose_folder.stat.exists
+  when: not korp_compose_folder.stat.exists
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.

@@ -49,16 +49,17 @@ tenant=$(cat /etc/korp/tenant)
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 echo Instalando Ansible
 
-sudo apt update
-sudo apt install software-properties-common
-sudo apt install ansible -y
+sudo apt-get install python3
+sudo apt install python3-pip
+sudo python3 -m pip install ansible
 
 
 # Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
 if [ $is_first_install = True ];
 then
 
-    # Configuração de diretórios que serão usados depois
+    # Cria e configuração de diretórios que serão usados depois
+    sudo mkdir -p /etc/ansible/hosts/
     sudo chmod 0774 /etc/ansible/
 
     echo -e "\n-----------------------\n"
