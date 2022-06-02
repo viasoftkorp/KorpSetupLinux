@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 create_random_string() {
   local l=15
   [ -n "$1" ] && l=$1

@@ -1,2 +1,8 @@
 ---
 korp_dir_path: /etc/korp
+
+services:
+  - viasoft.authentication:
+    db:
+      db_name: Viasoft_Authentication
+      db_type: mssql
