@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 create_random_string() {
   local l=15
   [ -n "$1" ] && l=$1
@@ -50,16 +49,16 @@ tenant=$(cat /etc/korp/tenant)
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 echo Instalando Ansible
 
-sudo apt update
-sudo apt install software-properties-common
-sudo apt install ansible -y
+sudo apt-get install python3
+sudo apt install python3-pip
+sudo python3 -m pip install ansible
 
 
 # Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
 if [ $is_first_install = True ];
 then
 
-    # Cria e configuração de diretórios que seram usados depois
+    # Cria e configuração de diretórios que serão usados depois
     sudo mkdir -p /etc/ansible/hosts/
     sudo chmod 0774 /etc/ansible/
 
@@ -99,7 +98,13 @@ all:
             korp_user: korp.services
             korp_password: $postgres_korp_pass
 
-""" > /etc/ansible/hosts/ansible-inventory.yml
+""" > /etc/ansible/ansible-inventory.yml
+
+echo """
+[defaults]
+inventory = /etc/ansible/ansible-inventory.yml
+
+""" > /etc/ansible/ansible.cfg
 
 
     # Criação de senha aleatória usada pelo ansible-vault
@@ -109,7 +114,7 @@ all:
 
 
     # Encripta 'ansible-inventory.yml' com ansible-vault
-    sudo ansible-vault encrypt /etc/ansible/hosts/ansible-inventory.yml --vault-id /etc/ansible/.vault_key
+    sudo ansible-vault encrypt /etc/ansible/ansible-inventory.yml --vault-id /etc/ansible/.vault_key
 fi
 
 

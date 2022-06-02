@@ -42,23 +42,5 @@
     create_home: true
     shell: /bin/bash
 
-- name: criação de usuário de uso da korp no SQL Server
-  community.general.mssql_script:
-    login_user: "{{ mssql.default_user }}"
-    login_password: "{{ mssql.default_password }}"
-    login_host: "{{ mssql.address }}"
-    name: master
-    script: "{{ lookup('template', 'templates/sql/create_user.j2') | string }}"
-
-- name: criação de usuário de uso da korp no Postgres
-  community.postgresql.postgresql_user:
-    db: postgres
-    login_host: 127.0.0.1
-    name: "{{ postgres.korp_user }}"
-    password: "{{ postgres.korp_password }}"
-    login_user: "{{ postgres.default_user }}"
-    login_password: "{{ postgres.default_password }}"
-    role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
-
 - name: Setup do Docker
   import_tasks: docker_setup.yml

@@ -6,18 +6,15 @@ networks:
       name: servicos
 
 services:
-  #TODO confirmar params
-  viasoft-authentication:
-    image: "korp/viasoft.authentication:1.4.x"
-    container_name: "Viasoft.Authentication"
-    restart: always
-    environment:
-      - URL_CONSUL=http://consul-agent:8500
-      - HOST_ADDRESS=172.40.0.9
-      - HTTP_PORT=14000
-    volumes:
-      - {{ korp_dir_path }}/configs/korp.pfx:/app/korp.pfx
-    networks:
-      - servicos
-    ports:
-      - "14000:14000"
+  
+
+# Viasoft.AuditTrail.Client
+# Viasoft.Email
+# Korp.Legacy.Authentication
+# Viasoft.Legacy.HTTPProxy
+# Viasoft.Licensing.LicenseServer
+# Viasoft.WelcomePage.Dashboard
+# Viasoft.ObjectStorage.Client
+# Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
+# Viasoft.SystemUpdate
+

@@ -18,6 +18,14 @@
     group: root
     mode: '0644'
 
+- name: criação de usuário de uso da korp no SQL Server
+  community.general.mssql_script:
+    login_user: "{{ mssql.default_user }}"
+    login_password: "{{ mssql.default_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
+
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: verificação de diretório de composes
@@ -32,9 +40,9 @@
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
-  when: korp_compose_folder.stat.exists
+  when: not korp_compose_folder.stat.exists
 
-# itera sobre todos os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
+# itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
 - name: configuração e transferência de arquivos de compose
   ansible.builtin.template:
@@ -46,12 +54,30 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação e inicialização de composes
+- name: criação e inicialização de default-compose
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     files:
       - infrastructure-default-compose.yml
-      - infrastructure-korp-compose.yml
+
+- name: criação de usuário de uso da korp no Postgres
+  community.postgresql.postgresql_user:
+    db: postgres
+    login_host: "{{ postgres.address }}"
+    name: "{{ postgres.korp_user }}"
+    password: "{{ postgres.korp_password }}"
+    login_user: "{{ postgres.default_user }}"
+    login_password: "{{ postgres.default_password }}"
+    role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
+
+# itera sobre os serviços mapeados em "group_vars/all" e cria os dbs com base nas informações colocadas em na prop "db"
+- name: criação de bancos de dados
+  include_role:
+    name: utils
+    tasks_from: "create_db/{{ item.db.db_type }}"
+  vars:
+    db_name: "{{ item.db.db_name }}"
+  loop: "{{ services }}"
 
 - name: adição de kv Global ao consul
   community.general.consul_kv:
@@ -59,3 +85,10 @@
     cas: "0"
     key: Global
     value: "{{ lookup('file', 'files/consul_kv/global.json') | string }}"
+
+
+# - name: criação e inicialização de composes
+#   community.docker.docker_compose:
+#     project_src: "{{ korp_dir_path }}/composes/"
+#     files:
+#       - infrastructure-korp-compose.yml
