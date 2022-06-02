@@ -24,7 +24,7 @@
     login_password: "{{ mssql.default_password }}"
     login_host: "{{ mssql.address }}"
     name: master
-    script: "{{ lookup('template', 'templates/sql/create_user.j2') | string }}"
+    script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
 
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
