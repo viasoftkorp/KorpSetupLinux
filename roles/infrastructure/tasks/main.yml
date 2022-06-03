@@ -61,7 +61,7 @@
       - infrastructure-default-compose.yml
 
 - name: criação e configuração de usuário no rabbitmq
-  import_tasks: rabbitmq_user.yml
+  ansible.builtin.import_tasks: rabbitmq_user.yml
 
 - name: criação de usuário de uso da korp no Postgres
   community.postgresql.postgresql_user:
