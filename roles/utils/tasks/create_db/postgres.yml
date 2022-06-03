@@ -4,7 +4,7 @@
 # Exemplo de uso:
 #
 #   - name: criação de db
-#     include_role:
+#     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: create_db/postgres
 #     vars:

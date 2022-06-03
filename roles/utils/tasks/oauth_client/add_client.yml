@@ -1,0 +1,18 @@
+# essa role não deve ser chamada diretamente.
+# uso ensure_client.yml
+
+- name: criação de GUID
+  ansible.builtin.set_fact:
+    guid: "{{ 10000 | random | to_uuid | upper }}"
+
+- name: criação de secret
+  ansible.builtin.set_fact:
+    secret_as_hash: "{{ guid | hash('sha256') | b64encode }}"
+
+- name: "adição de cliente oauth para {{ service_name }}"
+  community.general.mssql_script:
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
+    login_host: "{{ mssql.address }}"
+    name: Viasoft_Authentication
+    script: "{{ lookup('template', 'queries/add_oauth_client.sql.j2') | string }}"

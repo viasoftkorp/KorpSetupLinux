@@ -86,9 +86,11 @@
     key: Global
     value: "{{ lookup('file', 'files/consul_kv/global.json') | string }}"
 
-
-# - name: criação e inicialização de composes
-#   community.docker.docker_compose:
-#     project_src: "{{ korp_dir_path }}/composes/"
-#     files:
-#       - infrastructure-korp-compose.yml
+- name: adição de cliente oauth
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/ensure_client
+  vars: 
+    service_name: "{{ item }}"
+  loop:
+    - Service.Test

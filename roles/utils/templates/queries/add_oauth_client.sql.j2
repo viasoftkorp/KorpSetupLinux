@@ -1,0 +1,207 @@
+DECLARE @SERVICE_NAME VARCHAR(MAX)
+DECLARE @SERVICE_DESCRIPTION VARCHAR(MAX)
+DECLARE @CLIENT_ID INT
+DECLARE @RESOURCE_ID INT
+DECLARE @SECRET VARCHAR(MAX)
+
+DROP TABLE IF EXISTS #services
+
+CREATE TABLE #services(ServiceName varchar(max),  ServiceDescription varchar(max));
+INSERT INTO #services (ServiceName, ServiceDescription)
+values ('{{ service_name }}', '{{ service_name }}')
+
+SET @SECRET = '{{ secret_as_hash }}'
+
+DECLARE SERVICES_CURSOR CURSOR for
+select ServiceName, ServiceDescription from #services
+
+OPEN SERVICES_CURSOR  
+  
+FETCH NEXT FROM SERVICES_CURSOR   
+INTO @SERVICE_NAME, @SERVICE_DESCRIPTION
+ 
+WHILE @@FETCH_STATUS = 0  
+BEGIN
+   IF NOT EXISTS (SELECT 1 FROM ApiResources WHERE [Name] = @SERVICE_NAME)
+   BEGIN
+     INSERT INTO [dbo].[ApiResources]
+               ([Enabled]
+               ,[Name]
+               ,[DisplayName]
+               ,[Description]
+               ,[Created]
+               ,[Updated]
+               ,[LastAccessed]
+               ,[NonEditable]
+			   ,ShowInDiscoveryDocument)
+         VALUES
+               (1
+               ,@SERVICE_NAME
+               ,@SERVICE_DESCRIPTION
+               ,null
+               ,GETUTCDATE()
+               ,null
+               ,null
+               ,0
+			   ,0)
+    
+    SELECT @RESOURCE_ID = Id from [dbo].[ApiResources] WHERE [Name] = @SERVICE_NAME
+
+ 
+
+    INSERT INTO [dbo].[ApiScopes]
+               ([Name]
+               ,[DisplayName]
+               ,[Description]
+               ,[Required]
+               ,[Emphasize]
+               ,[ShowInDiscoveryDocument]
+               ,[Enabled])
+         VALUES
+               (@SERVICE_NAME
+               ,@SERVICE_NAME
+               ,null
+               ,0
+               ,0
+               ,1
+               ,1
+               )
+
+ 
+
+    INSERT INTO [dbo].[Clients]
+               ([Enabled]
+               ,[ClientId]
+               ,[ProtocolType]
+               ,[RequireClientSecret]
+               ,[ClientName]
+               ,[Description]
+               ,[ClientUri]
+               ,[LogoUri]
+               ,[RequireConsent]
+               ,[AllowRememberConsent]
+               ,[AlwaysIncludeUserClaimsInIdToken]
+               ,[RequirePkce]
+               ,[AllowPlainTextPkce]
+               ,[AllowAccessTokensViaBrowser]
+               ,[FrontChannelLogoutUri]
+               ,[FrontChannelLogoutSessionRequired]
+               ,[BackChannelLogoutUri]
+               ,[BackChannelLogoutSessionRequired]
+               ,[AllowOfflineAccess]
+               ,[IdentityTokenLifetime]
+               ,[AccessTokenLifetime]
+               ,[AuthorizationCodeLifetime]
+               ,[ConsentLifetime]
+               ,[AbsoluteRefreshTokenLifetime]
+               ,[SlidingRefreshTokenLifetime]
+               ,[RefreshTokenUsage]
+               ,[UpdateAccessTokenClaimsOnRefresh]
+               ,[RefreshTokenExpiration]
+               ,[AccessTokenType]
+               ,[EnableLocalLogin]
+               ,[IncludeJwtId]
+               ,[AlwaysSendClientClaims]
+               ,[ClientClaimsPrefix]
+               ,[PairWiseSubjectSalt]
+               ,[Created]
+               ,[Updated]
+               ,[LastAccessed]
+               ,[UserSsoLifetime]
+               ,[UserCodeType]
+               ,[DeviceCodeLifetime]
+               ,[NonEditable]
+			   ,[RequireRequestObject])
+         VALUES
+               (1
+               ,@SERVICE_NAME
+               ,'oidc'
+               ,1
+               ,null
+               ,null
+               ,null
+               ,null
+               ,1
+               ,1
+               ,0
+               ,0
+               ,0
+               ,0
+               ,null
+               ,1
+               ,null
+               ,1
+               ,0
+               ,300
+               ,3600
+               ,300
+               ,null
+               ,2592000
+               ,1296000
+               ,1
+               ,0
+               ,1
+               ,0
+               ,1
+               ,0
+               ,0
+               ,'client_'
+               ,null
+               ,GETUTCDATE()
+               ,null
+               ,null
+               ,null
+               ,null
+               ,300
+               ,0
+			   ,0
+               )
+    
+    SELECT @CLIENT_ID = Id from [dbo].[Clients] WHERE [ClientId] = @SERVICE_NAME
+
+ 
+
+    INSERT INTO [dbo].[ClientGrantTypes]
+               ([GrantType]
+               ,[ClientId])
+         VALUES
+               ('client_credentials'
+               ,@CLIENT_ID
+               )
+
+ 
+
+    INSERT INTO [dbo].[ClientScopes]
+               ([Scope]
+               ,[ClientId])
+         VALUES
+               (@SERVICE_NAME
+               ,@CLIENT_ID)
+
+ 
+
+    INSERT INTO [dbo].[ClientSecrets]
+               ([Description]
+               ,[Value]
+               ,[Expiration]
+               ,[Type]
+               ,[Created]
+               ,[ClientId])
+         VALUES
+               (null
+               ,@SECRET
+               ,null
+               ,'SharedSecret'
+               ,GETUTCDATE()
+               ,@CLIENT_ID
+               )
+   END    
+
+   FETCH NEXT FROM SERVICES_CURSOR   
+   INTO @SERVICE_NAME, @SERVICE_DESCRIPTION
+END
+
+CLOSE SERVICES_CURSOR
+DEALLOCATE SERVICES_CURSOR
+
+SELECT 1

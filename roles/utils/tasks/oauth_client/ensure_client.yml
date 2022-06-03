@@ -1,0 +1,33 @@
+# parâmetros recebidos:
+#   service_name
+#
+# para usar, chame:
+#  - name: adição de cliente oauth
+#     ansible.builtin.include_role:
+#       name: utils
+#       tasks_from: oauth_client/ensure_client
+#     vars: 
+#       service_name: nome.do.serviço
+
+- name: garantia de que arquivo oauth_clients.json existe
+  ansible.builtin.copy:
+    content: "{}"
+    dest: "{{ korp_dir_path }}/configs/oauth_clients.json"
+    force: no
+    mode: '0740'
+    owner: "{{ linux_korp.user }}"
+    group: root
+
+- name: leitura de oauth_clients.json
+  ansible.builtin.set_fact:
+    clients: "{{ lookup('file', '{{ korp_dir_path }}/configs/oauth_clients.json') | from_json }}"
+
+- name: verificação se cliente já está cadastrado
+  ansible.builtin.set_fact:
+    is_registered: "{{ service_name in clients }}"
+
+- name: adição de cliente
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_client
+  when: not is_registered
