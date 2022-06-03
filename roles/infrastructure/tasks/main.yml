@@ -8,6 +8,9 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
+- name: provisão de certificado auto-assinado
+  ansible.builtin.import_tasks: self_signed_certificate.yml
+
 # copia arquivos presentes em 'files/configs/'.
 # aqui não é necessário a lógica de criação de diretório, pois estamos copiando pastas, e não arquivos.
 - name: transferência de arquivos de configuração

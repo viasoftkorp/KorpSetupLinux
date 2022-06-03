@@ -86,6 +86,8 @@ all:
           linux_korp:
             user: korp
             password: $linux_korp_pass
+          self_signed_cert:
+            passphrase: korp
           mssql:
             address: $sql_ip
             default_user: $sql_user

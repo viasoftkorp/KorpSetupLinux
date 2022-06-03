@@ -1,0 +1,60 @@
+- name: criação do diretório em que as os arquivos de certificado ficarão
+  ansible.builtin.file:
+    path: "{{ self_signed_certs_directory }}/"
+    state: directory
+    mode: '0755'
+
+- name: criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
+  ansible.builtin.copy:
+    dest: "{{ self_signed_certs_directory }}/cert.pass"
+    mode: '0744'
+    content: |
+      {{ self_signed_cert.passphrase }}
+
+- name: geração de chave privada para certificado auto-assinado (RSA, 4096)
+  community.crypto.openssl_privatekey:
+    size: 4096
+    type: RSA
+    path: "{{ self_signed_cert_privatekey_path }}"
+    backup: true
+    passphrase: "{{ self_signed_cert.passphrase }}"
+    cipher: auto
+
+- name: geração de CSR (certificate signing request) para geração certificado auto-assinado
+  community.crypto.openssl_csr:
+    path: "{{ self_signed_certs_directory }}/cert.csr"
+    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    backup: true
+    common_name: korp.com.br
+    organization_name: Korp Informática LTDA
+    state_or_province_name: Paraná
+    countryName: BR
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+    key_usage_critical: true
+    subject_alt_name:
+      - "DNS:korp"
+      - "DNS:korp-api"
+
+- name: geração do certificado auto-assinado com OpenSSL
+  community.crypto.x509_certificate:
+    path: "{{ self_signed_cert_path }}"
+    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    csr_path: "{{ self_signed_certs_directory }}/cert.csr"
+    provider: selfsigned
+    selfsigned_not_after: +18000d
+    backup: true
+
+- name: geração de PFX do certificado auto-assinado
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ self_signed_cert_pfx_path }}"
+    passphrase: "{{ self_signed_cert.passphrase }}"
+    certificate_path: "{{ self_signed_cert_path }}"
+    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    friendly_name: korp.com.br
+    backup: true

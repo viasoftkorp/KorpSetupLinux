@@ -1,3 +1,14 @@
+- name: aguarda inicialização do rabbitmq
+  community.docker.docker_container_exec:
+    container: rabbitmq
+    command: |
+      rabbitmqctl await_startup
+    chdir: /
+  register: result
+  retries: 5
+  delay: 5
+  until: result is not failed
+
 - name: lista usuários presentes no rabbitmq
   community.docker.docker_container_exec:
     container: rabbitmq
