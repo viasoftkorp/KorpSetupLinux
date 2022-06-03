@@ -29,12 +29,12 @@
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: verificação de diretório de composes
-  stat:
+  ansible.builtin.stat:
     path: "{{ korp_dir_path }}/composes/"
   register: korp_compose_folder
 
 - name: criação de diretório de composes
-  file:
+  ansible.builtin.file:
     path: "{{ korp_dir_path }}/composes/"
     state: directory
     mode: '0755'
@@ -60,6 +60,9 @@
     files:
       - infrastructure-default-compose.yml
 
+- name: criação e configuração de usuário no rabbitmq
+  import_tasks: rabbitmq_user.yml
+
 - name: criação de usuário de uso da korp no Postgres
   community.postgresql.postgresql_user:
     db: postgres
@@ -72,7 +75,7 @@
 
 # itera sobre os serviços mapeados em "group_vars/all" e cria os dbs com base nas informações colocadas em na prop "db"
 - name: criação de bancos de dados
-  include_role:
+  ansible.builtin.include_role:
     name: utils
     tasks_from: "create_db/{{ item.db.db_type }}"
   vars:

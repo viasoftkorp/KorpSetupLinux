@@ -29,6 +29,8 @@ services:
     volumes:
       - "{{ korp_dir_path }}/configs/consul-server.json:/consul/config/server.json"
       - consul-server:/consul/data/
+    networks:
+      - servicos
 
   fabio:
     image: "fabiolb/fabio:latest"
@@ -42,6 +44,8 @@ services:
     ports:
       - "9999:9999"
       - "9998:9998"
+    networks:
+      - servicos
 
   postgres:
     image: "postgres:14"
@@ -66,13 +70,10 @@ services:
     environment:
       - TCP_PORTS=15672,5672
       - RABBITMQ_NODENAME=rabbitmq
-    networks:
-      - servicos
     ports:
       - "15672:15672"
       - "5672:5672"
-      - "5671:5671"
-      - "15671:15671"
-      - "9419:9419"
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - servicos

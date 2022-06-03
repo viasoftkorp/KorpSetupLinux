@@ -73,6 +73,7 @@ then
     mssql_korp_pass="$(create_random_string)"
     postgres_korp_pass="$(create_random_string)"
     linux_korp_pass="$(create_random_string)"
+    rabbitmq_korp_pass="$(create_random_string)"
 
 
     # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
@@ -97,6 +98,9 @@ all:
             default_password: postgres
             korp_user: korp.services
             korp_password: $postgres_korp_pass
+          rabbitmq:
+            korp_user: korp.services
+            korp_password: $rabbitmq_korp_pass
 
 """ > /etc/ansible/ansible-inventory.yml
 
