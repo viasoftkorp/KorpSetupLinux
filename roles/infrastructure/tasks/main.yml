@@ -101,3 +101,9 @@
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop: 
     - Viasoft.Authentication
+
+- name: criação e inicialização de korp-compose
+  community.docker.docker_compose:
+    project_src: "{{ korp_dir_path }}/composes/"
+    files:
+      - infrastructure-korp-compose.yml

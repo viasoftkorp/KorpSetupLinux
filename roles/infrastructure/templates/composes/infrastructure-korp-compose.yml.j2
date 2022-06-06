@@ -6,15 +6,20 @@ networks:
       name: servicos
 
 services:
-  
-
-# Viasoft.AuditTrail.Client
-# Viasoft.Email
-# Korp.Legacy.Authentication
-# Viasoft.Legacy.HTTPProxy
-# Viasoft.Licensing.LicenseServer
-# Viasoft.WelcomePage.Dashboard
-# Viasoft.ObjectStorage.Client
-# Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
-# Viasoft.SystemUpdate
-
+  viasoft-authentication:
+    image: "korp/viasoft.authentication:1.4.x"
+    container_name: "Viasoft.Authentication"
+    restart: always
+    depends_on:
+      - consul-server
+    extra_hosts:
+      db_mssql: {{ mssql.address }}
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - {{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/
+    networks:
+      - servicos

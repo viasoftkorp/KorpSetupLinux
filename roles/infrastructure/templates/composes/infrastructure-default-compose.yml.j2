@@ -95,20 +95,3 @@ services:
     volumes:
       - "{{ korp_dir_path }}/configs/redis.conf:/usr/local/etc/redis/redis.conf"
 
-  viasoft-authentication:
-    image: "korp/viasoft.authentication:1.4.x"
-    container_name: "Viasoft.Authentication"
-    restart: always
-    depends_on:
-      - consul-server
-    extra_hosts:
-      db_mssql: {{ mssql.address }}
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-    volumes:
-      - {{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/
-    networks:
-      - servicos
