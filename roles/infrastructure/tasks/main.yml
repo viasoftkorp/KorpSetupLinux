@@ -37,7 +37,7 @@
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search','.yml.j2') }}"
+    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search','.j2') }}"
 
 - name: criação de usuário de uso da korp no SQL Server
   community.general.mssql_script:
