@@ -10,8 +10,6 @@ services:
     image: "korp/viasoft.authentication:1.4.x"
     container_name: "Viasoft.Authentication"
     restart: always
-    depends_on:
-      - consul-server
     extra_hosts:
       db_mssql: {{ mssql.address }}
       korp-api: 172.17.0.1
