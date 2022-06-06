@@ -49,8 +49,8 @@ tenant=$(cat /etc/korp/tenant)
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 echo Instalando Ansible
 
-sudo apt-get install python3
-sudo apt install python3-pip
+sudo apt-get install python3 --yes
+sudo apt install python3-pip --yes
 sudo python3 -m pip install ansible
 
 
