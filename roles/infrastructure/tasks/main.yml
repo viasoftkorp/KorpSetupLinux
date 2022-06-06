@@ -99,7 +99,7 @@
   vars:
     service_name: "{{ item }}"
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-  loop: 
+  loop:
     - Viasoft.Authentication
 
 - name: criação e inicialização de korp-compose
