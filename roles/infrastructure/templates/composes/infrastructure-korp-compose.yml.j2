@@ -11,7 +11,7 @@ services:
     container_name: "Viasoft.Authentication"
     restart: always
     extra_hosts:
-      db_mssql: {{ mssql.address }}
+      db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
       korp: 172.17.0.1
     environment:

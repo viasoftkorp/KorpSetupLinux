@@ -1,0 +1,4 @@
+route add Viasoft.LicensingServer /Licensing/LicenseServer/ http://app_server:9980/
+route add Viasoft.LicensingServer /licensing/license-server/ http://app_server:9980/
+route add Delphi /korp/services/ http://app_server:1503/
+route add Delphi /Korp/Services/ http://app_server:1503/
