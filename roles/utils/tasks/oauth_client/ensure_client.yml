@@ -6,14 +6,14 @@
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: oauth_client/ensure_client
-#     vars: 
+#     vars:
 #       service_name: nome.do.serviço
 
 - name: garantia de que arquivo oauth_clients.json existe
   ansible.builtin.copy:
     content: "{}"
     dest: "{{ korp_dir_path }}/configs/oauth_clients.json"
-    force: no
+    force: false
     mode: '0740'
     owner: "{{ linux_korp.user }}"
     group: root

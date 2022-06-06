@@ -90,7 +90,7 @@
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/ensure_client
-  vars: 
+  vars:
     service_name: "{{ item }}"
   loop:
     - Service.Test
