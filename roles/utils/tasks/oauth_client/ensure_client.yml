@@ -9,12 +9,12 @@
 #     vars:
 #       service_name: nome.do.serviço
 
-- name: leitura se secret do Consul
+- name: leitura de secret do Consul
   community.general.consul_kv:
     key: "{{ service_name }}"
   register: value
 
-- name: adição de cliente
+- name: adição de cliente oauth2
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/add_client

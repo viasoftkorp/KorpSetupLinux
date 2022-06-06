@@ -24,7 +24,7 @@
     key: "{{ service_name }}"
     value: "{{ consul_kv | to_nice_json }}"
 
-- name: "adição de cliente oauth para {{ service_name }}"
+- name: "adição de cliente oauth2 para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/ensure_client
