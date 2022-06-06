@@ -110,6 +110,11 @@
     key: Global
     value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json }}"
 
+- name: adição de config de fabio ao consul
+  community.general.consul_kv:
+    key: fabio/config
+    value: "{{ lookup('file', 'configs/fabio') }}"
+
 - name: adição de serviços
   ansible.builtin.include_role:
     name: utils
