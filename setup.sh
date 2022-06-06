@@ -67,6 +67,8 @@ then
     read -e -p "IP de acesso: " sql_ip
     read -e -p "Usuário com permissões administrativas: " sql_user
     read -e -p "Senha do usuário: " sql_pass
+    read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
+    application_server_address=${application_server_address:-$sql_ip}
 
 
     # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
@@ -84,6 +86,7 @@ all:
     nodes:
       hosts:
         localhost:
+          application_server_address: $application_server_address
           linux_korp:
             user: korp
             password: $linux_korp_pass
