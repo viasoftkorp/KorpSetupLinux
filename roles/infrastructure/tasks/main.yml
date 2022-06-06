@@ -63,7 +63,7 @@
     group: root
   when: not korp_compose_folder.stat.exists
 
-- name: criação de .env
+- name: criação de arquivo de variáveis de ambiente para docker
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/composes/.env"
     mode: '0644'
