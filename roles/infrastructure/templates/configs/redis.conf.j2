@@ -504,7 +504,7 @@ replica-priority 100
 # 150k passwords per second against a good box. This means that you should
 # use a very strong password otherwise it will be very easy to break.
 #
-requirepass 9c84d5dcda3f4aeeba31e659446a21c749b6a22f53e64328a4e4f60d10bb266d
+requirepass {{ redis.password }}
 
 # Command renaming.
 #
