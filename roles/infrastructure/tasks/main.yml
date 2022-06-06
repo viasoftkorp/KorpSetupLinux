@@ -109,3 +109,19 @@
     cas: "0"
     key: Global
     value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json }}"
+
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Viasoft.Authentication
+
+- name: criação e inicialização de korp-compose
+  community.docker.docker_compose:
+    project_src: "{{ korp_dir_path }}/composes/"
+    files:
+      - infrastructure-korp-compose.yml
