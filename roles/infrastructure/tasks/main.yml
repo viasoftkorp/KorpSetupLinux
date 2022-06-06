@@ -90,4 +90,4 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: Global
-    value: "{{ lookup('file', 'files/consul_kv/global.json') | string }}"
+    value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json }}"
