@@ -14,7 +14,7 @@
     content: "{}"
     dest: "{{ korp_dir_path }}/configs/oauth_clients.json"
     force: false
-    mode: '0740'
+    mode: '0640'
     owner: "{{ linux_korp.user }}"
     group: root
 
