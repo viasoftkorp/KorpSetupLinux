@@ -58,9 +58,9 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  rabbitmq:
+  {{ rabbitmq_container_name }}:
     image: "korp/rabbitmq:1.1.0"
-    container_name: "rabbitmq"
+    container_name: "{{ rabbitmq_container_name }}"
     # não remover esse hostname porque o RABBITMQ utiliza o hostname da máquina para compor as pastas internas
     # e cada vez que um container inicia, seu nome é alterado caso não esteja especificado
     hostname: "rabbitmq" 
@@ -77,3 +77,20 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
     networks:
       - servicos
+
+  {{ redis_container_name }}:
+    image: "redis:7.0"
+    container_name: "{{ redis_container_name }}"
+    hostname: "redis"
+    restart: always
+    depends_on:
+      - consul-server
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+    sysctls:
+      net.core.somaxconn: 1024
+    networks:
+      - servicos
+    ports:
+      - "6379:6379"
+    volumes:
+      - "{{ korp_dir_path }}/configs/redis.conf:/usr/local/etc/redis/redis.conf"

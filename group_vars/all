@@ -1,6 +1,9 @@
 ---
 korp_dir_path: /etc/korp
 
+redis_container_name: redis
+rabbitmq_container_name: rabbitmq
+
 services:
   - viasoft.authentication:
     db:
