@@ -9,25 +9,15 @@
 #     vars:
 #       service_name: nome.do.serviço
 
-- name: garantia de que arquivo oauth_clients.json existe
-  ansible.builtin.copy:
-    content: "{}"
-    dest: "{{ korp_dir_path }}/configs/oauth_clients.json"
-    force: false
-    mode: '0640'
-    owner: "{{ linux_korp.user }}"
-    group: root
-
-- name: leitura de oauth_clients.json
-  ansible.builtin.set_fact:
-    clients: "{{ lookup('file', '{{ korp_dir_path }}/configs/oauth_clients.json') | from_json }}"
-
-- name: verificação se cliente já está cadastrado
-  ansible.builtin.set_fact:
-    is_registered: "{{ service_name in clients }}"
+- name: leitura se secret do Consul
+  community.general.consul_kv:
+    key: "{{ service_name }}"
+  register: value
 
 - name: adição de cliente
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/add_client
-  when: not is_registered
+  vars:
+    raw_kv: "{{ value.data.Value | from_json }}"
+    secret: "{{ raw_kv.Authorization.Secret }}"
