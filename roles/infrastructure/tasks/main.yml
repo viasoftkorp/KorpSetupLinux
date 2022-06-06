@@ -63,6 +63,14 @@
     group: root
   when: not korp_compose_folder.stat.exists
 
+- name: criação de .env
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/composes/.env"
+    mode: '0644'
+    content: |
+      DB_MSSQL={{ mssql.address }}
+      APP_SERVER={{ app_server.address }}
+
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
 - name: configuração e transferência de arquivos de compose

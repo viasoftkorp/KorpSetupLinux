@@ -86,7 +86,8 @@ all:
     nodes:
       hosts:
         localhost:
-          application_server_address: $application_server_address
+          app_server:
+            address: $application_server_address
           linux_korp:
             user: korp
             password: $linux_korp_pass
