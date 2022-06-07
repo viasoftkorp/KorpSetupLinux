@@ -113,7 +113,7 @@
 - name: adição de config de fabio ao consul
   community.general.consul_kv:
     key: fabio/config
-    value: "{{ lookup('file', 'configs/fabio') }}"
+    value: "{{ lookup('file', 'configs/fabio/config') }}"
 
 - name: adição de serviços
   ansible.builtin.include_role:
