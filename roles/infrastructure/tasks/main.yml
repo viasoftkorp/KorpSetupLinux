@@ -11,25 +11,17 @@
 - name: provisão de certificado auto-assinado
   ansible.builtin.import_tasks: self_signed_certificate.yml
 
-# como estamos usando 'template' para configurar os arquivos de config, o diretório "{{ korp_dir_path }}/configs/"" deve existir.
-# essas duas tasks asseguram que o diretório será criado se necessário.
-- name: verificação de diretório de configs
-  ansible.builtin.stat:
-    path: "{{ korp_dir_path }}/configs/"
-  register: korp_configs_folder
-
-- name: criação de diretório de configs
-  ansible.builtin.file:
-    path: "{{ korp_dir_path }}/configs/"
-    state: directory
-    mode: '0755'
+- name: transferência de arquivos de configuração em files
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/configs/"
+    src: configs/
     owner: "{{ linux_korp.user }}"
     group: root
-  when: not korp_configs_folder.stat.exists
+    mode: '0644'
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/configs', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: configuração e transferência de arquivos de configs
+- name: configuração e transferência de arquivos de configuração em templates
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/configs/{{ item[:-3] | basename }}"
     src: "configs/{{ item | basename }}"
@@ -117,6 +109,11 @@
     cas: "0"
     key: Global
     value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json }}"
+
+- name: adição de config de fabio ao consul
+  community.general.consul_kv:
+    key: fabio/config
+    value: "{{ lookup('file', 'configs/fabio/config') }}"
 
 - name: adição de serviços
   ansible.builtin.include_role:

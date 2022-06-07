@@ -38,6 +38,8 @@ services:
     restart: always
     depends_on:
       - consul-server
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
     environment:
       - registry_consul_addr=http://consul-server:8500
       - proxy_matcher=iprefix
