@@ -1,7 +1,5 @@
 ---
 - hosts: all
-  # TODO remover connection: local
-  connection: local
   become: true
 
   roles:
