@@ -1,0 +1,11 @@
+{
+    "Authorization": {
+        "Secret": "{{ secret }}"
+    },
+    "MinioConfig": {
+        "EndPoint": "minio-server:9110",
+        "AccessKeyID": "{{ minio.access_key }}",
+        "SecretAccessKey": "{{ minio.secret_key }}",
+        "useSSL": false
+    }
+}

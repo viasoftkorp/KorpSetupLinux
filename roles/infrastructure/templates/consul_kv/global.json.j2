@@ -2,6 +2,7 @@
     "Logging": {
         "Level": "Information"
     },
+    "OnPremiseMode": true,
     "RuntimeEnvironment": "development",
     "SecretManager": {
         "Path": "/app/SecretManager/",
@@ -10,7 +11,8 @@
     "GatewayUrl": "https://gateway.korp.com.br",
     "CORS": "http://localhost:4200",
     "Authentication": {
-        "Authority": "https://korp-api/oauth"
+        "Authority": "https://korp-api/oauth",
+        "IntrospectionSecret": "{{ 10000 | random | to_uuid | upper }}"
     },
     "IntervaloHealthCheckSegs": "60",
     "RemoverServicoAposFalhaSegs": "60",

@@ -77,6 +77,8 @@ then
     linux_korp_pass="$(create_random_string)"
     rabbitmq_korp_pass="$(create_random_string)"
     redis_pass="$(create_random_string)"
+    minio_access_key="$(create_random_string)"
+    minio_secret_key"$(create_random_string)"
 
 
     # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
@@ -110,6 +112,9 @@ all:
             korp_password: $rabbitmq_korp_pass
           redis:
             password: $redis_pass
+          minio:
+            access_key: $minio_access_key
+            secret_key: $minio_secret_key
 
 """ > /etc/ansible/ansible-inventory.yml
 

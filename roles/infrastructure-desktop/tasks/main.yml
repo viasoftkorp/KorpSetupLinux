@@ -1,0 +1,58 @@
+- name: transferência de arquivos de configuração em files
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/configs/"
+    src: configs/
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: transferência de arquivos de atualizacao-sistema
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/atualizacao-sistema/"
+    src: atualizacao-sistema/
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0666'
+    force: false
+
+- name: configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+
+- name: adição de serviço
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Viasoft.ObjectStorage.Client
+    
+# TODO Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
+
+- name: adição de kv de serviços ao consul
+  community.general.consul_kv:
+    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
+    cas: "0"
+    key: "{{ item }}"
+    value: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') | string }}"
+  loop:
+    - Viasoft.SystemUpdate
+    - Viasoft.AuditTrail.Client
+    - Viasoft.Email
+    - Korp.Legacy.Authentication
+    - Viasoft.Legacy.HTTPProxy
+    - Viasoft.WelcomePage.Dashboard
+
+- name: criação e inicialização de infrastructure-desktop-compose
+  community.docker.docker_compose:
+    project_src: "{{ korp_dir_path }}/composes/"
+    files:
+      - infrastructure-desktop-compose.yml
