@@ -32,6 +32,19 @@ services:
     networks:
       - servicos
 
+  nginx:
+    image: "nginx:1.19"
+    container_name: "nginx"
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - {{ korp_dir_path }}/configs/nginx/:/etc/nginx/
+      - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
+    networks:
+      - servicos
+
   fabio:
     image: "fabiolb/fabio:latest"
     container_name: "fabio"
