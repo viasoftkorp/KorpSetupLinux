@@ -40,7 +40,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - {{ korp_dir_path }}/configs/nginx/:/etc/nginx/
+      - {{ korp_dir_path }}/configs/nginx/ssl_conf:/etc/nginx/ssl_conf
+      - {{ korp_dir_path }}/configs/nginx/conf.d/:/etc/nginx/conf.d/
       - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos

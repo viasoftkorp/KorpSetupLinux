@@ -1,4 +1,4 @@
-listen  433 ssl;
+listen  443 ssl;
 
 ssl_certificate     /etc/nginx/certs/cert.crt;
 ssl_certificate_key /etc/nginx/certs/cert.key;
