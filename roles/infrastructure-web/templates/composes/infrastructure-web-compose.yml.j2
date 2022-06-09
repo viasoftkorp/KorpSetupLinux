@@ -6,9 +6,9 @@ networks:
       name: servicos
 
 services:
-  korp-legacy-administration-2021-4-0:
-    image: "korp/korp.legacy.administration:2021.4.0.x"
-    container_name: "Korp.Legacy.Administration-2021.4.0"
+  korp-legacy-administration:
+    image: "korp/korp.legacy.administration:1.2.x"
+    container_name: "Korp.Legacy.Administration"
     restart: "no"
     extra_hosts:
       db_mssql: "$DB_MSSQL"
