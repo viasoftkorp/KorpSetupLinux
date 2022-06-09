@@ -85,8 +85,6 @@ services:
       korp: 172.17.0.1
     environment:
       - URL_CONSUL=http://consul-server:8500
-    volumes:
-      - {{ korp_dir_path }}/configs/static_version.json:/app/data/static_version.json
     networks:
       - servicos
 

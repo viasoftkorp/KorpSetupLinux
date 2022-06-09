@@ -1,11 +1,3 @@
-- name: transferência de arquivos de configuração em files
-  ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/configs/"
-    src: configs/
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-
 - name: transferência de arquivos de atualizacao-sistema
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/atualizacao-sistema/"
