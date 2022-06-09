@@ -1,0 +1,134 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+volumes:
+  audittrail-client:
+    name: audit-trail-client
+  viasoft-email:
+    name: viasoft-email
+  viasoft-email-errors:
+    name: viasoft-email-errors
+  minio-server:
+    name: minio-server
+
+services:
+  viasoft-audittrail-client:
+    image: "korp/viasoft.audittrail.client:3.1.x"
+    container_name: "Viasoft.Audittrail.Client"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      # Caso seja alterado o caminho dentro do container, deve-se atualizar o código do serviço
+      - audittrail-client:/app/data/
+    networks:
+      - servicos
+
+  viasoft-email:
+    image: "korp/viasoft.email:1.3.x"
+    container_name: "Viasoft.Email"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      # Caso seja alterado o caminho dentro do container, deve-se atualizar as props 'DatabasePath' e 'ErrorPath' no KV do consul
+      - viasoft-email:/app/data
+      - viasoft-email-errors:/app/errors
+    networks:
+      - servicos
+
+  korp-legacy-authentication:
+    image: "korp/korp.legacy.authentication:1.4.x"
+    container_name: "Korp.Legacy.Authentication"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  viasoft-legacy-httpproxy:
+    image: "korp/viasoft.legacy.httpproxy:1.1.x"
+    container_name: "Viasoft.Legacy.Httpproxy"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  viasoft-welcomepage-dashboard:
+    image: "korp/viasoft.welcomepage.dashboard:1.3.x"
+    container_name: "Viasoft.WelcomePage.Dashboard"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  minio-server:
+    image: "minio/minio:RELEASE.2020-08-16T18-39-38Z"
+    container_name: "minio-server"
+    command: "server /data"
+    restart: always
+    environment:
+      - MINIO_ACCESS_KEY={{ minio.access_key }}
+      - MINIO_SECRET_KEY={{ minio.secret_key }}
+    ports:
+      - "9110:9000"
+    volumes:
+      - minio-server:/data
+    networks:
+      - servicos
+
+  viasoft-objectstorage-client:
+    image: "korp/viasoft.objectstorage.client:1.4.x"
+    container_name: "Viasoft.ObjectStorage.Client"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    depends_on:
+      - minio-server
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  viasoft-systemupdate:
+    image: "korp/viasoft.systemupdate:1.2.x"
+    container_name: "Viasoft.SystemUpdate"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - /etc/korp/atualizacao-sistema/:/etc/korp/atualizacao-sistema/
+    networks:
+      - servicos

@@ -2,10 +2,13 @@
 # use ensure_client.yml
 
 - name: criação de secret
-  ansible.builtin.set_fact:
-    secret_as_hash: "{{ secret | hash('sha256') | b64encode }}"
+  encrypt_to_sha256_base64.py:
+    uuid: "{{ secret }}"
+  register: result
 
 - name: "adição de cliente oauth para {{ service_name }}"
+  vars:
+    secret_as_hash: "{{ result.secret }}"
   community.general.mssql_script:
     login_user: "{{ mssql.korp_user }}"
     login_password: "{{ mssql.korp_password }}"

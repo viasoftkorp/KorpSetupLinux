@@ -17,3 +17,7 @@
     - role: infrastructure
       tags:
         - infrastructure
+
+    - role: infrastructure-desktop
+      tags:
+        - infrastructure-desktop

@@ -69,7 +69,3 @@
 - name: criação de network 'servicos' no docker
   community.docker.docker_network:
     name: servicos
-
-- name: criação de volume secret-manager no docker
-  community.docker.docker_volume:
-    name: secret-manager

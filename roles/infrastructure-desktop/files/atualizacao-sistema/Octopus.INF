@@ -1,0 +1,14 @@
+[update]
+newversion=2022.1.0.0
+localversion=Octopus.exe
+
+[files]
+count=1
+
+[file1]
+url=OctopusUpdate.exe
+targetdir={app}
+ 
+[action] 
+msg=Existe uma nova atualização para o Sistema. O sistema irá fechar para atualização.
+runafter={app}\OctopusUpdate.exe
