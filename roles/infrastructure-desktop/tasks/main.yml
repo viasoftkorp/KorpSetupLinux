@@ -35,8 +35,6 @@
   loop:
     - Viasoft.ObjectStorage.Client
 
-# TODO Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
-
 - name: adição de kv de serviços ao consul
   community.general.consul_kv:
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
