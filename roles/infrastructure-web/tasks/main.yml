@@ -1,0 +1,15 @@
+
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Korp.Legacy.Administration
+    - Korp.Legacy.Authorization
+    - Korp.Legacy.TenantManagement
+    - Viasoft.Reporting
+    - Viasoft.Reporting.Stimulsoft
+
