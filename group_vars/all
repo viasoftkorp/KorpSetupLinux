@@ -9,3 +9,18 @@ services:
     db:
       db_name: Viasoft_Authentication
       db_type: mssql
+
+  - Korp.Legacy.TenantManagement:
+    db:
+      db_name: korp.legacy.tenantmanagement
+      db_type: postgres
+
+  - Viasoft.Reporting:
+    db:
+      name: Viasoft_Reporting
+      db_type: mssql
+
+  - Viasoft.Reporting.Stimulsoft:
+    db:
+      name: Viasoft_Reporting_Stimulsoft
+      db_type: mssql

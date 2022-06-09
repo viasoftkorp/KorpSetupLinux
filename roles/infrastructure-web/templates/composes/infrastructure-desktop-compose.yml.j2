@@ -55,9 +55,6 @@ services:
       korp: 172.17.0.1
     environment:
       - URL_CONSUL=http://consul-server:8500
-      # TODO
-      - URL_GATEWAY=https://gateway.korp.com.br
-      - HOST_ADDRESS=172.40.0.10
     networks:
       - servicos
 
@@ -71,8 +68,5 @@ services:
       korp: 172.17.0.1
     environment:
       - URL_CONSUL=http://consul-server:8500
-      # TODO
-      - URL_GATEWAY=https://gateway.korp.com.br
-      - HOST_ADDRESS=172.40.0.10
     networks:
       - servicos
