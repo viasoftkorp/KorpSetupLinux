@@ -1,0 +1,72 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-legacy-administration:
+    image: "korp/korp.legacy.administration:1.2.x"
+    container_name: "Korp.Legacy.Administration"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  korp-legacy-authorization-2021-4-0:
+    image: "korp/korp.legacy.authorization:2021.4.0.x"
+    container_name: "Korp.Legacy.Authorization-2021.4.0"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  korp-legacy-tenantmanagement:
+    image: "korp/korp.legacy.tenantmanagement:1.0.x"
+    container_name: "Korp.Legacy.TenantManagement"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  viasoft-reporting:
+    image: "korp/viasoft.reporting:1.3.x"
+    container_name: "Viasoft.Reporting"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+
+  viasoft-reporting-stimulsoft:
+    image: "korp/viasoft.reporting.stimulsoft:1.1.x"
+    container_name: "Viasoft.Reporting.Stimulsoft"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
