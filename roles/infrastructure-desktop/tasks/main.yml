@@ -1,11 +1,3 @@
-- name: transferência de arquivos de configuração em files
-  ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/configs/"
-    src: configs/
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-
 - name: transferência de arquivos de atualizacao-sistema
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/atualizacao-sistema/"
@@ -34,8 +26,6 @@
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop:
     - Viasoft.ObjectStorage.Client
-
-# TODO Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
 
 - name: adição de kv de serviços ao consul
   community.general.consul_kv:

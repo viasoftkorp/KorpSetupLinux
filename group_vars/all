@@ -10,6 +10,11 @@ services:
       db_name: Viasoft_Authentication
       db_type: mssql
 
+  - Korp.Legacy.Authentication:
+    db:
+      db_name: Auth_Legacy_Integration
+      db_type: mssql
+
   - Korp.Legacy.TenantManagement:
     db:
       db_name: korp.legacy.tenantmanagement
