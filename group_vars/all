@@ -3,6 +3,7 @@ korp_dir_path: /etc/korp
 
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq
+postgres_container_name: postgres
 
 services:
   - Viasoft.Authentication:
@@ -22,10 +23,10 @@ services:
 
   - Viasoft.Reporting:
     db:
-      name: Viasoft_Reporting
+      db_name: Viasoft_Reporting
       db_type: mssql
 
   - Viasoft.Reporting.Stimulsoft:
     db:
-      name: Viasoft_Reporting_Stimulsoft
+      db_name: Viasoft_Reporting_Stimulsoft
       db_type: mssql
