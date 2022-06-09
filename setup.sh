@@ -115,6 +115,8 @@ all:
           minio:
             access_key: $minio_access_key
             secret_key: $minio_secret_key
+          general:
+            introspection_secret: $(cat /proc/sys/kernel/random/uuid)
 
 """ > /etc/ansible/ansible-inventory.yml
 

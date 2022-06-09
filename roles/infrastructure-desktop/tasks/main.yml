@@ -34,7 +34,7 @@
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop:
     - Viasoft.ObjectStorage.Client
-    
+
 # TODO Minio (o caminho disso daqui deverá ser discutido porque é aqui que ficam os arquivos do object storage, o cliente deverá fazer backup da pasta) - não deve deixar alterar pela UI, segundo Alexandre para alterar esse caminho é por config
 
 - name: adição de kv de serviços ao consul
@@ -42,7 +42,7 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: "{{ item }}"
-    value: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') | string }}"
+    value: "{{ lookup('template', 'consul_kv/' ~ item | lower ~ '.json.j2') | string }}"
   loop:
     - Viasoft.SystemUpdate
     - Viasoft.AuditTrail.Client

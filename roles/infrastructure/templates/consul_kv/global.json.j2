@@ -12,7 +12,7 @@
     "CORS": "http://localhost:4200",
     "Authentication": {
         "Authority": "https://korp-api/oauth",
-        "IntrospectionSecret": "{{ 10000 | random | to_uuid | upper }}"
+        "IntrospectionSecret": "{{ general.introspection_secret }}"
     },
     "IntervaloHealthCheckSegs": "60",
     "RemoverServicoAposFalhaSegs": "60",

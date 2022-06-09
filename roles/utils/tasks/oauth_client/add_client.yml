@@ -2,7 +2,7 @@
 # use ensure_client.yml
 
 - name: criação de secret
-  encrypt_secret:
+  encrypt_to_sha256_base64.py:
     uuid: "{{ secret }}"
   register: result
 
