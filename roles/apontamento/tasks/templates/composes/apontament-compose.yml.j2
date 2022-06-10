@@ -1,0 +1,22 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  producao-apontamento-2022-1-0:
+    image: "korp/korp.producao.apontamento:2022.1.0.x"
+    container_name: "Korp.Producao.Apontamento-2022.1.0"
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+    environment:
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - /etc/korp/apps/apontamento/reports/:/app/reports/
