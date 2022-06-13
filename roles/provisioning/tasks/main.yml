@@ -42,5 +42,11 @@
     create_home: true
     shell: /bin/bash
 
+- name: "mudança de dono de {{ korp_dir_path }}"
+  file:
+    path: "{{ korp_dir_path }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+
 - name: Setup do Docker
   import_tasks: docker_setup.yml

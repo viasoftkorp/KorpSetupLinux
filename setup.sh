@@ -18,6 +18,12 @@ fi
 is_first_install=False
 
 
+# Configuração de disco segundário, que será mondado em /etc/korp
+
+# '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
+# ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+sudo ansible-playbook disk-playbook.yml --limit localhost
+
 # Confirma que o script tem o tenant  - NÃO valida a GUID
 if ! test -f /etc/korp/tenant  && [ $# = 0 ] ;
 then
