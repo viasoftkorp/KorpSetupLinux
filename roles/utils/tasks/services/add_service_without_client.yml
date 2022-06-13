@@ -1,0 +1,25 @@
+# role usada para adicionar kv ao consul e adicionar cliente oauth
+#
+# parâmetros recebidos:
+#   service_name
+#   consul_kv
+#
+# para usar, chame:
+#   - name: adição de serviços
+#     ansible.builtin.include_role:
+#       name: utils
+#       tasks_from: services/add_service_without_client
+#     vars:
+#       service_name: service_name
+#       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
+
+- name: criação de secret
+  ansible.builtin.set_fact:
+    secret: "{{ 10000 | random | to_uuid | upper }}"
+
+- name: "adição de kv de {{ service_name }} ao consul"
+  community.general.consul_kv:
+    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
+    cas: "0"
+    key: "{{ service_name }}"
+    value: "{{ consul_kv | to_nice_json }}"
