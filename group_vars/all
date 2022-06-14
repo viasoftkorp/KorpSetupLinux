@@ -30,3 +30,8 @@ services:
     db:
       db_name: Viasoft_Reporting_Stimulsoft
       db_type: mssql
+
+  - Korp.Producao.Apontamento:
+    db:
+      db_name: 
+      db_type: 

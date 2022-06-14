@@ -19,4 +19,15 @@ services:
     networks:
       - servicos
     volumes:
-      - /etc/korp/apps/apontamento/reports/:/app/reports/
+    # TODO CHANGE "/etc/korp/dados-docker"
+      - /etc/korp/dados-docker/producao-apontamento/reports/:/app/reports/
+
+  nginx-PRO09-2022-1-0:
+    image: "korpcicd/korp.producao.apontamento-frontend:2022.1.0.x"
+    container_name: "nginx-PRO09-2022.1.0"
+    restart: always
+    volumes:
+      - etc/korp/dados-docker/nginx-PCRG001/2022.1.0.x/:/etc/nginx/cdn
+    networks:
+      - servicos
+
