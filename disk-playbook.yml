@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
-  # TODO remover connection: local
-  connection: local
   become: true
   vars:
     vg_korp_name: vg_korp
@@ -18,7 +16,7 @@
   - name: verificação de configuração de LVM
     ansible.builtin.stat:
       path: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
-    register: register_name
+    register: lvm_config
 
   - name: mapeamento, criação e configuração de partição 'dados_korp'
     block:
@@ -74,5 +72,5 @@
           fstype: ext4
           state: mounted
 
-    when: not register_name.stat.exists
+    when: not lvm_config.stat.exists
 
