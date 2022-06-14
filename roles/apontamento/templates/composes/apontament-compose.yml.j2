@@ -19,15 +19,17 @@ services:
     networks:
       - servicos
     volumes:
-    # TODO CHANGE "/etc/korp/dados-docker"
-      - /etc/korp/dados-docker/producao-apontamento/reports/:/app/reports/
+      - "{{ dados_docker_dir_path }}/producao-apontamento/reports/:/app/reports/"
 
   nginx-PRO09-2022-1-0:
     image: "korpcicd/korp.producao.apontamento-frontend:2022.1.0.x"
     container_name: "nginx-PRO09-2022.1.0"
-    restart: always
-    volumes:
-      - etc/korp/dados-docker/nginx-PCRG001/2022.1.0.x/:/etc/nginx/cdn
+    restart: "no"
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
     networks:
       - servicos
-
+    volumes:
+      - "{{ dados_docker_dir_path }}/nginx-PCRG001/2022.1.0/cdn:/etc/nginx/cdn"
