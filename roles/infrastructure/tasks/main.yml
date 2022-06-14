@@ -75,6 +75,18 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
+- name: criação de diretórios para volumes de composes
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ dados_docker_dir_path }}/consul-server"
+    - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
+    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
+
 - name: criação e inicialização de default-compose
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
@@ -118,7 +130,7 @@
 - name: adição de serviços
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_service
+    tasks_from: services/add_service_without_client
   vars:
     service_name: "{{ item }}"
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"

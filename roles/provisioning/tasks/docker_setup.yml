@@ -46,7 +46,7 @@
     groups: docker
     append: true
 
-- name: instalação de  docker-compose
+- name: instalação de docker-compose
   ansible.builtin.get_url:
     url: https://github.com/docker/compose/releases/download/v2.5.1/docker-compose-linux-x86_64
     dest: /usr/local/bin/docker-compose
