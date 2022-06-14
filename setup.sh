@@ -7,6 +7,21 @@ create_random_string() {
   tr -dc A-Za-z0-9 < /dev/urandom | head -c ${l} | xargs
 }
 
+# Leitura de parâmetros passados para o script
+# parametros esperados:
+#   tenant="<tenant-id>"
+#   disk="<sdx>"
+
+for ARGUMENT in "$@"
+do
+   KEY=$(echo $ARGUMENT | cut -f1 -d=)
+
+   KEY_LENGTH=${#KEY}
+   VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+   export "$KEY"="$VALUE"
+done
+
 
 # Válida se o script está sendo rodado como root
 if [ $(/usr/bin/id -u) -ne 0 ]; then
@@ -15,20 +30,46 @@ if [ $(/usr/bin/id -u) -ne 0 ]; then
 fi
 
 
+# Atualização de repositório, instalação de dependencias, isntalação de ansible
+echo Instalando Ansible
+
+sudo apt-get install python3 --yes
+sudo apt install python3-pip --yes
+sudo python3 -m pip install ansible
+
+
 is_first_install=False
 
 
+# Configuração de disco segundário, que será mondado em /etc/korp
+
+if [ "$disk" != "" ];
+then
+  sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+  if [ $? != 0 ]
+  then
+    exit 07
+  fi
+else
+  sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+  if [ $? != 0 ]
+  then
+    exit 07
+  fi
+fi
+
+
 # Confirma que o script tem o tenant  - NÃO valida a GUID
-if ! test -f /etc/korp/tenant  && [ $# = 0 ] ;
+if ! test -f /etc/korp/tenant  && [ "$tenant" == "" ] ;
 then
     echo "$(tput setaf 1)Setup sendo executado pela primeira vez, porém o tenant não foi passado.$(tput setaf 7)"
     exit 02
 else
     if test -f /etc/korp/tenant;
     then
-        if [ $# = 1 ];
+        if [ "$tenant" ];
         then
-            if [ "$(cat /etc/korp/tenant)" != "$1" ];
+            if [ "$(cat /etc/korp/tenant)" != "$tenant" ];
             then
                 echo ""
                 echo "$(tput setaf 1)O setup já foi rodado uma vez com outro tenant. Por favor vefique o tenant e tente novamente.$(tput setaf 7)"
@@ -39,19 +80,11 @@ else
         is_first_install=True
         sudo sudo mkdir -p /etc/korp/
         sudo chmod 0774 /etc/korp/
-        sudo echo $1 > /etc/korp/tenant
+        sudo echo "$tenant" > /etc/korp/tenant
         sudo chmod 0444 /etc/korp/tenant
     fi
 fi
 tenant=$(cat /etc/korp/tenant)
-
-
-# Atualização de repositório, instalação de dependencias, isntalação de ansible
-echo Instalando Ansible
-
-sudo apt-get install python3 --yes
-sudo apt install python3-pip --yes
-sudo python3 -m pip install ansible
 
 
 # Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
@@ -78,7 +111,7 @@ then
     rabbitmq_korp_pass="$(create_random_string)"
     redis_pass="$(create_random_string)"
     minio_access_key="$(create_random_string)"
-    minio_secret_key"$(create_random_string)"
+    minio_secret_key="$(create_random_string)"
 
 
     # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas

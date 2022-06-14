@@ -5,16 +5,6 @@ networks:
     external:
       name: servicos
 
-volumes:
-  audittrail-client:
-    name: audit-trail-client
-  viasoft-email:
-    name: viasoft-email
-  viasoft-email-errors:
-    name: viasoft-email-errors
-  minio-server:
-    name: minio-server
-
 services:
   viasoft-audittrail-client:
     image: "korp/viasoft.audittrail.client:3.1.x"
@@ -28,7 +18,7 @@ services:
        - URL_CONSUL=http://consul-server:8500
     volumes:
       # Caso seja alterado o caminho dentro do container, deve-se atualizar o código do serviço
-      - audittrail-client:/app/data/
+      - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/:/app/data/"
     networks:
       - servicos
 
@@ -44,8 +34,8 @@ services:
       - URL_CONSUL=http://consul-server:8500
     volumes:
       # Caso seja alterado o caminho dentro do container, deve-se atualizar as props 'DatabasePath' e 'ErrorPath' no KV do consul
-      - viasoft-email:/app/data
-      - viasoft-email-errors:/app/errors
+      - "{{ dados_docker_dir_path }}/viasoft-email/data/:/app/data"
+      - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/app/errors"
     networks:
       - servicos
 
@@ -99,7 +89,7 @@ services:
     ports:
       - "9110:9000"
     volumes:
-      - minio-server:/data
+      - "{{ dados_docker_dir_path }}/minio-server/:/data"
     networks:
       - servicos
 
@@ -129,6 +119,6 @@ services:
     environment:
       - URL_CONSUL=http://consul-server:8500
     volumes:
-      - /etc/korp/atualizacao-sistema/:/etc/korp/atualizacao-sistema/
+      - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos

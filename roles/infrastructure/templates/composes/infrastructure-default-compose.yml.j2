@@ -5,14 +5,6 @@ networks:
     external:
       name: servicos
 
-volumes:
-  consul-server:
-    name: consul-server
-  postgres-data:
-    name: postgres-data
-  rabbitmq-data:
-    name: rabbitmq-data
-
 services:
   consul-server:
     image: "consul:1.12"
@@ -28,7 +20,7 @@ services:
       - "8600:8600/udp"
     volumes:
       - "{{ korp_dir_path }}/configs/consul-server.json:/consul/config/server.json"
-      - consul-server:/consul/data/
+      - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
     networks:
       - servicos
 
@@ -72,7 +64,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
     networks:
       - servicos
 
@@ -92,7 +84,7 @@ services:
       - "15672:15672"
       - "5672:5672"
     volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
+      - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/:/var/lib/rabbitmq"
     networks:
       - servicos
 
