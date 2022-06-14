@@ -1,5 +1,6 @@
 ---
 korp_dir_path: /etc/korp
+dados_docker_dir_path: "{{ korp_dir_path }}/dados-docker"
 
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq

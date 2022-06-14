@@ -7,6 +7,7 @@
     vg_korp_name: vg_korp
     lv_korp_name: lv_korp
     free_disks: []
+    korp_disk: ""
 
   # criação de LVM:
   #   https://www.linuxbuzz.com/create-lvm-partition-in-linux/
@@ -22,22 +23,27 @@
   - name: mapeamento, criação e configuração de partição 'dados_korp'
     block:
 
-      - name: mapeamento de discos livres
-        ansible.builtin.set_fact:
-          free_disks: "{{ free_disks | union([item]) }}"
-        when: ansible_devices[item].partitions | list | length==0
-        with_items: "{{ ansible_devices.keys() | map('regex_search', 'sd.*') | select('string') | list  }}"
+      - name: mapeamento de discos
+        block:
 
-      - name: checagem de discos
-        ansible.builtin.fail:
-          msg: 
-            - "FALHA: '{{ free_disks | length }}' discos livres foram detectados, o número esperado é '1'."
-            - "Caso o número de discos seja maior que um, especifique o disco usando '--extra-vars \"korp_disk=<sdx>\"', onde '<sdx>' é o nome do disco."
-        when: free_disks | length != 1
+        - name: mapeamento de discos livres
+          ansible.builtin.set_fact:
+            free_disks: "{{ free_disks | union([item]) }}"
+          when: ansible_devices[item].partitions | list | length==0
+          with_items: "{{ ansible_devices.keys() | map('regex_search', 'sd.*') | select('string') | list  }}"
 
-      - name: definição de disco a ser usado
-        ansible.builtin.set_fact:
-          korp_disk: "{{ free_disks[0] }}"
+        - name: checagem de discos
+          ansible.builtin.fail:
+            msg: 
+              - "FALHA: '{{ free_disks | length }}' discos livres foram detectados, o número esperado é '1'."
+              - "Caso o número de discos seja maior que um, especifique o disco usando 'disk=\"<sdx>\"', onde '<sdx>' é o nome do disco."
+          when: free_disks | length != 1
+
+        - name: definição de disco a ser usado
+          ansible.builtin.set_fact:
+            korp_disk: "{{ free_disks[0] }}"
+
+        when: korp_disk == ""
 
       - name: criação de 'grupo de volume'
         community.general.lvg:
