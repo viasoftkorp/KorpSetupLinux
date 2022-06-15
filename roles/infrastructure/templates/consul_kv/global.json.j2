@@ -23,6 +23,12 @@
             "Hostname": "amqp://{{ rabbitmq.korp_user }}:{{ rabbitmq.korp_password }}@{{ rabbitmq_container_name }}"
         }
     },
+    "Sentry": {
+        "CanInitSentry": "false",
+        "Dsn": ""
+    },
+    "SqlIdleConnections": "10",
+    "SqlTimeKillConnectionInMin": "5",
     "Caching": {
         "Endpoints": "{{ redis_container_name }}:6379",
         "Password": "{{ redis.password }}"
