@@ -58,6 +58,16 @@
     owner: root
     group: root
 
+- name: configuração de docker daemon
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    src: configs/daemon.json
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  notify:
+    - reinicio de Docker
+
 # Bibliotecas usadas pelo Ansible para usar o docker
 - name: instalação de docker com python
   ansible.builtin.pip:
