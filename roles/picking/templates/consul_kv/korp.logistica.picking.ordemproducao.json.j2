@@ -1,0 +1,14 @@
+{
+    "Authorization": {
+        "Secret": "{{ secret }}"
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=Korp.Logistica.Picking.OrdemProducao"
+    },
+    "Sentry": {
+        "CanInitSentry": "false",
+        "Dsn": ""
+    },
+    "SqlIdleConnections": "10",
+    "SqlTimeKillConnectionInMin": "5"
+}
