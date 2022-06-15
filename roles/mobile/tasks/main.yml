@@ -1,0 +1,40 @@
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Korp.Mobile
+    - Korp.Financial.Situation
+    - Korp.Logistica.SaldoProdutos
+    - Korp.Sales.PriceControl
+    - Viasoft.Customer.Portifolio
+    - Korp.Logistic.Tracking
+
+- name: configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    - "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+
+- name: criação de diretórios para volumes de composes
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ dados_docker_dir_path }}/korp-mobile/reports"
+
+- name: criação e inicialização de compose
+  community.docker.docker_compose:
+    project_src: "{{ korp_dir_path }}/composes/"
+    files:
+      - mobile-compose.yml
