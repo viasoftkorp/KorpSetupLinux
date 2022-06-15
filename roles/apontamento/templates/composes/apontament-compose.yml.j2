@@ -9,7 +9,7 @@ services:
   producao-apontamento-2022-1-0:
     image: "korp/korp.producao.apontamento:2022.1.0.x"
     container_name: "Korp.Producao.Apontamento-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -24,7 +24,7 @@ services:
   nginx-PRO09-2022-1-0:
     image: "korpcicd/korp.producao.apontamento-frontend:2022.1.0.x"
     container_name: "nginx-PRO09-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
