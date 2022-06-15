@@ -92,6 +92,8 @@ services:
       - "{{ dados_docker_dir_path }}/minio-server/:/data"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   viasoft-objectstorage-client:
     image: "korp/viasoft.objectstorage.client:1.4.x"
