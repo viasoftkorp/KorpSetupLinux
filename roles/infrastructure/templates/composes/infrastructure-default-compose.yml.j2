@@ -126,4 +126,4 @@ services:
       WATCHTOWER_NOTIFICATION_MSTEAMS_HOOK_URL: "<msteams_webhook>"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --include-stopped --revive-stopped --cleanup "--schedule 0 0 3 * * *"
+    command: --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CROM"
