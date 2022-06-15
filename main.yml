@@ -25,3 +25,7 @@
     - role: infrastructure-web
       tags:
         - infrastructure-web
+
+    - role: mobile
+      tags:
+        - mobile
