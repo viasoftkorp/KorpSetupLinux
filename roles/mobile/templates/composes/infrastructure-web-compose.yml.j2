@@ -9,7 +9,7 @@ services:
   korp-mobile-2022-1-0:
     image: "korp/korp.mobile:2022.1.0.x"
     container_name: "Korp.Mobile-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -24,7 +24,7 @@ services:
   korp-financial-situation-2022-1-0:
     image: "korp/korp.financial.situation:2022.1.0.x"
     container_name: "Korp.Financial.Situation-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -37,7 +37,7 @@ services:
   korp-logistica-saldoprodutos-2022-1-0:
     image: "korp/korp.logistica.saldoprodutos:2022.1.0.x"
     container_name: "Korp.Logistica.SaldoProdutos-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -50,7 +50,7 @@ services:
   korp-sales-pricecontrol-2022-1-0:
     image: "korp/korp.sales.pricecontrol:2022.1.0.x"
     container_name: "Korp.Sales.PriceControl-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -63,7 +63,7 @@ services:
   viasoft-customer-portifolio-2022-1-0:
     image: "korp/viasoft.customer.portifolio:2022.1.0.x"
     container_name: "Viasoft.Customer.Portifolio-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -76,7 +76,7 @@ services:
   korp-logistic-tracking-2022-1-0:
     image: "korp/korp.logistic.tracking:2022.1.0.x"
     container_name: "Korp.Logistic.Tracking-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
