@@ -95,8 +95,6 @@ services:
       - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/:/var/lib/rabbitmq"
     networks:
       - servicos
-    labels:
-      com.centurylinklabs.watchtower.enable: false
 
   {{ redis_container_name }}:
     image: "redis:7.0"
