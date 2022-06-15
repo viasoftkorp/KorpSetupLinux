@@ -23,6 +23,8 @@ services:
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   nginx:
     image: "nginx:latest"
@@ -37,6 +39,8 @@ services:
       - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   fabio:
     image: "fabiolb/fabio:latest"
@@ -54,6 +58,8 @@ services:
       - "9998:9998"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   {{ postgres_container_name }}:
     image: "postgres:14"
@@ -67,6 +73,8 @@ services:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   {{ rabbitmq_container_name }}:
     image: "korp/rabbitmq:1.1.0"
@@ -104,3 +112,15 @@ services:
       - "6379:6379"
     volumes:
       - "{{ korp_dir_path }}/configs/redis.conf:/usr/local/etc/redis/redis.conf"
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    networks:
+      - servicos
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --include-stopped --revive-stopped --cleanup --schedule "0 0 3 * * *"
