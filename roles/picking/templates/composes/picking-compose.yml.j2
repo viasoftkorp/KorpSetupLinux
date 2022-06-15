@@ -9,7 +9,7 @@ services:
   logistica-picking-2022-1-0:
     image: "korp/korp.logistica.picking:2022.1.0.x"
     container_name: "Korp.Logistica.Picking-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -22,7 +22,7 @@ services:
   korp-logistic-.picking-analisedeestoque-2022.1.0:
     image: "korp/korp.logistica.picking.analisedeestoque:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.AnaliseDeEstoque-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -35,7 +35,7 @@ services:
   korp-logistica-picking-controlepedidos-2022-1-0:
     image: "korp/korp.logistica.picking.controlepedidos:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.ControlePedidos-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -48,7 +48,7 @@ services:
   korp-logistica-picking-faturamento-2022-1-0:
     image: "korp/korp.logistica.picking.faturamento:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.Faturamento-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -61,7 +61,7 @@ services:
   korp-logistica-picking-ordemproducao-2022-1-0:
     image: "korp/korp.logistica.picking.ordemproducao:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.OrdemProducao-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -74,7 +74,7 @@ services:
   korp-faturamento-solicitacaodefaturamento-2022-1-0:
     image: "korp/korp.faturamento.solicitacaodefaturamento:2022.1.0.x"
     container_name: "Korp.Faturamento.SolicitacaoDeFaturamento-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
@@ -87,7 +87,7 @@ services:
   nginx-LOG102-2022-1-0:
     image: "korp/korp.logistica.picking-frontend:2022.1.0.x"
     container_name: "nginx-LOG102-2022.1.0"
-    restart: "no"
+    restart: always
     extra_hosts:
       db_mssql: "$DB_MSSQL"
       korp-api: 172.17.0.1
