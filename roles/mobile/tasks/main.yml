@@ -33,7 +33,7 @@
   loop:
     - "{{ dados_docker_dir_path }}/korp-mobile/reports"
 
-- name: criação e inicialização de web-compose
+- name: criação e inicialização de compose
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     files:
