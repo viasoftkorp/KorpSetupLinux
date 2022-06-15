@@ -119,6 +119,8 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     restart: always
+    networks:
+      - servicos
     environment:
       WATCHTOWER_NOTIFICATIONS_HOSTNAME: "<host_name>"
       WATCHTOWER_NOTIFICATIONS_LEVEL: warn
