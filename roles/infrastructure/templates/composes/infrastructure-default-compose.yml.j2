@@ -115,6 +115,21 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: false
 
+  portainer:
+    image: "portainer/portainer-ce:2.9.1"
+    container_name: "portainer"
+    restart: always
+    command: --admin-password='$$2y$$12$$G0u7sVYXDoCWYfBaPqwFOu00X.uHOXhGTF.mcySC2M1pxyWcXUOHe'
+    networks:
+      - servicos
+    ports:
+      - "9011:9000"
+    volumes:
+      - "{{ korp_dir_path }}/portainer/:/data"
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower

@@ -87,6 +87,7 @@
     - "{{ dados_docker_dir_path }}/consul-server"
     - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
     - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
+    - "{{ korp_dir_path }}/portainer"
 
 - name: criação e inicialização de default-compose
   community.docker.docker_compose:
