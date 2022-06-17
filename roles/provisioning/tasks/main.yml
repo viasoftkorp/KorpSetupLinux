@@ -50,7 +50,7 @@
 
 - name: alteração de timezone
   community.general.timezone:
-    name: Brazil/East
+    name: Greenwich
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml
