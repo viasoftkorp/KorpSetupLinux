@@ -35,7 +35,7 @@ echo Instalando Ansible
 
 sudo apt-get install python3 --yes
 sudo apt install python3-pip --yes
-sudo python3 -m pip install ansible
+python3 -m pip install ansible
 
 
 is_first_install=False
