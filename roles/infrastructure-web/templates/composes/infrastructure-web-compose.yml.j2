@@ -6,6 +6,25 @@ networks:
       name: servicos
 
 services:
+  viasoft-portal:
+    image: "korp/viasoft.portal:1.5.x"
+    container_name: "Viasoft.Portal"
+    restart: always
+    extra_hosts:
+      db_mssql: "$DB_MSSQL"
+      korp-api: 172.17.0.1
+      korp: 172.17.0.1
+      korp-cdn: 172.17.0.1
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+      - URL_CDN=https://korp-cdn
+      - URL_LOADER=https://korp
+    volumes:
+      - {{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/
+    networks:
+      - servicos
+
   korp-legacy-administration:
     image: "korp/korp.legacy.administration:1.2.x"
     container_name: "Korp.Legacy.Administration"

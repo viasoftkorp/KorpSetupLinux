@@ -31,3 +31,8 @@ services:
     db:
       db_name: Viasoft_Reporting_Stimulsoft
       db_type: mssql
+
+  - Viasoft.Portal:
+    db:
+      db_name: Viasoft_Portal
+      db_type: mssql

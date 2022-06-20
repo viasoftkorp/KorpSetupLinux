@@ -37,6 +37,7 @@
     subject_alt_name:
       - "DNS:korp"
       - "DNS:korp-api"
+      - "DNS:korp-cdn"
 
 - name: geração do certificado auto-assinado com OpenSSL
   community.crypto.x509_certificate:
