@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
 networks:
   servicos:
     external:
@@ -10,88 +17,85 @@ services:
     image: "korp/korp.logistica.picking:2022.1.0.x"
     container_name: "Korp.Logistica.Picking-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistic-.picking-analisedeestoque-2022.1.0:
     image: "korp/korp.logistica.picking.analisedeestoque:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.AnaliseDeEstoque-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-controlepedidos-2022-1-0:
     image: "korp/korp.logistica.picking.controlepedidos:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.ControlePedidos-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-faturamento-2022-1-0:
     image: "korp/korp.logistica.picking.faturamento:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.Faturamento-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-ordemproducao-2022-1-0:
     image: "korp/korp.logistica.picking.ordemproducao:2022.1.0.x"
     container_name: "Korp.Logistica.Picking.OrdemProducao-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-faturamento-solicitacaodefaturamento-2022-1-0:
     image: "korp/korp.faturamento.solicitacaodefaturamento:2022.1.0.x"
     container_name: "Korp.Faturamento.SolicitacaoDeFaturamento-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   nginx-LOG102-2022-1-0:
     image: "korp/korp.logistica.picking-frontend:2022.1.0.x"
     container_name: "nginx-LOG102-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     networks:
       - servicos
     volumes:
