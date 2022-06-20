@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
 networks:
   servicos:
     external:
@@ -10,10 +17,7 @@ services:
     image: "korp/viasoft.authentication:1.4.x"
     container_name: "Viasoft.Authentication"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
