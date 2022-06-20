@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
 networks:
   servicos:
     external:
@@ -30,6 +37,7 @@ services:
     image: "nginx:latest"
     container_name: "nginx"
     restart: always
+    extra_hosts: *default-extra_hosts
     ports:
       - "80:80"
       - "443:443"
@@ -48,8 +56,7 @@ services:
     restart: always
     depends_on:
       - consul-server
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
+    extra_hosts: *default-extra_hosts
     environment:
       - registry_consul_addr=http://consul-server:8500
       - proxy_matcher=iprefix

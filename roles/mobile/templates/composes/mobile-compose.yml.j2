@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
 networks:
   servicos:
     external:
@@ -10,27 +17,26 @@ services:
     image: "korp/korp.mobile:2022.1.0.x"
     container_name: "Korp.Mobile-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ dados_docker_dir_path }}/korp-mobile/reports/:/app/reports/"
     networks:
       - servicos
-    volumes:
-      - "{{ dados_docker_dir_path }}/korp-mobile/reports/:/app/reports/"
 
   korp-financial-situation-2022-1-0:
     image: "korp/korp.financial.situation:2022.1.0.x"
     container_name: "Korp.Financial.Situation-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
 
@@ -38,12 +44,12 @@ services:
     image: "korp/korp.logistica.saldoprodutos:2022.1.0.x"
     container_name: "Korp.Logistica.SaldoProdutos-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
 
@@ -51,12 +57,12 @@ services:
     image: "korp/korp.sales.pricecontrol:2022.1.0.x"
     container_name: "Korp.Sales.PriceControl-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
 
@@ -64,12 +70,12 @@ services:
     image: "korp/viasoft.customer.portifolio:2022.1.0.x"
     container_name: "Viasoft.Customer.Portifolio-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
 
@@ -77,11 +83,11 @@ services:
     image: "korp/korp.logistic.tracking:2022.1.0.x"
     container_name: "Korp.Logistic.Tracking-2022.1.0"
     restart: always
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
-      korp-api: 172.17.0.1
-      korp: 172.17.0.1
+    extra_hosts: *default-extra_hosts
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos                   
