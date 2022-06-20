@@ -40,7 +40,7 @@ services:
       - servicos
 
   korp-legacy-authentication:
-    image: "korp/korp.legacy.authentication:1.4.x"
+    image: "korp/korp.legacy.authentication:1.5.x"
     container_name: "Korp.Legacy.Authentication"
     restart: always
     extra_hosts:
@@ -48,7 +48,10 @@ services:
       korp-api: 172.17.0.1
       korp: 172.17.0.1
     environment:
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - {{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/
     networks:
       - servicos
 

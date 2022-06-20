@@ -9,8 +9,18 @@
     - Korp.Legacy.Administration
     - Korp.Legacy.Authorization
     - Korp.Legacy.TenantManagement
+
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service_without_client
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
     - Viasoft.Reporting
     - Viasoft.Reporting.Stimulsoft
+    - Viasoft.Portal
 
 - name: configuração e transferência de arquivos de compose
   ansible.builtin.template:

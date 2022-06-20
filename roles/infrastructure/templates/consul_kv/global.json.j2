@@ -1,31 +1,68 @@
 {
-    "Logging": {
-        "Level": "Warning"
+  "Serilog":{
+    "Using":[
+      "Serilog.Expressions"
+    ],
+    "RequestLog":{
+      "OverrideDefault":true,
+      "MessageTemplate":"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"
     },
-    "DatabaseLogLevel": "Error",
-    "OnPremiseMode": true,
-    "RuntimeEnvironment": "development",
-    "SecretManager": {
-        "Path": "/app/SecretManager/",
-        "RefreshRolesFrequencySeconds": "300"
+    "MinimumLevel":{
+      "Default":"Warning",
+      "Override":{
+        "Microsoft.AspNetCore":"Warning",
+        "Microsoft.EntityFrameworkCore":"Warning",
+        "Rebus":"Warning",
+        "Hangfire":"Warning"
+      }
     },
-    "GatewayUrl": "https://gateway.korp.com.br",
-    "CORS": "http://localhost:4200",
-    "Authentication": {
-        "Authority": "https://korp-api/oauth",
-        "IntrospectionSecret": "{{ general.introspection_secret }}",
-        "GatewayAuthority": "https://gateway.korp.com.br/oauth"
-    },
-    "IntervaloHealthCheckSegs": "60",
-    "RemoverServicoAposFalhaSegs": "60",
-    "ServiceBus": {
-        "Transport": {
-            "Adapter": "rabbitmq",
-            "Hostname": "amqp://{{ rabbitmq.korp_user }}:{{ rabbitmq.korp_password }}@{{ rabbitmq_container_name }}"
+    "WriteTo":[
+      {
+        "Name":"Console"
+      }
+    ],
+    "Filter":[
+      {
+        "Name":"ByExcluding",
+        "Args":{
+          "expression":"RequestPath like '/health'"
         }
-    },
-    "Caching": {
-        "Endpoints": "{{ redis_container_name }}:6379",
-        "Password": "{{ redis.password }}"
+      }
+    ],
+    "Enrich":[
+      "FromLogContext"
+    ]
+  },
+  "HostTenantId":"16a7571e-7ff6-479e-a6f5-3514414179dc",
+  "Logging":{
+    "Level":"Warning"
+  },
+  "SqlIdleConnections":"10",
+  "SqlTimeKillConnectionInMin":"3",
+  "DatabaseLogLevel":"Error",
+  "OnPremiseMode":true,
+  "RuntimeEnvironment":"development",
+  "SecretManager":{
+    "Path":"/app/SecretManager/",
+    "RefreshRolesFrequencySeconds":"300"
+  },
+  "GatewayUrl":"https://gateway.korp.com.br",
+  "CORS":"https://korp",
+  "Authentication":{
+    "Authority":"https://korp-api/oauth",
+    "IntrospectionSecret":"{{ general.introspection_secret }}",
+    "GatewayAuthority":"https://gateway.korp.com.br/oauth"
+  },
+  "IntervaloHealthCheckSegs":"60",
+  "RemoverServicoAposFalhaSegs":"60",
+  "ServiceBus":{
+    "Transport":{
+      "Adapter":"rabbitmq",
+      "Hostname":"amqp://{{ rabbitmq.korp_user }}:{{ rabbitmq.korp_password }}@{{ rabbitmq_container_name }}"
     }
+  },
+  "Caching":{
+    "Endpoints":"{{ redis_container_name }}:6379",
+    "Password":"{{ redis.password }}"
+  }
 }
