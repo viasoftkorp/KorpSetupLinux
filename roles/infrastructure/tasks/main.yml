@@ -1,3 +1,13 @@
+- name: validação de token
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+    return_content: true
+  register: response
+
+- name: configuração de tenant_id
+  ansible.builtin.set_fact:
+    tenant_id: "{{ response.json.tenantId }}"
+
 - name: instalação de dependências padrões
   ansible.builtin.pip:
     name: "{{ item }}"
