@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# caso ao executar o script o erro "/bin/bash^M: bad interpreter: No such file or directory" aparecer, execute  "sed -i -e 's/\r$//' setup.sh"
-
 gateway_url="https://gateway.korp.com.br"
 
 create_random_string() {
