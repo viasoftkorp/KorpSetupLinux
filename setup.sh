@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# caso ao executar o script o erro "/bin/bash^M: bad interpreter: No such file or directory" aparecer, execute  "sed -i -e 's/\r$//' setup.sh"
+
+gateway_url="https://gateway.korp.com.br"
+
 create_random_string() {
   local l=15
   [ -n "$1" ] && l=$1
@@ -9,7 +13,7 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   tenant="<tenant-id>"
+#   token="<token>"
 #   disk="<sdx>"
 
 for ARGUMENT in "$@"
@@ -30,7 +34,25 @@ if [ $(/usr/bin/id -u) -ne 0 ]; then
 fi
 
 
+# Validação de token
+
+if [ "$token" == "" ];
+then
+    echo "$(tput setaf 1)O token não foi passado como parametro. Utilize 'token=\"<token>\".$(tput setaf 7)"
+    exit 08
+else
+    status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
+
+    if [ "$status_code" != "200" ];
+    then
+        echo "$(tput setaf 1)O token passado não é válido.$(tput setaf 7)"
+        exit 09
+    fi
+fi
+
+
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
+
 echo Instalando Ansible
 
 sudo apt-get install python3 --yes
@@ -38,53 +60,32 @@ sudo apt install python3-pip --yes
 python3 -m pip install ansible
 
 
-is_first_install=False
-
-
 # Configuração de disco segundário, que será mondado em /etc/korp
 
 if [ "$disk" != "" ];
 then
-  sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
-  if [ $? != 0 ]
-  then
-    exit 07
-  fi
-else
-  sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
-  if [ $? != 0 ]
-  then
-    exit 07
-  fi
-fi
-
-
-# Confirma que o script tem o tenant  - NÃO valida a GUID
-if ! test -f /etc/korp/tenant  && [ "$tenant" == "" ] ;
-then
-    echo "$(tput setaf 1)Setup sendo executado pela primeira vez, porém o tenant não foi passado.$(tput setaf 7)"
-    exit 02
-else
-    if test -f /etc/korp/tenant;
+    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+    if [ $? != 0 ]
     then
-        if [ "$tenant" ];
-        then
-            if [ "$(cat /etc/korp/tenant)" != "$tenant" ];
-            then
-                echo ""
-                echo "$(tput setaf 1)O setup já foi rodado uma vez com outro tenant. Por favor vefique o tenant e tente novamente.$(tput setaf 7)"
-                exit 03
-            fi
-        fi
-    else
-        is_first_install=True
-        sudo sudo mkdir -p /etc/korp/
-        sudo chmod 0774 /etc/korp/
-        sudo echo "$tenant" > /etc/korp/tenant
-        sudo chmod 0444 /etc/korp/tenant
+        exit 07
+    fi
+else
+    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+    if [ $? != 0 ]
+    then
+        exit 07
     fi
 fi
-tenant=$(cat /etc/korp/tenant)
+
+
+# Validação do arquivo de inventário para saber se o setup está sendo rodado pela primeira vez, ou não
+
+is_first_install=False
+
+if ! [ -f /etc/ansible/ansible-inventory.yml ];
+then
+    is_first_install=True
+fi
 
 
 # Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
@@ -172,4 +173,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token"
