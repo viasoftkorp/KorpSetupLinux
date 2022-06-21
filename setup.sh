@@ -36,7 +36,7 @@ fi
 
 if [ "$token" == "" ];
 then
-    echo "$(tput setaf 1)O token não foi passado como parametro. Utilize 'token=\"<token>\".$(tput setaf 7)"
+    echo "$(tput setaf 1)O token não foi passado como parâmetro. Utilize 'token=\"<token>\".$(tput setaf 7)"
     exit 08
 else
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')

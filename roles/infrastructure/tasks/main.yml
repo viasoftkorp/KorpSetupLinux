@@ -6,7 +6,7 @@
 
 - name: configuração de tenant_id
   ansible.builtin.set_fact:
-    tenant_id: "{{ response.json.TenantId }}"
+    tenant_id: "{{ response.json.tenantId }}"
 
 - name: instalação de dependências padrões
   ansible.builtin.pip:
