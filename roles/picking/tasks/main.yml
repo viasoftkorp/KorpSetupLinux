@@ -23,16 +23,6 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação de diretórios para volumes de composes
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ linux_korp.user }}"
-    group: root
-  loop:
-  - "{{ dados_docker_dir_path }}/nginx-LOG102/2022.1.0/cdn"
-
 - name: criação e inicialização de web-compose
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"

@@ -91,12 +91,14 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  nginx-LOG102-2022-1-0:
+  LOG102-2022-1-0:
     image: "korp/korp.logistica.picking-frontend:2022.1.0.x"
-    container_name: "nginx-LOG102-2022.1.0"
+    container_name: "LOG102-2022.1.0"
     restart: always
     extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
     networks:
       - servicos
     volumes:
-      - "{{ dados_docker_dir_path }}/nginx-LOG102/2022.1.0/cdn:/etc/nginx/cdn"
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
