@@ -27,7 +27,6 @@
     group: root
   loop:
     - "{{ dados_docker_dir_path }}/producao-apontamento/reports/"
-    - "{{ dados_docker_dir_path }}/nginx-PCRG001/2022.1.0/cdn"
 
 - name: criação e inicialização de web-compose
   community.docker.docker_compose:
