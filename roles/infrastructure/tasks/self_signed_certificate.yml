@@ -59,3 +59,11 @@
     privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
     friendly_name: korp.com.br
     backup: true
+
+- name: configuração de certificado no servidor
+  ansible.builtin.copy:
+    dest: "/usr/local/share/ca-certificates"
+    src: "{{ self_signed_certs_directory }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0755'
