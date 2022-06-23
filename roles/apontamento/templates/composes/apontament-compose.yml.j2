@@ -1,0 +1,40 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-producao-apontamento-2022-1-0:
+    image: "korp/korp.producao.apontamento:2022.1.0.x"
+    container_name: "Korp.Producao.Apontamento-2022.1.0"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ dados_docker_dir_path }}/producao-apontamento/reports/:/app/reports/"
+
+  PRO09-2022-1-0:
+    image: "korp/korp.producao.apontamento-frontend:2022.1.0.x"
+    container_name: "PRO09-2022.1.0"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

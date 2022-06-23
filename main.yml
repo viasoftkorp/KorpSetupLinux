@@ -26,10 +26,14 @@
       tags:
         - infrastructure-web
 
+    - role: apontamento
+      tags:
+        - apontamento
+
     - role: picking
       tags:
         - picking
-
+   
     - role: mobile
       tags:
         - mobile
