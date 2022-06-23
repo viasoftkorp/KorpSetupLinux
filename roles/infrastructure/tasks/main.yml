@@ -1,3 +1,23 @@
+- name: validação de token
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+    return_content: true
+  register: response
+
+- name: configuração de tenant_id
+  ansible.builtin.set_fact:
+    tenant_id: "{{ response.json.tenantId }}"
+
+- name: coleta de secrets
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/vault/manager/service-deploy/secrets/{{ token }}"
+    return_content: true
+  register: response
+
+- name: definição de secrets
+  ansible.builtin.set_fact:
+    services_secrets: "{{ response.json }}"
+
 - name: instalação de dependências padrões
   ansible.builtin.pip:
     name: "{{ item }}"
@@ -11,25 +31,8 @@
 - name: provisão de certificado auto-assinado
   ansible.builtin.import_tasks: self_signed_certificate.yml
 
-- name: transferência de arquivos de configuração em files
-  ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/configs/"
-    src: configs/
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-
-# itera sobre os aquivos "*.yml.j2" presentes em 'templates/configs', substituindo as variáveis presentes.
-# o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: configuração e transferência de arquivos de configuração em templates
-  ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/configs/{{ item[:-3] | basename }}"
-    src: "configs/{{ item | basename }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-  loop:
-    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search','.j2') }}"
+- name: configuração de arquivos e pastas
+  ansible.builtin.import_tasks: files_and_folders_setup.yml
 
 - name: criação de usuário de uso da korp no SQL Server
   community.general.mssql_script:
@@ -38,54 +41,6 @@
     login_host: "{{ mssql.address }}"
     name: master
     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
-
-# como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
-# essas duas tasks asseguram que o diretório será criado se necessário.
-- name: verificação de diretório de composes
-  ansible.builtin.stat:
-    path: "{{ korp_dir_path }}/composes/"
-  register: korp_compose_folder
-
-- name: criação de diretório de composes
-  ansible.builtin.file:
-    path: "{{ korp_dir_path }}/composes/"
-    state: directory
-    mode: '0755'
-    owner: "{{ linux_korp.user }}"
-    group: root
-  when: not korp_compose_folder.stat.exists
-
-- name: criação de arquivo de variáveis de ambiente para docker
-  ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/composes/.env"
-    mode: '0644'
-    content: |
-      DB_MSSQL={{ mssql.address }}
-      APP_SERVER={{ app_server.address }}
-
-# itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
-# o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: configuração e transferência de arquivos de compose
-  ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
-    src: "composes/{{ item | basename }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-  loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
-
-- name: criação de diretórios para volumes de composes
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ linux_korp.user }}"
-    group: root
-  loop:
-    - "{{ dados_docker_dir_path }}/consul-server"
-    - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
-    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
 
 - name: criação e inicialização de default-compose
   community.docker.docker_compose:

@@ -2,6 +2,8 @@
 korp_dir_path: /etc/korp
 dados_docker_dir_path: "{{ korp_dir_path }}/dados-docker"
 
+gateway_url: "https://gateway.korp.com.br"
+
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres
@@ -30,4 +32,9 @@ services:
   - Viasoft.Reporting.Stimulsoft:
     db:
       db_name: Viasoft_Reporting_Stimulsoft
+      db_type: mssql
+
+  - Viasoft.Portal:
+    db:
+      db_name: Viasoft_Portal
       db_type: mssql

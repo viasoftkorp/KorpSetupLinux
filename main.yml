@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   become: true
 
   roles:
@@ -7,7 +7,7 @@
       tags:
         - provisioning
 
-- hosts: all
+- hosts: localhost
   become: true
   vars:
     ansible_become_password: "{{ linux_korp.password }}"
@@ -29,3 +29,7 @@
     - role: apontamento
       tags:
         - apontamento
+
+    - role: mobile
+      tags:
+        - mobile

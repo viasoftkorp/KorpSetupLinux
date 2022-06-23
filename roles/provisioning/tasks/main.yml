@@ -48,5 +48,17 @@
     owner: "{{ linux_korp.user }}"
     group: root
 
+- name: alteração de timezone
+  community.general.timezone:
+    name: Greenwich
+
+- name: configuração de hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: 127.0.0.1 korp korp-api korp-cdn
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Setup do Docker
   import_tasks: docker_setup.yml

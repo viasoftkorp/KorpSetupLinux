@@ -1,9 +1,12 @@
 {
     "EnableAutoSyncUsers": false,
-    "ClientId": "LegacyAuthentication",
-    "ClientSecret": "",
+    "ClientId": "{{ services_secrets['Korp.Legacy.Authentication'].ClientId }}",
+    "ClientSecret": "{{ services_secrets['Korp.Legacy.Authentication'].ClientSecret }}",
     "ShouldEmptyPassword": false,
     "ShouldValidateAvailableCompanies": false,
+    "ConnectionStrings": {
+        "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=Korp.Legacy.Authentication"
+    },
     "TenantDatabases": [
 
     ]

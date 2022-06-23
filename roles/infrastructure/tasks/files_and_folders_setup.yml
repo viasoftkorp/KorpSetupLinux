@@ -1,0 +1,96 @@
+- name: transferência de arquivos de configuração em files
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/configs/"
+    src: configs/
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: verificação de diretório de scripts
+  ansible.builtin.stat:
+    path: "{{ korp_dir_path }}/scripts/"
+  register: korp_compose_folder
+
+- name: criação de diretório de scripts
+  ansible.builtin.file:
+    path: "{{ korp_dir_path }}/scripts/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: not korp_compose_folder.stat.exists
+
+- name: transferência de scripts
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/scripts/{{ item | basename }}"
+    src: "scripts/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0755'
+  loop:
+    "{{ lookup('fileglob', 'templates/scripts/*', wantlist=True) }}"
+
+# itera sobre os aquivos "*.yml.j2" presentes em 'templates/configs', substituindo as variáveis presentes.
+# o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
+- name: configuração e transferência de arquivos de configuração em templates
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/configs/{{ item[:-3] | basename }}"
+    src: "configs/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search','.j2') }}"
+
+# como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
+# essas duas tasks asseguram que o diretório será criado se necessário.
+- name: verificação de diretório de composes
+  ansible.builtin.stat:
+    path: "{{ korp_dir_path }}/composes/"
+  register: korp_compose_folder
+
+- name: criação de diretório de composes
+  ansible.builtin.file:
+    path: "{{ korp_dir_path }}/composes/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: not korp_compose_folder.stat.exists
+
+- name: criação de arquivo de variáveis de ambiente para docker
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/composes/.env"
+    mode: '0644'
+    content: |
+      DB_MSSQL={{ mssql.address }}
+      APP_SERVER={{ app_server.address }}
+      AUTO_UPDATE_CRON=0 0 3 * * *
+      API_GATEWAY=172.17.0.1
+      PORTAL_GATEWAY=172.17.0.1
+      CDN_GATEWAY=172.17.0.1
+
+# itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
+# o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
+- name: configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+
+- name: criação de diretórios para volumes de composes
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ dados_docker_dir_path }}/consul-server"
+    - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
+    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
+    - "{{ korp_dir_path }}/portainer"
