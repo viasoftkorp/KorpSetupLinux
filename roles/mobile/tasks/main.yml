@@ -23,13 +23,12 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação de diretórios para volumes de composes de mobile
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ linux_korp.user }}"
-    group: root
+- name: garantia da existência dos diretórios de volumes de mobile
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/ensure_volume_folder
+  vars:
+    volume_path: "{{ item }}"
   loop:
     - "{{ dados_docker_dir_path }}/korp-mobile/reports"
 

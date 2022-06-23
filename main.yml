@@ -33,7 +33,7 @@
     - role: picking
       tags:
         - picking
-   
+
     - role: mobile
       tags:
         - mobile
