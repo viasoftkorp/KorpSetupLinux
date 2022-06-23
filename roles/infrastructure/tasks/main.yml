@@ -97,3 +97,10 @@
     project_src: "{{ korp_dir_path }}/composes/"
     files:
       - infrastructure-korp-compose.yml
+
+- name: chamada para configuração de Viasoft.Authentication
+  tags: test
+  ansible.builtin.uri:
+    return_content: true
+    url: "https://korp-api/oauth/.well-known/openid-configuration/jwks"
+  register: result
