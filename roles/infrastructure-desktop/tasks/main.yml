@@ -27,12 +27,14 @@
   loop:
     - Viasoft.ObjectStorage.Client
 
-- name: adição de kv de serviços ao consul
-  community.general.consul_kv:
-    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
-    cas: "0"
-    key: "{{ item }}"
-    value: "{{ lookup('template', 'consul_kv/' ~ item | lower ~ '.json.j2') | string }}"
+
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service_without_client
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop:
     - Viasoft.SystemUpdate
     - Viasoft.AuditTrail.Client
