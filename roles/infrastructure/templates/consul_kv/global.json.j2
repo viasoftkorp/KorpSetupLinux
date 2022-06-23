@@ -1,69 +1,73 @@
 {
-  "Serilog":{
-    "Using":[
+  "Serilog": {
+    "Using": [
       "Serilog.Expressions"
     ],
-    "RequestLog":{
-      "OverrideDefault":true,
-      "MessageTemplate":"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"
+    "RequestLog": {
+      "OverrideDefault": true,
+      "MessageTemplate": "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"
     },
-    "MinimumLevel":{
-      "Default":"Warning",
-      "Override":{
-        "Microsoft.AspNetCore":"Warning",
-        "Microsoft.EntityFrameworkCore":"Warning",
-        "Rebus":"Warning",
-        "Hangfire":"Warning"
+    "MinimumLevel": {
+      "Default": "Warning",
+      "Override": {
+        "Microsoft.AspNetCore": "Warning",
+        "Microsoft.EntityFrameworkCore": "Warning",
+        "Rebus": "Warning",
+        "Hangfire": "Warning"
       }
     },
-    "WriteTo":[
+    "WriteTo": [
       {
-        "Name":"Console"
+        "Name": "Console"
       }
     ],
-    "Filter":[
+    "Filter": [
       {
-        "Name":"ByExcluding",
-        "Args":{
-          "expression":"RequestPath like '/health'"
+        "Name": "ByExcluding",
+        "Args": {
+          "expression": "RequestPath like '/health'"
         }
       }
     ],
-    "Enrich":[
+    "Enrich": [
       "FromLogContext"
     ]
   },
+  "Sentry": {
+    "CanInitSentry": "false",
+    "Dsn": ""
+  },
   "OnPremiseLicensedTenants": "{{ tenant_id }}",
-  "HostTenantId":"16a7571e-7ff6-479e-a6f5-3514414179dc",
-  "Logging":{
-    "Level":"Warning"
+  "HostTenantId": "16a7571e-7ff6-479e-a6f5-3514414179dc",
+  "Logging": {
+    "Level": "Warning"
   },
-  "SqlIdleConnections":"10",
-  "SqlTimeKillConnectionInMin":"3",
-  "DatabaseLogLevel":"Error",
-  "OnPremiseMode":true,
-  "RuntimeEnvironment":"development",
-  "SecretManager":{
-    "Path":"/app/SecretManager/",
-    "RefreshRolesFrequencySeconds":"300"
+  "SqlIdleConnections": "10",
+  "SqlTimeKillConnectionInMin": "3",
+  "DatabaseLogLevel": "Error",
+  "OnPremiseMode": true,
+  "RuntimeEnvironment": "development",
+  "SecretManager": {
+    "Path": "/app/SecretManager/",
+    "RefreshRolesFrequencySeconds": "300"
   },
-  "GatewayUrl":"https://gateway.korp.com.br",
-  "CORS":"https://korp",
-  "Authentication":{
-    "Authority":"https://korp-api/oauth",
-    "IntrospectionSecret":"{{ general.introspection_secret }}",
-    "GatewayAuthority":"https://gateway.korp.com.br/oauth"
+  "GatewayUrl": "https://gateway.korp.com.br",
+  "CORS": "https://korp",
+  "Authentication": {
+    "Authority": "https://korp-api/oauth",
+    "IntrospectionSecret": "{{ general.introspection_secret }}",
+    "GatewayAuthority": "https://gateway.korp.com.br/oauth"
   },
-  "IntervaloHealthCheckSegs":"60",
-  "RemoverServicoAposFalhaSegs":"60",
-  "ServiceBus":{
-    "Transport":{
-      "Adapter":"rabbitmq",
-      "Hostname":"amqp://{{ rabbitmq.korp_user }}:{{ rabbitmq.korp_password }}@{{ rabbitmq_container_name }}"
+  "IntervaloHealthCheckSegs": "60",
+  "RemoverServicoAposFalhaSegs": "60",
+  "ServiceBus": {
+    "Transport": {
+      "Adapter": "rabbitmq",
+      "Hostname": "amqp://{{ rabbitmq.korp_user }}:{{ rabbitmq.korp_password }}@{{ rabbitmq_container_name }}"
     }
   },
-  "Caching":{
-    "Endpoints":"{{ redis_container_name }}:6379",
-    "Password":"{{ redis.password }}"
+  "Caching": {
+    "Endpoints": "{{ redis_container_name }}:6379",
+    "Password": "{{ redis.password }}"
   }
 }

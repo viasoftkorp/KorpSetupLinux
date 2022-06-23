@@ -26,6 +26,10 @@
       tags:
         - infrastructure-web
 
+    - role: picking
+      tags:
+        - picking
+
     - role: mobile
       tags:
         - mobile
