@@ -98,8 +98,7 @@
     files:
       - infrastructure-korp-compose.yml
 
-- name: chamada para configuração de Viasoft.Authentication
-  tags: test
+- name: chamada para startup de Viasoft.Authentication
   ansible.builtin.uri:
     return_content: true
     url: "https://korp-api/oauth/.well-known/openid-configuration/jwks"
