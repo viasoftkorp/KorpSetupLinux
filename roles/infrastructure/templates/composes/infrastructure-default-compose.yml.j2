@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
 networks:
   servicos:
     external:
@@ -23,11 +30,14 @@ services:
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   nginx:
     image: "nginx:latest"
     container_name: "nginx"
     restart: always
+    extra_hosts: *default-extra_hosts
     ports:
       - "80:80"
       - "443:443"
@@ -37,6 +47,8 @@ services:
       - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   fabio:
     image: "fabiolb/fabio:latest"
@@ -44,8 +56,7 @@ services:
     restart: always
     depends_on:
       - consul-server
-    extra_hosts:
-      db_mssql: "$DB_MSSQL"
+    extra_hosts: *default-extra_hosts
     environment:
       - registry_consul_addr=http://consul-server:8500
       - proxy_matcher=iprefix
@@ -54,6 +65,8 @@ services:
       - "9998:9998"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   {{ postgres_container_name }}:
     image: "postgres:14"
@@ -67,6 +80,8 @@ services:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
     networks:
       - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
   {{ rabbitmq_container_name }}:
     image: "korp/rabbitmq:1.1.0"
@@ -104,3 +119,35 @@ services:
       - "6379:6379"
     volumes:
       - "{{ korp_dir_path }}/configs/redis.conf:/usr/local/etc/redis/redis.conf"
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
+  portainer:
+    image: "portainer/portainer-ce:2.9.1"
+    container_name: "portainer"
+    restart: always
+    command: --admin-password='$$2y$$12$$G0u7sVYXDoCWYfBaPqwFOu00X.uHOXhGTF.mcySC2M1pxyWcXUOHe'
+    networks:
+      - servicos
+    ports:
+      - "9011:9000"
+    volumes:
+      - "{{ korp_dir_path }}/portainer/:/data"
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    networks:
+      - servicos
+    environment:
+      WATCHTOWER_NOTIFICATIONS_HOSTNAME: "<host_name>"
+      WATCHTOWER_NOTIFICATIONS_LEVEL: warn
+      WATCHTOWER_NOTIFICATIONS: "msteams"
+      WATCHTOWER_NOTIFICATION_MSTEAMS_HOOK_URL: "<msteams_webhook>"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CRON"

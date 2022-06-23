@@ -13,64 +13,63 @@
   #   https://www.looklinux.com/how-to-remove-volume-group-and-physical-volume-on-lvm/
 
   tasks:
-  - name: verificação de configuração de LVM
-    ansible.builtin.stat:
-      path: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
-    register: lvm_config
+    - name: verificação de configuração de LVM
+      ansible.builtin.stat:
+        path: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
+      register: lvm_config
 
-  - name: mapeamento, criação e configuração de partição 'dados_korp'
-    block:
+    - name: mapeamento, criação e configuração de partição 'dados_korp'
+      block:
 
-      - name: mapeamento de discos
-        block:
+        - name: mapeamento de discos
+          block:
 
-        - name: mapeamento de discos livres
-          ansible.builtin.set_fact:
-            free_disks: "{{ free_disks | union([item]) }}"
-          when: ansible_devices[item].partitions | list | length==0
-          with_items: "{{ ansible_devices.keys() | map('regex_search', 'sd.*') | select('string') | list  }}"
+            - name: mapeamento de discos livres
+              ansible.builtin.set_fact:
+                free_disks: "{{ free_disks | union([item]) }}"
+              when: ansible_devices[item].partitions | list | length==0
+              with_items: "{{ ansible_devices.keys() | map('regex_search', 'sd.*') | select('string') | list  }}"
 
-        - name: checagem de discos
-          ansible.builtin.fail:
-            msg: 
-              - "FALHA: '{{ free_disks | length }}' discos livres foram detectados, o número esperado é '1'."
-              - "Caso o número de discos seja maior que um, especifique o disco usando 'disk=\"<sdx>\"', onde '<sdx>' é o nome do disco."
-          when: free_disks | length != 1
+            - name: checagem de discos
+              ansible.builtin.fail:
+                msg:
+                  - "FALHA: '{{ free_disks | length }}' discos livres foram detectados, o número esperado é '1'."
+                  - "Caso o número de discos seja maior que um, especifique o disco usando 'disk=\"<sdx>\"', onde '<sdx>' é o nome do disco."
+              when: free_disks | length != 1
 
-        - name: definição de disco a ser usado
-          ansible.builtin.set_fact:
-            korp_disk: "{{ free_disks[0] }}"
+            - name: definição de disco a ser usado
+              ansible.builtin.set_fact:
+                korp_disk: "{{ free_disks[0] }}"
 
-        when: korp_disk == ""
+          when: korp_disk == ""
 
-      - name: criação de 'grupo de volume'
-        community.general.lvg:
-          vg: "{{ vg_korp_name }}"
-          pvs: "/dev/{{ korp_disk }}"
+        - name: criação de 'grupo de volume'
+          community.general.lvg:
+            vg: "{{ vg_korp_name }}"
+            pvs: "/dev/{{ korp_disk }}"
 
-      - name: criação de 'volume lógico'
-        community.general.lvol:
-          vg: "{{ vg_korp_name }}"
-          lv: "{{ lv_korp_name }}"
-          size: 100%FREE
+        - name: criação de 'volume lógico'
+          community.general.lvol:
+            vg: "{{ vg_korp_name }}"
+            lv: "{{ lv_korp_name }}"
+            size: 100%FREE
 
-      - name: criação de ext4 no volume lógico
-        community.general.filesystem:
-          fstype: ext4
-          dev: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
+        - name: criação de ext4 no volume lógico
+          community.general.filesystem:
+            fstype: ext4
+            dev: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
 
-      - name: criação de diretório padrão korp
-        ansible.builtin.file:
-          path: "{{ korp_dir_path }}"
-          state: directory
-          mode: '0755'
+        - name: criação de diretório padrão korp
+          ansible.builtin.file:
+            path: "{{ korp_dir_path }}"
+            state: directory
+            mode: '0755'
 
-      - name: montagem de partição no dispositivo
-        ansible.posix.mount:
-          path: "{{ korp_dir_path }}"
-          src: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
-          fstype: ext4
-          state: mounted
+        - name: montagem de partição no dispositivo
+          ansible.posix.mount:
+            path: "{{ korp_dir_path }}"
+            src: "/dev/{{ vg_korp_name }}/{{ lv_korp_name }}"
+            fstype: ext4
+            state: mounted
 
-    when: not lvm_config.stat.exists
-
+      when: not lvm_config.stat.exists
