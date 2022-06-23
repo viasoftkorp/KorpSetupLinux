@@ -60,10 +60,13 @@
     friendly_name: korp.com.br
     backup: true
 
-- name: configuração de certificado no servidor
+- name: configuração de certificados no servidor
   ansible.builtin.copy:
     dest: "/usr/local/share/ca-certificates"
     src: "{{ self_signed_certs_directory }}"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0755'
+
+- name: atualização de certificados no servidor
+  ansible.builtin.command: update-ca-certificates
