@@ -1,4 +1,4 @@
-- name: adição de serviços
+- name: adição de serviços de apontamento
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -8,7 +8,7 @@
   loop:
     - Korp.Producao.Apontamento
 
-- name: configuração e transferência de arquivos de compose
+- name: configuração e transferência de arquivos de compose de apontamento
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
@@ -18,7 +18,7 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação de diretórios para volumes de composes
+- name: criação de diretórios para volumes de composes de apontamento
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -28,7 +28,7 @@
   loop:
     - "{{ dados_docker_dir_path }}/producao-apontamento/reports/"
 
-- name: criação e inicialização de web-compose
+- name: criação e inicialização de apontamento-compose
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     files:
