@@ -9,7 +9,7 @@
 
 - name: configuração e transferência de arquivos de compose
   ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
@@ -57,6 +57,7 @@
 
 - name: criação e inicialização de infrastructure-desktop-compose
   community.docker.docker_compose:
-    project_src: "{{ korp_dir_path }}/composes/"
+    project_src: "{{ compose_dir_path }}/"
+    env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-desktop-compose.yml

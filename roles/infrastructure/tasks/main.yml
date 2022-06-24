@@ -44,7 +44,8 @@
 
 - name: criação e inicialização de default-compose
   community.docker.docker_compose:
-    project_src: "{{ korp_dir_path }}/composes/"
+    project_src: "{{ compose_dir_path }}/"
+    env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-default-compose.yml
 
@@ -94,7 +95,8 @@
 
 - name: criação e inicialização de korp-compose
   community.docker.docker_compose:
-    project_src: "{{ korp_dir_path }}/composes/"
+    project_src: "{{ compose_dir_path }}/"
+    env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-korp-compose.yml
 
