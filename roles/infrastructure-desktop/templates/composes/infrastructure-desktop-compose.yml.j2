@@ -128,3 +128,17 @@ services:
       - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos
+
+  viasoft-integration-ecommerce:
+    image: "korp/viasoft.integration.ecommerce:1.0.x"
+    container_name: "Viasoft.Integration.Ecommerce"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/:/etc/korp/database/"
+    networks:
+      - servicos
