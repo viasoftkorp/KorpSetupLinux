@@ -1,0 +1,13 @@
+- name: "verificação de {{ volume_path }}"
+  ansible.builtin.stat:
+    path: "{{ volume_path }}"
+  register: korp_volume_folder
+
+- name: "criação de diretórios {{ volume_path }}"
+  ansible.builtin.file:
+    path: "{{ volume_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: not korp_volume_folder.stat.exists
