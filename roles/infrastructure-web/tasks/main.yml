@@ -29,6 +29,17 @@
 - name: setup Viasoft.Authentication
   ansible.builtin.import_tasks: authentication.yml
 
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Korp.Legacy.Administration
+    - Korp.Legacy.Authorization
+
 - name: configuração e transferência de arquivos de compose versionados
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
@@ -46,7 +57,7 @@
     files:
       - infrastructure-web-compose.yml
 
-- name: criação e inicialização de web-compose - versionado
+- name: criação e inicialização de componente de infraestrutura para WEB - versionado
   community.docker.docker_compose:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
