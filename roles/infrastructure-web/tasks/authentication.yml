@@ -1,0 +1,24 @@
+- name: adição de Viasoft.Authentication ao Consul
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service_without_client
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Viasoft.Authentication
+
+- name: criação e inicialização do componente Viasoft.Authentication
+  community.docker.docker_compose:
+    project_src: "{{ korp_dir_path }}/composes/"
+    files:
+      - infrastructure-identity-compose.yml
+
+- name: chamada para startup de Viasoft.Authentication
+  ansible.builtin.uri:
+    return_content: true
+    url: "https://korp-api/oauth/.well-known/openid-configuration/jwks"
+  register: result
+  retries: 5
+  delay: 5
+  until: result is not failed

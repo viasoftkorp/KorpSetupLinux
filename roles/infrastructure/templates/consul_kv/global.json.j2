@@ -51,12 +51,13 @@
     "Path": "/app/SecretManager/",
     "RefreshRolesFrequencySeconds": "300"
   },
-  "GatewayUrl": "https://gateway.korp.com.br",
+  "GatewayUrl": "{{ gateway_url }}",
+  "LegacyGateway": "https://korp-api",
   "CORS": "https://korp",
   "Authentication": {
     "Authority": "https://korp-api/oauth",
     "IntrospectionSecret": "{{ general.introspection_secret }}",
-    "GatewayAuthority": "https://gateway.korp.com.br/oauth"
+    "GatewayAuthority": "{{ gateway_url }}/oauth"
   },
   "IntervaloHealthCheckSegs": "60",
   "RemoverServicoAposFalhaSegs": "60",

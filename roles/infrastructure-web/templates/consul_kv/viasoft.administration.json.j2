@@ -1,0 +1,13 @@
+{
+  "Authorization":{
+    "Secret":"{{ secret }}"
+  },
+  "ServiceBus":{
+    "StorageConnectionString":"Server=db_mssql,1433; Database=Viasoft_Administration; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False"
+  },
+  "Provisioning":{
+    "EnableSchemaProvisioning":"false"
+  },
+  "DisableLegacyDataMigration":"true",
+  "EnableEnvironmentDependentConnectionString": "true"
+}

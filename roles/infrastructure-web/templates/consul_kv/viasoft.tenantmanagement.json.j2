@@ -1,0 +1,25 @@
+{
+  "Authorization":{
+    "Secret":"{{ secret }}"
+  },
+  "ServiceBus":{
+    "StorageConnectionString":"Server=db_mssql,1433; Database=Viasoft_TenantManagement; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False"
+  },
+  "ConnectionStrings":{
+    "DefaultConnection":"Server=db_mssql,1433; Database=Viasoft_TenantManagement; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False",
+    "GlobalUserId": "{{ mssql.korp_user }}",
+    "GlobalPassword": "{{ mssql.korp_password }}",
+    "GlobalTemplate": "Server=db_mssql,1433; Database={0}; User Id={1}; Password={2}; Encrypt=False",
+  },
+  "Provisioning":{
+    "EnableSchemaProvisioning":"false"
+  },
+  "EnableEnvironmentDependentConnectionString":"false",
+  "SkipOrganizationMigration": "true",
+  "SkipEnvironmentDesktopDatabaseVersionMigration": "true",
+  "EnvironmentsSync": {    
+    "ClientId": "{{ services_secrets['Viasoft.Legacy.TenantManagement'].ClientId }}",
+    "ClientSecret": "{{ services_secrets['Viasoft.Legacy.TenantManagement'].ClientSecret }}",
+    "Scope": "{{ services_secrets['Viasoft.Legacy.TenantManagement'].ClientId }}"
+  }
+}
