@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql: $DB_MSSQL"
+  - "app_server: $APP_SERVER"
   - "korp-api: $API_GATEWAY"
   - "korp: $PORTAL_GATEWAY"
   - "korp-cdn: $CDN_GATEWAY"
@@ -151,3 +152,26 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CRON"
+
+# o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
+# por isso eles estão nesse compose
+  korp-legacy-frontend-router:
+    image: "korp/korp.legacy.frontend-router:1.0.x"
+    container_name: "Korp.Legacy.Frontend-router"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - VERBOSE=false
+      - OVERRIDE_PROXY_SCHEME=http
+    networks:
+      - servicos
+
+  viasoft-loader:
+    image: "korp/viasoft.loader:2.1.x"
+    container_name: "Viasoft.Loader"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - backendUrl=https://korp-api
+    networks:
+      - servicos

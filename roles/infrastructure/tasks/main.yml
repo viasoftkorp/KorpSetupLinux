@@ -46,7 +46,7 @@
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     files:
-      - infrastructure-default-compose.yml
+      - infrastructure-compose.yml
 
 - name: criação e configuração de usuário no rabbitmq
   ansible.builtin.import_tasks: rabbitmq_user.yml
@@ -81,25 +81,3 @@
   community.general.consul_kv:
     key: fabio/config
     value: "{{ lookup('file', 'configs/fabio/config') }}"
-
-- name: adição de serviços
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/add_service_without_client
-  vars:
-    service_name: "{{ item }}"
-    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-  loop:
-    - Viasoft.Authentication
-
-- name: criação e inicialização de korp-compose
-  community.docker.docker_compose:
-    project_src: "{{ korp_dir_path }}/composes/"
-    files:
-      - infrastructure-korp-compose.yml
-
-- name: chamada para startup de Viasoft.Authentication
-  ansible.builtin.uri:
-    return_content: true
-    url: "https://korp-api/oauth/.well-known/openid-configuration/jwks"
-  register: result
