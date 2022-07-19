@@ -1,6 +1,13 @@
 ---
+version_without_build: "<VERSION_WITHOUT_BUILD>"
+version_with_build: "<VERSION_WITH_BUILD>"
+
 korp_dir_path: /etc/korp
+
 dados_docker_dir_path: "{{ korp_dir_path }}/dados-docker"
+compose_dir_path: "{{ korp_dir_path }}/composes"
+versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
+docker_env_file_path: "{{ compose_dir_path }}/.env"
 
 gateway_url: "https://gateway.korp.com.br"
 
