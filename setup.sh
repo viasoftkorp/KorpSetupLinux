@@ -27,10 +27,13 @@ do
 done
 
 
-# Válida se o script está sendo rodado como root
-if [ $(/usr/bin/id -u) -ne 0 ]; then
-    echo "$(tput setaf 3)Por favor, execute o scrip como administrador.$(tput setaf 7)"
-    exit 01
+# Validação de gateway_url
+
+if [ "$gateway_url" == "" ];
+then
+  gateway_url = "https://gateway.korp.com.br"
+else
+  gateway_url=${gateway_url%/}
 fi
 
 
@@ -50,15 +53,6 @@ else
     fi
 fi
 
-
-# Validação de gateway_url
-
-if [ "$gateway_url" == "" ];
-then
-  gateway_url = "https://gateway.korp.com.br"
-else
-  gateway_url=${gateway_url%/}
-fi
 
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
@@ -183,4 +177,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token"
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" "gateway_url=$gateway_url"
