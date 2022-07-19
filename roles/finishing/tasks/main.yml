@@ -1,0 +1,4 @@
+- name: notificação de TenantManagement
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+    method: "PUT"

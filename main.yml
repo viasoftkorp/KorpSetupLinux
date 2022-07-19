@@ -37,3 +37,7 @@
     - role: mobile
       tags:
         - mobile
+
+    - role: finishing
+      tags:
+        - finishing

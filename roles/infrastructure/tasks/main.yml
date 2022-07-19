@@ -7,10 +7,11 @@
 - name: configuração de tenant_id
   ansible.builtin.set_fact:
     tenant_id: "{{ response.json.tenantId }}"
+    version_without_build: "{{ response.json.version }}"
 
 - name: coleta de secrets
   ansible.builtin.uri:
-    url: "{{ gateway_url }}/vault/manager/service-deploy/secrets/{{ token }}"
+    url: "{{ gateway_url }}/vault/manager/server-deploy/secrets/{{ token }}"
     return_content: true
   register: response
 

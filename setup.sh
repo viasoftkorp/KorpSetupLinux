@@ -11,8 +11,10 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>"
+#   token="<token>" - OBRIGATÓRIO
 #   disk="<sdx>"
+#   gateway_url="<gateway_url>"
+
 
 for ARGUMENT in "$@"
 do
@@ -43,9 +45,19 @@ else
 
     if [ "$status_code" != "200" ];
     then
-        echo "$(tput setaf 1)O token passado não é válido.$(tput setaf 7)"
+        echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"
         exit 09
     fi
+fi
+
+
+# Validação de gateway_url
+
+if [ "$gateway_url" == "" ];
+then
+  gateway_url = "https://gateway.korp.com.br"
+else
+  gateway_url=${gateway_url%/}
 fi
 
 

@@ -1,6 +1,6 @@
 ---
-version_without_build: "<VERSION_WITHOUT_BUILD>"
-version_with_build: "<VERSION_WITH_BUILD>"
+# é pega durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure"
+version_without_build: ""
 
 korp_dir_path: /etc/korp
 
@@ -10,6 +10,7 @@ versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
 docker_env_file_path: "{{ compose_dir_path }}/.env"
 
 # não colocar "/" no final dessa gateway, pois utilizamos no KV Global. lá espera-se que vem sem "/"
+# essa variável pode ser sobrescrita durante chamada de playbook
 gateway_url: "https://gateway.korp.com.br"
 
 redis_container_name: redis
