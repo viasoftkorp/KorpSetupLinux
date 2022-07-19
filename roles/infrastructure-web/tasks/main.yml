@@ -1,15 +1,14 @@
-- name: adição de serviços
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/add_service
-  vars:
-    service_name: "{{ item }}"
-    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+- name: configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
   loop:
-    - Korp.Legacy.Administration
-    - Korp.Legacy.Authorization
-    - Korp.Legacy.TenantManagement
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
+# precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
 - name: adição de serviços
   ansible.builtin.include_role:
     name: utils
@@ -21,16 +20,25 @@
     - Viasoft.Reporting
     - Viasoft.Reporting.Stimulsoft
     - Viasoft.Portal
+    - Viasoft.Notification
+    - Viasoft.Authorization
+    - Viasoft.TenantManagement
+    - Viasoft.Administration
+    - Viasoft.Licensing.LicenseServer
 
-- name: configuração e transferência de arquivos de compose
-  ansible.builtin.template:
-    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
-    src: "composes/{{ item | basename }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
+- name: setup Viasoft.Authentication
+  ansible.builtin.import_tasks: authentication.yml
+
+- name: adição de serviços
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+    - Korp.Legacy.Administration
+    - Korp.Legacy.Authorization
 
 - name: configuração e transferência de arquivos de compose versionados
   ansible.builtin.template:
@@ -42,14 +50,14 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação e inicialização de web-compose
+- name: criação e inicialização de componente de infraestrutura para WEB
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-web-compose.yml
 
-- name: criação e inicialização de web-compose - versionado
+- name: criação e inicialização de componente de infraestrutura para WEB - versionado
   community.docker.docker_compose:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"

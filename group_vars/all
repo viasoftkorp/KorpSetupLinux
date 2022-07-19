@@ -9,6 +9,7 @@ compose_dir_path: "{{ korp_dir_path }}/composes"
 versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
 docker_env_file_path: "{{ compose_dir_path }}/.env"
 
+# não colocar "/" no final dessa gateway, pois utilizamos no KV Global. lá espera-se que vem sem "/"
 gateway_url: "https://gateway.korp.com.br"
 
 redis_container_name: redis
@@ -20,28 +21,35 @@ services:
     db:
       db_name: Viasoft_Authentication
       db_type: mssql
-
   - Korp.Legacy.Authentication:
     db:
       db_name: Auth_Legacy_Integration
       db_type: mssql
-
-  - Korp.Legacy.TenantManagement:
-    db:
-      db_name: korp.legacy.tenantmanagement
-      db_type: postgres
-
   - Viasoft.Reporting:
     db:
       db_name: Viasoft_Reporting
       db_type: mssql
-
   - Viasoft.Reporting.Stimulsoft:
     db:
       db_name: Viasoft_Reporting_Stimulsoft
       db_type: mssql
-
   - Viasoft.Portal:
     db:
       db_name: Viasoft_Portal
+      db_type: mssql  
+  - Viasoft.Notification:
+    db:
+      db_name: Viasoft_Notification
+      db_type: mssql
+  - Viasoft.TenantManagement:
+    db:
+      db_name: Viasoft_TenantManagement
+      db_type: mssql
+  - Viasoft.Authorization:
+    db:
+      db_name: Viasoft_Authorization
+      db_type: mssql
+  - Viasoft.Administration:
+    db:
+      db_name: Viasoft_Administration
       db_type: mssql
