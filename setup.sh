@@ -11,8 +11,10 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>"
+#   token="<token>" - OBRIGATÓRIO
 #   disk="<sdx>"
+#   gateway_url="<gateway_url>"
+
 
 for ARGUMENT in "$@"
 do
@@ -25,10 +27,13 @@ do
 done
 
 
-# Válida se o script está sendo rodado como root
-if [ $(/usr/bin/id -u) -ne 0 ]; then
-    echo "$(tput setaf 3)Por favor, execute o scrip como administrador.$(tput setaf 7)"
-    exit 01
+# Validação de gateway_url
+
+if [ "$gateway_url" == "" ];
+then
+  gateway_url = "https://gateway.korp.com.br"
+else
+  gateway_url=${gateway_url%/}
 fi
 
 
@@ -43,10 +48,11 @@ else
 
     if [ "$status_code" != "200" ];
     then
-        echo "$(tput setaf 1)O token passado não é válido.$(tput setaf 7)"
+        echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"
         exit 09
     fi
 fi
+
 
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
@@ -171,4 +177,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token"
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" "gateway_url=$gateway_url"

@@ -12,7 +12,18 @@
   vars:
     ansible_become_password: "{{ linux_korp.password }}"
   become_user: "{{ linux_korp.user }}"
+  become: true
 
+# TODO https://stackoverflow.com/questions/55521078/how-to-deal-with-errors-coming-from-ansible-roles
+# adicionar envio de mensagem de erro para tenantManagement
+#     - name: notificação de TenantManagement
+#       ansible.builtin.uri:
+#         url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+#         method: "PUT"
+#         body_format: json
+#         body:
+#           status: completed
+#           errorMessage:
   roles:
     - role: infrastructure
       tags:
@@ -37,3 +48,7 @@
     - role: mobile
       tags:
         - mobile
+
+    - role: finishing
+      tags:
+        - finishing

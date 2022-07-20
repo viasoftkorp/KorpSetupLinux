@@ -9,7 +9,7 @@
 - name: verificação de diretório de scripts
   ansible.builtin.stat:
     path: "{{ korp_dir_path }}/scripts/"
-  register: korp_compose_folder
+  register: korp_scripts_folder
 
 - name: criação de diretório de scripts
   ansible.builtin.file:
@@ -18,7 +18,7 @@
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
-  when: not korp_compose_folder.stat.exists
+  when: not korp_scripts_folder.stat.exists
 
 - name: transferência de scripts
   ansible.builtin.template:
@@ -46,12 +46,26 @@
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: verificação de diretório de composes
   ansible.builtin.stat:
-    path: "{{ korp_dir_path }}/composes/"
+    path: "{{ compose_dir_path }}/"
   register: korp_compose_folder
 
 - name: criação de diretório de composes
   ansible.builtin.file:
-    path: "{{ korp_dir_path }}/composes/"
+    path: "{{ compose_dir_path }}/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: not korp_compose_folder.stat.exists
+
+- name: verificação de diretório de composes versionados
+  ansible.builtin.stat:
+    path: "{{ versioned_compose_dir_path }}/"
+  register: korp_compose_folder
+
+- name: criação de diretório de composes versionados
+  ansible.builtin.file:
+    path: "{{ versioned_compose_dir_path }}/"
     state: directory
     mode: '0755'
     owner: "{{ linux_korp.user }}"
@@ -60,7 +74,7 @@
 
 - name: criação de arquivo de variáveis de ambiente para docker
   ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/composes/.env"
+    dest: "{{ docker_env_file_path }}"
     mode: '0644'
     content: |
       DB_MSSQL={{ mssql.address }}
@@ -74,7 +88,7 @@
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
 - name: configuração e transferência de arquivos de compose
   ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
