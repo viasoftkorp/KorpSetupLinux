@@ -5,3 +5,4 @@
     body_format: json
     body:
       status: completed
+  ignore_errors: true
