@@ -8,29 +8,29 @@ Setup destinado para a configuração e manutenção de servidores linux, feito 
 
 Para adicionar um novo serviço, siga os seguintes passos:
 
-- Localize a pasta do APP do seu projeto na pasta `roles` (ex: infrastructure-web, picking, mobile, etc...).
+- Localize a pasta do AppId do seu projeto na pasta `roles` (ex: infrastructure-web, picking, mobile, etc...).
 
-    Caso não exista nenhum pasta com o APP do seu projeto, siga o tópico 'Adição de APP' para cria-lo.
+    Caso não exista nenhum pasta com o AppId do seu projeto, siga o tópico 'Adição de AppId' para cria-lo.
 
 - De forma geral, 3 passos devem ser feitos:
 
   1. adicionar serviço no arquivo de compose
 
-      `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`
+      `roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2`
 
   2. adicionar serviço na task de configuração
 
-      `roles/<APP>/tasks/main.yml`
+      `roles/<AppId>/tasks/main.yml`
 
   3. adicionar K/V do consul
 
-      `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
+      `roles/<AppId>/templates/consul_kv/<service_name_lowercase>.json.j2`
 
 **A extensão `j2` nos arquivos dentro da para `templates` é ESSENCIAL!**
 
 ---
 
-1. Adicionar serviço no compose (`roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`) usando o template:
+1. Adicionar serviço no compose (`roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2`) usando o template:
 
     ``` yml
     <service_name_lowercase>-<version>:
@@ -49,12 +49,12 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     **Caso seu serviço tenha `volumes` adicionais, siga o passo *4***
 
-2. Adicionar serviço na task de configuração (`roles/<APP>/tasks/main.yml`)
+2. Adicionar serviço na task de configuração (`roles/<AppId>/tasks/main.yml`)
 
     dentro do arquivo `main.yml`, há um bloco de código conforme o seguinte:
 
     ``` yml
-    - name: adição de serviços de <APP>
+    - name: adição de serviços de <AppId>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service
@@ -75,7 +75,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
 3. adicionar K/V do consul
 
-    Para adicionar seu K/V (**todos os serviços devém ter**), criei o arquivo `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
+    Para adicionar seu K/V (**todos os serviços devém ter**), criei o arquivo `roles/<AppId>/templates/consul_kv/<service_name_lowercase>.json.j2`
 
     - `<service_name_lowercase>` é o nome do seu serviço, com todas as letras minúsculas.
 
@@ -116,8 +116,8 @@ Para adicionar um novo serviço, siga os seguintes passos:
       - ``` yml
         volumes:
           - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-          - "{{ dados_docker_dir_path }}/viasoft-email/data/:/app/data"
-          - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/app/errors" 
+          - "{{ dados_docker_dir_path }}/viasoft-email/data/:/AppId/data"
+          - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/AppId/errors" 
         ```
 
 ---
@@ -128,13 +128,13 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
 - service_name: Korp.Logistica.Picking
 - version: 2022.2.0
-- APP: picking
+- AppId: picking
 
 1. Adicionar serviço no compose:
   
     local do arquivo de compose:
 
-      - template: `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`
+      - template: `roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2`
       - alterado: `roles/picking/templates/composes/2022.2.0/picking-compose.yml.j2`
 
     ``` yml
@@ -156,7 +156,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     local do arquivo:
 
-      - template: `roles/<APP>/tasks/main.yml`
+      - template: `roles/<AppId>/tasks/main.yml`
       - alterado: `roles/piking/tasks/main.yml`
 
     Bloco de configuração de serviço:
@@ -177,7 +177,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     local do arquivo:
 
-      - template: `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
+      - template: `roles/<AppId>/templates/consul_kv/<service_name_lowercase>.json.j2`
       - alterado: `roles/picking/templates/consul_kv/korp.logistica.picking.json.j2`
 
     nesse exemplo, vamos assumir que o serviço não tem nenhuma propriedade específica, então seu json ficaria da seguinte forma:
@@ -191,22 +191,22 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
 ---
 
-## Adição de APP
+## Adição de AppId
 
-O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apontamento
+O nome do AppId deve sem um nome simples e genérico, como: picking, mobile, apontamento
 
 1. criar diretórios
 
-    - `roles/<APP>/`
-    - `roles/<APP>/tasks/`
-    - `roles/<APP>/templates/`
-    - `roles/<APP>/templates/consul_kv/`
-    - `roles/<APP>/templates/composes/`
-    - `roles/<APP>/templates/composes/<version>/`
+    - `roles/<AppId>/`
+    - `roles/<AppId>/tasks/`
+    - `roles/<AppId>/templates/`
+    - `roles/<AppId>/templates/consul_kv/`
+    - `roles/<AppId>/templates/composes/`
+    - `roles/<AppId>/templates/composes/<version>/`
 
 2. criação de compose
 
-    Criar aquivo  `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2` com o seguinte conteúdo:
+    Criar aquivo  `roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2` com o seguinte conteúdo:
 
     ```yml
     version: "3.8"
@@ -214,7 +214,7 @@ O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apont
     x-extra_hosts:
       &default-extra_hosts
       - "db_mssql: $DB_MSSQL"
-      - "app_server: $APP_SERVER"
+      - "AppId_server: $AppId_SERVER"
       - "korp-api: $API_GATEWAY"
       - "korp: $PORTAL_GATEWAY"
       - "korp-cdn: $CDN_GATEWAY"
@@ -229,12 +229,12 @@ O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apont
 
 3. criação de tasks
 
-    Criar arquivo `roles/<APP>/tasks/main.yml` com o seguinte conteúdo:
+    Criar arquivo `roles/<AppId>/tasks/main.yml` com o seguinte conteúdo:
 
-      - altere todas as variáveis `<APP>`
+      - altere todas as variáveis `<AppId>`
 
     ``` yml
-    - name: adição de serviços de <APP>
+    - name: adição de serviços de <AppId>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service
@@ -244,7 +244,7 @@ O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apont
       loop:
         - 
 
-    - name: configuração e transferência de arquivos de compose de <APP>
+    - name: configuração e transferência de arquivos de compose de <AppId>
       ansible.builtin.template:
         dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
         src: "composes/{{ version_without_build }}/{{ item | basename }}"
@@ -254,12 +254,12 @@ O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apont
       loop:
         "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-    - name: criação e inicialização de <APP>-compose - versionado
+    - name: criação e inicialização de <AppId>-compose - versionado
       community.docker.docker_compose:
         project_src: "{{ versioned_compose_dir_path }}/"
         env_file: "{{ docker_env_file_path }}"
         files:
-          - <APP>-compose.yml
+          - <AppId>-compose.yml
     ```
 
 4. adição de role no playbook
@@ -267,9 +267,9 @@ O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apont
   em `main.yml` adicione as seguintes linhas **ANTES** da linhas contendo `finishing:
 
   ``` yml
-    - role: <APP>
+    - role: <AppId>
       tags:
-        - <APP>
+        - <AppId>
   ```
 
 ---

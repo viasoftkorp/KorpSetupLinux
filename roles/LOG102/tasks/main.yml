@@ -1,4 +1,4 @@
-- name: adição de serviços de picking
+- name: adição de serviços de LOG102
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -13,7 +13,7 @@
     - Korp.Logistica.Picking.OrdemProducao
     - Korp.Faturamento.SolicitacaoDeFaturamento
 
-- name: configuração e transferência de arquivos de compose de picking
+- name: configuração e transferência de arquivos de compose de LOG102
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ version_without_build }}/{{ item | basename }}"
@@ -23,9 +23,9 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação e inicialização de picking-compose - versionado
+- name: criação e inicialização de LOG102-compose - versionado
   community.docker.docker_compose:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:
-      - picking-compose.yml
+      - LOG102-compose.yml

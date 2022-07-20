@@ -1,4 +1,4 @@
-- name: adição de serviços de mobile
+- name: adição de serviços de MOB02
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -13,7 +13,7 @@
     - Viasoft.Customer.Portifolio
     - Korp.Logistic.Tracking
 
-- name: garantia da existência dos diretórios de volumes de mobile
+- name: garantia da existência dos diretórios de volumes de MOB02
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -22,7 +22,7 @@
   loop:
     - "{{ dados_docker_dir_path }}/korp-mobile/reports"
 
-- name: configuração e transferência de arquivos de compose versionados de mobile
+- name: configuração e transferência de arquivos de compose versionados de MOB02
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ version_without_build }}/{{ item | basename }}"
@@ -32,9 +32,9 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação e inicialização de mobile-compose - versionado
+- name: criação e inicialização de MOB02-compose - versionado
   community.docker.docker_compose:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:
-      - mobile-compose.yml
+      - MOB02-compose.yml
