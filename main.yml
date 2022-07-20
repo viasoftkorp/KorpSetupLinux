@@ -37,17 +37,17 @@
       tags:
         - infrastructure-desktop
 
-    - role: apontamento
+    - role: PRO09
       tags:
-        - apontamento
+        - PRO09
 
-    - role: picking
+    - role: LOG102
       tags:
-        - picking
+        - LOG102
 
-    - role: mobile
+    - role: MOB02
       tags:
-        - mobile
+        - MOB02
 
     - role: finishing
       tags:

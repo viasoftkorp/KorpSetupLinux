@@ -1,4 +1,4 @@
-- name: adição de serviços de apontamento
+- name: adição de serviços de PRO09
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -8,7 +8,7 @@
   loop:
     - Korp.Producao.Apontamento
 
-- name: garantia da existência dos diretórios de volumes de apontamento
+- name: garantia da existência dos diretórios de volumes de PRO09
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -17,7 +17,7 @@
   loop:
     - "{{ dados_docker_dir_path }}/producao-apontamento/reports/"
 
-- name: configuração e transferência de arquivos de compose de apontamento
+- name: configuração e transferência de arquivos de compose de PRO09
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ version_without_build }}/{{ item | basename }}"
@@ -27,9 +27,9 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-- name: criação e inicialização de apontamento-compose - versionado
+- name: criação e inicialização de PRO09-compose - versionado
   community.docker.docker_compose:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:
-      - apontamento-compose.yml
+      - PRO09-compose.yml
