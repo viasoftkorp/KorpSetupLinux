@@ -8,29 +8,29 @@ Setup destinado para a configuração e manutenção de servidores linux, feito 
 
 Para adicionar um novo serviço, siga os seguintes passos:
 
-- Localize a pasta do domínio do seu projeto na pasta `roles` (ex: infrastructure-web, picking, mobile, etc...).
+- Localize a pasta do APP do seu projeto na pasta `roles` (ex: infrastructure-web, picking, mobile, etc...).
 
-    Caso não exista nenhum pasta com o domínio do seu projeto, siga o tópico 'Adição de domínio' para cria-lo.
+    Caso não exista nenhum pasta com o APP do seu projeto, siga o tópico 'Adição de APP' para cria-lo.
 
 - De forma geral, 3 passos devem ser feitos:
 
   1. adicionar serviço no arquivo de compose
 
-      `roles/<domínio>/templates/composes/<version>/<domínio>-compose.yml.j2`
+      `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`
 
   2. adicionar serviço na task de configuração
 
-      `roles/<domínio>/tasks/main.yml`
+      `roles/<APP>/tasks/main.yml`
 
   3. adicionar K/V do consul
 
-      `roles/<domínio>/templates/consul_kv/<service_name_lowercase>.json.j2`
+      `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
 
 **A extensão `j2` nos arquivos dentro da para `templates` é ESSENCIAL!**
 
 ---
 
-1. Adicionar serviço no compose (`roles/<domínio>/templates/composes/<version>/<domínio>-compose.yml.j2`) usando o template:
+1. Adicionar serviço no compose (`roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`) usando o template:
 
     ``` yml
     <service_name_lowercase>-<version>:
@@ -49,12 +49,12 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     **Caso seu serviço tenha `volumes` adicionais, siga o passo *4***
 
-2. Adicionar serviço na task de configuração (`roles/<domínio>/tasks/main.yml`)
+2. Adicionar serviço na task de configuração (`roles/<APP>/tasks/main.yml`)
 
     dentro do arquivo `main.yml`, há um bloco de código conforme o seguinte:
 
     ``` yml
-    - name: adição de serviços de <domínio>
+    - name: adição de serviços de <APP>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service
@@ -75,7 +75,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
 3. adicionar K/V do consul
 
-    Para adicionar seu K/V (**todos os serviços devém ter**), criei o arquivo `roles/<domínio>/templates/consul_kv/<service_name_lowercase>.json.j2`
+    Para adicionar seu K/V (**todos os serviços devém ter**), criei o arquivo `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
 
     - `<service_name_lowercase>` é o nome do seu serviço, com todas as letras minúsculas.
 
@@ -128,13 +128,13 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
 - service_name: Korp.Logistica.Picking
 - version: 2022.2.0
-- domínio: picking
+- APP: picking
 
 1. Adicionar serviço no compose:
   
     local do arquivo de compose:
 
-      - template: `roles/<domínio>/templates/composes/<version>/<domínio>-compose.yml.j2`
+      - template: `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2`
       - alterado: `roles/picking/templates/composes/2022.2.0/picking-compose.yml.j2`
 
     ``` yml
@@ -156,7 +156,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     local do arquivo:
 
-      - template: `roles/<domínio>/tasks/main.yml`
+      - template: `roles/<APP>/tasks/main.yml`
       - alterado: `roles/piking/tasks/main.yml`
 
     Bloco de configuração de serviço:
@@ -177,7 +177,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     local do arquivo:
 
-      - template: `roles/<domínio>/templates/consul_kv/<service_name_lowercase>.json.j2`
+      - template: `roles/<APP>/templates/consul_kv/<service_name_lowercase>.json.j2`
       - alterado: `roles/picking/templates/consul_kv/korp.logistica.picking.json.j2`
 
     nesse exemplo, vamos assumir que o serviço não tem nenhuma propriedade específica, então seu json ficaria da seguinte forma:
@@ -191,22 +191,22 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
 ---
 
-## Adição de domínio
+## Adição de APP
 
-O nome do domínio deve sem um nome simples e genérico, como: picking, mobile, apontamento
+O nome do APP deve sem um nome simples e genérico, como: picking, mobile, apontamento
 
 1. criar diretórios
 
-    - `roles/<domínio>/`
-    - `roles/<domínio>/tasks/`
-    - `roles/<domínio>/templates/`
-    - `roles/<domínio>/templates/consul_kv/`
-    - `roles/<domínio>/templates/composes/`
-    - `roles/<domínio>/templates/composes/<version>/`
+    - `roles/<APP>/`
+    - `roles/<APP>/tasks/`
+    - `roles/<APP>/templates/`
+    - `roles/<APP>/templates/consul_kv/`
+    - `roles/<APP>/templates/composes/`
+    - `roles/<APP>/templates/composes/<version>/`
 
 2. criação de compose
 
-    Criar aquivo  `roles/<domínio>/templates/composes/<version>/<domínio>-compose.yml.j2` com o seguinte conteúdo:
+    Criar aquivo  `roles/<APP>/templates/composes/<version>/<APP>-compose.yml.j2` com o seguinte conteúdo:
 
     ```yml
     version: "3.8"
@@ -229,12 +229,12 @@ O nome do domínio deve sem um nome simples e genérico, como: picking, mobile, 
 
 3. criação de tasks
 
-    Criar arquivo `roles/<domínio>/tasks/main.yml` com o seguinte conteúdo:
+    Criar arquivo `roles/<APP>/tasks/main.yml` com o seguinte conteúdo:
 
-      - altere todas as variáveis `<domínio>`
+      - altere todas as variáveis `<APP>`
 
     ``` yml
-    - name: adição de serviços de <domínio>
+    - name: adição de serviços de <APP>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service
@@ -244,7 +244,7 @@ O nome do domínio deve sem um nome simples e genérico, como: picking, mobile, 
       loop:
         - 
 
-    - name: configuração e transferência de arquivos de compose de <domínio>
+    - name: configuração e transferência de arquivos de compose de <APP>
       ansible.builtin.template:
         dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
         src: "composes/{{ version_without_build }}/{{ item | basename }}"
@@ -254,12 +254,12 @@ O nome do domínio deve sem um nome simples e genérico, como: picking, mobile, 
       loop:
         "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
 
-    - name: criação e inicialização de <domínio>-compose - versionado
+    - name: criação e inicialização de <APP>-compose - versionado
       community.docker.docker_compose:
         project_src: "{{ versioned_compose_dir_path }}/"
         env_file: "{{ docker_env_file_path }}"
         files:
-          - <domínio>-compose.yml
+          - <APP>-compose.yml
     ```
 
 4. adição de role no playbook
@@ -267,9 +267,9 @@ O nome do domínio deve sem um nome simples e genérico, como: picking, mobile, 
   em `main.yml` adicione as seguintes linhas **ANTES** da linhas contendo `finishing:
 
   ``` yml
-    - role: <domínio>
+    - role: <APP>
       tags:
-        - <domínio>
+        - <APP>
   ```
 
 ---
