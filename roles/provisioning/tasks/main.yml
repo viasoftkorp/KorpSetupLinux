@@ -28,6 +28,7 @@
   loop:
     # Bibliotecas usadas pelo Ansible para usar o Postgres
     - psycopg2
+    - cryptography>=3.0
 
 - name: criação de usuário de uso da korp no Linux
   ansible.builtin.user:
