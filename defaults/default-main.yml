@@ -1,0 +1,26 @@
+- name: adição de serviços de <domínio>
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - 
+
+- name: configuração e transferência de arquivos de compose de <domínio>
+  ansible.builtin.template:
+    dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
+    src: "composes/{{ version_without_build }}/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
+
+- name: criação e inicialização de <domínio>-compose - versionado
+  community.docker.docker_compose:
+    project_src: "{{ versioned_compose_dir_path }}/"
+    env_file: "{{ docker_env_file_path }}"
+    files:
+      - <domínio>-compose.yml
