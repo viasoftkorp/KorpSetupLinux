@@ -8,7 +8,7 @@
   loop:
     - 
 
-- name: configuração e transferência de arquivos de compose de <AppId>
+- name: configuração e transferência de arquivos de compose de <AppId> - versionado
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ version_without_build }}/{{ item | basename }}"
