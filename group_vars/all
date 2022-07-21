@@ -62,3 +62,11 @@ services:
     db:
       db_name: Viasoft_Vendas_Orcamento_Gateway
       db_type: postgres
+  - Viasoft.Engenharia.Core:
+    db:
+      db_name: Viasoft_Engenharia_Core
+      db_type: postgres
+  - Viasoft.Engenharia.CustoOrcamento:
+    db:
+      db_name: Viasoft_Engenharia_CustoOrcamento
+      db_type: postgres
