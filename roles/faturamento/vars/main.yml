@@ -1,0 +1,5 @@
+role_services:
+  - Viasoft.Faturamento.Core:
+    db:
+      db_name: Viasoft_Faturamento_Core
+      db_type: postgres
