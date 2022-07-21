@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  <service_name_lowercase>-<version>:
-    image: "korp/<service_name_lowercase>:<version>.x"
-    container_name: "<service_name>-<version>"
+  korp-financial-situation-2022-1-0:
+    image: "korp/korp.financial.situation:2022.1.0.x"
+    container_name: "Korp.Financial.Situation-2022.1.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
