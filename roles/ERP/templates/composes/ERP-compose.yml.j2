@@ -1,0 +1,93 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "app_server: $APP_SERVER"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  viasoft-erp-person:
+    image: "korp/viasoft.erp.person:3.0.x"
+    container_name: "Viasoft.ERP.Person"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-erp-person-preregistration:
+    image: "korp/viasoft.erp.person.preregistration:3.0.x"
+    container_name: "Viasoft.Erp.Person.Preregistration"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-erp-core:
+    image: "korp/viasoft.erp.core:3.0.x"
+    container_name: "Viasoft.ERP.Core"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-erp-sync:
+    image: "korp/viasoft.erp.sync:2.0.x"
+    container_name: "Viasoft.Erp.Sync"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-legacy-parametros:
+    image: "korp/viasoft.legacy.parametros:1.1.x"
+    container_name: "Viasoft.Legacy.Parametros"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-erp-activities:
+    image: "korp/viasoft.erp.activities:3.0.x"
+    container_name: "Viasoft.Erp.Activities"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

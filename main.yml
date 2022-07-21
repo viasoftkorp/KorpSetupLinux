@@ -41,6 +41,10 @@
       tags:
         - engenharia
 
+    - role: ERP
+      tags:
+        - ERP
+
     - role: PRO09
       tags:
         - PRO09
