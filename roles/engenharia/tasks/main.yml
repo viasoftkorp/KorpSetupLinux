@@ -10,6 +10,14 @@
     - Viasoft.Engenharia.CustoOrcamento
     - Korp.Engenharia.Processo
 
+- name: criação de bancos de dados de engenharia
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: "create_db/{{ item.db.db_type }}"
+  vars:
+    db_name: "{{ item.db.db_name }}"
+  loop: "{{ role_services }}"
+
 - name: configuração e transferência de arquivos de compose de engenharia - versionado
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
