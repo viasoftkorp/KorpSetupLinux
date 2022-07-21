@@ -37,6 +37,10 @@
       tags:
         - infrastructure-desktop
 
+    - role: engenharia
+      tags:
+        - engenharia
+
     - role: PRO09
       tags:
         - PRO09
