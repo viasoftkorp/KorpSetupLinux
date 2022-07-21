@@ -9,7 +9,7 @@ role_services:
       db_name: Viasoft_ERP_Person_PreRegistration
       db_type: mssql
 
-  - Viasoft.Erp.Person: 
+  - Viasoft.Erp.Person:
     db:
       db_name: Viasoft_ERP_Person
       db_type: mssql
@@ -24,7 +24,7 @@ role_services:
       db_name: Viasoft_ERP_Sync
       db_type: postgres
 
-  - Viasoft.Legacy.Parametros :
+  - Viasoft.Legacy.Parametros:
     db:
       db_name: Viasoft_Legacy_Parametros
       db_type: mssql
