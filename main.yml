@@ -49,6 +49,10 @@
       tags:
         - MOB02
 
+    - role: VEN07_W
+      tags:
+        - VEN07_W
+
     - role: finishing
       tags:
         - finishing
