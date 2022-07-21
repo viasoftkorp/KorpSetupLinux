@@ -1,0 +1,28 @@
+- name: adição de serviços de VEN07_W
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item }}"
+    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
+  loop:
+    - Viasoft.Vendas.Orcamento.Core
+    - Viasoft.Vendas.Orcamento.Sync
+    - Viasoft.Legacy.Logistica
+
+- name: configuração e transferência de arquivos de compose de VEN07_W
+  ansible.builtin.template:
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+
+- name: criação e inicialização de VEN07_W-compose
+  community.docker.docker_compose:
+    project_src: "{{ compose_dir_path }}/"
+    env_file: "{{ docker_env_file_path }}"
+    files:
+      - VEN07_W-compose.yml

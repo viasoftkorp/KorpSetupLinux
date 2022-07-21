@@ -93,7 +93,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
 4. esse passo só é usado caso seu serviço tenha `volumes` adicionais
 
-    template:
+    template de compose:
 
     ``` yml
       - "{{ dados_docker_dir_path }}/<service_name_lowercase_without_dot>/:<your_path>/"
@@ -118,6 +118,44 @@ Para adicionar um novo serviço, siga os seguintes passos:
           - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
           - "{{ dados_docker_dir_path }}/viasoft-email/data/:/AppId/data"
           - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/AppId/errors" 
+        ```
+
+    Após adicionar o volume no compose, é necessário adiciona-lo na task de criação de diretório.
+
+    Para isso, abra `roles/<AppId>/tasks/main.yml`, após o bloco
+
+    ``` yml
+    - name: adição de serviços de <AppId>
+    ```
+
+    adicione o seguinte bloco:
+
+    ``` yml
+    - name: garantia da existência dos diretórios de volumes de <AppId>
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: services/ensure_volume_folder
+      vars:
+        volume_path: "{{ item }}"
+      loop:
+        - "{{ dados_docker_dir_path }}/<service_name_lowercase_without_dot>/"
+    ```
+
+    **OBS: esse bloco pode já existir, nesse caso, basta adicionar o seu volume ao array `loop`**
+
+    Exemplos:
+
+      - ``` yml
+        - name: garantia da existência dos diretórios de volumes de <AppId>
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: services/ensure_volume_folder
+          vars:
+            volume_path: "{{ item }}"
+          loop:
+            - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/"
+            - "{{ dados_docker_dir_path }}/viasoft-email/data/"
+            - "{{ dados_docker_dir_path }}/viasoft-email/errors/"
         ```
 
 ---
