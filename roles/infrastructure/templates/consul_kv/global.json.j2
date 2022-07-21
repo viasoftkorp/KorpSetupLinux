@@ -33,15 +33,16 @@
       "FromLogContext"
     ]
   },
+  "Provisioning":{
+    "EnableSchemaProvisioning": "true"
+  },
+  "EnableEnvironmentDependentConnectionString": "false",
   "Sentry": {
     "CanInitSentry": "false",
     "Dsn": ""
   },
   "OnPremiseLicensedTenants": "{{ tenant_id }}",
   "HostTenantId": "16a7571e-7ff6-479e-a6f5-3514414179dc",
-  "Logging": {
-    "Level": "Warning"
-  },
   "SqlIdleConnections": "10",
   "SqlTimeKillConnectionInMin": "3",
   "DatabaseLogLevel": "Error",

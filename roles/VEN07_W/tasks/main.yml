@@ -7,7 +7,7 @@
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
   loop:
     - Viasoft.Vendas.Orcamento.Core
-    - Viasoft.Vendas.Orcamento.Sync
+    - Viasoft.Vendas.Orcamento.Gateway
     - Viasoft.Legacy.Logistica
 
 - name: configuração e transferência de arquivos de compose de VEN07_W

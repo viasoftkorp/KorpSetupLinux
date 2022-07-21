@@ -1,0 +1,12 @@
+{
+	"Authorization": {
+		"Secret": "{{ secret }}"
+	},
+	"ServiceBus": {
+		"StorageConnectionString": "Server=db_mssql,5432; Host=db_mssql; Port=5432; Database=Viasoft_Vendas_Orcamento_Gateway; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}"
+	},
+	"ConnectionStrings": {
+		"DefaultConnection": "Server=db_mssql,5432; Host=db_mssql; Port=5432; Database=Viasoft_Vendas_Orcamento_Gateway; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}"
+	},
+    "KorpRegisterApiKey": "{{ services_secrets['Viasoft.Vendas.Orcamento.Gateway'].KorpRegisterApiKey }}"
+}

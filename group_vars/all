@@ -54,3 +54,11 @@ services:
     db:
       db_name: Viasoft_Administration
       db_type: mssql
+  - Viasoft.Vendas.Orcamento.Core:
+    db:
+      db_name: Viasoft_Vendas_Orcamento_Core
+      db_type: postgres 
+  - Viasoft.Vendas.Orcamento.Gateway:
+    db:
+      db_name: Viasoft_Vendas_Orcamento_Gateway
+      db_type: postgres
