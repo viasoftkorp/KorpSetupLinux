@@ -96,28 +96,18 @@ Para adicionar um novo serviço, siga os seguintes passos:
     template de compose:
 
     ``` yml
-      - "{{ dados_docker_dir_path }}/<service_name_lowercase_without_dot>/:<your_path>/"
+      - "{{ dados_docker_dir_path }}/<AppId>/<your_path>:<container_path>/"
     ```
 
-    - `service_name_lowercase_without_dot`: nome do seu serviço, letras minúsculas, com `-` ao invés de `.`
-
-    - `your_path`: caminho interno do seu container
-
-    **note que é possível adicionar mais caminhos após `<service_name_lowercase_without_dot>`**
+    - `your_path`: caminho do volume
 
     Exemplos:
 
       - ``` yml
         volumes:
           - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-          - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/:/etc/korp/database/"
-        ```
-
-      - ``` yml
-        volumes:
-          - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-          - "{{ dados_docker_dir_path }}/viasoft-email/data/:/AppId/data"
-          - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/AppId/errors" 
+          - "{{ dados_docker_dir_path }}/MOB02/data/:/app/data"
+          - "{{ dados_docker_dir_path }}/financeiro/errors/:/app/errors" 
         ```
 
     Após adicionar o volume no compose, é necessário adiciona-lo na task de criação de diretório.
@@ -153,9 +143,8 @@ Para adicionar um novo serviço, siga os seguintes passos:
           vars:
             volume_path: "{{ item }}"
           loop:
-            - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/"
-            - "{{ dados_docker_dir_path }}/viasoft-email/data/"
-            - "{{ dados_docker_dir_path }}/viasoft-email/errors/"
+            - "{{ dados_docker_dir_path }}/MOB02/data/"
+            - "{{ dados_docker_dir_path }}/financeiro/errors/"
         ```
 
 ---
