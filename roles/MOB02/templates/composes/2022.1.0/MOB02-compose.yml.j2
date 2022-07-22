@@ -24,7 +24,7 @@ services:
       - URL_CONSUL=http://consul-server:8500
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-      - "{{ dados_docker_dir_path }}/korp-mobile/reports/:/app/reports/"
+      - "{{ dados_docker_dir_path }}/MOB02/reports/:/app/reports/"
     networks:
       - servicos
 
