@@ -53,6 +53,10 @@
       tags:
         - logistica
 
+    - role: vendas
+      tags:
+        - vendas
+
     - role: PRO09
       tags:
         - PRO09
