@@ -8,6 +8,14 @@
   loop:
     - 
 
+- name: criação de bancos de dados de <AppId>
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: "create_db/{{ item.db.db_type }}"
+  vars:
+    db_name: "{{ item.db.db_name }}"
+  loop: "{{ role_services }}"
+
 - name: configuração e transferência de arquivos de compose de <AppId>
   ansible.builtin.template:
     dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"

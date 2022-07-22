@@ -3,10 +3,10 @@
         "Secret": "{{ secret }}"
     },
     "ServiceBus": {
-        "StorageConnectionString": "Server=db_mssql; Host=172.40.0.13; Port=5432; Database=Viasoft_Sales_CRM_Opportunities; User Id={{ mssql.korp_user }}; Password={ mssql.korp_password }}; Encrypt=False; MultipleActiveResultSets=true;"
+        "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=Viasoft_Sales_CRM_Opportunities; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }}; Encrypt=False; MultipleActiveResultSets=true;"
     },
     "ConnectionStrings": {
-        "DefaultConnection": "Server=db_mssql; Host=172.40.0.13; Port=5432; Database=Viasoft_Sales_CRM_Opportunities; User Id={{ mssql.korp_user }}; Password={ mssql.korp_password }}; Encrypt=False;"
+        "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=Viasoft_Sales_CRM_Opportunities; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }}; Encrypt=False;"
     },
     "EnableEnvironmentDependentConnectionString": "false"
 }
