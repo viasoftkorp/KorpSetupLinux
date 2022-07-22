@@ -1,7 +1,7 @@
 role_services:
   - Korp.Legacy.ELT:
     db:
-      db_name: controleestados
+      db_name: Korp_Legacy_ELT
       db_type: postgres
 
   - Viasoft.Erp.Person.Preregistration:
