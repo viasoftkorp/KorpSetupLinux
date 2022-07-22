@@ -37,6 +37,26 @@
       tags:
         - infrastructure-desktop
 
+    - role: engenharia
+      tags:
+        - engenharia
+
+    - role: ERP
+      tags:
+        - ERP
+
+    - role: fiscal
+      tags:
+        - fiscal
+
+    - role: logistica
+      tags:
+        - logistica
+
+    - role: vendas
+      tags:
+        - vendas
+
     - role: PCRG001
       tags:
         - PCRG001

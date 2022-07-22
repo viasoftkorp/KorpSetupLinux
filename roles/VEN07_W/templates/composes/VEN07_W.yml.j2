@@ -27,9 +27,9 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-vendas-orcamento-sync:
-    image: "korp/viasoft.vendas.orcamento.sync:1.0.x"
-    container_name: "Viasoft.Vendas.Orcamento.Sync"
+  viasoft-vendas-orcamento-gateway:
+    image: "korp/viasoft.vendas.orcamento.gateway:1.0.x"
+    container_name: "Viasoft.Vendas.Orcamento.Gateway"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

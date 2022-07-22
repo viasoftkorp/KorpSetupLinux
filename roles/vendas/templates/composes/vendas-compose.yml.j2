@@ -1,0 +1,145 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "app_server: $APP_SERVER"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  viasoft-sales-core:
+    image: "korp/viasoft.sales.core:3.1.x"
+    container_name: "Viasoft.Sales.Core"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft.commercialproposal-core:
+    image: "korp/viasoft.sales.commercialproposal.core:3.3.x"
+    container_name: "Viasoft.Sales.CommercialProposal.Core"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft.commercialproposal-sync:
+    image: "korp/viasoft.sales.commercialproposal.sync:3.2.x"
+    container_name: "Viasoft.Sales.CommercialProposal.Sync"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-vendas-custeioproduto:
+    image: "korp/viasoft.vendas.custeioproduto:1.0.x"
+    container_name: "Viasoft.Vendas.CusteioProduto"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-vendas-custeioproduto-gateway:
+    image: "korp/viasoft.vendas.custeioproduto.gateway:1.0.x"
+    container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-sales-customerportfolio:
+    image: "korp/viasoft.sales.customerportfolio:2.1.x"
+    container_name: "Viasoft.Sales.CustomerPortfolio"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-sales-customers:
+    image: "korp/viasoft.sales.customers:2.0.x"
+    container_name: "Viasoft.Sales.Customers"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-sales-discount:
+    image: "korp/viasoft.sales.discount:2.0.x"
+    container_name: "Viasoft.Sales.Discount"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-sales-pricelist:
+    image: "korp/viasoft.sales.pricelist:2.0.x"
+    container_name: "Viasoft.Sales.PriceList"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-sales-crm-opportunities:
+    image: "korp/viasoft.sales.crm.opportunities:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Opportunities"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

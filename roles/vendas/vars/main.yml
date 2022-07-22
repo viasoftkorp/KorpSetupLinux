@@ -1,0 +1,50 @@
+role_services:
+  - Viasoft.Sales.Core:
+    db:
+      db_name: Viasoft_Sales_Core
+      db_type: mssql
+
+  - Viasoft.Sales.CommercialProposal.Core:
+    db:
+      db_name: Viasoft_Sales_CommercialProposal_Core
+      db_type: mssql
+
+  - Viasoft.Sales.CommercialProposal.Sync:
+    db:
+      db_name: Viasoft_Sales_CommercialProposal_Sync
+      db_type: mssql
+
+  - Viasoft.Vendas.CusteioProduto:
+    db:
+      db_name: Viasoft_Vendas_CusteioProduto
+      db_type: postgres
+
+  - Viasoft.Vendas.CusteioProduto.Gateway:
+    db:
+      db_name: Viasoft_Vendas_CusteioProduto_Gateway
+      db_type: postgres
+
+  - Viasoft.Sales.CustomerPortfolio:
+    db:
+      db_name: Viasoft_Sales_CustomerPortfolio
+      db_type: mssql
+
+  - Viasoft.Sales.Customers:
+    db:
+      db_name: Viasoft_Sales_Customers
+      db_type: mssql
+
+  - Viasoft.Sales.Discount:
+    db:
+      db_name: Viasoft_Sales_Discount
+      db_type: mssql
+
+  - Viasoft.Sales.PriceList:
+    db:
+      db_name: Viasoft_Sales_PriceList
+      db_type: mssql
+
+  - Viasoft.Sales.CRM.Opportunities:
+    db:
+      db_name: Viasoft_Sales_CRM_Opportunities
+      db_type: mssql

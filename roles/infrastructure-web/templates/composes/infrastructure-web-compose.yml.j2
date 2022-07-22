@@ -121,3 +121,33 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
+
+  viasoft-reporting-stimulsoft:
+    image: "korp/viasoft.reporting.stimulsoft:1.1.x"
+    container_name: "Viasoft.Reporting.Stimulsoft"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    depends_on:
+      - viasoft-tenantmanagement
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+    networks:
+      - servicos
+
+  viasoft-reporting:
+    image: "korp/viasoft.reporting:1.3.x"
+    container_name: "Viasoft.Reporting"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    depends_on:
+      - viasoft-tenantmanagement
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+    networks:
+      - servicos
