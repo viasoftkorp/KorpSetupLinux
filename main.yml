@@ -49,6 +49,10 @@
       tags:
         - fiscal
 
+    - role: logistica
+      tags:
+        - logistica
+
     - role: PRO09
       tags:
         - PRO09
