@@ -1,0 +1,40 @@
+services:
+  - Viasoft.Authentication:
+    db:
+      db_name: Viasoft_Authentication
+      db_type: mssql
+
+  - Viasoft.Reporting:
+    db:
+      db_name: Viasoft_Reporting
+      db_type: mssql
+
+  - Viasoft.Reporting.Stimulsoft:
+    db:
+      db_name: Viasoft_Reporting_Stimulsoft
+      db_type: mssql
+
+  - Viasoft.Portal:
+    db:
+      db_name: Viasoft_Portal
+      db_type: mssql  
+
+  - Viasoft.Notification:
+    db:
+      db_name: Viasoft_Notification
+      db_type: mssql
+
+  - Viasoft.TenantManagement:
+    db:
+      db_name: Viasoft_TenantManagement
+      db_type: mssql
+
+  - Viasoft.Authorization:
+    db:
+      db_name: Viasoft_Authorization
+      db_type: mssql
+
+  - Viasoft.Administration:
+    db:
+      db_name: Viasoft_Administration
+      db_type: mssql
