@@ -26,7 +26,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-      - "{{ dados_docker_dir_path }}/producao-apontamento/reports/:/app/reports/"
+      - "{{ dados_docker_dir_path }}/PRO09/reports/:/app/reports/"
 
   PRO09-2022-1-0:
     image: "korp/korp.producao.apontamento-frontend:2022.1.0.x"

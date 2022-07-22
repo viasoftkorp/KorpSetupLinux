@@ -15,7 +15,7 @@
   vars:
     volume_path: "{{ item }}"
   loop:
-    - "{{ dados_docker_dir_path }}/producao-apontamento/reports/"
+    - "{{ dados_docker_dir_path }}/PRO09/reports/"
 
 - name: configuração e transferência de arquivos de compose de PRO09
   ansible.builtin.template:
