@@ -1,4 +1,4 @@
-services:
+role_services:
   - Viasoft.Authentication:
     db:
       db_name: Viasoft_Authentication
