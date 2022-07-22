@@ -63,15 +63,6 @@
     login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
-# itera sobre os serviços mapeados em "group_vars/all" e cria os dbs com base nas informações colocadas em na prop "db"
-- name: criação de bancos de dados
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: "create_db/{{ item.db.db_type }}"
-  vars:
-    db_name: "{{ item.db.db_name }}"
-  loop: "{{ services }}"
-
 - name: adição de kv Global ao consul
   community.general.consul_kv:
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista

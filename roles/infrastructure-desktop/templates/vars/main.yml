@@ -1,0 +1,5 @@
+services:
+  - Korp.Legacy.Authentication:
+    db:
+      db_name: Auth_Legacy_Integration
+      db_type: mssql
