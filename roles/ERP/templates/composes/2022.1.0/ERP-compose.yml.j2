@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  korp-legacy-elt:
+  korp-legacy-elt-2022-1-0:
     image: "korp/korp.legacy.elt:2022.1.0.x"
-    container_name: "Korp.Legacy.ELT"
+    container_name: "Korp.Legacy.ELT-2022.1.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  korp-logistic-tracking:
+  korp-logistic-tracking-2022-1-0:
     image: "korp/korp.logistic.tracking:2022.1.0.x"
-    container_name: "Korp.Logistic.Tracking"
+    container_name: "Korp.Logistic.Tracking-2022.1.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -27,9 +27,9 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  korp-logistica-saldoprodutos:
+  korp-logistica-saldoprodutos-2022-1-0:
     image: "korp/korp.logistica.saldoprodutos:2022.1.0.x"
-    container_name: "Korp.Logistica.SaldoProdutos"
+    container_name: "Korp.Logistica.SaldoProdutos-2022.1.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
