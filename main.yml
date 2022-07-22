@@ -41,6 +41,10 @@
       tags:
         - engenharia
 
+    - role: contabil
+      tags:
+        - contabil
+  
     - role: ERP
       tags:
         - ERP
