@@ -1,4 +1,4 @@
-- name: configuração e transferência de arquivos de compose
+- name: configuração e transferência de arquivos de compose de infraestrutura WEB
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
@@ -9,7 +9,7 @@
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
 # precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
-- name: adição de serviços
+- name: adição de serviços de infraestrutura WEB
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service_without_client
@@ -26,6 +26,14 @@
     - Viasoft.Administration
     - Viasoft.Licensing.LicenseServer
 
+- name: criação de bancos de dados de infraestrutura WEB
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: "create_db/{{ item.db.db_type }}"
+  vars:
+    db_name: "{{ item.db.db_name }}"
+  loop: "{{ role_services }}"
+
 - name: setup Viasoft.Authentication
   ansible.builtin.import_tasks: authentication.yml
 
@@ -40,7 +48,7 @@
     - Korp.Legacy.Administration
     - Korp.Legacy.Authorization
 
-- name: criação e inicialização de componente de infraestrutura para WEB
+- name: criação e inicialização de componente de infraestrutura WEB
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     env_file: "{{ docker_env_file_path }}"
