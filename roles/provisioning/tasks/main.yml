@@ -44,7 +44,7 @@
     shell: /bin/bash
 
 - name: "mudança de dono de {{ korp_dir_path }}"
-  file:
+  ansible.builtin.file:
     path: "{{ korp_dir_path }}"
     owner: "{{ linux_korp.user }}"
     group: root

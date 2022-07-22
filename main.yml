@@ -57,6 +57,10 @@
       tags:
         - vendas
 
+    - role: PCRG001
+      tags:
+        - PCRG001
+
     - role: PRO09
       tags:
         - PRO09
