@@ -8,7 +8,6 @@
   loop:
     - Viasoft.Financeiro.Core
     - Viasoft.FinancialAccounting.Installment
-    - Viasoft.FinancialAccounting.Core
     - Korp.Financial.Situation
 
 - name: criação de bancos de dados de financeiro
