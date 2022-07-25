@@ -7,9 +7,4 @@ role_services:
   - Viasoft.FinancialAccounting.Installment:
     db:
       db_name: Viasoft_FinancialAccounting_Installment
-      db_type: postgres
-
-  - Viasoft.FinancialAccounting.Core:
-    db:
-      db_name: Viasoft_FinancialAccounting_Core
-      db_type: postgres
+      db_type: mssql

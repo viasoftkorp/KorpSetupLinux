@@ -29,11 +29,6 @@ role_services:
       db_name: Viasoft_Sales_CustomerPortfolio
       db_type: mssql
 
-  - Viasoft.Sales.Customers:
-    db:
-      db_name: Viasoft_Sales_Customers
-      db_type: mssql
-
   - Viasoft.Sales.Discount:
     db:
       db_name: Viasoft_Sales_Discount
@@ -42,9 +37,4 @@ role_services:
   - Viasoft.Sales.PriceList:
     db:
       db_name: Viasoft_Sales_PriceList
-      db_type: mssql
-
-  - Viasoft.Sales.CRM.Opportunities:
-    db:
-      db_name: Viasoft_Sales_CRM_Opportunities
       db_type: mssql
