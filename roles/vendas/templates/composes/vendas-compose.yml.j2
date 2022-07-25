@@ -80,7 +80,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-customerportfolio:
-    image: "korp/viasoft.sales.customerportfolio:2.1.x"
+    image: "korp/viasoft.sales.customerportfolio:2.2.x"
     container_name: "Viasoft.Sales.CustomerPortfolio"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -92,21 +92,8 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-sales-customers:
-    image: "korp/viasoft.sales.customers:2.0.x"
-    container_name: "Viasoft.Sales.Customers"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
   viasoft-sales-discount:
-    image: "korp/viasoft.sales.discount:2.0.x"
+    image: "korp/viasoft.sales.discount:2.1.x"
     container_name: "Viasoft.Sales.Discount"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -119,7 +106,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-pricelist:
-    image: "korp/viasoft.sales.pricelist:2.0.x"
+    image: "korp/viasoft.sales.pricelist:2.1.x"
     container_name: "Viasoft.Sales.PriceList"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -131,15 +118,3 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-sales-crm-opportunities:
-    image: "korp/viasoft.sales.crm.opportunities:4.1.x"
-    container_name: "Viasoft.Sales.CRM.Opportunities"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

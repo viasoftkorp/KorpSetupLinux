@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-erp-core:
-    image: "korp/viasoft.erp.core:3.0.x"
+    image: "korp/viasoft.erp.core:3.1.x"
     container_name: "Viasoft.ERP.Core"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -80,7 +80,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-erp-activities:
-    image: "korp/viasoft.erp.activities:3.0.x"
+    image: "korp/viasoft.erp.activities:3.1.x"
     container_name: "Viasoft.Erp.Activities"
     restart: always
     extra_hosts: *default-extra_hosts

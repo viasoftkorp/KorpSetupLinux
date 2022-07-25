@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-financeiro-core:
-    image: "korp/viasoft.financeiro.core:1.0.x"
-    container_name: "Viasoft.Financeiro.Core"
+  korp-vendas-custoproduto-2022-2-0:
+    image: "korp/korp.vendas.custoproduto:2022.2.0.x"
+    container_name: "Korp.Vendas.CustoProduto-2022.2.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -27,9 +27,22 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-financialaccounting-installmentt:
-    image: "korp/viasoft.financialaccounting.installment:2.2.x"
-    container_name: "Viasoft.FinancialAccounting.Installment"
+  korp-sales-pricecontrol-2022-2-0:
+    image: "korp/korp.sales.pricecontrol:2022.2.0.x"
+    container_name: "Korp.Sales.PriceControl-2022.2.0"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  korp-vendas-listapreco-2022-1-0:
+    image: "korp/korp.vendas.listapreco:2022.2.0.x"
+    container_name: "Korp.Vendas.ListaPreco-2022.2.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
