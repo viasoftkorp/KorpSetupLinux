@@ -9,6 +9,7 @@
     - Viasoft.Engenharia.Core
     - Viasoft.Engenharia.CustoOrcamento
     - Korp.Engenharia.Processo
+    - Viasoft.Engenharia.Gateway
 
 - name: criação de bancos de dados de engenharia
   ansible.builtin.include_role:

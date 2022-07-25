@@ -8,3 +8,8 @@ role_services:
     db:
       db_name: Viasoft_Engenharia_CustoOrcamento
       db_type: postgres
+
+  - Viasoft.Engenharia.Gateway:
+    db: 
+      db_name: Viasoft_Engenharia_Gateway
+      db_type: postgres
