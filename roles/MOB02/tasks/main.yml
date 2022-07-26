@@ -1,7 +1,7 @@
 - name: adição de serviços de MOB02
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_service
+    tasks_from: services/add_service-old
   vars:
     service_name: "{{ item }}"
     consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"

@@ -17,7 +17,7 @@ role_services:
   - Viasoft.Portal:
     db:
       db_name: Viasoft_Portal
-      db_type: mssql  
+      db_type: mssql
 
   - Viasoft.Notification:
     db:

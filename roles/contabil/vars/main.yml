@@ -1,5 +1,5 @@
-role_services:
+services:
   - Viasoft.Accounting:
-    db:
-      db_name: Viasoft_Accounting
-      db_type: mssql
+      db:
+        name: Viasoft_Accounting
+        type: mssql
