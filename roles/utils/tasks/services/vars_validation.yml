@@ -1,0 +1,22 @@
+---
+- name: "validação de variáveis de {{  service_name  }}"
+  ansible.builtin.fail:
+    msg: "Um ou mais valores não foram setados nas variáveis de {{  service_name  }}"
+  when: service_vars.db is defined and (service_vars.db.type is undefined or service_vars.db.type == None)
+
+- name: "configuração de \"db_name\" de {{  service_name  }}"
+  ansible.builtin.set_fact:
+    role_services: "{{ role_services | combine(
+      [
+        {
+           service_name : {
+            'db': {
+              'db_name':  service_name  | replace('.','_')
+            }
+          }
+        }
+      ],
+      recursive=True ) }}"
+  when: 
+    - service_vars.db is defined and (service_vars.db.name is undefined or service_vars.db.name == None)
+

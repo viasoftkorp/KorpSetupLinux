@@ -1,5 +1,7 @@
 role_services:
-  - Viasoft.Accounting:
+- Viasoft.Accounting:
     db:
-      db_name: Viasoft_Accounting
-      db_type: mssql
+      name: Viasoft_Accounting
+      type: mssql
+    oauth_client:
+      skip: false
