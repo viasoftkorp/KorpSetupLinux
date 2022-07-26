@@ -1,5 +1,5 @@
-role_services:
+services:
   - Viasoft.Fiscal.Core:
-    db:
-      db_name: Viasoft_Fiscal_Core
-      db_type: postgres
+      db:
+        db_name: Viasoft_Fiscal_Core
+        db_type: postgres
