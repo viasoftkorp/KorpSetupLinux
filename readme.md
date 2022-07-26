@@ -241,7 +241,7 @@ O nome do AppId deve sem um nome simples e genérico, como: picking, mobile, apo
     x-extra_hosts:
       &default-extra_hosts
       - "db_mssql: $DB_MSSQL"
-      - "AppId_server: $AppId_SERVER"
+      - "app_server: $APP_SERVER"
       - "korp-api: $API_GATEWAY"
       - "korp: $PORTAL_GATEWAY"
       - "korp-cdn: $CDN_GATEWAY"
