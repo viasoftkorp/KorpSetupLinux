@@ -1,10 +1,14 @@
-role_services:
+services:
   - Viasoft.Logistics.Products:
-    db:
-      db_name: Viasoft_Logistics_Products
-      db_type: mssql
+      db:
+        db_name: Viasoft_Logistics_Products
+        db_type: mssql
 
   - Viasoft.Logistics.PreRegistration:
-    db:
-      db_name: Viasoft_Logistics_PreRegistration
-      db_type: mssql
+      db:
+        db_name: Viasoft_Logistics_PreRegistration
+        db_type: mssql
+
+  - Korp.Logistic.Tracking:
+
+  - Korp.Logistica.SaldoProdutos:
