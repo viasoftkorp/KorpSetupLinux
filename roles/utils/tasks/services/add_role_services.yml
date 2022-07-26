@@ -35,8 +35,8 @@
 
 - name: checagem de compose sem versão
   ansible.builtin.stat:
-    # path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.json.j2"
-    path: /home/korp/roles/contabil/templates/composes/2022.1.0/contabil-compose.json.j2
+    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.json.j2"
+    # path: /home/korp/roles/contabil/templates/composes/2022.1.0/contabil-compose.json.j2
   register: unversioned_compose_result
 
 - name: checagem de compose versionado
