@@ -4,10 +4,11 @@
 #       name: utils
 #       tasks_from: services/add_service
 #     vars:
-#       service_vars: "{{ item.value }}"
 #       service_name: "{{ item.key }}"
 #       id: <appId ou domínio>
 #     with_dict: "{{ services }}"
+#     loop_control:
+#       extended: yes
 
 
 - name: "validação de variáveis de {{ service_name }}"

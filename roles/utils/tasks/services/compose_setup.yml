@@ -2,12 +2,14 @@
   ansible.builtin.stat:
     path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
   register: versioned_compose_result
+  # por algum motivo, o ansible dá erro executando essa task como super user
   become: false
 
 - name: checagem de compose - não versionado
   ansible.builtin.stat:
     path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
   register: unversioned_compose_result
+  # por algum motivo, o ansible dá erro executando essa task como super user
   become: false
 
 - name: "configuração e transferência de arquivos de compose de {{ id }} - versionado"
