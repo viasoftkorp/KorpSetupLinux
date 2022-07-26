@@ -151,3 +151,16 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
+
+    korp-legacy-authorization:
+    image: "korp/korp.legacy.authorization:2.0.x"
+    container_name: "Korp.Legacy.Authorization"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+    networks:
+      - servicos
