@@ -39,16 +39,3 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-financialaccounting-core:
-    image: "korpcicd/viasoft.financialaccounting.core:1.0.x"
-    container_name: "Viasoft.FinancialAccounting.Core"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
