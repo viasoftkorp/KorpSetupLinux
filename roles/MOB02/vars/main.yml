@@ -1,0 +1,14 @@
+services:
+  - Korp.Mobile:
+      volumes_directories:
+      - "{{ dados_docker_dir_path }}/MOB02/reports"
+
+  - Korp.Financial.Situation:
+
+  - Korp.Logistica.SaldoProdutos:
+
+  - Korp.Sales.PriceControl:
+
+  - Viasoft.Customer.Portifolio:
+
+  - Korp.Logistic.Tracking:
