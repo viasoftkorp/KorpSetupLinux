@@ -177,4 +177,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" "gateway_url=$gateway_url"
+sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
