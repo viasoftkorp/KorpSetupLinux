@@ -1,12 +1,12 @@
 services:
   - <service_name>:
-    # OPCIONAL, caso não haja a necessidade de criar DataBase, remover bloco 'db'
-    db: 
-      name: <db_name> # OPCIONAL, caso vazio 'name' será o nome do serviço com '_' ao invés de '.'
-      type: mssql/postgres  # OBRIGATÓRIO
-    # OPCIONAL, caso bloco não exista, irá gerar cliente oauth
-    oauth_client:
-      skip: false
-    # OPCIONAL, lista contendo o caminho absoluto para os diretórios dos volumes.
-    volumes_directories:
-    - "{{ dados_docker_dir_path }}/<path>" # sempre utilize esse template
+      # OPCIONAL, caso não haja a necessidade de criar DataBase, remover bloco 'db'
+      db: 
+        name: <db_name> # OPCIONAL, caso vazio 'name' será o nome do serviço com '_' ao invés de '.'
+        type: mssql/postgres  # OBRIGATÓRIO
+      # OPCIONAL, caso bloco não exista, irá gerar cliente oauth
+      oauth_client:
+        skip: false
+      # OPCIONAL, lista contendo o caminho absoluto para os diretórios dos volumes.
+      volumes_directories:
+      - "{{ dados_docker_dir_path }}/<path>" # sempre utilize esse template
