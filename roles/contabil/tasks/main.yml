@@ -1,10 +1,10 @@
 - name: adição de serviços de contabil
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_services
+    tasks_from: services/add_service
   vars:
     service_name: "{{ item.key }}"
     id: contabil
   with_dict: "{{ services }}"
   loop_control:
-    extended: yes
+    extended: true

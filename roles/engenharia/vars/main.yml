@@ -10,6 +10,6 @@ role_services:
       db_type: postgres
 
   - Viasoft.Engenharia.Gateway:
-    db: 
+    db:
       db_name: Viasoft_Engenharia_Gateway
       db_type: postgres

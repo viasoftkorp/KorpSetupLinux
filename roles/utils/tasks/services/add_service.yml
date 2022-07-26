@@ -8,7 +8,7 @@
 #       id: <appId ou domínio>
 #     with_dict: "{{ services }}"
 #     loop_control:
-#       extended: yes
+#       extended: true
 
 
 - name: "validação de variáveis de {{ service_name }}"
