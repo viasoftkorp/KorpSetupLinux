@@ -68,7 +68,7 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: Global
-    value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json }}"
+    value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json(ensure_ascii=False,indent=2) }}"
 
 - name: adição de config de fabio ao consul
   community.general.consul_kv:
