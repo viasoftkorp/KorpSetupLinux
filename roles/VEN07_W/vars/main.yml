@@ -1,10 +1,12 @@
-role_services:
+services:
   - Viasoft.Vendas.Orcamento.Core:
-    db:
-      db_name: Viasoft_Vendas_Orcamento_Core
-      db_type: postgres
+      db:
+        name: Viasoft_Vendas_Orcamento_Core
+        type: postgres
 
   - Viasoft.Vendas.Orcamento.Gateway:
-    db:
-      db_name: Viasoft_Vendas_Orcamento_Gateway
-      db_type: postgres
+      db:
+        name: Viasoft_Vendas_Orcamento_Gateway
+        type: postgres
+
+  - Viasoft.Legacy.Logistica:

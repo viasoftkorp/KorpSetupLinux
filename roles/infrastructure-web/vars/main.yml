@@ -1,40 +1,53 @@
-role_services:
-  - Viasoft.Authentication:
-    db:
-      db_name: Viasoft_Authentication
-      db_type: mssql
-
+services:
   - Viasoft.Reporting:
-    db:
-      db_name: Viasoft_Reporting
-      db_type: mssql
+      db:
+        name: Viasoft_Reporting
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.Reporting.Stimulsoft:
-    db:
-      db_name: Viasoft_Reporting_Stimulsoft
-      db_type: mssql
+      db:
+        name: Viasoft_Reporting_Stimulsoft
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.Portal:
-    db:
-      db_name: Viasoft_Portal
-      db_type: mssql
+      db:
+        name: Viasoft_Portal
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.Notification:
-    db:
-      db_name: Viasoft_Notification
-      db_type: mssql
+      db:
+        name: Viasoft_Notification
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.TenantManagement:
-    db:
-      db_name: Viasoft_TenantManagement
-      db_type: mssql
+      db:
+        name: Viasoft_TenantManagement
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.Authorization:
-    db:
-      db_name: Viasoft_Authorization
-      db_type: mssql
+      db:
+        name: Viasoft_Authorization
+        type: mssql
+      oauth_client:
+        skip: true
 
   - Viasoft.Administration:
-    db:
-      db_name: Viasoft_Administration
-      db_type: mssql
+      db:
+        name: Viasoft_Administration
+        type: mssql
+      oauth_client:
+        skip: true
+
+  - Viasoft.Licensing.LicenseServer:
+      oauth_client:
+        skip: true

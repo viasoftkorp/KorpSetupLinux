@@ -1,56 +1,4 @@
-- name: transferência de arquivos de atualizacao-sistema
-  ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/atualizacao-sistema/"
-    src: atualizacao-sistema/
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0666'
-    force: false
-
-- name: configuração e transferência de arquivos de compose de infrastructure-desktop
-  ansible.builtin.template:
-    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
-    src: "composes/{{ item | basename }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-  loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
-
-- name: adição de serviço de infrastructure-desktop
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/add_service-old
-  vars:
-    service_name: "{{ item }}"
-    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-  loop:
-    - Viasoft.ObjectStorage.Client
-
-- name: adição de serviços de infrastructure-desktop - sem oauth client
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/add_service_without_client
-  vars:
-    service_name: "{{ item }}"
-    consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-  loop:
-    - Viasoft.SystemUpdate
-    - Viasoft.AuditTrail.Client
-    - Viasoft.Email
-    - Korp.Legacy.Authentication
-    - Viasoft.Legacy.HTTPProxy
-    - Viasoft.WelcomePage.Dashboard
-
-- name: criação de bancos de dados de infrastructure-desktop
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: "create_db/{{ item.db.db_type }}"
-  vars:
-    db_name: "{{ item.db.db_name }}"
-  loop: "{{ role_services }}"
-
-- name: garantia da existência dos diretórios de volumes de infrastructure-desktop
+- name: garantia da existência dos diretórios de volumes de minio-server
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -58,14 +6,14 @@
     volume_path: "{{ item }}"
   loop:
     - "{{ dados_docker_dir_path }}/minio-server"
-    - "{{ dados_docker_dir_path }}/viasoft-audittrail-client"
-    - "{{ dados_docker_dir_path }}/viasoft-email/data"
-    - "{{ dados_docker_dir_path }}/viasoft-email/errors"
-    - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/"
 
-- name: criação e inicialização de infrastructure-desktop-compose
-  community.docker.docker_compose:
-    project_src: "{{ compose_dir_path }}/"
-    env_file: "{{ docker_env_file_path }}"
-    files:
-      - infrastructure-desktop-compose.yml
+- name: adição de serviços de infrastructure-desktop
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: infrastructure-desktop
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true

@@ -8,7 +8,7 @@
 #   - name: adição de serviços
 #     ansible.builtin.include_role:
 #       name: utils
-#       tasks_from: services/add_service-old
+#       tasks_from: services/manual_service_addition_without_client
 #     vars:
 #       service_name: service_name
 #       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
@@ -23,8 +23,3 @@
     cas: "0"
     key: "{{ service_name }}"
     value: "{{ consul_kv | to_nice_json }}"
-
-- name: "adição de cliente oauth2 para {{ service_name }}"
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: oauth_client/ensure_client
