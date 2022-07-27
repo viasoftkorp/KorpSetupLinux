@@ -1,24 +1,3 @@
-- name: validação de token
-  ansible.builtin.uri:
-    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
-    return_content: true
-  register: response
-
-- name: configuração de tenant_id
-  ansible.builtin.set_fact:
-    tenant_id: "{{ response.json.tenantId }}"
-    version_without_build: "{{ response.json.version }}"
-
-- name: coleta de secrets
-  ansible.builtin.uri:
-    url: "{{ gateway_url }}/vault/manager/server-deploy/secrets/{{ token }}"
-    return_content: true
-  register: response
-
-- name: definição de secrets
-  ansible.builtin.set_fact:
-    services_secrets: "{{ response.json }}"
-
 - name: instalação de dependências padrões
   ansible.builtin.pip:
     name: "{{ item }}"
