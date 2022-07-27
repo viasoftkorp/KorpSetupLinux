@@ -29,11 +29,6 @@ services:
         name: Viasoft_Sales_CustomerPortfolio
         type: mssql
 
-  - Viasoft.Sales.Customers:
-      db:
-        name: Viasoft_Sales_Customers
-        type: mssql
-
   - Viasoft.Sales.Discount:
       db:
         name: Viasoft_Sales_Discount
@@ -42,11 +37,6 @@ services:
   - Viasoft.Sales.PriceList:
       db:
         name: Viasoft_Sales_PriceList
-        type: mssql
-
-  - Viasoft.Sales.CRM.Opportunities:
-      db:
-        name: Viasoft_Sales_CRM_Opportunities
         type: mssql
 
   - Korp.Vendas.CustoProduto:

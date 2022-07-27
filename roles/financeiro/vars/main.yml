@@ -9,9 +9,4 @@ services:
         name: Viasoft_FinancialAccounting_Installment
         type: postgres
 
-  - Viasoft.FinancialAccounting.Core:
-      db:
-        name: Viasoft_FinancialAccounting_Core
-        type: postgres
-
   - Korp.Financial.Situation:
