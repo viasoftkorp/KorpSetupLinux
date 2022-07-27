@@ -3,7 +3,7 @@
   connection: local
 
   tasks:
-    - name: Attempt and graceful roll back demo
+    - name: provisioning
       block:
 
         - name: provisioning
@@ -12,7 +12,7 @@
           tags:
             - provisioning
 
-      # bloco só será executado caso ocorro algum erro 
+      # bloco só será executado caso ocorra algum erro 
       rescue:
         - name: tratativa de erro
           ansible.builtin.import_role:
@@ -20,7 +20,6 @@
             tasks_from: error
           tags:
             - always
-
 
 - hosts: 127.0.0.1
   connection: local
@@ -132,7 +131,7 @@
             - finishing
             - always
 
-      # bloco só será executado caso ocorro algum erro 
+      # bloco só será executado caso ocorra algum erro 
       rescue:
         - name: tratativa de erro
           ansible.builtin.import_role:
