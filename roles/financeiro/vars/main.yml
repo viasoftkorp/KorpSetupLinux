@@ -1,15 +1,12 @@
-role_services:
+services:
   - Viasoft.Financeiro.Core:
-    db:
-      db_name: Viasoft_Financeiro_Core
-      db_type: postgres
+      db:
+        name: Viasoft_Financeiro_Core
+        type: postgres
 
   - Viasoft.FinancialAccounting.Installment:
-    db:
-      db_name: Viasoft_FinancialAccounting_Installment
-      db_type: postgres
+      db:
+        name: Viasoft_FinancialAccounting_Installment
+        type: postgres
 
-  - Viasoft.FinancialAccounting.Core:
-    db:
-      db_name: Viasoft_FinancialAccounting_Core
-      db_type: postgres
+  - Korp.Financial.Situation:

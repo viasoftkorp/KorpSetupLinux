@@ -1,17 +1,24 @@
-# role usada para adicionar kv ao consul e adicionar cliente oauth
-#
-# parâmetros recebidos:
-#   service_name
-#   consul_kv
-#
-# para usar, chame:
-#   - name: adição de serviços
+# deve ser chamado dentro da role do ID
+#   - name: adição de serviços de <appId ou domínio>
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: services/add_service
 #     vars:
-#       service_name: service_name
-#       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
+#       service_name: "{{ item.key }}"
+#       id: <appId ou domínio>
+#     with_dict: "{{ services }}"
+#     loop_control:
+#       extended: true
+
+# vars:
+#   skip_compose - (bool) OPCIONAL 
+#   service_name - (string) OBRIGATÓRIO 
+#   id: - (string) OBRIGATÓRIO 
+
+- name: "validação de variáveis de {{ service_name }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/vars_validation
 
 - name: criação de secret
   ansible.builtin.set_fact:
@@ -22,9 +29,42 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: "{{ service_name }}"
-    value: "{{ consul_kv | to_nice_json }}"
+    # leitura de .json.j2 localizado em templates/consul_kv da role
+    value: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') | to_nice_json(indent=2) }}"
 
 - name: "adição de cliente oauth2 para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/ensure_client
+  when: not service_vars.oauth_client.skip
+
+
+- name: "criação de bancos de dados para {{ service_name }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: "create_db/{{ service_vars.db.type }}"
+  vars:
+    db_name: "{{ service_vars.db.name }}"
+  when: service_vars.db is defined
+
+
+- name: "garantia da existência dos diretórios de volume de {{ service_name }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/ensure_volume_folder
+  vars:
+    volume_path: "{{ volume_dir }}"
+  loop: "{{ service_vars.volumes_directories }}"
+  loop_control:
+    loop_var: volume_dir
+  when: service_vars.volumes_directories is defined
+
+# essa task só acontece na ultima iteração do loop
+# isso é necessário pois a configuração de composes só deve acontecer uma vez, quando todos os serviços já estão configurados
+- name: "setup de docker compose de {{ id }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/compose_setup.yml
+  when: 
+      - ansible_loop.last
+      - not (skip_compose is defined and skip_compose)

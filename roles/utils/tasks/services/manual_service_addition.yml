@@ -1,3 +1,5 @@
+# role não só deve ser utilizada em casos específicos
+# UTILIZE A ROLE 'add_service'
 # role usada para adicionar kv ao consul e adicionar cliente oauth
 #
 # parâmetros recebidos:
@@ -8,7 +10,7 @@
 #   - name: adição de serviços
 #     ansible.builtin.include_role:
 #       name: utils
-#       tasks_from: services/add_service_without_client
+#       tasks_from: services/manual_service_addition
 #     vars:
 #       service_name: service_name
 #       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
@@ -22,4 +24,9 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: "{{ service_name }}"
-    value: "{{ consul_kv | to_nice_json }}"
+    value: "{{ consul_kv | to_nice_json(indent=2) }}"
+
+- name: "adição de cliente oauth2 para {{ service_name }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/ensure_client

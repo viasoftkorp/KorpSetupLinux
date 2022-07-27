@@ -1,26 +1,26 @@
 {
-	"Authorization": {
-		"Secret": "{{ secret }}"
-	},
-	"ServiceBus": {
-		"StorageConnectionString": "Server=db_mssql,1433; Database=Viasoft_Authentication; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False"
-	},
-	"UrlLoader": "https://korp/*",
-	"UrlRedirect": "https://korp",
-	"ConnectionStrings": {
-		"DefaultConnection": "Server=db_mssql,1433; Database=Viasoft_Authentication; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False"
-	},
-	"Provisioning": {
-		"EnableSchemaProvisioning": "false"
-	},
-	"EnableEnvironmentDependentConnectionString": "false",
-	"CertificatePath": "{{ self_signed_cert_pfx_path }}",
-	"CertificatePass": "{{ self_signed_cert.passphrase }}",
-	"ExternalAuthentication": {
-		"Google": {
-			"ClientId": "ClientId",
-			"ClientSecret": "ClientSecret",
-			"AllowedScopes": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.settings.readonly"
-		}
-	}
+  "Authorization": {
+    "Secret": "{{ secret }}"
+  },
+  "ServiceBus": {
+    "StorageConnectionString": "Server=db_mssql,1433; Database=Viasoft_Authentication; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False"
+  },
+  "UrlLoader": "https://korp/*",
+  "UrlRedirect": "https://korp",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=db_mssql,1433; Database=Viasoft_Authentication; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False"
+  },
+  "Provisioning": {
+    "EnableSchemaProvisioning": "false"
+  },
+  "EnableEnvironmentDependentConnectionString": "false",
+  "CertificatePath": "{{ self_signed_cert_pfx_path }}",
+  "CertificatePass": "{{ self_signed_cert.passphrase }}",
+  "ExternalAuthentication": {
+    "Google": {
+      "ClientId": "ClientId",
+      "ClientSecret": "ClientSecret",
+      "AllowedScopes": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.settings.readonly"
+    }
+  }
 }
