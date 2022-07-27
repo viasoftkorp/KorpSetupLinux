@@ -8,6 +8,13 @@
   loop:
     - Viasoft.Authentication
 
+- name: criação de bancos de dados de Viasoft.Authentication
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: create_db/mssql
+  vars:
+    db_name: Viasoft_Authentication
+
 - name: criação e inicialização do componente Viasoft.Authentication
   community.docker.docker_compose:
     project_src: "{{ compose_dir_path }}/"
