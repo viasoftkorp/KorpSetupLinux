@@ -30,7 +30,7 @@
     cas: "0"
     key: "{{ service_name }}"
     # leitura de .json.j2 localizado em templates/consul_kv da role
-    value: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') | to_nice_json(ensure_ascii=False,indent=2) }}"
+    value: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') | to_nice_json(indent=2) }}"
 
 - name: "adição de cliente oauth2 para {{ service_name }}"
   ansible.builtin.include_role:
