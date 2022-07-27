@@ -1,10 +1,10 @@
 {
-    "EnableAutoSyncUsers": false,
-    "AuthenticationLegacyIntegrationClientId": "{{ services_secrets['Korp.Legacy.Authentication'].ClientId }}",
-    "AuthenticationLegacyIntegrationClientSecret": "{{ services_secrets['Korp.Legacy.Authentication'].ClientSecret }}",
-    "ShouldEmptyPassword": false,
-    "ShouldValidateAvailableCompanies": false,
-    "ConnectionStrings": {
-        "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=Korp.Legacy.Authentication"
-    }
+  "EnableAutoSyncUsers": false,
+  "AuthenticationLegacyIntegrationClientId": "{{ services_secrets['Korp.Legacy.Authentication'].ClientId }}",
+  "AuthenticationLegacyIntegrationClientSecret": "{{ services_secrets['Korp.Legacy.Authentication'].ClientSecret }}",
+  "ShouldEmptyPassword": false,
+  "ShouldValidateAvailableCompanies": false,
+  "ConnectionStrings": {
+    "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=Korp.Legacy.Authentication"
+  }
 }

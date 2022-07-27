@@ -1,12 +1,12 @@
 {
-    "Authorization": {
-        "Secret": "{{ secret }}"
-    },
-    "ConnectionStrings": {
-        "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=korp.legacy.elt"
-    },
-    "PostgresqlConnectionString": "host={{ postgres_container_name }} user={{ postgres.korp_user }} password={{ postgres.korp_password }} dbname=Korp_Legacy_ELT port=5432",
-    "ShouldMirrorMinioObjects": false,
-    "CourtYear": 2020,
-    "OffSetSecondsFetchObjects": 60
+  "Authorization": {
+    "Secret": "{{ secret }}"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=korp.legacy.elt"
+  },
+  "PostgresqlConnectionString": "host={{ postgres_container_name }} user={{ postgres.korp_user }} password={{ postgres.korp_password }} dbname=Korp_Legacy_ELT port=5432",
+  "ShouldMirrorMinioObjects": false,
+  "CourtYear": 2020,
+  "OffSetSecondsFetchObjects": 60
 }
