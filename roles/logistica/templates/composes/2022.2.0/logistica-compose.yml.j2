@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-financeiro-core:
-    image: "korp/viasoft.financeiro.core:1.0.x"
-    container_name: "Viasoft.Financeiro.Core"
+  korp-logistic-tracking-2022-2-0:
+    image: "korp/korp.logistic.tracking:2022.2.0.x"
+    container_name: "Korp.Logistic.Tracking-2022.2.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -27,9 +27,9 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-financialaccounting-installmentt:
-    image: "korp/viasoft.financialaccounting.installment:2.2.x"
-    container_name: "Viasoft.FinancialAccounting.Installment"
+  korp-logistica-saldoprodutos-2022-2-0:
+    image: "korp/korp.logistica.saldoprodutos:2022.2.0.x"
+    container_name: "Korp.Logistica.SaldoProdutos-2022.2.0"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

@@ -1,13 +1,13 @@
 services:
   - Viasoft.Logistics.Products:
       db:
-        db_name: Viasoft_Logistics_Products
-        db_type: mssql
+        name: Viasoft_Logistics_Products
+        type: mssql
 
   - Viasoft.Logistics.PreRegistration:
       db:
-        db_name: Viasoft_Logistics_PreRegistration
-        db_type: mssql
+        name: Viasoft_Logistics_PreRegistration
+        type: mssql
 
   - Korp.Logistic.Tracking:
 

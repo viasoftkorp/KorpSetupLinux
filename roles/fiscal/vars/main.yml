@@ -1,5 +1,5 @@
 services:
   - Viasoft.Fiscal.Core:
       db:
-        db_name: Viasoft_Fiscal_Core
-        db_type: postgres
+        name: Viasoft_Fiscal_Core
+        type: postgres
