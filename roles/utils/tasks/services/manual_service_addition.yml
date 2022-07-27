@@ -1,3 +1,5 @@
+# role não só deve ser utilizada em casos específicos
+# UTILIZE A ROLE 'add_service'
 # role usada para adicionar kv ao consul e adicionar cliente oauth
 #
 # parâmetros recebidos:

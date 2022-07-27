@@ -10,6 +10,10 @@
 #     loop_control:
 #       extended: true
 
+# vars:
+#   skip_compose - (bool) OPCIONAL 
+#   service_name - (string) OBRIGATÓRIO 
+#   id: - (string) OBRIGATÓRIO 
 
 - name: "validação de variáveis de {{ service_name }}"
   ansible.builtin.include_role:
@@ -61,4 +65,6 @@
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/compose_setup.yml
-  when: ansible_loop.last
+  when: 
+      - ansible_loop.last
+      - not (skip_compose is defined and skip_compose)
