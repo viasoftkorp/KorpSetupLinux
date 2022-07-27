@@ -8,7 +8,7 @@
 #   - name: adição de serviços
 #     ansible.builtin.include_role:
 #       name: utils
-#       tasks_from: services/add_service_without_client
+#       tasks_from: services/manual_service_addition_without_client
 #     vars:
 #       service_name: service_name
 #       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
