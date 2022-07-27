@@ -22,4 +22,4 @@
     # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
     cas: "0"
     key: "{{ service_name }}"
-    value: "{{ consul_kv | to_nice_json }}"
+    value: "{{ consul_kv | to_nice_json(indent=2) }}"
