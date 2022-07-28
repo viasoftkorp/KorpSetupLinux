@@ -1,0 +1,39 @@
+# parâmetros esperados:
+#   service_name - string (OBRIGATÓRIO)
+#   new_kv - json (OPCIONAL) - caso não passado, será pego do arquivo .json.j2 do serviço
+
+- name: leitura de kv atual
+  community.general.consul_kv:
+    key: "{{ service_name }}"
+  register: retrieved_kv
+
+- name: validação de new_kv
+  ansible.builtin.set_fact:
+    new_kv: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') }}"
+  when: new_kv is undefined
+
+# bloco só será executado caso KV já exista no consul
+- name: validação de kv existente
+  block:
+    - name: validação de kv
+      consul_kv.py:
+        current_kv: "{{ retrieved_kv.data.Value | from_json }}"
+        new_kv: "{{ new_kv }}"
+      register: result
+
+    - name: "edição de kv de {{ service_name }} no consul"
+      community.general.consul_kv:
+        key: "{{ service_name }}"
+        value: "{{ result.prop | to_nice_json(indent=2) }}"
+
+  when: retrieved_kv.data.Value is defined
+
+# será executado apenas caso o KV ainda não exista no consul
+- name: "adição de kv de {{ service_name }} ao consul"
+  community.general.consul_kv:
+    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
+    cas: "0"
+    key: "{{ service_name }}"
+    value: "{{ new_kv | to_nice_json(indent=2) }}"
+  when: retrieved_kv.data.Value is not defined
+

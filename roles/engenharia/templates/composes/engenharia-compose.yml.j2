@@ -52,3 +52,15 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  ENG50_W:
+    image: "korp/viasoft.engenharia.core-frontend:1.0.x"
+    container_name: "ENG50_W"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

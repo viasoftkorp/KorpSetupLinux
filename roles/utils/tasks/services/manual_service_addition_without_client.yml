@@ -17,9 +17,9 @@
   ansible.builtin.set_fact:
     secret: "{{ 10000 | random | to_uuid | upper }}"
 
-- name: "adição de kv de {{ service_name }} ao consul"
-  community.general.consul_kv:
-    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
-    cas: "0"
-    key: "{{ service_name }}"
-    value: "{{ consul_kv | to_nice_json(indent=2) }}"
+- name: "garantia de kv no consul para {{ service_name }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: 'consul_kv/ensure_kv'
+  vars:
+    new_kv: "{{ consul_kv }}"
