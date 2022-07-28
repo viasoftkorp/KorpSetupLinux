@@ -42,12 +42,12 @@
     login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
-- name: adição de kv Global ao consul
-  community.general.consul_kv:
-    # parâmetro 'cas: "0"' faz com que KV não seja alterado caso já exista
-    cas: "0"
-    key: Global
-    value: "{{ lookup('template', 'consul_kv/global.json.j2') | to_nice_json(indent=2) }}"
+- name: "garantia de kv no consul para Global"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: 'consul_kv/ensure_kv'
+  vars: 
+    service_name: Global
 
 - name: adição de config de fabio ao consul
   community.general.consul_kv:
