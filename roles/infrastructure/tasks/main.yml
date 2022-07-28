@@ -48,7 +48,6 @@
     tasks_from: 'consul_kv/ensure_kv'
   vars: 
     service_name: Global
-    new_consul_json: "{{ lookup('template', 'consul_kv/global.json.j2') }}"
 
 - name: adição de config de fabio ao consul
   community.general.consul_kv:
