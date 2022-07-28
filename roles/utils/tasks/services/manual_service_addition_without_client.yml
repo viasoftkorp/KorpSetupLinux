@@ -22,4 +22,4 @@
     name: utils
     tasks_from: 'consul_kv/ensure_kv'
   vars:
-    new_consul_json: "{{ consul_kv }}"
+    new_kv: "{{ consul_kv }}"
