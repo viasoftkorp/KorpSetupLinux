@@ -36,7 +36,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
     <service_name_lowercase>-<version>:
       image: "korp/<service_name_lowercase>:<version>.x"
       container_name: "<service_name>-<version>"
-      restart: always
+      restart: on-failure:10
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
@@ -157,7 +157,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
     korp-logistica-picking-2022-2-0: # aqui usamos '-' ao invés de '.'
         image: "korp/korp.logistica.picking:2022.2.0.x" # nome deve se com letras minúsculas
         container_name: "Korp.Logistica.Picking-2022.2.0" # nome deve ser conforme o bitbucket, com letras maiúsculas
-        restart: always
+        restart: on-failure:10
         extra_hosts: *default-extra_hosts
         environment:
           - ON_PREMISE_MODE=true
