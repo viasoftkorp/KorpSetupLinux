@@ -7,15 +7,13 @@
 - name: "validação de \"oauth_client\" de {{ service_name }}"
   ansible.builtin.set_fact:
     services: "{{ services | combine(
-      [
-        {
-           service_name : {
-            'oauth_client': {
-              'skip': false
-            }
+      {
+        service_name : {
+          'oauth_client': {
+            'skip': false
           }
         }
-      ],
+      },
       recursive=True ) }}"
   when: 
     - services[service_name].oauth_client is undefined or services[service_name].oauth_client.skip is undefined
@@ -23,15 +21,13 @@
 - name: "validação de \"db.name\" de {{ service_name }}"
   ansible.builtin.set_fact:
     services: "{{ services | combine(
-      [
-        {
-           service_name : {
-            'db': {
-              'name':  service_name  | replace('.','_')
-            }
+      {
+        service_name : {
+          'db': {
+            'name':  service_name  | replace('.','_')
           }
         }
-      ],
+      },
       recursive=True ) }}"
   when: 
     - services[service_name].db is defined and (services[service_name].db.name is undefined or services[service_name].db.name == None)

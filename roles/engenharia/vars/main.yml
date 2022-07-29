@@ -1,17 +1,17 @@
 services:
-  - Viasoft.Engenharia.Core:
-      db:
-        name: Viasoft_Engenharia_Core
-        type: postgres
+  Viasoft.Engenharia.Core:
+    db:
+      name: Viasoft_Engenharia_Core
+      type: postgres
 
-  - Viasoft.Engenharia.CustoOrcamento:
-      db:
-        name: Viasoft_Engenharia_CustoOrcamento
-        type: postgres
+  Viasoft.Engenharia.CustoOrcamento:
+    db:
+      name: Viasoft_Engenharia_CustoOrcamento
+      type: postgres
 
-  - Viasoft.Engenharia.Gateway:
-      db:
-        name: Viasoft_Engenharia_Gateway
-        type: postgres
+  Viasoft.Engenharia.Gateway:
+    db:
+      name: Viasoft_Engenharia_Gateway
+      type: postgres
 
-  - Korp.Engenharia.Processo:
+  Korp.Engenharia.Processo:

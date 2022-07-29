@@ -1,0 +1,40 @@
+services:
+  Korp.Legacy.Authentication:
+    db:
+      name: Auth_Legacy_Integration
+      type: mssql
+    oauth_client:
+      skip: true
+
+  Viasoft.AuditTrail.Client:
+    oauth_client:
+      skip: true
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"    
+
+  Viasoft.Integration.Ecommerce:
+    oauth_client:
+      skip: true
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/"
+
+  Viasoft.Email:
+    oauth_client:
+      skip: true
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-email/data"
+      - "{{ dados_docker_dir_path }}/viasoft-email/errors"
+
+  Viasoft.SystemUpdate:
+    oauth_client:
+      skip: true
+
+  Viasoft.Legacy.HTTPProxy:
+    oauth_client:
+      skip: true
+
+  Viasoft.WelcomePage.Dashboard:
+    oauth_client:
+      skip: true
+
+  Viasoft.ObjectStorage.Client:

@@ -1,0 +1,16 @@
+- name: notificação de erro
+  ansible.builtin.debug:
+    msg: "Uma task falhou durante a execução do playbook, notificando tenantManagement"
+
+- name: notificação de TenantManagement
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+    method: "PUT"
+    body_format: json
+    body:
+      status: error
+      ErrorMessage: "Erro ao executar task '{{ ansible_failed_task.name }}''.\n Mensagem de erro: '{{ ansible_failed_result }}"
+
+- name: falha do playbook
+  fail:
+    msg: "{{ ansible_failed_result }}"

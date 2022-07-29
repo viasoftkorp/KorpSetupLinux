@@ -17,7 +17,7 @@ services:
   viasoft-engenharia-core:
     image: "korp/viasoft.engenharia.core:1.0.x"
     container_name: "Viasoft.Engenharia.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -30,7 +30,7 @@ services:
   viasoft-engenharia-custoorcamento:
     image: "korp/viasoft.engenharia.custoorcamento:1.0.x"
     container_name: "Viasoft.Engenharia.CustoOrcamento"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -43,11 +43,23 @@ services:
   viasoft-engenharia-gateway:
     image: "korp/viasoft.engenharia.gateway:1.0.x"
     container_name: "Viasoft.Engenharia.Gateway"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  ENG50_W:
+    image: "korp/viasoft.engenharia.core-frontend:1.0.x"
+    container_name: "ENG50_W"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
     networks:
       - servicos
     volumes:
