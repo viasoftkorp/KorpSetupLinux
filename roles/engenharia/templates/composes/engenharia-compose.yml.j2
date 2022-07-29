@@ -17,7 +17,7 @@ services:
   viasoft-engenharia-core:
     image: "korp/viasoft.engenharia.core:1.0.x"
     container_name: "Viasoft.Engenharia.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -30,7 +30,7 @@ services:
   viasoft-engenharia-custoorcamento:
     image: "korp/viasoft.engenharia.custoorcamento:1.0.x"
     container_name: "Viasoft.Engenharia.CustoOrcamento"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -43,7 +43,7 @@ services:
   viasoft-engenharia-gateway:
     image: "korp/viasoft.engenharia.gateway:1.0.x"
     container_name: "Viasoft.Engenharia.Gateway"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -56,7 +56,7 @@ services:
   ENG50_W:
     image: "korp/viasoft.engenharia.core-frontend:1.0.x"
     container_name: "ENG50_W"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

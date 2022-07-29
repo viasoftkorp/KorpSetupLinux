@@ -17,7 +17,7 @@ services:
   korp-mobile-2022-1-0:
     image: "korp/korp.mobile:2022.1.0.x"
     container_name: "Korp.Mobile-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -31,7 +31,7 @@ services:
   korp-financial-situation-2022-1-0:
     image: "korp/korp.financial.situation:2022.1.0.x"
     container_name: "Korp.Financial.Situation-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -44,7 +44,7 @@ services:
   korp-logistica-saldoprodutos-2022-1-0:
     image: "korp/korp.logistica.saldoprodutos:2022.1.0.x"
     container_name: "Korp.Logistica.SaldoProdutos-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -57,7 +57,7 @@ services:
   korp-sales-pricecontrol-2022-1-0:
     image: "korp/korp.sales.pricecontrol:2022.1.0.x"
     container_name: "Korp.Sales.PriceControl-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -70,7 +70,7 @@ services:
   viasoft-customer-portifolio-2022-1-0:
     image: "korp/viasoft.customer.portifolio:2022.1.0.x"
     container_name: "Viasoft.Customer.Portifolio-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -83,7 +83,7 @@ services:
   korp-logistic-tracking-2022-1-0:
     image: "korp/korp.logistic.tracking:2022.1.0.x"
     container_name: "Korp.Logistic.Tracking-2022.1.0"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

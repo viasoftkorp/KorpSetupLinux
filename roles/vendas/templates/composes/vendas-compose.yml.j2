@@ -17,7 +17,7 @@ services:
   viasoft-sales-core:
     image: "korp/viasoft.sales.core:3.1.x"
     container_name: "Viasoft.Sales.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -30,7 +30,7 @@ services:
   viasoft.commercialproposal-core:
     image: "korp/viasoft.sales.commercialproposal.core:3.3.x"
     container_name: "Viasoft.Sales.CommercialProposal.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -43,7 +43,7 @@ services:
   viasoft.commercialproposal-sync:
     image: "korp/viasoft.sales.commercialproposal.sync:3.2.x"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -56,7 +56,7 @@ services:
   viasoft-vendas-custeioproduto:
     image: "korp/viasoft.vendas.custeioproduto:1.0.x"
     container_name: "Viasoft.Vendas.CusteioProduto"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -69,7 +69,7 @@ services:
   viasoft-vendas-custeioproduto-gateway:
     image: "korp/viasoft.vendas.custeioproduto.gateway:1.0.x"
     container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -82,7 +82,7 @@ services:
   viasoft-sales-customerportfolio:
     image: "korp/viasoft.sales.customerportfolio:2.2.x"
     container_name: "Viasoft.Sales.CustomerPortfolio"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -95,7 +95,7 @@ services:
   viasoft-sales-discount:
     image: "korp/viasoft.sales.discount:2.1.x"
     container_name: "Viasoft.Sales.Discount"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -108,7 +108,7 @@ services:
   viasoft-sales-pricelist:
     image: "korp/viasoft.sales.pricelist:2.1.x"
     container_name: "Viasoft.Sales.PriceList"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -121,7 +121,7 @@ services:
   VEN07_W:
     image: "korp/viasoft.vendas.orcamento-frontend:1.0.x"
     container_name: "VEN07_W"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -133,7 +133,7 @@ services:
   CDP01:
     image: "korp/viasoft.vendas.custeioproduto-frontend:1.0.x"
     container_name: "CDP01"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -145,7 +145,7 @@ services:
   VEN27:
     image: "korp/viasoft.sales.commercialproposal-frontend:2.1.x"
     container_name: "VEN27"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

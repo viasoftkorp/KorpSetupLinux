@@ -17,7 +17,7 @@ services:
   viasoft-vendas-orcamento-core:
     image: "korp/viasoft.vendas.orcamento.core:1.0.x"
     container_name: "Viasoft.Vendas.Orcamento.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -30,7 +30,7 @@ services:
   viasoft-vendas-orcamento-gateway:
     image: "korp/viasoft.vendas.orcamento.gateway:1.0.x"
     container_name: "Viasoft.Vendas.Orcamento.Gateway"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -43,7 +43,7 @@ services:
   viasoft-legacy-logistica:
     image: "korp/viasoft.legacy.logistica:1.0.x"
     container_name: "Viasoft.Legacy.Logistica"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

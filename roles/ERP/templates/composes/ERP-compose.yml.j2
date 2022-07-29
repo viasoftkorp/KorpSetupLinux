@@ -17,7 +17,7 @@ services:
   viasoft-erp-person:
     image: "korp/viasoft.erp.person:3.0.x"
     container_name: "Viasoft.ERP.Person"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -30,7 +30,7 @@ services:
   viasoft-erp-person-preregistration:
     image: "korp/viasoft.erp.person.preregistration:3.0.x"
     container_name: "Viasoft.Erp.Person.Preregistration"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -43,7 +43,7 @@ services:
   viasoft-erp-core:
     image: "korp/viasoft.erp.core:3.1.x"
     container_name: "Viasoft.ERP.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -56,7 +56,7 @@ services:
   viasoft-erp-sync:
     image: "korp/viasoft.erp.sync:2.0.x"
     container_name: "Viasoft.Erp.Sync"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -69,7 +69,7 @@ services:
   viasoft-legacy-parametros:
     image: "korp/viasoft.legacy.parametros:1.1.x"
     container_name: "Viasoft.Legacy.Parametros"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -82,7 +82,7 @@ services:
   viasoft-erp-activities:
     image: "korp/viasoft.erp.activities:3.1.x"
     container_name: "Viasoft.Erp.Activities"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -95,7 +95,7 @@ services:
   SYNC01:
     image: "korp/viasoft.erp.sync-frontend:1.0.x"
     container_name: "SYNC01"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
