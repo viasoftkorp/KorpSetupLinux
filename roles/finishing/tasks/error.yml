@@ -9,7 +9,7 @@
     body_format: json
     body:
       status: error
-      ErrorMessage: "Erro ao executar task '{{ ansible_failed_task.name }}''.\n Mensagem de erro: '{{ ansible_failed_result }}'"
+      ErrorMessage: "Erro ao executar task '{{ ansible_failed_task.name }}''.\n Mensagem de erro: '{{ ansible_failed_result }}"
 
 - name: falha do playbook
   fail:
