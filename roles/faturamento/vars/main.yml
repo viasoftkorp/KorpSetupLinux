@@ -1,5 +1,5 @@
 services:
-  - Viasoft.Faturamento.Core:
+  Viasoft.Faturamento.Core:
     db:
       name: Viasoft_Faturamento_Core
       type: postgres

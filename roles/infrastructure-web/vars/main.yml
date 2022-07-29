@@ -1,53 +1,53 @@
 services:
-  - Viasoft.Reporting:
-      db:
-        name: Viasoft_Reporting
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Reporting:
+    db:
+      name: Viasoft_Reporting
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Reporting.Stimulsoft:
-      db:
-        name: Viasoft_Reporting_Stimulsoft
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Reporting.Stimulsoft:
+    db:
+      name: Viasoft_Reporting_Stimulsoft
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Portal:
-      db:
-        name: Viasoft_Portal
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Portal:
+    db:
+      name: Viasoft_Portal
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Notification:
-      db:
-        name: Viasoft_Notification
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Notification:
+    db:
+      name: Viasoft_Notification
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.TenantManagement:
-      db:
-        name: Viasoft_TenantManagement
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.TenantManagement:
+    db:
+      name: Viasoft_TenantManagement
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Authorization:
-      db:
-        name: Viasoft_Authorization
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Authorization:
+    db:
+      name: Viasoft_Authorization
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Administration:
-      db:
-        name: Viasoft_Administration
-        type: mssql
-      oauth_client:
-        skip: true
+  Viasoft.Administration:
+    db:
+      name: Viasoft_Administration
+      type: mssql
+    oauth_client:
+      skip: true
 
-  - Viasoft.Licensing.LicenseServer:
-      oauth_client:
-        skip: true
+  Viasoft.Licensing.LicenseServer:
+    oauth_client:
+      skip: true
