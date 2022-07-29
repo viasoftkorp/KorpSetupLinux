@@ -1,12 +1,12 @@
 services:
-  - Korp.Logistica.Picking:
+  Korp.Logistica.Picking:
 
-  - Korp.Logistica.Picking.AnaliseDeEstoque:
+  Korp.Logistica.Picking.AnaliseDeEstoque:
 
-  - Korp.Logistica.Picking.ControlePedidos:
+  Korp.Logistica.Picking.ControlePedidos:
 
-  - Korp.Logistica.Picking.Faturamento:
+  Korp.Logistica.Picking.Faturamento:
 
-  - Korp.Logistica.Picking.OrdemProducao:
+  Korp.Logistica.Picking.OrdemProducao:
 
-  - Korp.Faturamento.SolicitacaoDeFaturamento:
+  Korp.Faturamento.SolicitacaoDeFaturamento:

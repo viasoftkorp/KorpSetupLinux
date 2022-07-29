@@ -1,5 +1,5 @@
 services:
-  - Viasoft.Accounting:
-      db:
-        name: Viasoft_Accounting
-        type: mssql
+  Viasoft.Accounting:
+    db:
+      name: Viasoft_Accounting
+      type: mssql

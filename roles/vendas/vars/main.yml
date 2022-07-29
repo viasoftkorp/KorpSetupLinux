@@ -1,46 +1,46 @@
 services:
-  - Viasoft.Sales.Core:
-      db:
-        name: Viasoft_Sales_Core
-        type: mssql
+  Viasoft.Sales.Core:
+    db:
+      name: Viasoft_Sales_Core
+      type: mssql
 
-  - Viasoft.Sales.CommercialProposal.Core:
-      db:
-        name: Viasoft_Sales_CommercialProposal_Core
-        type: mssql
+  Viasoft.Sales.CommercialProposal.Core:
+    db:
+      name: Viasoft_Sales_CommercialProposal_Core
+      type: mssql
 
-  - Viasoft.Sales.CommercialProposal.Sync:
-      db:
-        name: Viasoft_Sales_CommercialProposal_Sync
-        type: mssql
+  Viasoft.Sales.CommercialProposal.Sync:
+    db:
+      name: Viasoft_Sales_CommercialProposal_Sync
+      type: mssql
 
-  - Viasoft.Vendas.CusteioProduto:
-      db:
-        name: Viasoft_Vendas_CusteioProduto
-        type: postgres
+  Viasoft.Vendas.CusteioProduto:
+    db:
+      name: Viasoft_Vendas_CusteioProduto
+      type: postgres
 
-  - Viasoft.Vendas.CusteioProduto.Gateway:
-      db:
-        name: Viasoft_Vendas_CusteioProduto_Gateway
-        type: postgres
+  Viasoft.Vendas.CusteioProduto.Gateway:
+    db:
+      name: Viasoft_Vendas_CusteioProduto_Gateway
+      type: postgres
 
-  - Viasoft.Sales.CustomerPortfolio:
-      db:
-        name: Viasoft_Sales_CustomerPortfolio
-        type: mssql
+  Viasoft.Sales.CustomerPortfolio:
+    db:
+      name: Viasoft_Sales_CustomerPortfolio
+      type: mssql
 
-  - Viasoft.Sales.Discount:
-      db:
-        name: Viasoft_Sales_Discount
-        type: mssql
+  Viasoft.Sales.Discount:
+    db:
+      name: Viasoft_Sales_Discount
+      type: mssql
 
-  - Viasoft.Sales.PriceList:
-      db:
-        name: Viasoft_Sales_PriceList
-        type: mssql
+  Viasoft.Sales.PriceList:
+    db:
+      name: Viasoft_Sales_PriceList
+      type: mssql
 
-  - Korp.Vendas.CustoProduto:
+  Korp.Vendas.CustoProduto:
 
-  - Korp.Sales.PriceControl:
+  Korp.Sales.PriceControl:
 
-  - Korp.Vendas.ListaPreco:
+  Korp.Vendas.ListaPreco:
