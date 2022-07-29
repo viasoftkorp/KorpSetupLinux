@@ -11,7 +11,6 @@
 #       tasks_from: services/manual_service_addition_without_client
 #     vars:
 #       service_name: service_name
-#       consul_kv: "{{ lookup('template', 'consul_kv/service_name.json.j2') }}"
 
 - name: criação de secret
   ansible.builtin.set_fact:
@@ -21,5 +20,3 @@
   ansible.builtin.include_role:
     name: utils
     tasks_from: 'consul_kv/ensure_kv'
-  vars:
-    new_kv: "{{ consul_kv }}"
