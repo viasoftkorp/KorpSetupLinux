@@ -9,4 +9,4 @@ services:
         skip: false
       # OPCIONAL, lista contendo o caminho absoluto para os diretórios dos volumes.
       volumes_directories:
-      - "{{ dados_docker_dir_path }}/<path>" # sempre utilize esse template
+      - "{{ dados_docker_dir_path }}/<appId>/<path>" # sempre utilize esse template

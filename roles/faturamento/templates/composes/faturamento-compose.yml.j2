@@ -17,7 +17,7 @@ services:
   viasoft-faturamento-core:
     image: "korp/viasoft.faturamento.core:1.0.x"
     container_name: "Viasoft.Faturamento.Core"
-    restart: always
+    restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

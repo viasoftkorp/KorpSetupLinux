@@ -18,9 +18,9 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
       `roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2`
 
-  2. adicionar serviço na task de configuração
+  2. adicionar serviço no arquivo de variáveis
 
-      `roles/<AppId>/tasks/main.yml`
+      `roles/<AppId>/vars/main.yml`
 
   3. adicionar K/V do consul
 
@@ -36,7 +36,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
     <service_name_lowercase>-<version>:
       image: "korp/<service_name_lowercase>:<version>.x"
       container_name: "<service_name>-<version>"
-      restart: always
+      restart: on-failure:10
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
@@ -49,29 +49,44 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     **Caso seu serviço tenha `volumes` adicionais, siga o passo *4***
 
-2. Adicionar serviço na task de configuração (`roles/<AppId>/tasks/main.yml`)
+2. adicionar serviço no arquivo de variáveis (`roles/<AppId>/vars/main.yml`)
 
-    dentro do arquivo `main.yml`, há um bloco de código conforme o seguinte:
-
-    ``` yml
-    - name: adição de serviços de <AppId>
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: services/add_service
-      vars:
-        service_name: "{{ item }}"
-        consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-      loop:
-        - <services>
-    ```
-
-    o seu serviço deverá ser adicionado dentro do array `loop`, ficando da seguinte forma:
+    dentro do arquivo `main.yml`, adicione o seu serviço dentro do dicionário `services`:
 
     ``` yml
-    loop:
-      - Service.Name.One
-      - Service.Name.Two
+    - <service_name>:
+        # OPCIONAL, caso não haja a necessidade de criar DataBase, remover bloco 'db'
+        db: 
+          name: <db_name> # OPCIONAL, caso vazio 'name' será o nome do serviço com '_' ao invés de '.'
+          type: mssql/postgres  # OBRIGATÓRIO
+        # OPCIONAL, caso bloco não exista, irá gerar cliente oauth
+        oauth_client:
+          skip: false
+        # OPCIONAL, lista contendo o caminho absoluto para os diretórios dos volumes.
+        volumes_directories:
+        - "{{ dados_docker_dir_path }}/<path>" # sempre utilize esse template
     ```
+
+    por exemplo, caso seu serviço tenha banco de dados em postgres, cliente oauth, e não tenha volumes, sua configuração ficaria da seguinte forma:
+
+    ``` yml
+    - <service_name>:
+        db: 
+          name: <db_name>
+          type: postgres
+    ```
+
+
+    para serviços que não possuem nenhuma propriedade, a configuração ficaria:
+
+    ``` yml
+    - <service_name>:
+    ```
+
+    **OBSERVAÇÃO:**
+
+    note que após o `service_name`, sempre deve haver dois pontos `:`
+
 
 3. adicionar K/V do consul
 
@@ -110,42 +125,15 @@ Para adicionar um novo serviço, siga os seguintes passos:
           - "{{ dados_docker_dir_path }}/financeiro/errors/:/app/errors" 
         ```
 
-    Após adicionar o volume no compose, é necessário adiciona-lo na task de criação de diretório.
+    Após adicionar o volume no compose, é necessário adiciona-lo nas variáveis do serviço.
 
-    Para isso, abra `roles/<AppId>/tasks/main.yml`, após o bloco
-
-    ``` yml
-    - name: adição de serviços de <AppId>
-    ```
-
-    adicione o seguinte bloco:
+    Para isso, abra `roles/<AppId>/vars/main.yml`, nas propriedades do seu serviço adicione o diretório na lista `volumes_directories`:
 
     ``` yml
-    - name: garantia da existência dos diretórios de volumes de <AppId>
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: services/ensure_volume_folder
-      vars:
-        volume_path: "{{ item }}"
-      loop:
-        - "{{ dados_docker_dir_path }}/<service_name_lowercase_without_dot>/"
+    - <service_name>:
+        volumes_directories:
+        - "{{ dados_docker_dir_path }}/<AppId>/<your_path>"
     ```
-
-    **OBS: esse bloco pode já existir, nesse caso, basta adicionar o seu volume ao array `loop`**
-
-    Exemplos:
-
-      - ``` yml
-        - name: garantia da existência dos diretórios de volumes de <AppId>
-          ansible.builtin.include_role:
-            name: utils
-            tasks_from: services/ensure_volume_folder
-          vars:
-            volume_path: "{{ item }}"
-          loop:
-            - "{{ dados_docker_dir_path }}/MOB02/data/"
-            - "{{ dados_docker_dir_path }}/financeiro/errors/"
-        ```
 
 ---
 
@@ -156,6 +144,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 - service_name: Korp.Logistica.Picking
 - version: 2022.2.0
 - AppId: picking
+- Tem DataBase: `false`
 
 1. Adicionar serviço no compose:
   
@@ -168,7 +157,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
     korp-logistica-picking-2022-2-0: # aqui usamos '-' ao invés de '.'
         image: "korp/korp.logistica.picking:2022.2.0.x" # nome deve se com letras minúsculas
         container_name: "Korp.Logistica.Picking-2022.2.0" # nome deve ser conforme o bitbucket, com letras maiúsculas
-        restart: always
+        restart: on-failure:10
         extra_hosts: *default-extra_hosts
         environment:
           - ON_PREMISE_MODE=true
@@ -179,25 +168,18 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
           - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     ```
 
-2. Adicionar serviço na task de configuração
+2. Adicionar variáveis do serviço
 
     local do arquivo:
 
-      - template: `roles/<AppId>/tasks/main.yml`
-      - alterado: `roles/piking/tasks/main.yml`
+      - template: `roles/<AppId>/vars/main.yml`
+      - alterado: `roles/piking/vars/main.yml`
 
     Bloco de configuração de serviço:
 
     ``` yml
-    - name: adição de serviços de picking
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: services/add_service
-      vars:
-        service_name: "{{ item }}"
-        consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-      loop:
-        - Korp.Logistica.Picking
+    services:
+      - Korp.Logistica.Picking:
     ```
 
 3. adicionar K/V do consul
@@ -218,22 +200,26 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
 ---
 
-## Adição de AppId
+## Adição de AppId/Domínio
 
-O nome do AppId deve sem um nome simples e genérico, como: picking, mobile, apontamento
+O nome do Domínio deve sem um nome simples e genérico, como: picking, mobile, apontamento
+O nome do AppId deve ser pego do portal.korp, na aba de gerenciamento de aplicativos.
+
+Chamaremos AppId/Domínio de `ID`
 
 1. criar diretórios
 
-    - `roles/<AppId>/`
-    - `roles/<AppId>/tasks/`
-    - `roles/<AppId>/templates/`
-    - `roles/<AppId>/templates/consul_kv/`
-    - `roles/<AppId>/templates/composes/`
-    - `roles/<AppId>/templates/composes/<version>/`
+    - `roles/<ID>/`
+    - `roles/<ID>/tasks/`
+    - `roles/<ID>/vars/`
+    - `roles/<ID>/templates/`
+    - `roles/<ID>/templates/consul_kv/`
+    - `roles/<ID>/templates/composes/`
+    - `roles/<ID>/templates/composes/<version>/`
 
 2. criação de compose
 
-    Criar aquivo  `roles/<AppId>/templates/composes/<version>/<AppId>-compose.yml.j2` com o seguinte conteúdo:
+    Criar aquivo  `roles/<ID>/templates/composes/<version>/<ID>-compose.yml.j2` com o seguinte conteúdo:
 
     ```yml
     version: "3.8"
@@ -256,48 +242,42 @@ O nome do AppId deve sem um nome simples e genérico, como: picking, mobile, apo
 
 3. criação de tasks
 
-    Criar arquivo `roles/<AppId>/tasks/main.yml` com o seguinte conteúdo:
+    Criar arquivo `roles/<ID>/tasks/main.yml` com o seguinte conteúdo:
 
-      - altere todas as variáveis `<AppId>`
+      - altere todas as variáveis `<ID>`
 
     ``` yml
-    - name: adição de serviços de <AppId>
+    - name: adição de serviços de <ID>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service
       vars:
-        service_name: "{{ item }}"
-        consul_kv: "{{ lookup('template', 'consul_kv/{{ item | lower }}.json.j2') }}"
-      loop:
-        - 
-
-    - name: configuração e transferência de arquivos de compose de <AppId>
-      ansible.builtin.template:
-        dest: "{{ versioned_compose_dir_path }}/{{ item[:-3] | basename }}"
-        src: "composes/{{ version_without_build }}/{{ item | basename }}"
-        owner: "{{ linux_korp.user }}"
-        group: root
-        mode: '0644'
-      loop:
-        "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search','.yml.j2') }}"
-
-    - name: criação e inicialização de <AppId>-compose - versionado
-      community.docker.docker_compose:
-        project_src: "{{ versioned_compose_dir_path }}/"
-        env_file: "{{ docker_env_file_path }}"
-        files:
-          - <AppId>-compose.yml
+        service_name: "{{ item.key }}"
+        id: <ID>
+      with_dict: "{{ services }}"
+      loop_control:
+        extended: true
     ```
 
-4. adição de role no playbook
+4. criação de arquivo de variáveis
 
-  em `main.yml` adicione as seguintes linhas **ANTES** da linhas contendo `finishing:
+    Criar arquivo `roles/<ID>/vars/main.yml` com o seguinte conteúdo:
 
-  ``` yml
-    - role: <AppId>
+    ``` yml
+    services:
+    ```
+
+5. adição de role no playbook
+
+    em `main.yml` adicione as seguintes linhas **ANTES** da linhas contendo `finishing:
+
+    ``` yml
+    - name: <ID>
+      ansible.builtin.import_role:
+        name: <ID>
       tags:
-        - <AppId>
-  ```
+        - <ID>
+    ```
 
 ---
 
