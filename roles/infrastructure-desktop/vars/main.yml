@@ -36,5 +36,3 @@ services:
   Viasoft.WelcomePage.Dashboard:
     oauth_client:
       skip: true
-
-  Viasoft.ObjectStorage.Client:
