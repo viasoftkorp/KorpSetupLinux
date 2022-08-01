@@ -49,7 +49,5 @@
   vars: 
     service_name: Global
 
-- name: adição de config de fabio ao consul
-  community.general.consul_kv:
-    key: fabio/config
-    value: "{{ lookup('file', 'configs/fabio/config') }}"
+- name: configuração de fabio pelo consul
+  ansible.builtin.import_tasks: fabio_config.yml

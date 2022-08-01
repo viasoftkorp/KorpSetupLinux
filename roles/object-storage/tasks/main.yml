@@ -1,0 +1,32 @@
+- name: adição de serviços de object-storage
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: object-storage
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
+
+- name: remoção de configuração de Viasoft.ObjectStorage.Client do fabio
+  block:
+    - name: leitura de configuração de fabio do consul
+      community.general.consul_kv:
+        key: fabio/config
+      register: result
+
+    - name: registro de configuração
+      set_fact:
+        routers: "{{ result.data.Value | split('\r\n') }}"
+
+    - name: reescrita de configuração
+      set_fact:
+        routers: "{{ routers | difference(item) }}"
+      when: item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')
+      loop: "{{ routers }}"
+
+    - name: escrita de configuração de fabio ao consul
+      community.general.consul_kv:
+        key: fabio/config
+        value: "{{ routers | join('\r\n') }}"
