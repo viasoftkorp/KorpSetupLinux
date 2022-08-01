@@ -1,0 +1,29 @@
+- name: leitura de configuração de fabio do consul
+  community.general.consul_kv:
+    key: fabio/config
+  register: result
+
+- name: definição de variável
+  set_fact:
+    consul_fabio_config: "{{ result.data.Value | split('\n')}}"
+  when: result.data != None
+
+- name: definição de variável
+  set_fact:
+     consul_fabio_config: "{{ [] }}"
+  when: result.data == None
+
+- name: definição de variável
+  set_fact:
+    ansible_fabio_config: "{{ lookup('file', 'configs/fabio/config') | split('\r\n') }}"
+
+- name: validação de configuração
+  set_fact:
+    consul_fabio_config: "{{ consul_fabio_config + [item] }}"
+  when: not (consul_fabio_config | regex_search(item + '*'))
+  loop: "{{ ansible_fabio_config }}"
+
+- name: garantia de configuração de fabio ao consul
+  community.general.consul_kv:
+    key: fabio/config
+    value: "{{ consul_fabio_config | join('\r\n') }}"
