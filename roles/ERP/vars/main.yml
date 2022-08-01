@@ -35,3 +35,5 @@ services:
         type: postgres
         
   Viasoft.Customer.Portifolio:
+  Korp.Legacy.Authorization:
+
