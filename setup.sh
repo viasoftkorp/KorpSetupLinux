@@ -86,11 +86,10 @@ fi
 
 is_first_install=False
 
-if ! [ -f /etc/ansible/ansible-inventory.yml ];
+if ! sudo test -f /etc/ansible/ansible-inventory.yml ;
 then
     is_first_install=True
 fi
-
 
 # Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
 if [ $is_first_install = True ];
