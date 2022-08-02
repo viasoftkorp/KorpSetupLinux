@@ -105,8 +105,8 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-organizationalstructuremanagement:
-    image: "korp/viasoft.CrganizationalStructuremanagement:1.0.x"
-    container_name: "Viasoft.CrganizationalStructure"
+    image: "korp/viasoft.OrganizationalStructuremanagement:1.0.x"
+    container_name: "Viasoft.OrganizationalStructure"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
