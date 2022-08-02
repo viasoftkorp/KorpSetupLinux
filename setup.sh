@@ -61,7 +61,7 @@ echo Instalando Ansible
 
 sudo apt-get install python3 --yes
 sudo apt install python3-pip --yes
-python3 -m pip install ansible
+sudo apt-get install ansible --yes
 
 
 # Configuração de disco segundário, que será mondado em /etc/korp
