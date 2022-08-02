@@ -68,13 +68,13 @@ sudo apt-get install ansible --yes
 
 if [ "$disk" != "" ];
 then
-    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
     if [ $? != 0 ]
     then
         exit 07
     fi
 else
-    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
     if [ $? != 0 ]
     then
         exit 07
@@ -177,4 +177,4 @@ fi
 
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
