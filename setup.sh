@@ -156,17 +156,17 @@ all:
           general:
             introspection_secret: $(cat /proc/sys/kernel/random/uuid)
 
-""" > sudo /etc/ansible/ansible-inventory.yml
+""" | sudo tee /etc/ansible/ansible-inventory.yml > /dev/null
 
 echo """
 [defaults]
 inventory = /etc/ansible/ansible-inventory.yml
 
-""" > sudo /etc/ansible/ansible.cfg
+""" | sudo tee /etc/ansible/ansible.cfg > /dev/null
 
 
     # Criação de senha aleatória usada pelo ansible-vault
-    sudo echo $(create_random_string) > sudo /etc/ansible/.vault_key
+    echo $(create_random_string) | sudo tee /etc/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/ansible/.vault_key
     sudo chmod 400 /etc/ansible/.vault_key
 
