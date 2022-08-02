@@ -95,10 +95,6 @@ fi
 if [ $is_first_install = True ];
 then
 
-    # Cria e configuração de diretórios que serão usados depois
-    sudo mkdir -p /etc/ansible/hosts/
-    sudo chmod 0774 /etc/ansible/
-
     echo -e "\n-----------------------\n"
     echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
     read -e -p "IP de acesso: " sql_ip
