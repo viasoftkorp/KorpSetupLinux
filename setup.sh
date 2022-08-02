@@ -175,6 +175,7 @@ inventory = /etc/ansible/ansible-inventory.yml
     sudo ansible-vault encrypt /etc/ansible/ansible-inventory.yml --vault-id /etc/ansible/.vault_key
 fi
 
-
+export ANSIBLE_PASSWORD="$(sudo cat /etc/ansible/.vault_key)"
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD") }}' --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
+#ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
