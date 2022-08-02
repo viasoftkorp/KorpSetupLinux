@@ -168,6 +168,8 @@ all:
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 fi
 
+# Instalação de depedências
+sudo ansible-galaxy collection install community.general
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
