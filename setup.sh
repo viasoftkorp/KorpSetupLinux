@@ -161,10 +161,11 @@ all:
     # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
 
 
-    # Encripta 'ansible-inventory.yml' com ansible-vault
+    # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 fi
 
@@ -178,4 +179,4 @@ then
 fi
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/ansible-inventory.yml -C setup-fix
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -C setup-fix
