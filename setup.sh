@@ -71,12 +71,14 @@ then
     ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
     if [ $? != 0 ]
     then
+        echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
     ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
     if [ $? != 0 ]
     then
+        echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 fi
@@ -175,8 +177,14 @@ ansible-galaxy collection install community.general
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
 if [ $? != 0 ]
 then
+    echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
     exit 10
 fi
 
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -C setup-fix
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
+    exit 11
+fi
