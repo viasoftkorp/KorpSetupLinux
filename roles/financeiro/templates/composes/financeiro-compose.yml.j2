@@ -27,7 +27,7 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-financialaccounting-installmentt:
+  viasoft-financialaccounting-installment:
     image: "korp/viasoft.financialaccounting.installment:2.2.x"
     container_name: "Viasoft.FinancialAccounting.Installment"
     restart: on-failure:10
