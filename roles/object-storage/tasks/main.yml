@@ -17,11 +17,11 @@
       register: result
 
     - name: registro de configuração
-      set_fact:
+      ansible.builtin.set_fact:
         routers: "{{ result.data.Value | split('\r\n') }}"
 
     - name: reescrita de configuração
-      set_fact:
+      ansible.builtin.set_fact:
         routers: "{{ routers | difference(item) }}"
       when: item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')
       loop: "{{ routers }}"
