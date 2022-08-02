@@ -2,12 +2,12 @@
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
+    - ansible-core
     # Bibliotecas usadas pelo Ansible para usar o Consul
     - python-consul
     - requests
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
-
 
 - name: provisão de certificado auto-assinado
   ansible.builtin.import_tasks: self_signed_certificate.yml
