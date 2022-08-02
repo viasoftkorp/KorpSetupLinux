@@ -8,10 +8,6 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
-- name: instalação de collection community.general
-  community.general.ansible_galaxy_install:
-    type: collection
-    name: community.general
 
 - name: provisão de certificado auto-assinado
   ansible.builtin.import_tasks: self_signed_certificate.yml
