@@ -33,5 +33,10 @@ services:
       db:
         name: Viasoft_ERP_Activities
         type: postgres
-        
+  
+  Viasoft.OrganizationalStructureManagement:
+      db:
+        name: Viasoft_OrganizationalStructureManagement
+        type: postgres
+
   Viasoft.Customer.Portifolio:
