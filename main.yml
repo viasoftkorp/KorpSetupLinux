@@ -1,6 +1,7 @@
 ---
 - hosts: 127.0.0.1
   connection: local
+  become: true
 
   tasks:
     - name: provisioning
@@ -29,17 +30,9 @@
   become: true
 
   tasks:
-    - name: instalação de collection community.general
-      community.general.ansible_galaxy_install:
-        type: collection
-        name: "{{ item }}"
-      loop:
-        - community.docker
-        - community.general
 
     - name: execução de playbook
       block:
-
         - name: setup de token
           ansible.builtin.import_role:
             name: infrastructure

@@ -86,7 +86,7 @@ fi
 
 is_first_install=False
 
-if ! sudo test -f /etc/ansible/ansible-inventory.yml ;
+if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
     is_first_install=True
 fi
@@ -155,26 +155,21 @@ all:
           general:
             introspection_secret: $(cat /proc/sys/kernel/random/uuid)
 
-""" | sudo tee /etc/ansible/ansible-inventory.yml > /dev/null
+""" | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
 
-echo """
-[defaults]
-inventory = /etc/ansible/ansible-inventory.yml
-
-""" | sudo tee /etc/ansible/ansible.cfg > /dev/null
-
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
 
     # Criação de senha aleatória usada pelo ansible-vault
-    echo $(create_random_string) | sudo tee /etc/ansible/.vault_key > /dev/null
-    sudo chown root:root /etc/ansible/.vault_key
-    sudo chmod 400 /etc/ansible/.vault_key
+    echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
+    sudo chown root:root /etc/korp/ansible/.vault_key
+    sudo chmod 444 /etc/korp/ansible/.vault_key
 
 
     # Encripta 'ansible-inventory.yml' com ansible-vault
-    sudo ansible-vault encrypt /etc/ansible/ansible-inventory.yml --vault-id /etc/ansible/.vault_key
+    sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 fi
 
-export ANSIBLE_PASSWORD="$(sudo cat /etc/ansible/.vault_key)"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost 
+
 # '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost -e ansible_password='{{ lookup("env", "ANSIBLE_PASSWORD") }}' --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -vvvv
-#ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/ansible-inventory.yml
