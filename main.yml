@@ -6,7 +6,6 @@
   tasks:
     - name: provisioning
       block:
-
         - name: provisioning
           ansible.builtin.import_role:
             name: provisioning
@@ -30,7 +29,6 @@
   become: true
 
   tasks:
-
     - name: execução de playbook
       block:
         - name: setup de token
