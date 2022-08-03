@@ -59,7 +59,19 @@ echo Instalando Ansible
 
 sudo apt update --yes
 sudo apt upgrade --yes
-sudo apt-get install ansible-core
+sudo apt-get install ansible-core --yes
+
+
+# Instalação de depedências
+
+ansible-galaxy collection install community.general
+
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
+    exit 10
+fi
 
 
 # Configuração de disco segundário, que será mondado em /etc/korp
@@ -172,17 +184,6 @@ all:
     sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
-
-# Instalação de depedências
-
-ansible-galaxy collection install community.general
-
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
-if [ $? != 0 ]
-then
-    echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
-    exit 10
-fi
 
 
 # Execução de playbook main.yml
