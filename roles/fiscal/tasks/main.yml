@@ -5,6 +5,6 @@
   vars:
     service_name: "{{ item.key }}"
     id: fiscal
-  with_dict: "{{ services }}"
+  with_dict: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
   loop_control:
     extended: true
