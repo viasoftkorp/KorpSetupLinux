@@ -105,7 +105,7 @@ then
     read -e -p "IP de acesso: " sql_ip
     read -e -p "Usuário com permissões administrativas: " sql_user
     read -e -p "Senha do usuário: " sql_pass
-    read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
+    read -p "Agora, informe o IP do servidor em que os serviços Korp rodam atualmente (ou pressione enter para usar '$sql_ip'): " application_server_address
     application_server_address=${application_server_address:-$sql_ip}
 
 
