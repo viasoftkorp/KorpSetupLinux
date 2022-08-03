@@ -53,12 +53,12 @@ else
 fi
 
 
-
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
 echo Instalando Ansible
 
 sudo apt update --yes
+sudo apt upgrade --yes
 sudo apt install software-properties-common --yes
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible --yes
