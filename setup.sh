@@ -59,9 +59,7 @@ echo Instalando Ansible
 
 sudo apt update --yes
 sudo apt upgrade --yes
-sudo apt install software-properties-common --yes
-sudo apt-add-repository ppa:ansible/ansible --yes
-sudo apt install ansible --yes
+sudo apt-get install ansible-core
 
 
 # Configuração de disco segundário, que será mondado em /etc/korp
