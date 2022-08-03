@@ -188,8 +188,8 @@ fi
 
 
 # Execução de playbook main.yml
-
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -C setup-fix
+echo "$(tput setaf 6)Em seguida(BECOME password:), digite a senha do usuário admin.$(tput setaf 7)"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -K -C setup-fix
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"

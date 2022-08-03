@@ -10,3 +10,4 @@
         name: "{{ item }}"
       loop:
         - community.docker
+        - community.crypto
