@@ -2,7 +2,6 @@
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
-    - ansible-core
     # Bibliotecas usadas pelo Ansible para usar o Consul
     - python-consul
     - requests

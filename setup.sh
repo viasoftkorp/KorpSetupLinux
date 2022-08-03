@@ -59,9 +59,10 @@ fi
 
 echo Instalando Ansible
 
-sudo apt-get install python3 --yes
-sudo apt install python3-pip --yes
-sudo apt-get install ansible --yes
+sudo apt update --yes
+sudo apt install software-properties-common --yes
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible --yes
 
 
 # Configuração de disco segundário, que será mondado em /etc/korp
@@ -163,12 +164,12 @@ all:
     # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key
-    sudo chmod 644 /etc/korp/ansible/inventory.yml
-    sudo chmod 444 /etc/korp/ansible/.vault_key
-
 
     # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
+
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
+    sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
 # Instalação de depedências
