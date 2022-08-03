@@ -28,7 +28,6 @@ done
 
 
 # Validação de gateway_url
-
 if [ "$gateway_url" == "" ];
 then
   gateway_url = "https://gateway.korp.com.br"
@@ -94,7 +93,9 @@ then
     is_first_install=True
 fi
 
-# Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
+
+# Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
+
 if [ $is_first_install = True ];
 then
 
@@ -168,11 +169,14 @@ all:
     # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 
+    # Corrige a permição dos arquivos
     sudo chmod 644 /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
+
 # Instalação de depedências
+
 ansible-galaxy collection install community.general
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
@@ -182,7 +186,9 @@ then
     exit 10
 fi
 
-# '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
+
+# Execução de playbook main.yml
+
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -C setup-fix
 if [ $? != 0 ]
 then

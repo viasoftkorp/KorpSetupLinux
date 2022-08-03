@@ -38,23 +38,29 @@
           tags:
             - always
 
-        - name: infrastructure
-          ansible.builtin.import_role:
-            name: infrastructure
-          tags:
-            - infrastructure
+        # - name: infrastructure
+        #   ansible.builtin.import_role:
+        #     name: infrastructure
+        #   tags:
+        #     - infrastructure
 
-        - name: infrastructure-web
-          ansible.builtin.import_role:
-            name: infrastructure-web
-          tags:
-            - infrastructure-web
+        # - name: infrastructure-web
+        #   ansible.builtin.import_role:
+        #     name: infrastructure-web
+        #   tags:
+        #     - infrastructure-web
 
-        - name: infrastructure-desktop
+        # - name: infrastructure-desktop
+        #   ansible.builtin.import_role:
+        #     name: infrastructure-desktop
+        #   tags:
+        #     - infrastructure-desktop
+
+        - name: contabil
           ansible.builtin.import_role:
-            name: infrastructure-desktop
+            name: contabil
           tags:
-            - infrastructure-desktop
+            - contabil
 
         - name: engenharia
           ansible.builtin.import_role:
@@ -62,11 +68,6 @@
           tags:
             - engenharia
 
-        - name: contabil
-          ansible.builtin.import_role:
-            name: contabil
-          tags:
-            - contabil
 
         - name: ERP
           ansible.builtin.import_role:
