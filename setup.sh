@@ -175,14 +175,14 @@ fi
 
 # Instalação de depedências
 
-ansible-galaxy collection install community.general
+# ansible-galaxy collection install community.general
 
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
-if [ $? != 0 ]
-then
-    echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
-    exit 10
-fi
+# ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
+# if [ $? != 0 ]
+# then
+#     echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
+#     exit 10
+# fi
 
 
 # Execução de playbook main.yml

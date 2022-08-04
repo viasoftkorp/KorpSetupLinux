@@ -1,11 +1,11 @@
 - hosts: 127.0.0.1
   connection: local
-  become: no
-  gather_facts: no
+  become: false
+  gather_facts: false
   vars_prompt:
     - name: "user_pass"
       prompt: "Senha do usuário administrativo: "
-      private: yes
+      private: true
 
   tasks:
     - set_fact:
@@ -57,18 +57,21 @@
             name: infrastructure
           tags:
             - infrastructure
+            - always
 
         - name: infrastructure-web
           ansible.builtin.import_role:
             name: infrastructure-web
           tags:
             - infrastructure-web
+            - always
 
         - name: infrastructure-desktop
           ansible.builtin.import_role:
             name: infrastructure-desktop
           tags:
             - infrastructure-desktop
+            - always
 
         - name: engenharia
           ansible.builtin.import_role:
