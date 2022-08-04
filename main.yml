@@ -11,6 +11,8 @@
     - name: definição de senha
       ansible.builtin.set_fact:
         user_pass: "{{ user_pass }}"
+      tags:
+        - always
 
 - hosts: 127.0.0.1
   connection: local
