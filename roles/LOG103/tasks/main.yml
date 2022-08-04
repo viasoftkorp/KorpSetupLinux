@@ -1,0 +1,10 @@
+- name: adição de serviços de LOG103
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: LOG103
+  with_dict: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+  loop_control:
+    extended: true
