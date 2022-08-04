@@ -8,7 +8,8 @@
       private: true
 
   tasks:
-    - set_fact:
+    - name: definição de senha
+      ansible.builtin.set_fact:
         user_pass: "{{ user_pass }}"
 
 - hosts: 127.0.0.1
