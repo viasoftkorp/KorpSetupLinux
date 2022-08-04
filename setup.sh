@@ -173,21 +173,8 @@ all:
 fi
 
 
-# Instalação de depedências
-
-# ansible-galaxy collection install community.general
-
-# ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git dependences-playbook.yml --limit localhost -C setup-fix
-# if [ $? != 0 ]
-# then
-#     echo "$(tput setaf 1)Erro durante a execução do playbook 'dependences-playbook.yml'.$(tput setaf 7)"
-#     exit 10
-# fi
-
-
 # Execução de playbook main.yml
-echo "$(tput setaf 6)Em seguida(quando o texto 'BECOME password:' aparecer na tela  ), digite a senha do usuário admin.$(tput setaf 7)"
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -K -C setup-fix
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
