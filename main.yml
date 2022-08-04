@@ -1,7 +1,21 @@
----
+- hosts: 127.0.0.1
+  connection: local
+  become: no
+  gather_facts: no
+  vars_prompt:
+    - name: "user_pass"
+      prompt: "Senha do usuário administrativo: "
+      private: yes
+
+  tasks:
+    - set_fact:
+        user_pass: "{{ user_pass }}"
+
 - hosts: 127.0.0.1
   connection: local
   become: true
+  vars:
+    ansible_become_password: "{{ user_pass }}"
 
   tasks:
     - name: provisioning
@@ -109,6 +123,12 @@
             name: LOG102
           tags:
             - LOG102
+
+        - name: LOG103
+          ansible.builtin.import_role:
+            name: LOG103
+          tags:
+            - LOG103
 
         - name: MOB02
           ansible.builtin.import_role:
