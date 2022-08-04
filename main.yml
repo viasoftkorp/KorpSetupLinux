@@ -17,6 +17,7 @@
 - hosts: 127.0.0.1
   connection: local
   become: true
+  become_user: root
   vars:
     ansible_become_password: "{{ user_pass }}"
 
