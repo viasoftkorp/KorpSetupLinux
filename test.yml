@@ -19,14 +19,14 @@
 
   tasks:
 
-- name: instalação de dependências padrões
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - python3
-    - python3-pip
-    # necessário para o funcionamento de become_user
-    - acl
-    # necessário para o funcionamento de postgresql
-    - libpq-dev
+  - name: instalação de dependências padrões
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - python3
+      - python3-pip
+      # necessário para o funcionamento de become_user
+      - acl
+      # necessário para o funcionamento de postgresql
+      - libpq-dev
