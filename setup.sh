@@ -17,7 +17,7 @@ create_random_string() {
 
 
 apps=""
-ini_file_path="/etc/setup_config.ini"
+ini_file_path="etc/setup_config.ini"
 
 if test -f $ini_file_path; 
 then
@@ -200,7 +200,7 @@ fi
 
 
 # Execução de playbook main.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml --tags "$apps"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml --tags "$apps" -C webonpremise-test
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
