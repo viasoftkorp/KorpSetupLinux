@@ -17,7 +17,7 @@ create_random_string() {
 
 
 apps=""
-ini_file_path="etc/setup_config.ini"
+ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path; 
 then
