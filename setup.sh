@@ -28,7 +28,6 @@ done
 
 
 # Validação de gateway_url
-
 if [ "$gateway_url" == "" ];
 then
   gateway_url = "https://gateway.korp.com.br"
@@ -54,29 +53,30 @@ else
 fi
 
 
-
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
 echo Instalando Ansible
 
-sudo apt-get install python3 --yes
-sudo apt install python3-pip --yes
-sudo apt-get install ansible --yes
+# caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible --yes
 
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
 if [ "$disk" != "" ];
 then
-    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
     if [ $? != 0 ]
     then
+        echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
-    sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
     if [ $? != 0 ]
     then
+        echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 fi
@@ -86,19 +86,19 @@ fi
 
 is_first_install=False
 
-if ! [ -f /etc/ansible/ansible-inventory.yml ];
+if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
     is_first_install=True
 fi
 
 
-# Caso seja a primeira instalação, irá os arquivos/configurações nocessários(as)
+# Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
+
 if [ $is_first_install = True ];
 then
 
-    # Cria e configuração de diretórios que serão usados depois
-    sudo mkdir -p /etc/ansible/hosts/
-    sudo chmod 0774 /etc/ansible/
+    # Cria e diretórios que serão usados depois
+    sudo mkdir -p /etc/korp/ansible/
 
     echo -e "\n-----------------------\n"
     echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
@@ -156,25 +156,27 @@ all:
           general:
             introspection_secret: $(cat /proc/sys/kernel/random/uuid)
 
-""" > /etc/ansible/ansible-inventory.yml
+""" | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
 
-echo """
-[defaults]
-inventory = /etc/ansible/ansible-inventory.yml
-
-""" > /etc/ansible/ansible.cfg
-
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
 
     # Criação de senha aleatória usada pelo ansible-vault
-    sudo echo $(create_random_string) > /etc/ansible/.vault_key
-    sudo chown root:root /etc/ansible/.vault_key
-    sudo chmod 400 /etc/ansible/.vault_key
+    echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
+    sudo chown root:root /etc/korp/ansible/.vault_key
 
+    # Encripta 'inventory.yml' com ansible-vault
+    sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 
-    # Encripta 'ansible-inventory.yml' com ansible-vault
-    sudo ansible-vault encrypt /etc/ansible/ansible-inventory.yml --vault-id /etc/ansible/.vault_key
+    # Corrige a permição dos arquivos
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
+    sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
 
-# '--limit localhost' é necessário pois 'ansible-pull' dará um erro de host não especificato com isso
-sudo ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url"
+# Execução de playbook main.yml
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
+    exit 11
+fi

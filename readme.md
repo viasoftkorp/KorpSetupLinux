@@ -254,7 +254,7 @@ Chamaremos AppId/Domínio de `ID`
       vars:
         service_name: "{{ item.key }}"
         id: <ID>
-      with_dict: "{{ services }}"
+      with_dict: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
       loop_control:
         extended: true
     ```

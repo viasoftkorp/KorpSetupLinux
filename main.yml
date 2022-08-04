@@ -1,11 +1,28 @@
----
 - hosts: 127.0.0.1
   connection: local
+  become: false
+  gather_facts: false
+  vars_prompt:
+    - name: "user_pass"
+      prompt: "Senha do usuário administrativo"
+      private: true
+
+  tasks:
+    - name: definição de senha
+      ansible.builtin.set_fact:
+        user_pass: "{{ user_pass }}"
+      tags:
+        - always
+
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars:
+    ansible_become_password: "{{ user_pass }}"
 
   tasks:
     - name: provisioning
       block:
-
         - name: provisioning
           ansible.builtin.import_role:
             name: provisioning
@@ -20,6 +37,7 @@
             tasks_from: error
           tags:
             - always
+            - default-setup
 
 - hosts: 127.0.0.1
   connection: local
@@ -31,31 +49,33 @@
   tasks:
     - name: execução de playbook
       block:
-
         - name: setup de token
           ansible.builtin.import_role:
             name: infrastructure
             tasks_from: token_setup
           tags:
-            - always
+            - default-setup
 
         - name: infrastructure
           ansible.builtin.import_role:
             name: infrastructure
           tags:
             - infrastructure
+            - default-setup
 
         - name: infrastructure-web
           ansible.builtin.import_role:
             name: infrastructure-web
           tags:
             - infrastructure-web
+            - default-setup
 
         - name: infrastructure-desktop
           ansible.builtin.import_role:
             name: infrastructure-desktop
           tags:
             - infrastructure-desktop
+            - always
 
         - name: engenharia
           ansible.builtin.import_role:
@@ -110,6 +130,12 @@
             name: LOG102
           tags:
             - LOG102
+
+        - name: LOG103
+          ansible.builtin.import_role:
+            name: LOG103
+          tags:
+            - LOG103
 
         - name: MOB02
           ansible.builtin.import_role:
