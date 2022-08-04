@@ -37,6 +37,7 @@
             tasks_from: error
           tags:
             - always
+            - default-setup
 
 - hosts: 127.0.0.1
   connection: local
@@ -53,21 +54,21 @@
             name: infrastructure
             tasks_from: token_setup
           tags:
-            - always
+            - default-setup
 
         - name: infrastructure
           ansible.builtin.import_role:
             name: infrastructure
           tags:
             - infrastructure
-            - always
+            - default-setup
 
         - name: infrastructure-web
           ansible.builtin.import_role:
             name: infrastructure-web
           tags:
             - infrastructure-web
-            - always
+            - default-setup
 
         - name: infrastructure-desktop
           ansible.builtin.import_role:
