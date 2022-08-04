@@ -57,6 +57,7 @@ fi
 
 echo Instalando Ansible
 
+# caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible --yes
 
@@ -185,7 +186,7 @@ fi
 
 
 # Execução de playbook main.yml
-echo "$(tput setaf 6)Em seguida(BECOME password:), digite a senha do usuário admin.$(tput setaf 7)"
+echo "$(tput setaf 6)Em seguida(quando o texto 'BECOME password:' aparecer na tela  ), digite a senha do usuário admin.$(tput setaf 7)"
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml -K -C setup-fix
 if [ $? != 0 ]
 then
