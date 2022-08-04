@@ -4,7 +4,7 @@
   gather_facts: false
   vars_prompt:
     - name: "user_pass"
-      prompt: "Senha do usuário administrativo: "
+      prompt: "Senha do usuário administrativo"
       private: true
 
   tasks:
