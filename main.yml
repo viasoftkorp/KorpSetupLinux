@@ -28,6 +28,7 @@
             name: provisioning
           tags:
             - provisioning
+            - default-setup
 
       # bloco só será executado caso ocorra algum erro 
       rescue:
@@ -54,6 +55,7 @@
             name: infrastructure
             tasks_from: token_setup
           tags:
+            - always
             - default-setup
 
         - name: infrastructure

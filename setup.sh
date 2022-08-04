@@ -16,6 +16,32 @@ create_random_string() {
 #   gateway_url="<gateway_url>"
 
 
+apps=""
+ini_file_path="/etc/setup_config.ini"
+
+if test -f $ini_file_path; 
+then
+    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+
+    echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
+    echo "$apps"
+
+else
+    echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
+    echo "$(tput setaf 3)Para gerar o arquivo de configuração siga os passos em: <link>$(tput setaf 7)"
+    read -e -p "Precione 'enter' para continuar sem o arquivo de configuração, o digite 'n' para sair: " resp
+    if [ "$resp" != "" ]; then
+      exit 0
+    fi
+fi
+
+if [ "$apps" == "" ]; then
+    apps="default-setup"
+else
+    apps="default-setup,$apps"
+fi
+
+
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -105,7 +131,7 @@ then
     read -e -p "IP de acesso: " sql_ip
     read -e -p "Usuário com permissões administrativas: " sql_user
     read -e -p "Senha do usuário: " sql_pass
-    read -p "Agora, informe o IP do servidor em que os serviços Korp rodam atualmente (ou pressione enter para usar '$sql_ip'): " application_server_address
+    read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
     application_server_address=${application_server_address:-$sql_ip}
 
 
@@ -174,7 +200,7 @@ fi
 
 
 # Execução de playbook main.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml --tags "$apps"
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
