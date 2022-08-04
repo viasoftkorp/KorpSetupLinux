@@ -1,0 +1,32 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: false
+  gather_facts: false
+  vars_prompt:
+    - name: "user_pass"
+      prompt: "Senha do usuário administrativo: "
+      private: true
+
+  tasks:
+    - set_fact:
+        user_pass: "{{ user_pass }}"
+
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars:
+    ansible_become_password: "{{ user_pass }}"
+
+  tasks:
+
+- name: instalação de dependências padrões
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3
+    - python3-pip
+    # necessário para o funcionamento de become_user
+    - acl
+    # necessário para o funcionamento de postgresql
+    - libpq-dev
