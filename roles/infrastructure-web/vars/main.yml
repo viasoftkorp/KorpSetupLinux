@@ -3,8 +3,6 @@ services:
     db:
       name: Viasoft_Reporting
       type: mssql
-    oauth_client:
-      skip: true
 
   Viasoft.Reporting.Stimulsoft:
     db:
