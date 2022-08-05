@@ -5,9 +5,9 @@ services:
       type: postgres
 
   Viasoft.ERP.Person.Preregistration:
-      db:
-        name: Viasoft_ERP_Person_PreRegistration
-        type: mssql
+    db:
+      name: Viasoft_ERP_Person_PreRegistration
+      type: mssql
 
   Viasoft.ERP.Person:
     db:
@@ -15,9 +15,9 @@ services:
       type: mssql
 
   Viasoft.ERP.Core:
-      db:
-        name: Viasoft_ERP_Core
-        type: mssql
+    db:
+      name: Viasoft_ERP_Core
+      type: mssql
 
   Viasoft.ERP.Sync:
     db:
@@ -25,9 +25,9 @@ services:
       type: postgres
 
   Viasoft.Legacy.Parametros:
-      db:
-        name: Viasoft_Legacy_Parametros
-        type: mssql
+    db:
+      name: Viasoft_Legacy_Parametros
+      type: mssql
 
   Viasoft.ERP.Activities:
     db:
