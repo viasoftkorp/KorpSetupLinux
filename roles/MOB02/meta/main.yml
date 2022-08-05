@@ -1,0 +1,5 @@
+dependencies:
+  - role: financeiro
+  - role: vendas
+  - role: logistica
+  - role: ERP
