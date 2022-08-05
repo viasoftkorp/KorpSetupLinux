@@ -51,10 +51,10 @@
   tasks:
     - name: execução de playbook
       block:
-        - name: setup de token
+        - name: default setup
           ansible.builtin.import_role:
             name: infrastructure
-            tasks_from: token_setup
+            tasks_from: default_setup
           tags:
             - always
             - default-setup

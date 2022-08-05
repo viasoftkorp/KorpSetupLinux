@@ -18,3 +18,8 @@
 - name: definição de secrets
   ansible.builtin.set_fact:
     services_secrets: "{{ response.json }}"
+
+- name: configuração de docker
+  community.docker.docker_login:
+    username: korp
+    password: "{{ services_secrets.Others.Docker.AccessToken }}"
