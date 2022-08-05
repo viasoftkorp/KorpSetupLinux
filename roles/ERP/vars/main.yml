@@ -35,8 +35,8 @@ services:
       type: postgres
 
   Viasoft.OrganizationalStructureManagement:
-      db:
-        name: Viasoft_OrganizationalStructureManagement
-        type: postgres
+    db:
+      name: Viasoft_OrganizationalStructureManagement
+      type: postgres
 
   Viasoft.Customer.Portifolio:

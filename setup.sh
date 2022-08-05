@@ -29,7 +29,7 @@ then
 else
     echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
     echo "$(tput setaf 3)Para gerar o arquivo de configuração siga os passos em: <link>$(tput setaf 7)"
-    read -e -p "Precione 'enter' para continuar sem o arquivo de configuração, o digite 'n' para sair: " resp
+    read -e -p "Precione 'enter' para continuar sem o arquivo de configuração, ou digite 'n' para sair: " resp
     if [ "$resp" != "" ]; then
       exit 0
     fi
