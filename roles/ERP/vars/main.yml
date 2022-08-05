@@ -4,7 +4,7 @@ services:
       name: Korp_Legacy_ELT
       type: postgres
 
-  Viasoft.ERP.Person.Preregistration:
+  Viasoft.ERP.Person.PreRegistration:
     db:
       name: Viasoft_ERP_Person_PreRegistration
       type: mssql
