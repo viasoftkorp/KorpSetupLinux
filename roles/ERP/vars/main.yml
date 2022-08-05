@@ -1,42 +1,42 @@
 services:
   Korp.Legacy.ELT:
-      db:
-        name: Korp_Legacy_ELT
-        type: postgres
+    db:
+      name: Korp_Legacy_ELT
+      type: postgres
 
-  Viasoft.ERP.Person.Preregistration:
-      db:
-        name: Viasoft_ERP_Person_PreRegistration
-        type: mssql
+  Viasoft.ERP.Person.PreRegistration:
+    db:
+      name: Viasoft_ERP_Person_PreRegistration
+      type: mssql
 
   Viasoft.ERP.Person:
-      db:
-        name: Viasoft_ERP_Person
-        type: mssql
+    db:
+      name: Viasoft_ERP_Person
+      type: mssql
 
   Viasoft.ERP.Core:
-      db:
-        name: Viasoft_ERP_Core
-        type: mssql
+    db:
+      name: Viasoft_ERP_Core
+      type: mssql
 
   Viasoft.ERP.Sync:
-      db:
-        name: Viasoft_ERP_Sync
-        type: postgres
+    db:
+      name: Viasoft_ERP_Sync
+      type: postgres
 
   Viasoft.Legacy.Parametros:
-      db:
-        name: Viasoft_Legacy_Parametros
-        type: mssql
+    db:
+      name: Viasoft_Legacy_Parametros
+      type: mssql
 
   Viasoft.ERP.Activities:
-      db:
-        name: Viasoft_ERP_Activities
-        type: postgres
-  
+    db:
+      name: Viasoft_ERP_Activities
+      type: postgres
+
   Viasoft.OrganizationalStructureManagement:
-      db:
-        name: Viasoft_OrganizationalStructureManagement
-        type: postgres
+    db:
+      name: Viasoft_OrganizationalStructureManagement
+      type: postgres
 
   Viasoft.Customer.Portifolio:

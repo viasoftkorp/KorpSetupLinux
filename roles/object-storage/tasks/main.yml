@@ -1,3 +1,7 @@
+- name: definição de variáveis
+  set_fact:
+    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+
 - name: adição de serviços de object-storage
   ansible.builtin.include_role:
     name: utils
@@ -5,7 +9,7 @@
   vars:
     service_name: "{{ item.key }}"
     id: object-storage
-  with_dict: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+  with_dict: "{{ services }}"
   loop_control:
     extended: true
 

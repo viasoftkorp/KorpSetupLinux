@@ -10,3 +10,6 @@ services:
       type: postgres
 
   Viasoft.Legacy.Logistica:
+    db:
+      name: Viasoft_Legacy_Logistica
+      type: mssql

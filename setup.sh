@@ -29,7 +29,7 @@ then
 else
     echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
     echo "$(tput setaf 3)Para gerar o arquivo de configuração siga os passos em: <link>$(tput setaf 7)"
-    read -e -p "Precione 'enter' para continuar sem o arquivo de configuração, o digite 'n' para sair: " resp
+    read -e -p "Precione 'enter' para continuar sem o arquivo de configuração, ou digite 'n' para sair: " resp
     if [ "$resp" != "" ]; then
       exit 0
     fi
@@ -186,6 +186,11 @@ all:
 
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 
+    echo """
+[defaults]
+inventory = /etc/korp/ansible/inventory.yml
+""" | sudo tee /etc/ansible/ansible.cfg > /dev/null
+
     # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key
@@ -200,7 +205,7 @@ fi
 
 
 # Execução de playbook main.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" -i /etc/korp/ansible/inventory.yml --tags "$apps" -C webonpremise-test
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" --tags "$apps"
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
