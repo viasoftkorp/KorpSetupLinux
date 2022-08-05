@@ -29,7 +29,7 @@ services:
 
   viasoft-erp-person-preregistration:
     image: "korp/viasoft.erp.person.preregistration:3.0.x"
-    container_name: "Viasoft.Erp.Person.Preregistration"
+    container_name: "Viasoft.ERP.Person.Preregistration"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -55,7 +55,7 @@ services:
 
   viasoft-erp-sync:
     image: "korp/viasoft.erp.sync:2.0.x"
-    container_name: "Viasoft.Erp.Sync"
+    container_name: "Viasoft.ERP.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -81,7 +81,7 @@ services:
 
   viasoft-erp-activities:
     image: "korp/viasoft.erp.activities:3.1.x"
-    container_name: "Viasoft.Erp.Activities"
+    container_name: "Viasoft.ERP.Activities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
