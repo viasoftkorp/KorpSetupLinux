@@ -42,7 +42,7 @@
     tasks_from: "create_db/{{ service_vars.db.type }}"
   vars:
     db_name: "{{ service_vars.db.name }}"
-  when: services[service_name].db is defined
+  when: service_vars.db is defined
 
 
 - name: "garantia da existência dos diretórios de volume de {{ service_name }}"

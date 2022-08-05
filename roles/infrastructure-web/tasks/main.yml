@@ -8,6 +8,10 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
 
+- name: definição de variáveis
+  set_fact:
+    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+
 # precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
 - name: adição de serviços de infrastructure-web
   ansible.builtin.include_role:
@@ -17,7 +21,7 @@
     service_name: "{{ item.key }}"
     id: infrastructure-web
     skip_compose: true
-  with_dict: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+  with_dict: "{{ services }}"
   loop_control:
     extended: true
 
