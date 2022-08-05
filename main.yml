@@ -78,7 +78,7 @@
             name: infrastructure-desktop
           tags:
             - infrastructure-desktop
-            - always
+            - default-setup
 
         - name: engenharia
           ansible.builtin.import_role:
