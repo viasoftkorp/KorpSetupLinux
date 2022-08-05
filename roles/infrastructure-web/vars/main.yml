@@ -51,3 +51,8 @@ services:
   Viasoft.Licensing.LicenseServer:
     oauth_client:
       skip: true
+
+  Viasoft.Emailing:
+    db:
+      name: Viasoft_Emailing
+      type: postgres
