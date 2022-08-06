@@ -56,3 +56,10 @@ services:
     db:
       name: Viasoft_Emailing
       type: postgres
+
+  Viasoft.FileProvider:
+    db:
+      name: Viasoft_FileProvider
+      type: mssql
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
