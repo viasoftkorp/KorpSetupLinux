@@ -57,6 +57,13 @@ services:
       name: Viasoft_Emailing
       type: postgres
 
+  Viasoft.Emailing.EmailTemplate:
+    db:
+      name: Viasoft_Emailing_EmailTemplate
+      type: mssql
+    oauth_client:
+      skip: true
+
   Viasoft.FileProvider:
     db:
       name: Viasoft_FileProvider
