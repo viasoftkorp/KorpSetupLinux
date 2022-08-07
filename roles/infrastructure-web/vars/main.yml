@@ -68,3 +68,22 @@ services:
       type: mssql
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
+
+  Viasoft.Dashboard:
+    db:
+      name: Viasoft_Dashboard
+      type: mssql
+    oauth_client:
+      skip: true
+
+  Viasoft.Workflow.Orchestrator:
+    db:
+      name: Viasoft_Workflow_Orchestrator
+      type: mssql
+    oauth_client:
+      skip: true
+
+  Viasoft.QuickFilter:
+    db:
+      name: Viasoft_QuickFilter
+      type: mssql
