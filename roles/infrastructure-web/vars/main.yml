@@ -82,3 +82,8 @@ services:
       type: mssql
     oauth_client:
       skip: true
+
+  Viasoft.QuickFilter:
+    db:
+      name: Viasoft_QuickFilter
+      type: mssql
