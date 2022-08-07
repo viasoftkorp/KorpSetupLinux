@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-erp-person:
-    image: "korp/viasoft.erp.person:3.0.x"
-    container_name: "Viasoft.ERP.Person"
+  viasoft-sales-crm-core:
+    image: "korp/viasoft.sales.crm.core:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -27,9 +27,22 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-erp-person-preregistration:
-    image: "korp/viasoft.erp.person.preregistration:3.0.x"
-    container_name: "Viasoft.ERP.Person.PreRegistration"
+  viasoft-sales-crm-accounts:
+    image: "korp/viasoft.sales.crm.accounts:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Accounts"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  
+  viasoft-sales-crm-activities:
+    image: "korp/viasoft.sales.crm.activities:3.1.x"
+    container_name: "Viasoft.Sales.CRM.Activities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -40,9 +53,10 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft-erp-core:
-    image: "korp/viasoft.erp.core:3.1.x"
-    container_name: "Viasoft.ERP.Core"
+    
+  viasoft-sales-crm-goals:
+    image: "korp/viasoft.sales.crm.goals:2.1.x"
+    container_name: "Viasoft.Sales.CRM.Goals"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -52,10 +66,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-erp-sync:
-    image: "korp/viasoft.erp.sync:2.0.x"
-    container_name: "Viasoft.ERP.Sync"
+      
+  viasoft-sales-crm-leads:
+    image: "korp/viasoft.sales.crm.leads:4.2.x"
+    container_name: "Viasoft.Sales.CRM.Leads"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -65,10 +79,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-legacy-parametros:
-    image: "korp/viasoft.legacy.parametros:1.1.x"
-    container_name: "Viasoft.Legacy.Parametros"
+        
+  viasoft-sales-crm-opportunities:
+    image: "korp/viasoft.sales.crm.opportunities:4.2.x"
+    container_name: "Viasoft.Sales.CRM.Opportunities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -78,10 +92,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-erp-activities:
-    image: "korp/viasoft.erp.activities:3.1.x"
-    container_name: "Viasoft.ERP.Activities"
+          
+  viasoft-sales-crm-qualification:
+    image: "korp/viasoft.sales.crm.qualification:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Qualification"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -91,22 +105,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  SYNC01:
-    image: "korp/viasoft.erp.sync-frontend:1.0.x"
-    container_name: "SYNC01"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-organizationalstructuremanagement:
-    image: "korp/viasoft.organizationalstructuremanagement:3.0.x"
-    container_name: "Viasoft.OrganizationalStructureManagement"
+            
+  viasoft-sales-crm-reporting:
+    image: "korp/viasoft.sales.crm.reporting:3.1.x"
+    container_name: "Viasoft.Sales.CRM.Reporting"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -116,10 +118,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-messagebird:
-    image: "korp/viasoft.messagebird:2.1.x"
-    container_name: "Viasoft.MessageBird"
+              
+  viasoft-sales-crm-sync:
+    image: "korp/viasoft.sales.crm.sync:2.0.x"
+    container_name: "Viasoft.Sales.CRM.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:

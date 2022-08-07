@@ -40,3 +40,8 @@ services:
       type: postgres
 
   Viasoft.Customer.Portifolio:
+
+  Viasoft.MessageBird:
+    db:
+      name: Viasoft_MessageBird
+      type: mssql

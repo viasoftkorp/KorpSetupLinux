@@ -44,3 +44,8 @@ services:
   Korp.Sales.PriceControl:
 
   Korp.Vendas.ListaPreco:
+
+  Viasoft.Sales.Customers:
+    db:
+      name: Viasoft_Sales_Customers
+      type: mssql
