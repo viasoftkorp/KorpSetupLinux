@@ -131,3 +131,15 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  
+  VEN26:
+    image: "korp/viasoft.sales.crm.core-frontend:3.2.x"
+    container_name: "VEN26"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"

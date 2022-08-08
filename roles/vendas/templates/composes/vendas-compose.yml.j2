@@ -118,18 +118,6 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  VEN07_W:
-    image: "korp/viasoft.vendas.orcamento-frontend:1.0.x"
-    container_name: "VEN07_W"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
   CDP01:
     image: "korp/viasoft.vendas.custeioproduto-frontend:1.0.x"
     container_name: "CDP01"
