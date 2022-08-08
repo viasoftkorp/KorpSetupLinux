@@ -153,7 +153,7 @@ services:
       - servicos
 
   korp-legacy-administration:
-    image: "korp/korp.legacy.administration:2.0.x"
+    image: "korp/korp.legacy.administration:1.2.x"
     container_name: "Korp.Legacy.Administration"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -257,3 +257,15 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
+
+  login:
+    image: "korp/viasoft.authentication-frontend:1.0.x"
+    container_name: "login"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
