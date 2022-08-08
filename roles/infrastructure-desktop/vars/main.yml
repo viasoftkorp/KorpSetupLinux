@@ -3,8 +3,6 @@ services:
     db:
       name: Auth_Legacy_Integration
       type: mssql
-    oauth_client:
-      skip: true
 
   Viasoft.AuditTrail.Client:
     oauth_client:
