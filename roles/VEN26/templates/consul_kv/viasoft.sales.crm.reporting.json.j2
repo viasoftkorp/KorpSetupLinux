@@ -7,7 +7,6 @@
   },
   "ConnectionStrings": {
     "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=Viasoft_Sales_CRM_Reporting; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
-  },
-  "KorpRegisterApiKey": "{{ services_secrets['Viasoft.Vendas.Orcamento.Gateway'].KorpRegisterApiKey }}",
+  }
   "EnableEnvironmentDependentConnectionString": "false"
 }
