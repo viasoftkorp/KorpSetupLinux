@@ -1,9 +1,4 @@
 services:
-  Viasoft.Reporting:
-    db:
-      name: Viasoft_Reporting
-      type: mssql
-
   Viasoft.Reporting.Stimulsoft:
     db:
       name: Viasoft_Reporting_Stimulsoft
@@ -50,24 +45,12 @@ services:
     oauth_client:
       skip: true
 
-  Viasoft.Emailing:
-    db:
-      name: Viasoft_Emailing
-      type: postgres
-
   Viasoft.Emailing.EmailTemplate:
     db:
       name: Viasoft_Emailing_EmailTemplate
       type: mssql
     oauth_client:
       skip: true
-
-  Viasoft.FileProvider:
-    db:
-      name: Viasoft_FileProvider
-      type: mssql
-    volumes_directories:
-      - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
 
   Viasoft.Dashboard:
     db:
@@ -82,8 +65,3 @@ services:
       type: mssql
     oauth_client:
       skip: true
-
-  Viasoft.QuickFilter:
-    db:
-      name: Viasoft_QuickFilter
-      type: mssql
