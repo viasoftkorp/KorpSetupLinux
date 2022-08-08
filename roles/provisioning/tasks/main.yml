@@ -30,6 +30,12 @@
     - psycopg2
     - cryptography>=3.0
 
+- name: configuração de /etc/sysctl.conf
+  ansible.builtin.command: "echo fs.inotify.max_user_instances=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p"
+  become: true
+  args:
+    warn: false
+
 - name: criação de usuário de uso da korp no Linux
   ansible.builtin.user:
     name: "{{ linux_korp.user }}"
