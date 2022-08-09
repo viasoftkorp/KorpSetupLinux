@@ -151,6 +151,12 @@
             name: VEN07_W
           tags:
             - VEN07_W
+        
+        - name: compras
+          ansible.builtin.import_role:
+            name: compras
+          tags:
+            - compras
 
         # essa deve ser a ultima task
         - name: finishing
