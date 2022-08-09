@@ -1,5 +1,6 @@
 dependencies:
   - role: contabil
+  - role: compras
   - role: engenharia
   - role: vendas
   - role: faturamento
