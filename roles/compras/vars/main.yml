@@ -1,5 +1,5 @@
 services:
-  Viasoft.Accounting:
+  Viasoft.Compras.PlanilhasPreco:
     db:
       name: Viasoft_Compras_PlanilhasPreco
       type: postgres
