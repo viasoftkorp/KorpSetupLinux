@@ -141,9 +141,7 @@ services:
   {{ apprise_container_name }}:
     image: "caronc/apprise:latest"
     container_name: "{{ apprise_container_name }}"
-    restart: "no"
-    ports:
-      - "8000:8000"
+    restart: always
     networks:
       - servicos
     volumes:
