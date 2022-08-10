@@ -133,7 +133,7 @@ services:
     ports:
       - "9011:9000"
     volumes:
-      - "{{ korp_dir_path }}/portainer/:/data"
+      - "{{ dados_docker_dir_path }}/portainer/:/data"
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       com.centurylinklabs.watchtower.enable: false
@@ -147,7 +147,7 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ korp_dir_path }}/apprise/:/config"
+      - "{{ dados_docker_dir_path }}/apprise/:/config"
     labels:
       com.centurylinklabs.watchtower.enable: false
 
