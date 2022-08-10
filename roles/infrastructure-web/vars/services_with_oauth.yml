@@ -24,3 +24,8 @@ services:
   Korp.Legacy.Administration:
 
   Korp.Legacy.Authorization:
+
+  Viasoft.Apprise.Proxy:
+    db:
+      name: Viasoft_Apprise_Proxy
+      type: mssql

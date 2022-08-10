@@ -16,3 +16,4 @@ docker_env_file_path: "{{ compose_dir_path }}/.env"
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres
+apprise_container_name: apprise

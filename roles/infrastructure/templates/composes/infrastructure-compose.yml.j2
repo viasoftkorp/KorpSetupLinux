@@ -138,6 +138,19 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: false
 
+  {{ apprise_container_name }}:
+    image: "caronc/apprise:latest"
+    container_name: "{{ apprise_container_name }}"
+    restart: "no"
+    ports:
+      - "8000:8000"
+    networks:
+      - servicos
+    volumes:
+      - "{{ korp_dir_path }}/apprise/:/config"
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
