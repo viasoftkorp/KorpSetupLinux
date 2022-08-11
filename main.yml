@@ -158,6 +158,12 @@
             name: VEN07_W
           tags:
             - VEN07_W
+
+        - name: VEN26
+          ansible.builtin.import_role:
+            name: VEN26
+          tags:
+            - VEN26
         
         - name: compras
           ansible.builtin.import_role:
