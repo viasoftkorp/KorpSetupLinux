@@ -80,6 +80,13 @@
             - infrastructure-desktop
             - default-setup
 
+        - name: FLOW01
+          ansible.builtin.import_role:
+            name: FLOW01
+          tags:
+            - FLOW01
+            - default-setup
+
         - name: engenharia
           ansible.builtin.import_role:
             name: engenharia
@@ -157,12 +164,6 @@
             name: compras
           tags:
             - compras
-                
-        - name: FLOW01
-          ansible.builtin.import_role:
-            name: FLOW01
-          tags:
-            - FLOW01
 
         # essa deve ser a ultima task
         - name: finishing

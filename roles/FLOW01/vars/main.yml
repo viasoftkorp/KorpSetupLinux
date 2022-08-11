@@ -1,2 +1,5 @@
 services:
   Korp.Flow:
+    db:
+      name: Korp_Flow
+      type: postgres
