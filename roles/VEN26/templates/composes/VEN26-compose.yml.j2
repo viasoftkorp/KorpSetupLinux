@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-crm-accounts:
-    image: "korp/viasoft.sales.crm.accounts:4.1.x"
+    image: "korp/viasoft.sales.crm.accounts:3.2.x"
     container_name: "Viasoft.Sales.CRM.Accounts"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
