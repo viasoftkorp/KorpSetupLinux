@@ -81,3 +81,4 @@
     name: servicos
     ipam_config:
       - subnet: 172.18.0.0/16
+        iprange: 172.18.0.0/17
