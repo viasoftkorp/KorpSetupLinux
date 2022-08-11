@@ -30,9 +30,9 @@ services:
       name: Viasoft_Sales_CRM_Opportunities
       type: postgres
   
-  Viasoft.Sales.CRM.Qualifcation:
+  Viasoft.Sales.CRM.Qualification:
     db:
-      name: Viasoft_Sales_CRM_Qualifcation
+      name: Viasoft_Sales_CRM_Qualification
       type: postgres
     
   Viasoft.Sales.CRM.Reporting:
