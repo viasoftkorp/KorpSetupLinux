@@ -2,7 +2,7 @@
   set_fact:
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: adição de serviços de VEN07_W
+- name: adição de serviços de FLOW01
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
