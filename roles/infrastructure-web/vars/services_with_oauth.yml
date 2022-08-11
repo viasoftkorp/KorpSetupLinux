@@ -1,0 +1,26 @@
+services:
+  Viasoft.QuickFilter:
+    db:
+      name: Viasoft_QuickFilter
+      type: mssql
+
+  Viasoft.FileProvider:
+    db:
+      name: Viasoft_FileProvider
+      type: mssql
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
+
+  Viasoft.Reporting:
+    db:
+      name: Viasoft_Reporting
+      type: mssql
+
+  Viasoft.Emailing:
+    db:
+      name: Viasoft_Emailing
+      type: postgres
+
+  Korp.Legacy.Administration:
+
+  Korp.Legacy.Authorization:

@@ -33,7 +33,8 @@
       "FromLogContext"
     ]
   },
-  "Provisioning":{
+  "AppRiseUrl": "http://{{ apprise_container_name }}:8000",
+  "Provisioning": {
     "EnableSchemaProvisioning": "true"
   },
   "Sentry": {
@@ -42,7 +43,7 @@
     "Dsn": ""
   },
   "MinioConfig": {
-    "EndPoint": "minio-server:9110",
+    "EndPoint": "minio-server:9000",
     "AccessKeyID": "{{ minio.access_key }}",
     "SecretAccessKey": "{{ minio.secret_key }}",
     "useSSL": false

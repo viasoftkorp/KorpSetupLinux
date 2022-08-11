@@ -16,6 +16,11 @@
   "EnableEnvironmentDependentConnectionString": "false",
   "CertificatePath": "{{ self_signed_cert_pfx_path }}",
   "CertificatePass": "{{ self_signed_cert.passphrase }}",
+  "AuthenticationProxy": {
+    "ClientId": "{{ services_secrets['Viasoft.Legacy.Authentication'].ClientId }}",
+    "ClientSecret": "{{ services_secrets['Viasoft.Legacy.Authentication'].ClientSecret }}",
+    "Scope": "{{ services_secrets['Viasoft.Legacy.Authentication'].ClientId }}"
+  },
   "ExternalAuthentication": {
     "Google": {
       "ClientId": "ClientId",

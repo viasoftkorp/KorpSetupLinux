@@ -13,7 +13,7 @@
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
 # precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
-- name: adição de serviços de infrastructure-web
+- name: adição de serviços de infrastructure-web - sem oauth
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -28,15 +28,22 @@
 - name: setup Viasoft.Authentication
   ansible.builtin.import_tasks: authentication.yml
 
-- name: adição de serviços
+# esses serviços devem ser adicionados depois do setup do Viasoft.Authentication
+- name: definição de variáveis
+  set_fact:
+    services: "{{ (lookup('file', 'vars/services_with_oauth.yml') | from_yaml)['services'] }}"
+
+- name: adição de serviços de infrastructure-web - com oauth
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/manual_service_addition
+    tasks_from: services/add_service
   vars:
-    service_name: "{{ item }}"
-  loop:
-    - Korp.Legacy.Administration
-    - Korp.Legacy.Authorization
+    service_name: "{{ item.key }}"
+    id: infrastructure-web
+    skip_compose: true
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
 
 - name: criação e inicialização de compose de infraestrutura WEB
   community.docker.docker_compose:

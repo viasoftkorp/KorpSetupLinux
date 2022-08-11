@@ -30,6 +30,13 @@
     - psycopg2
     - cryptography>=3.0
 
+- name: configuração de sysctl.conf
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: '524288'
+    state: present
+    reload: true
+
 - name: criação de usuário de uso da korp no Linux
   ansible.builtin.user:
     name: "{{ linux_korp.user }}"
