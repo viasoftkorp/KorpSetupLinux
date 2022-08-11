@@ -79,3 +79,5 @@
 - name: criação de network 'servicos' no docker
   community.docker.docker_network:
     name: servicos
+    ipam_config:
+      - subnet: 172.18.0.0/16

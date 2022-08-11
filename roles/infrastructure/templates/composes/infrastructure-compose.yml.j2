@@ -65,7 +65,8 @@ services:
       - "9999:9999"
       - "9998:9998"
     networks:
-      - servicos
+      servicos:
+        ipv4_address: 172.18.0.1
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -175,7 +176,8 @@ services:
       - VERBOSE=false
       - OVERRIDE_PROXY_SCHEME=http
     networks:
-      - servicos
+      servicos:  
+        ipv4_address: 172.18.0.2
 
   viasoft-loader:
     image: "korp/viasoft.loader:2.1.x"
@@ -185,4 +187,5 @@ services:
     environment:
       - backendUrl=https://korp-api
     networks:
-      - servicos
+      servicos:  
+        ipv4_address: 172.18.0.3
