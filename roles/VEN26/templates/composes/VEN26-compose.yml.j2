@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-sales-core:
-    image: "korp/viasoft.sales.core:3.1.x"
-    container_name: "Viasoft.Sales.Core"
+  viasoft-sales-crm-core:
+    image: "korp/viasoft.sales.crm.core:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -27,9 +27,22 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft.commercialproposal-core:
-    image: "korp/viasoft.sales.commercialproposal.core:3.3.x"
-    container_name: "Viasoft.Sales.CommercialProposal.Core"
+  viasoft-sales-crm-accounts:
+    image: "korp/viasoft.sales.crm.accounts:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Accounts"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  
+  viasoft-sales-crm-activities:
+    image: "korp/viasoft.sales.crm.activities:3.1.x"
+    container_name: "Viasoft.Sales.CRM.Activities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -40,9 +53,10 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft.commercialproposal-sync:
-    image: "korp/viasoft.sales.commercialproposal.sync:3.2.x"
-    container_name: "Viasoft.Sales.CommercialProposal.Sync"
+    
+  viasoft-sales-crm-goals:
+    image: "korp/viasoft.sales.crm.goals:2.1.x"
+    container_name: "Viasoft.Sales.CRM.Goals"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -52,10 +66,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-vendas-custeioproduto:
-    image: "korp/viasoft.vendas.custeioproduto:1.0.x"
-    container_name: "Viasoft.Vendas.CusteioProduto"
+      
+  viasoft-sales-crm-leads:
+    image: "korp/viasoft.sales.crm.leads:4.2.x"
+    container_name: "Viasoft.Sales.CRM.Leads"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -65,10 +79,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-vendas-custeioproduto-gateway:
-    image: "korp/viasoft.vendas.custeioproduto.gateway:1.0.x"
-    container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
+        
+  viasoft-sales-crm-opportunities:
+    image: "korp/viasoft.sales.crm.opportunities:4.2.x"
+    container_name: "Viasoft.Sales.CRM.Opportunities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -78,10 +92,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-sales-customerportfolio:
-    image: "korp/viasoft.sales.customerportfolio:2.2.x"
-    container_name: "Viasoft.Sales.CustomerPortfolio"
+          
+  viasoft-sales-crm-qualification:
+    image: "korp/viasoft.sales.crm.qualification:4.1.x"
+    container_name: "Viasoft.Sales.CRM.Qualification"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -91,10 +105,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-sales-discount:
-    image: "korp/viasoft.sales.discount:2.1.x"
-    container_name: "Viasoft.Sales.Discount"
+            
+  viasoft-sales-crm-reporting:
+    image: "korp/viasoft.sales.crm.reporting:3.1.x"
+    container_name: "Viasoft.Sales.CRM.Reporting"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -104,10 +118,10 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-sales-pricelist:
-    image: "korp/viasoft.sales.pricelist:2.1.x"
-    container_name: "Viasoft.Sales.PriceList"
+              
+  viasoft-sales-crm-sync:
+    image: "korp/viasoft.sales.crm.sync:2.0.x"
+    container_name: "Viasoft.Sales.CRM.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -117,39 +131,14 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  CDP01:
-    image: "korp/viasoft.vendas.custeioproduto-frontend:1.0.x"
-    container_name: "CDP01"
+  
+  VEN26:
+    image: "korp/viasoft.sales.crm.core-frontend:3.2.x"
+    container_name: "VEN26"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  VEN27:
-    image: "korp/viasoft.sales.commercialproposal-frontend:2.1.x"
-    container_name: "VEN27"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-sales-customers:
-    image: "korp/viasoft.sales.customers:2.1.x"
-    container_name: "Viasoft.Sales.Customers"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
     volumes:

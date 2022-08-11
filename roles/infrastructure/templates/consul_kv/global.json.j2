@@ -79,5 +79,6 @@
   "Caching": {
     "Endpoints": "{{ redis_container_name }}:6379",
     "Password": "{{ redis.password }}"
-  }
+  },
+  "KorpRegisterApiKey": "{{ services_secrets.Global.KorpRegisterApiKey }}"
 }

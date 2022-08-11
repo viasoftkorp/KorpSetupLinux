@@ -3,3 +3,8 @@ services:
     db:
       name: Viasoft_Faturamento_Core
       type: postgres
+      
+    Viasoft.Billing.NFE:
+    db:
+      name: Viasoft_Billing_NFE
+      type: mssql

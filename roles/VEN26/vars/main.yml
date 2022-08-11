@@ -1,0 +1,46 @@
+services:
+
+  Viasoft.Sales.CRM.Core:
+    db:
+      name: Viasoft_Sales_CRM_Core
+      type: postgres
+
+  Viasoft.Sales.CRM.Accounts:
+    db:
+      name: Viasoft_Sales_CRM_Accounts
+      type: postgres
+  
+  Viasoft.Sales.CRM.Activities:
+    db:
+      name: Viasoft_Sales_CRM_Activities
+      type: postgres
+
+  Viasoft.Sales.CRM.Goals:
+    db:
+      name: Viasoft_Sales_CRM_Goals
+      type: postgres
+
+  Viasoft.Sales.CRM.Leads:
+    db:
+      name: Viasoft_Sales_CRM_Leads
+      type: postgres
+
+  Viasoft.Sales.CRM.Opportunities:
+    db:
+      name: Viasoft_Sales_CRM_Opportunities
+      type: postgres
+  
+  Viasoft.Sales.CRM.Qualifcation:
+    db:
+      name: Viasoft_Sales_CRM_Qualifcation
+      type: postgres
+    
+  Viasoft.Sales.CRM.Reporting:
+    db:
+      name: Viasoft_Sales_CRM_Reporting
+      type: postgres
+      
+  Viasoft.Sales.CRM.Sync:
+    db:
+      name: Viasoft_Sales_CRM_Sync
+      type: postgres

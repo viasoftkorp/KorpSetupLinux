@@ -3,3 +3,8 @@ services:
     db:
       name: Viasoft_Fiscal_Core
       type: postgres
+
+  Viasoft.TaxManagement:
+    db:
+      name: Viasoft_TaxManagement
+      type: mssql
