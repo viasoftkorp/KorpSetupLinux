@@ -335,3 +335,15 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
+  
+  REL01:
+    image: "korp/viasoft.relatorios-frontend:2.1.x"
+    container_name: "REL01"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
