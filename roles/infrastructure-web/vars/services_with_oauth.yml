@@ -24,3 +24,9 @@ services:
   Korp.Legacy.Administration:
 
   Korp.Legacy.Authorization:
+
+  Viasoft.Geolocation:
+    db:
+      name: Viasoft_Geolocation
+      type: mssql
+
