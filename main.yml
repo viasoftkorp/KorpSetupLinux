@@ -111,6 +111,12 @@
           tags:
             - fiscal
 
+        - name: faturamento
+          ansible.builtin.import_role:
+            name: faturamento
+          tags:
+            - faturamento
+
         - name: logistica
           ansible.builtin.import_role:
             name: logistica
