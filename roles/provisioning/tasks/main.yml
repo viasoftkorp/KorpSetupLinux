@@ -45,6 +45,7 @@
     group: root
     groups:
       - sudo
+      - www-data
     state: present
     system: true
     create_home: true
