@@ -107,4 +107,18 @@
     - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
     - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
     - "{{ dados_docker_dir_path }}/portainer"
-    - "{{ dados_docker_dir_path }}/apprise"
+
+# volume de apprise é criado separadamente pois seu owner é diferente
+- name: "verificação de {{ dados_docker_dir_path }}/apprise"
+  ansible.builtin.stat:
+    path: "{{ dados_docker_dir_path }}/apprise"
+  register: korp_volume_folder
+
+- name: "criação de diretórios {{ dados_docker_dir_path }}/apprise"
+  ansible.builtin.file:
+    path: "{{ dados_docker_dir_path }}/apprise"
+    state: directory
+    mode: '0770'
+    owner: www-data
+    group: www-data
+  when: not korp_volume_folder.stat.exists
