@@ -85,7 +85,6 @@
             name: FLOW01
           tags:
             - FLOW01
-            - default-setup
 
         - name: engenharia
           ansible.builtin.import_role:
