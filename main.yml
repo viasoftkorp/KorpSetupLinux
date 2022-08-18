@@ -176,6 +176,30 @@
             name: compras
           tags:
             - compras
+                
+        - name: PES00
+          ansible.builtin.import_role:
+            name: PES00
+          tags:
+            - PES00
+                        
+        - name: PES01
+          ansible.builtin.import_role:
+            name: PES01
+          tags:
+            - PES01
+                                
+        - name: LOG00
+          ansible.builtin.import_role:
+            name: LOG00
+          tags:
+            - LOG00
+                                        
+        - name: LOG01_W
+          ansible.builtin.import_role:
+            name: LOG01_W
+          tags:
+            - LOG01_W
 
         # essa deve ser a ultima task
         - name: finishing

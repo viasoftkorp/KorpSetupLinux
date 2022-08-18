@@ -14,22 +14,21 @@ networks:
       name: servicos
 
 services:
-  viasoft-logistics-products:
-    image: "korp/viasoft.logistics.products:3.0.x"
-    container_name: "Viasoft.Logistics.Products"
+  PES01:
+    image: "korp/viasoft.erp.person.preregistration-frontend:3.2.x"
+    container_name: "PES01"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-logistics-preregistration:
-    image: "korp/viasoft.logistics.preregistration:3.0.x"
-    container_name: "Viasoft.Logistics.PreRegistration"
+  
+  viasoft-erp-person-preregistration:
+    image: "korp/viasoft.erp.person.preregistration:3.0.x"
+    container_name: "Viasoft.ERP.Person.PreRegistration"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:

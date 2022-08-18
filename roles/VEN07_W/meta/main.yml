@@ -8,3 +8,5 @@ dependencies:
   - role: fiscal
   - role: logistica
   - role: ERP
+  - role: PES01
+  - role: PES00
