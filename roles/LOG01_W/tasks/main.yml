@@ -1,0 +1,14 @@
+- name: definição de variáveis
+  set_fact:
+    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+
+- name: adição de serviços de LOG01_W
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: LOG01_W
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true

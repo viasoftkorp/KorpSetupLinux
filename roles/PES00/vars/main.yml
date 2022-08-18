@@ -1,0 +1,6 @@
+services:
+
+  Viasoft.ERP.Person:
+    db:
+      name: Viasoft_ERP_Person
+      type: mssql
