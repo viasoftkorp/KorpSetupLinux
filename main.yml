@@ -199,6 +199,12 @@
             name: LOG01_W
           tags:
             - LOG01_W
+                                        
+        - name: REL01
+          ansible.builtin.import_role:
+            name: REL01
+          tags:
+            - REL01
 
         # essa deve ser a ultima task
         - name: finishing

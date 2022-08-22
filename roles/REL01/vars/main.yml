@@ -1,0 +1,16 @@
+services:
+
+  Viasoft.Relatorios:
+    db:
+      name: Viasoft_Relatorios
+      type: mssql
+
+  Viasoft.Relatorios.Agendador:
+    db:
+      name: Viasoft_Relatorios_Agendador
+      type: mssql
+  
+  Viasoft.Reporting.PivotTable:
+    db:
+      name: Viasoft_Reporting_PivotTable
+      type: mssql
