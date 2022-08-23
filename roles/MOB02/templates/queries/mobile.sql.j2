@@ -1,0 +1,53 @@
+DECLARE @ServiceName VARCHAR(max);
+DECLARE @BackendServiceName VARCHAR(max);
+DECLARE @CreatedClientId INTEGER;
+DECLARE @RedirectUrl VARCHAR(max);
+SET @ServiceName = 'VendasMobileCloud';
+SET @BackendServiceName = 'Korp.Mobile';
+SET @RedirectUrl = 'com.korp.vendasmobilecloud.app://auth'
+
+
+IF ((SELECT 1 FROM [dbo].[Clients] WHERE [ClientId] = @ServiceName) = 1)
+    BEGIN
+        SELECT 'ERROR: Client ' + @ServiceName + 'already exists'
+    END
+ELSE
+    BEGIN
+        -- Client
+        -- Authorization Duration: 86400 (24h)
+        -- Authorization Refresh Token Duration: 31536000: 86400 * 365 (a full year)
+        INSERT INTO [dbo].[Clients] ([Enabled], [ClientId], [ProtocolType], [RequireClientSecret], [ClientName], [Description], [ClientUri], [LogoUri], [RequireConsent], [AllowRememberConsent], [AlwaysIncludeUserClaimsInIdToken], [RequirePkce], [AllowPlainTextPkce], [AllowAccessTokensViaBrowser], [FrontChannelLogoutUri], [FrontChannelLogoutSessionRequired], [BackChannelLogoutUri], [BackChannelLogoutSessionRequired], [AllowOfflineAccess], [IdentityTokenLifetime], [AccessTokenLifetime], [AuthorizationCodeLifetime], [ConsentLifetime], [AbsoluteRefreshTokenLifetime], [SlidingRefreshTokenLifetime], [RefreshTokenUsage], [UpdateAccessTokenClaimsOnRefresh], [RefreshTokenExpiration], [AccessTokenType], [EnableLocalLogin], [IncludeJwtId], [AlwaysSendClientClaims], [ClientClaimsPrefix], [PairWiseSubjectSalt], [Created], [Updated], [LastAccessed], [UserSsoLifetime], [UserCodeType], [DeviceCodeLifetime], [NonEditable], [RequireRequestObject])
+            VALUES (1, @ServiceName, 'oidc', 0, NULL, NULL, NULL, NULL, 0, 1, 0, 1, 0, 0, NULL, 1, NULL, 1, 1, 86400, 86400, 86400, NULL, 0, 31536000, 1, 1, 1, 0, 1, 0, 0, 'client_', NULL, GETDATE(), NULL, NULL, NULL, NULL, 86400, 0, 0)
+
+        SET @CreatedClientId = (SELECT Id from Clients WHERE [ClientId] = @ServiceName AND Enabled = 1)
+
+
+
+        -- Client Scopes
+        INSERT INTO [dbo].[ClientScopes] ([Scope], [ClientId])
+            VALUES ('openid', @CreatedClientId)
+        INSERT INTO [dbo].[ClientScopes] ([Scope], [ClientId])
+            VALUES ('profile', @CreatedClientId)
+        IF (@BackendServiceName != '')
+            BEGIN
+                INSERT INTO [dbo].[ClientScopes] ([Scope], [ClientId]) VALUES ( @BackendServiceName, @CreatedClientId)
+            END
+
+
+
+       -- Grant Types
+        INSERT INTO [dbo].[ClientGrantTypes] ([GrantType], [ClientId])
+            VALUES ('authorization_code', @CreatedClientId)
+        INSERT INTO [dbo].[ClientGrantTypes] ([GrantType], [ClientId])
+            VALUES ('refresh_token', @CreatedClientId)
+
+
+
+       -- Redirect Uris
+        INSERT INTO [dbo].[ClientRedirectUris] ([RedirectUri], [ClientId])
+            VALUES (@RedirectUrl, @CreatedClientId)
+
+        -- Post Logout Redirect Uris
+        INSERT INTO [dbo].[ClientPostLogoutRedirectUris] ([PostLogoutRedirectUri], [ClientId])
+            VALUES (@RedirectUrl, @CreatedClientId)
+    END

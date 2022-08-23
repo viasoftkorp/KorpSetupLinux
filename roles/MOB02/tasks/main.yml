@@ -12,3 +12,11 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+- name: execução de query de mobile
+  community.general.mssql_script:
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
+    login_host: "{{ mssql.address }}"
+    name: Viasoft_Authentication
+    script: "{{ lookup('template', 'queries/mobile.sql.j2') | string }}"
