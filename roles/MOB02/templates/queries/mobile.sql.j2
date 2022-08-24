@@ -6,7 +6,6 @@ SET @ServiceName = 'VendasMobileCloud';
 SET @BackendServiceName = 'Korp.Mobile';
 SET @RedirectUrl = 'com.korp.vendasmobilecloud.app://auth'
 
-
 IF ((SELECT 1 FROM [dbo].[Clients] WHERE [ClientId] = @ServiceName) = 1)
     BEGIN
         SELECT 'ERROR: Client ' + @ServiceName + 'already exists'
@@ -21,8 +20,6 @@ ELSE
 
         SET @CreatedClientId = (SELECT Id from Clients WHERE [ClientId] = @ServiceName AND Enabled = 1)
 
-
-
         -- Client Scopes
         INSERT INTO [dbo].[ClientScopes] ([Scope], [ClientId])
             VALUES ('openid', @CreatedClientId)
@@ -33,15 +30,11 @@ ELSE
                 INSERT INTO [dbo].[ClientScopes] ([Scope], [ClientId]) VALUES ( @BackendServiceName, @CreatedClientId)
             END
 
-
-
        -- Grant Types
         INSERT INTO [dbo].[ClientGrantTypes] ([GrantType], [ClientId])
             VALUES ('authorization_code', @CreatedClientId)
         INSERT INTO [dbo].[ClientGrantTypes] ([GrantType], [ClientId])
             VALUES ('refresh_token', @CreatedClientId)
-
-
 
        -- Redirect Uris
         INSERT INTO [dbo].[ClientRedirectUris] ([RedirectUri], [ClientId])
