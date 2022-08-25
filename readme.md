@@ -179,7 +179,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     ``` yml
     services:
-      - Korp.Logistica.Picking:
+      Korp.Logistica.Picking:
     ```
 
 3. adicionar K/V do consul
