@@ -207,6 +207,13 @@
             - REL01
             - default-setup
 
+        - name: object-storage
+          ansible.builtin.import_role:
+            name: object-storage
+          tags:
+            - never
+            - object-storage
+
         # essa deve ser a ultima task
         - name: finishing
           ansible.builtin.import_role:
