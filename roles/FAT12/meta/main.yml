@@ -1,0 +1,7 @@
+dependencies:
+  - role: contabil
+  - role: faturamento
+  - role: ERP
+  - role: financeiro
+  - role: fiscal
+
