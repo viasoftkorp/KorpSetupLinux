@@ -1,0 +1,11 @@
+services:
+
+  Viasoft.Billing.CTE:
+    db:
+      name: Viasoft_Billing_CTE
+      type: postgres
+
+  Viasoft.Billing.CTE.SEFAZ:
+    db:
+      name: Viasoft_Billing_CTE_SEFAZ
+      type: postgres
