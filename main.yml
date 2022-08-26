@@ -205,7 +205,6 @@
             name: FAT12
           tags:
             - FAT12
-            - default-setup
 
         - name: REL01
           ansible.builtin.import_role:
