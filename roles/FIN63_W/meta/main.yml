@@ -1,0 +1,8 @@
+dependencies:
+  - role: compras
+  - role: ERP
+  - role: faturamento
+  - role: financeiro
+  - role: fiscal
+  - role: LOG01_W
+  - role: vendas

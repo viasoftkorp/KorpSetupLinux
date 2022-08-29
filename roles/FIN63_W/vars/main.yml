@@ -1,0 +1,11 @@
+services:
+
+  Viasoft.Financeiro.Dre:
+    db:
+      name: Viasoft_Financeiro_Dre
+      type: postgres
+
+  Viasoft.Financeiro.Gateway:
+    db:
+      name: Viasoft_Financeiro_Gateway
+      type: postgres
