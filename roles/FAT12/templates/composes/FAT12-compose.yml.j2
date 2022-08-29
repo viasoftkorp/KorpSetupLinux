@@ -21,7 +21,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - URL_CONSUL=http: //consul-server:8500
+      - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
     volumes:
@@ -34,7 +34,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - URL_CONSUL=http: //consul-server:8500
+      - URL_CONSUL=http://consul-server:8500
     networks:
       - servicos
     volumes:
