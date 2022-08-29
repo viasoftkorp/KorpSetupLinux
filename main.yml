@@ -206,6 +206,18 @@
           tags:
             - FAT12
 
+        - name: CON51_W
+          ansible.builtin.import_role:
+            name: CON51_W
+          tags:
+            - CON51_W
+
+        - name: FIN63_W
+          ansible.builtin.import_role:
+            name: FIN63_W
+          tags:
+            - FIN63_W
+
         - name: REL01
           ansible.builtin.import_role:
             name: REL01

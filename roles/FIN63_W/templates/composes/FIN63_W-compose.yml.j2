@@ -1,0 +1,53 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql: $DB_MSSQL"
+  - "app_server: $APP_SERVER"
+  - "korp-api: $API_GATEWAY"
+  - "korp: $PORTAL_GATEWAY"
+  - "korp-cdn: $CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  viasoft-financeiro-dre:
+    image: "korp/viasoft.financeiro.dre:1.2.x"
+    container_name: "Viasoft.Financeiro.Dre"
+    restart: on-failure: 10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http: //consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  viasoft-financeiro-gateway:
+    image: "korp/viasoft.financeiro.gateway:1.2.x"
+    container_name: "Viasoft.Financeiro.Gateway"
+    restart: on-failure: 10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http: //consul-server:8500
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  FIN63_W:
+    image: "korp/viasoft.financeiro.core-frontend:1.1.x"
+    container_name: "FIN63_W"
+    restart: on-failure: 10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
