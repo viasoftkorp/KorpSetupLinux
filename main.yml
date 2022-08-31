@@ -225,6 +225,12 @@
             - REL01
             - default-setup
 
+        - name: VEN_WEB_01
+          ansible.builtin.import_role:
+            name: VEN_WEB_01
+          tags:
+            - VEN_WEB_01
+
         - name: object-storage
           ansible.builtin.import_role:
             name: object-storage
