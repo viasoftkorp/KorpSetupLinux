@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  VEN_WEB_01-2022-1-0:
-    image: "korp/korp.vendas.automatizacaodefrete-frontend:2022.1.0.x"
-    container_name: "VEN_WEB_01-2022.1.0"
+  VEN_WEB_01-2022-2-0:
+    image: "korp/korp.vendas.automatizacaodefrete-frontend:2022.2.0.x"
+    container_name: "VEN_WEB_01-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -26,9 +26,9 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  korp-vendas-automatizacaodefrete-2022-1-0:
-    image: "korp/korp.vendas.automatizacaodefrete:2022.1.0.x"
-    container_name: "Korp.Vendas.AutomatizacaoDeFrete-2022.1.0"
+  korp-vendas-automatizacaodefrete-2022-2-0:
+    image: "korp/korp.vendas.automatizacaodefrete:2022.2.0.x"
+    container_name: "Korp.Vendas.AutomatizacaoDeFrete-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
