@@ -165,6 +165,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CRON"
 
+  zabbix-agent:
+    image: "zabbix/zabbix-agent:ubuntu-latest"
+    container_name: zabbix-agent
+    restart: always
+    networks:
+      - servicos
+    ports:
+      - "10050:10050"
+    environment:
+      - ZBX_HOSTNAME=zabbix-agent_{{ tenant_id }}
+      - ZBX_SERVER_HOST=zabbix-server.korp.com.br
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
   korp-legacy-frontend-router:
