@@ -1,4 +1,9 @@
-- name: reinicio de Docker
+- name: Reinicio de Docker
   ansible.builtin.service:
     name: docker
     state: reloaded
+
+- name: Reinicio de salt-minion
+  ansible.builtin.service:
+    name: salt-minion
+    state: restarted

@@ -2,19 +2,19 @@
 #   service_name
 #
 # para usar, chame:
-#  - name: adição de cliente oauth
+#  - name: Adição de cliente oauth
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: oauth_client/ensure_client
 #     vars:
 #       service_name: nome.do.serviço
 
-- name: leitura de secret do Consul
+- name: Leitura de secret do Consul
   community.general.consul_kv:
     key: "{{ service_name }}"
   register: value
 
-- name: adição de cliente oauth2
+- name: Adição de cliente oauth2
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/add_client

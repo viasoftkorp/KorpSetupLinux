@@ -1,4 +1,4 @@
-- name: configuração e transferência de arquivos de compose de infrastructure-web
+- name: Configuração e transferência de arquivos de compose de infrastructure-web
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/composes/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
@@ -6,14 +6,14 @@
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
 
-- name: definição de variáveis
-  set_fact:
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
 # precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
-- name: adição de serviços de infrastructure-web - sem oauth
+- name: Adição de serviços de infrastructure-web - sem oauth
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -25,15 +25,15 @@
   loop_control:
     extended: true
 
-- name: setup Viasoft.Authentication
+- name: Setup Viasoft.Authentication
   ansible.builtin.import_tasks: authentication.yml
 
 # esses serviços devem ser adicionados depois do setup do Viasoft.Authentication
-- name: definição de variáveis
-  set_fact:
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
     services: "{{ (lookup('file', 'vars/services_with_oauth.yml') | from_yaml)['services'] }}"
 
-- name: adição de serviços de infrastructure-web - com oauth
+- name: Adição de serviços de infrastructure-web - com oauth
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -45,7 +45,7 @@
   loop_control:
     extended: true
 
-- name: criação e inicialização de compose de infraestrutura WEB
+- name: Criação e inicialização de compose de infraestrutura WEB
   community.docker.docker_compose:
     project_src: "{{ korp_dir_path }}/composes/"
     env_file: "{{ docker_env_file_path }}"

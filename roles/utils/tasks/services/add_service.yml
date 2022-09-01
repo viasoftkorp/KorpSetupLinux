@@ -1,5 +1,5 @@
 # deve ser chamado dentro da role do ID
-#   - name: adição de serviços de <appId ou domínio>
+#   - name: Adição de serviços de <appId ou domínio>
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: services/add_service
@@ -11,32 +11,31 @@
 #       extended: true
 
 # vars:
-#   skip_compose - (bool) OPCIONAL 
-#   service_name - (string) OBRIGATÓRIO 
-#   id: - (string) OBRIGATÓRIO 
+#   skip_compose - (bool) OPCIONAL
+#   service_name - (string) OBRIGATÓRIO
+#   id: - (string) OBRIGATÓRIO
 
-- name: "validação de variáveis de {{ service_name }}"
+- name: "Validação de variáveis de {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/vars_validation
 
-- name: criação de secret
+- name: Criação de secret
   ansible.builtin.set_fact:
     secret: "{{ 10000 | random | to_uuid | upper }}"
 
-- name: "garantia de kv no consul para {{ service_name }}"
+- name: "Garantia de kv no consul para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: 'consul_kv/ensure_kv'
 
-- name: "adição de cliente oauth2 para {{ service_name }}"
+- name: "Adição de cliente oauth2 para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: oauth_client/ensure_client
   when: not service_vars.oauth_client.skip
 
-
-- name: "criação de bancos de dados para {{ service_name }}"
+- name: "Criação de bancos de dados para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: "create_db/{{ service_vars.db.type }}"
@@ -44,8 +43,7 @@
     db_name: "{{ service_vars.db.name }}"
   when: service_vars.db is defined
 
-
-- name: "garantia da existência dos diretórios de volume de {{ service_name }}"
+- name: "Garantia da existência dos diretórios de volume de {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -58,10 +56,10 @@
 
 # essa task só acontece na ultima iteração do loop
 # isso é necessário pois a configuração de composes só deve acontecer uma vez, quando todos os serviços já estão configurados
-- name: "setup de docker compose de {{ id }}"
+- name: "Setup de docker compose de {{ id }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/compose_setup.yml
-  when: 
-      - ansible_loop.last
-      - not (skip_compose is defined and skip_compose)
+  when:
+    - ansible_loop.last
+    - not (skip_compose is defined and skip_compose)

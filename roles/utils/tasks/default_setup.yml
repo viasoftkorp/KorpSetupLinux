@@ -1,25 +1,25 @@
-- name: validação de token
+- name: Validação de token
   ansible.builtin.uri:
     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
     return_content: true
   register: response
 
-- name: configuração de tenant_id
+- name: Configuração de tenant_id
   ansible.builtin.set_fact:
     tenant_id: "{{ response.json.tenantId }}"
     version_without_build: "{{ response.json.version }}"
 
-- name: coleta de secrets
+- name: Coleta de secrets
   ansible.builtin.uri:
     url: "{{ gateway_url }}/vault/manager/server-deploy/secrets/{{ token }}"
     return_content: true
   register: response
 
-- name: definição de secrets
+- name: Definição de secrets
   ansible.builtin.set_fact:
     services_secrets: "{{ response.json }}"
 
-- name: configuração de docker
+- name: Configuração de docker
   community.docker.docker_login:
     username: korp
     password: "{{ services_secrets.Others.Docker.AccessToken }}"

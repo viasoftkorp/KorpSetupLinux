@@ -5,18 +5,18 @@
 #   consul_kv
 #
 # para usar, chame:
-#   - name: adição de serviços
+#   - name: Adição de serviços
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: services/manual_service_addition_without_client
 #     vars:
 #       service_name: service_name
 
-- name: criação de secret
+- name: Criação de secret
   ansible.builtin.set_fact:
     secret: "{{ 10000 | random | to_uuid | upper }}"
 
-- name: "garantia de kv no consul para {{ service_name }}"
+- name: "Garantia de kv no consul para {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
     tasks_from: 'consul_kv/ensure_kv'

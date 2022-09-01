@@ -1,4 +1,4 @@
-- name: instalação de dependências
+- name: Instalação de dependências
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -10,17 +10,17 @@
     - gnupg-agent
     - software-properties-common
 
-- name: adição de chave GPG
+- name: Adição de chave GPG
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: adição de repositório do docker
+- name: Adição de repositório do docker
   ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
-- name: instalação de docker
+- name: Instalação de docker
   ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
@@ -29,36 +29,36 @@
     - docker-ce-cli
     - containerd.io
 
-- name: configuração de inicialização de docker
+- name: Configuração de inicialização de docker
   ansible.builtin.service:
     name: docker
     state: started
     enabled: true
 
-- name: criação de grupo docker
+- name: Criação de grupo docker
   ansible.builtin.group:
     name: docker
     state: present
 
-- name: adição de korp no grupo docker
+- name: Adição de korp no grupo docker
   ansible.builtin.user:
     name: "{{ linux_korp.user }}"
     groups: docker
     append: true
 
-- name: instalação de docker-compose
+- name: Instalação de docker-compose
   ansible.builtin.get_url:
     url: https://github.com/docker/compose/releases/download/v2.5.1/docker-compose-linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-- name: alteração de permissão de docker-compose
+- name: Alteração de permissão de docker-compose
   ansible.builtin.file:
     path: /usr/local/bin/docker-compose
     owner: root
     group: root
 
-- name: configuração de docker daemon
+- name: Configuração de docker daemon
   ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     src: configs/daemon.json
@@ -66,17 +66,17 @@
     group: root
     mode: '0644'
   notify:
-    - reinicio de Docker
+    - Reinicio de Docker
 
 # Bibliotecas usadas pelo Ansible para usar o docker
-- name: instalação de docker com python
+- name: Instalação de docker com python
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
     - docker
     - docker-compose
 
-- name: criação de network 'servicos' no docker
+- name: Criação de network 'servicos' no docker
   community.docker.docker_network:
     name: servicos
     ipam_config:

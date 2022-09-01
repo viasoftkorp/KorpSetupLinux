@@ -3,14 +3,14 @@
 #
 # Exemplo de uso:
 #
-#   - name: criação de db
+#   - name: Criação de db
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: create_db/mssql
 #     vars:
 #       db_name: test.database
 
-- name: "criação de database {{ db_name }} em SQL Server"
+- name: "Criação de database {{ db_name }} em SQL Server"
   community.general.mssql_script:
     login_user: "{{ mssql.korp_user }}"
     login_password: "{{ mssql.korp_password }}"

@@ -1,5 +1,4 @@
 services:
-
   Viasoft.ERP.Person.PreRegistration:
     db:
       name: Viasoft_ERP_Person_PreRegistration

@@ -1,5 +1,6 @@
-
-- hosts: 127.0.0.1
+---
+- name: Setup main
+  hosts: 127.0.0.1
   connection: local
   vars:
     ansible_become_password: "{{ linux_korp.password }}"
@@ -7,9 +8,9 @@
   become: true
 
   tasks:
-    - name: execução de playbook
+    - name: Execução de playbook
       block:
-        - name: default setup
+        - name: Default setup
           ansible.builtin.import_role:
             name: utils
             tasks_from: default_setup
@@ -17,25 +18,32 @@
             - always
             - default-setup
 
-        - name: infrastructure
+        - name: Infrastructure
           ansible.builtin.import_role:
             name: infrastructure
           tags:
             - infrastructure
             - default-setup
 
-        - name: infrastructure-web
+        - name: Infrastructure-web
           ansible.builtin.import_role:
             name: infrastructure-web
           tags:
             - infrastructure-web
             - default-setup
 
-        - name: infrastructure-desktop
+        - name: Infrastructure-desktop
           ansible.builtin.import_role:
             name: infrastructure-desktop
           tags:
             - infrastructure-desktop
+            - default-setup
+
+        - name: REL01
+          ansible.builtin.import_role:
+            name: REL01
+          tags:
+            - REL01
             - default-setup
 
         - name: FLOW01
@@ -44,13 +52,13 @@
           tags:
             - FLOW01
 
-        - name: engenharia
+        - name: Engenharia
           ansible.builtin.import_role:
             name: engenharia
           tags:
             - engenharia
 
-        - name: contabil
+        - name: Contabil
           ansible.builtin.import_role:
             name: contabil
           tags:
@@ -62,25 +70,25 @@
           tags:
             - ERP
 
-        - name: fiscal
+        - name: Fiscal
           ansible.builtin.import_role:
             name: fiscal
           tags:
             - fiscal
 
-        - name: faturamento
+        - name: Faturamento
           ansible.builtin.import_role:
             name: faturamento
           tags:
             - faturamento
 
-        - name: logistica
+        - name: Logistica
           ansible.builtin.import_role:
             name: logistica
           tags:
             - logistica
 
-        - name: vendas
+        - name: Vendas
           ansible.builtin.import_role:
             name: vendas
           tags:
@@ -128,7 +136,7 @@
           tags:
             - VEN26
 
-        - name: compras
+        - name: Compras
           ansible.builtin.import_role:
             name: compras
           tags:
@@ -176,13 +184,7 @@
           tags:
             - FIN63_W
 
-        - name: REL01
-          ansible.builtin.import_role:
-            name: REL01
-          tags:
-            - REL01
-
-        - name: object-storage
+        - name: Object-storage
           ansible.builtin.import_role:
             name: object-storage
           tags:
@@ -190,7 +192,7 @@
             - object-storage
 
         # essa deve ser a ultima task
-        - name: finishing
+        - name: Finishing
           ansible.builtin.import_role:
             name: finishing
           tags:
@@ -199,7 +201,7 @@
 
       # bloco só será executado caso ocorra algum erro
       rescue:
-        - name: tratativa de erro
+        - name: Tratativa de erro
           ansible.builtin.import_role:
             name: finishing
             tasks_from: error
