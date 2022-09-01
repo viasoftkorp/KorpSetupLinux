@@ -1,0 +1,14 @@
+- name: Definição de variáveis
+  set_fact:
+    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+
+- name: Adição de serviços de VEN_WEB_01
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: VEN_WEB_01
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true

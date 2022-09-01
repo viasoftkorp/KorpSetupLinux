@@ -1,5 +1,4 @@
 services:
-
   Viasoft.Contabil.Dre:
     db:
       name: Viasoft_Contabil_Dre
