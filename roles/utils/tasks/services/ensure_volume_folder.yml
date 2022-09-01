@@ -1,9 +1,9 @@
-- name: "verificação de {{ volume_path }}"
+- name: "Verificação de {{ volume_path }}"
   ansible.builtin.stat:
     path: "{{ volume_path }}"
   register: korp_volume_folder
 
-- name: "criação de diretórios {{ volume_path }}"
+- name: "Criação de diretórios {{ volume_path }}"
   ansible.builtin.file:
     path: "{{ volume_path }}"
     state: directory

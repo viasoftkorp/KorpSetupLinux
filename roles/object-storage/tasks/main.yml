@@ -1,8 +1,8 @@
-- name: definição de variáveis
-  set_fact:
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: adição de serviços de object-storage
+- name: Adição de serviços de object-storage
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
@@ -13,24 +13,24 @@
   loop_control:
     extended: true
 
-- name: remoção de configuração de Viasoft.ObjectStorage.Client do fabio
+- name: Remoção de configuração de Viasoft.ObjectStorage.Client do fabio
   block:
-    - name: leitura de configuração de fabio do consul
+    - name: Leitura de configuração de fabio do consul
       community.general.consul_kv:
         key: fabio/config
       register: result
 
-    - name: registro de configuração
+    - name: Registro de configuração
       ansible.builtin.set_fact:
         routers: "{{ result.data.Value | split('\r\n') }}"
 
-    - name: reescrita de configuração
+    - name: Reescrita de configuração
       ansible.builtin.set_fact:
         routers: "{{ routers | difference(item) }}"
       when: item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')
       loop: "{{ routers }}"
 
-    - name: escrita de configuração de fabio ao consul
+    - name: Escrita de configuração de fabio ao consul
       community.general.consul_kv:
         key: fabio/config
         value: "{{ routers | join('\r\n') }}"

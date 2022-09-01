@@ -1,12 +1,12 @@
 # essa role não deve ser chamada diretamente.
 # use ensure_client.yml
 
-- name: criação de secret
+- name: Criação de secret
   encrypt_to_sha256_base64.py:
     uuid: "{{ secret }}"
   register: result
 
-- name: "adição de cliente oauth para {{ service_name }}"
+- name: "Adição de cliente oauth para {{ service_name }}"
   vars:
     secret_as_hash: "{{ result.secret }}"
   community.general.mssql_script:

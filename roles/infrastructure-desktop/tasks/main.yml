@@ -1,4 +1,4 @@
-- name: garantia da existência dos diretórios de volumes de minio-server
+- name: Garantia da existência dos diretórios de volumes de minio-server
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -7,11 +7,11 @@
   loop:
     - "{{ dados_docker_dir_path }}/minio-server"
 
-- name: definição de variáveis
-  set_fact:
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: adição de serviços de infrastructure-desktop
+- name: Adição de serviços de infrastructure-desktop
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service

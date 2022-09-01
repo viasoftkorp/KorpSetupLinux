@@ -3,14 +3,14 @@
 #
 # Exemplo de uso:
 #
-#   - name: criação de db
+#   - name: Criação de db
 #     ansible.builtin.include_role:
 #       name: utils
 #       tasks_from: create_db/postgres
 #     vars:
 #       db_name: test.database
 
-- name: "criação de database {{ db_name }} em PostgreSql"
+- name: "Criação de database {{ db_name }} em PostgreSql"
   community.postgresql.postgresql_db:
     name: "{{ db_name }}"
     owner: "{{ postgres.korp_user }}"

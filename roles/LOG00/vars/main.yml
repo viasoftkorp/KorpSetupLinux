@@ -1,5 +1,4 @@
 services:
-
   Viasoft.Logistics.PreRegistration:
     db:
       name: Viasoft_Logistics_PreRegistration

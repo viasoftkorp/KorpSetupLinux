@@ -1,4 +1,4 @@
-- name: instalação de dependências padrões
+- name: Instalação de dependências padrões
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
@@ -8,13 +8,13 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
-- name: provisão de certificado auto-assinado
+- name: Provisão de certificado auto-assinado
   ansible.builtin.import_tasks: self_signed_certificate.yml
 
-- name: configuração de arquivos e pastas
+- name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
-- name: criação de usuário de uso da korp no SQL Server
+- name: Criação de usuário de uso da korp no SQL Server
   community.general.mssql_script:
     login_user: "{{ mssql.default_user }}"
     login_password: "{{ mssql.default_password }}"
@@ -22,17 +22,17 @@
     name: master
     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
 
-- name: criação e inicialização de default-compose
+- name: Criação e inicialização de default-compose
   community.docker.docker_compose:
     project_src: "{{ compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-compose.yml
 
-- name: criação e configuração de usuário no rabbitmq
+- name: Criação e configuração de usuário no rabbitmq
   ansible.builtin.import_tasks: rabbitmq_user.yml
 
-- name: criação de usuário de uso da korp no Postgres
+- name: Criação de usuário de uso da korp no Postgres
   community.postgresql.postgresql_user:
     db: postgres
     login_host: "{{ postgres.address }}"
@@ -42,12 +42,12 @@
     login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
-- name: "garantia de kv no consul para Global"
+- name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
     name: utils
     tasks_from: 'consul_kv/ensure_kv'
-  vars: 
+  vars:
     service_name: Global
 
-- name: configuração de fabio pelo consul
+- name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml

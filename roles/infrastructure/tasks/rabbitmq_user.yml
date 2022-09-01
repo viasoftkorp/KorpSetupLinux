@@ -1,4 +1,4 @@
-- name: aguarda inicialização do rabbitmq
+- name: Aguarda inicialização do rabbitmq
   community.docker.docker_container_exec:
     container: rabbitmq
     command: |
@@ -9,7 +9,7 @@
   delay: 5
   until: result is not failed
 
-- name: lista usuários presentes no rabbitmq
+- name: Lista usuários presentes no rabbitmq
   community.docker.docker_container_exec:
     container: rabbitmq
     command: |
@@ -17,7 +17,7 @@
     chdir: /
   register: rabbitmq_raw_users
 
-- name: criação de usuário no rabbitmq
+- name: Criação de usuário no rabbitmq
   vars:
     replaced: "{{ rabbitmq_raw_users.stdout | replace('\t', '\n') }}" # noqa no-tabs
     rabbitmq_users: "{{ replaced.split('\n') }}"
@@ -28,14 +28,14 @@
     chdir: /
   when: not rabbitmq.korp_user in rabbitmq_users
 
-- name: adição de permissões ao usuário no rabbitmq
+- name: Adição de permissões ao usuário no rabbitmq
   community.docker.docker_container_exec:
     container: rabbitmq
     command: |
       rabbitmqctl set_permissions -p / "{{ rabbitmq.korp_user }}" .* .* .*
     chdir: /
 
-- name: adição de tags ao usuário no rabbitmq
+- name: Adição de tags ao usuário no rabbitmq
   community.docker.docker_container_exec:
     container: rabbitmq
     command: |

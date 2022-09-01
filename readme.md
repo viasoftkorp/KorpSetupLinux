@@ -247,11 +247,11 @@ Chamaremos AppId/Domínio de `ID`
       - altere todas as variáveis `<ID>`
 
     ``` yml
-    - name: definição de variáveis
-      set_fact:
+    - name: Definição de variáveis
+      ansible.builtin.set_fact:
         services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
-    - name: adição de serviços de <ID>
+    - name: Adição de serviços de <ID>
       ansible.builtin.include_role:
         name: utils
         tasks_from: services/add_service

@@ -1,17 +1,17 @@
-- name: criação do diretório em que as os arquivos de certificado ficarão
+- name: Criação do diretório em que as os arquivos de certificado ficarão
   ansible.builtin.file:
     path: "{{ self_signed_certs_directory }}/"
     state: directory
     mode: '0755'
 
-- name: criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
+- name: Criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
   ansible.builtin.copy:
     dest: "{{ self_signed_certs_directory }}/cert.pass"
     mode: '0744'
     content: |
       {{ self_signed_cert.passphrase }}
 
-- name: geração de chave privada para certificado auto-assinado (RSA, 4096)
+- name: Geração de chave privada para certificado auto-assinado (RSA, 4096)
   community.crypto.openssl_privatekey:
     size: 4096
     type: RSA
@@ -20,7 +20,7 @@
     passphrase: "{{ self_signed_cert.passphrase }}"
     cipher: auto
 
-- name: geração de CSR (certificate signing request) para geração certificado auto-assinado
+- name: Geração de CSR (certificate signing request) para geração certificado auto-assinado
   community.crypto.openssl_csr:
     path: "{{ self_signed_certs_directory }}/cert.csr"
     privatekey_path: "{{ self_signed_cert_privatekey_path }}"
@@ -39,7 +39,7 @@
       - "DNS:korp-api"
       - "DNS:korp-cdn"
 
-- name: geração do certificado auto-assinado com OpenSSL
+- name: Geração do certificado auto-assinado com OpenSSL
   community.crypto.x509_certificate:
     path: "{{ self_signed_cert_path }}"
     privatekey_path: "{{ self_signed_cert_privatekey_path }}"
@@ -49,7 +49,7 @@
     selfsigned_not_after: +18000d
     backup: true
 
-- name: geração de PFX do certificado auto-assinado
+- name: Geração de PFX do certificado auto-assinado
   community.crypto.openssl_pkcs12:
     action: export
     path: "{{ self_signed_cert_pfx_path }}"
@@ -60,7 +60,7 @@
     friendly_name: korp.com.br
     backup: true
 
-- name: configuração de certificados no servidor
+- name: Configuração de certificados no servidor
   ansible.builtin.copy:
     dest: "/usr/local/share/ca-certificates"
     src: "{{ self_signed_cert_path }}"
@@ -70,7 +70,7 @@
   become: true
   become_user: root
 
-- name: atualização de certificados no servidor
+- name: Atualização de certificados no servidor
   ansible.builtin.command: update-ca-certificates
   become: true
   become_user: root

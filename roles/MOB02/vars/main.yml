@@ -1,4 +1,4 @@
 services:
   Korp.Mobile:
     volumes_directories:
-    - "{{ dados_docker_dir_path }}/MOB02/reports"
+      - "{{ dados_docker_dir_path }}/MOB02/reports"

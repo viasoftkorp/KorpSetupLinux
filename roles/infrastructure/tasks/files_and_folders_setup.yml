@@ -1,4 +1,4 @@
-- name: transferência de arquivos de configuração em files
+- name: Transferência de arquivos de configuração em files
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/configs/"
     src: configs/
@@ -6,12 +6,12 @@
     group: root
     mode: '0644'
 
-- name: verificação de diretório de scripts
+- name: Verificação de diretório de scripts
   ansible.builtin.stat:
     path: "{{ korp_dir_path }}/scripts/"
   register: korp_scripts_folder
 
-- name: criação de diretório de scripts
+- name: Criação de diretório de scripts
   ansible.builtin.file:
     path: "{{ korp_dir_path }}/scripts/"
     state: directory
@@ -20,7 +20,7 @@
     group: root
   when: not korp_scripts_folder.stat.exists
 
-- name: transferência de scripts
+- name: Transferência de scripts
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/scripts/{{ item | basename }}"
     src: "scripts/{{ item | basename }}"
@@ -32,7 +32,7 @@
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/configs', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: configuração e transferência de arquivos de configuração em templates
+- name: Configuração e transferência de arquivos de configuração em templates
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/configs/{{ item[:-3] | basename }}"
     src: "configs/{{ item | basename }}"
@@ -40,16 +40,16 @@
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search','.j2') }}"
+    "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search', '.j2') }}"
 
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
-- name: verificação de diretório de composes
+- name: Verificação de diretório de composes
   ansible.builtin.stat:
     path: "{{ compose_dir_path }}/"
   register: korp_compose_folder
 
-- name: criação de diretório de composes
+- name: Criação de diretório de composes
   ansible.builtin.file:
     path: "{{ compose_dir_path }}/"
     state: directory
@@ -58,12 +58,12 @@
     group: root
   when: not korp_compose_folder.stat.exists
 
-- name: verificação de diretório de composes versionados
+- name: Verificação de diretório de composes versionados
   ansible.builtin.stat:
     path: "{{ versioned_compose_dir_path }}/"
   register: korp_compose_folder
 
-- name: criação de diretório de composes versionados
+- name: Criação de diretório de composes versionados
   ansible.builtin.file:
     path: "{{ versioned_compose_dir_path }}/"
     state: directory
@@ -72,7 +72,7 @@
     group: root
   when: not korp_compose_folder.stat.exists
 
-- name: criação de arquivo de variáveis de ambiente para docker
+- name: Criação de arquivo de variáveis de ambiente para docker
   ansible.builtin.copy:
     dest: "{{ docker_env_file_path }}"
     mode: '0644'
@@ -86,7 +86,7 @@
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: configuração e transferência de arquivos de compose
+- name: Configuração e transferência de arquivos de compose
   ansible.builtin.template:
     dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
     src: "composes/{{ item | basename }}"
@@ -94,9 +94,9 @@
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search','.yml.j2') }}"
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
 
-- name: garantia da existência dos diretórios de volume infrastructure
+- name: Garantia da existência dos diretórios de volume infrastructure
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/ensure_volume_folder
@@ -109,12 +109,12 @@
     - "{{ dados_docker_dir_path }}/portainer"
 
 # volume de apprise é criado separadamente pois seu owner é diferente
-- name: "verificação de {{ dados_docker_dir_path }}/apprise"
+- name: "Verificação de {{ dados_docker_dir_path }}/apprise"
   ansible.builtin.stat:
     path: "{{ dados_docker_dir_path }}/apprise"
   register: korp_volume_folder
 
-- name: "criação de diretórios {{ dados_docker_dir_path }}/apprise"
+- name: "Criação de diretórios {{ dados_docker_dir_path }}/apprise"
   ansible.builtin.file:
     path: "{{ dados_docker_dir_path }}/apprise"
     state: directory

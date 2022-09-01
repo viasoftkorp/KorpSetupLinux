@@ -1,16 +1,16 @@
-- name: limpeza de cache do repositório
+- name: Limpeza de cache do repositório
   ansible.builtin.command: apt-get clean
   become: true
   args:
     warn: false
 
-- name: atualização de cache do repositório
+- name: Atualização de cache do repositório
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
     force_apt_get: true
 
-- name: instalação de dependências padrões
+- name: Instalação de dependências padrões
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -22,7 +22,7 @@
     # necessário para o funcionamento de postgresql
     - libpq-dev
 
-- name: instalação de dependências padrões usando pip
+- name: Instalação de dependências padrões usando pip
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
@@ -30,25 +30,25 @@
     - psycopg2
     - cryptography>=3.0
 
-- name: validação de token
+- name: Validação de token
   ansible.builtin.uri:
     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
     return_content: true
   register: response
 
-- name: configuração de tenant_id
+- name: Configuração de tenant_id
   ansible.builtin.set_fact:
     tenant_id: "{{ response.json.tenantId }}"
     version_without_build: "{{ response.json.version }}"
 
-- name: configuração de sysctl.conf
+- name: Configuração de sysctl.conf
   ansible.posix.sysctl:
     name: fs.inotify.max_user_instances
     value: '524288'
     state: present
     reload: true
 
-- name: criação de usuário de uso da korp no Linux
+- name: Criação de usuário de uso da korp no Linux
   ansible.builtin.user:
     name: "{{ linux_korp.user }}"
     password: "{{ linux_korp.password | password_hash('sha512') }}"
@@ -62,17 +62,17 @@
     create_home: true
     shell: /bin/bash
 
-- name: "mudança de dono de {{ korp_dir_path }}"
+- name: "Mudança de dono de {{ korp_dir_path }}"
   ansible.builtin.file:
     path: "{{ korp_dir_path }}"
     owner: "{{ linux_korp.user }}"
     group: root
 
-- name: alteração de timezone
+- name: Alteração de timezone
   community.general.timezone:
     name: Greenwich
 
-- name: configuração de hosts
+- name: Configuração de hosts
   ansible.builtin.lineinfile:
     path: /etc/hosts
     line: 127.0.0.1 korp korp-api korp-cdn
