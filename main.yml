@@ -1,45 +1,3 @@
-- hosts: 127.0.0.1
-  connection: local
-  become: false
-  gather_facts: false
-  vars_prompt:
-    - name: "user_pass"
-      prompt: "Senha do usuário administrativo"
-      private: true
-
-  tasks:
-    - name: definição de senha
-      ansible.builtin.set_fact:
-        user_pass: "{{ user_pass }}"
-      tags:
-        - always
-
-- hosts: 127.0.0.1
-  connection: local
-  become: true
-  become_user: root
-  vars:
-    ansible_become_password: "{{ user_pass }}"
-
-  tasks:
-    - name: provisioning
-      block:
-        - name: provisioning
-          ansible.builtin.import_role:
-            name: provisioning
-          tags:
-            - provisioning
-            - default-setup
-
-      # bloco só será executado caso ocorra algum erro
-      rescue:
-        - name: tratativa de erro
-          ansible.builtin.import_role:
-            name: finishing
-            tasks_from: error
-          tags:
-            - always
-            - default-setup
 
 - hosts: 127.0.0.1
   connection: local
@@ -53,7 +11,7 @@
       block:
         - name: default setup
           ansible.builtin.import_role:
-            name: infrastructure
+            name: utils
             tasks_from: default_setup
           tags:
             - always
@@ -223,7 +181,6 @@
             name: REL01
           tags:
             - REL01
-            - default-setup
 
         - name: object-storage
           ansible.builtin.import_role:

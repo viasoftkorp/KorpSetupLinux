@@ -30,6 +30,17 @@
     - psycopg2
     - cryptography>=3.0
 
+- name: validação de token
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+    return_content: true
+  register: response
+
+- name: configuração de tenant_id
+  ansible.builtin.set_fact:
+    tenant_id: "{{ response.json.tenantId }}"
+    version_without_build: "{{ response.json.version }}"
+
 - name: configuração de sysctl.conf
   ansible.posix.sysctl:
     name: fs.inotify.max_user_instances
@@ -68,6 +79,9 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Setup do salt-minion
+  import_tasks: salt_minion_setup.yml
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml

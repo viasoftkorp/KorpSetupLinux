@@ -209,8 +209,8 @@ inventory = /etc/korp/ansible/inventory.yml
 fi
 
 
-# Execução de playbook main.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git main.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" --tags "$apps"
+# Execução de playbook local-playbook.yml
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git local-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" --tags "$apps"
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
