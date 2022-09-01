@@ -1,0 +1,7 @@
+id: {{ tenant_id }}
+master: salt.korp.com.br
+autosign_grains:
+  - tenant
+  
+grains:
+  tenant: {{ tenant_id }}
