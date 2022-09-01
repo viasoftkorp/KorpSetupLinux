@@ -1,5 +1,5 @@
 - name: Definição de variáveis
-  set_fact:
+  ansible.builtin.set_fact:
     services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
 
 - name: Adição de serviços de VEN_WEB_01

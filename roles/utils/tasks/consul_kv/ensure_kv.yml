@@ -9,7 +9,7 @@
 
 - name: Validação de new_kv
   ansible.builtin.set_fact:
-    new_kv: "{{ lookup('template', 'consul_kv/' service_name | lower '.json.j2') }}"
+    new_kv: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') }}"
 
 # bloco só será executado caso KV já exista no consul
 - name: Validação de kv existente
