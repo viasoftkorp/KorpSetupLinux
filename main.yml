@@ -12,11 +12,10 @@
       block:
         - name: Default setup
           ansible.builtin.import_role:
-            name: infrastructure
+            name: utils
             tasks_from: default_setup
           tags:
             - always
-            - default-setup
 
         - name: Infrastructure
           ansible.builtin.import_role:

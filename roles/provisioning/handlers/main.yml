@@ -7,3 +7,8 @@
   ansible.builtin.service:
     name: salt-minion
     state: restarted
+
+- name: Reinicio de zabbix-agent2
+  ansible.builtin.service:
+    name: zabbix-agent2
+    state: restarted

@@ -30,16 +30,10 @@
     - psycopg2
     - cryptography>=3.0
 
-- name: Validação de token
-  ansible.builtin.uri:
-    url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
-    return_content: true
-  register: response
-
-- name: Configuração de tenant_id
-  ansible.builtin.set_fact:
-    tenant_id: "{{ response.json.tenantId }}"
-    version_without_build: "{{ response.json.version }}"
+- name: Requisição de informações padrões
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: request_default_info
 
 - name: Configuração de sysctl.conf
   ansible.posix.sysctl:
@@ -82,6 +76,9 @@
 
 - name: Setup do salt-minion
   import_tasks: salt_minion_setup.yml
+
+- name: Setup de zabbix-agent2
+  import_tasks: zabbix_setup.yml
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml
