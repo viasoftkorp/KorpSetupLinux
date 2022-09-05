@@ -1,0 +1,7 @@
+ServerActive={{ services_secrets.Others.Zabbix.ServerAdress }}
+Hostname=zabbix-agent_{{ tenant_id }}
+HostMetadata={{ tenant_id }}
+
+TLSConnect=psk
+TLSPSKIdentity={{ services_secrets.Others.Zabbix.PSK.Identity }}
+TLSPSKFile={{ korp_dir_path }}/certs/zabbix.psk
