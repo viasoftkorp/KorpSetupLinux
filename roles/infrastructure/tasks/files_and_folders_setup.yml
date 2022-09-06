@@ -42,6 +42,32 @@
   loop:
     "{{ lookup('fileglob', 'templates/configs/*', wantlist=True) | select('search', '.j2') }}"
 
+- name: Setup de configuração de nginx
+  block:
+    - name: Verificação de diretório de configuração de nginx
+      ansible.builtin.stat:
+        path: "{{ korp_dir_path }}/configs/nginx/conf.d"
+      register: korp_nginx_conf_folder
+
+    - name: Criação de diretório de configuração de nginx
+      ansible.builtin.file:
+        path: "{{ korp_dir_path }}/configs/nginx/conf.d"
+        state: directory
+        mode: '0755'
+        owner: "{{ linux_korp.user }}"
+        group: root
+      when: not korp_nginx_conf_folder.stat.exists
+
+    - name: Configuração e transferência de arquivos de configuração de nginx
+      ansible.builtin.template:
+        dest: "{{ korp_dir_path }}/configs/nginx/conf.d/{{ item[:-3] | basename }}"
+        src: "configs/nginx/conf.d/{{ item | basename }}"
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0644'
+      loop:
+        "{{ lookup('fileglob', 'templates/configs/nginx/conf.d/*', wantlist=True) | select('search', '.j2') }}"
+
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: Verificação de diretório de composes

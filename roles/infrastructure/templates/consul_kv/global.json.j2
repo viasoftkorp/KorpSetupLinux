@@ -61,11 +61,11 @@
   },
   "ApiWebKey": "{{ services_secrets.Global.ApiWebKey }}",
   "GatewayUrl": "{{ gateway_url }}",
-  "LegacyGateway": "https://korp-api",
-  "CORS": "https://korp",
-  "FrontendUrl": "https://korp",
+  "LegacyGateway": "{{ frontend.endpoints.gateway_url }}",
+  "CORS": "{{ frontend.endpoints.frontend_url }}",
+  "FrontendUrl": "{{ frontend.endpoints.frontend_url }}",
   "Authentication": {
-    "Authority": "https://korp-api/oauth",
+    "Authority": "{{ frontend.endpoints.gateway_url }}/oauth",
     "IntrospectionSecret": "{{ general.introspection_secret }}",
     "GatewayAuthority": "{{ gateway_url }}/oauth"
   },
