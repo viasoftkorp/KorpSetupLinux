@@ -13,6 +13,20 @@
     name: zabbix-agent2
     state: present
 
+- name: Verificação de diretório de certs
+  ansible.builtin.stat:
+    path: "{{ korp_dir_path }}/certs/"
+  register: korp_certs_folder
+
+- name: Criação de diretório de certs
+  ansible.builtin.file:
+    path: "{{ korp_dir_path }}/certs/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: not korp_certs_folder.stat.exists
+
 - name: Criação de arquivo de contendo a PSK de zabbix-agent2
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/certs/zabbix.psk"
