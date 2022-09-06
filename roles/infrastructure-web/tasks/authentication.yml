@@ -24,7 +24,7 @@
 - name: Chamada para startup de Viasoft.Authentication
   ansible.builtin.uri:
     return_content: true
-    url: "https://korp-api/oauth/.well-known/openid-configuration/jwks"
+    url: "{{ frontend.endpoints.gateway_url }}/oauth/.well-known/openid-configuration/jwks"
   register: result
   retries: 5
   delay: 5

@@ -17,3 +17,14 @@ redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres
 apprise_container_name: apprise
+
+frontend:
+  endpoints:
+    gateway_url: "https://korp-api.local"
+    cdn_url: "https://korp-cdn.local"
+    frontend_url: "https://korp.local"
+  dns:
+    api: korp-api.local
+    frontend: korp.local
+    cdn: korp-cdn.local
+    

@@ -35,9 +35,9 @@
       - keyEncipherment
     key_usage_critical: true
     subject_alt_name:
-      - "DNS:korp"
-      - "DNS:korp-api"
-      - "DNS:korp-cdn"
+      - "DNS:{{ frontend.dns.frontend }}"
+      - "DNS:{{ frontend.dns.api }}"
+      - "DNS:{{ frontend.dns.cdn }}"
 
 - name: Geração do certificado auto-assinado com OpenSSL
   community.crypto.x509_certificate:

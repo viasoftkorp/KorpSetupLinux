@@ -1,6 +1,6 @@
 server {
 
-    server_name korp;
+    server_name {{ frontend.dns.frontend }};
 
     include /etc/nginx/ssl_conf;
 

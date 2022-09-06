@@ -4,9 +4,9 @@ x-extra_hosts:
   &default-extra_hosts
   - "db_mssql: $DB_MSSQL"
   - "app_server: $APP_SERVER"
-  - "korp-api: $API_GATEWAY"
-  - "korp: $PORTAL_GATEWAY"
-  - "korp-cdn: $CDN_GATEWAY"
+  - "{{ frontend.dns.api }}: $API_GATEWAY"
+  - "{{ frontend.dns.frontend }}: $PORTAL_GATEWAY"
+  - "{{ frontend.dns.cdn }}: $CDN_GATEWAY"
 
 networks:
   servicos:
@@ -54,8 +54,6 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
-      - URL_CDN=https://korp-cdn
-      - URL_LOADER=https://korp
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -71,8 +69,8 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
-      - URL_CDN=https://korp-cdn
-      - URL_LOADER=https://korp
+      - URL_CDN={{ frontend.endpoints.cdn_url }}
+      - URL_LOADER={{ frontend.endpoints.frontend_url }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -88,8 +86,6 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
-      - URL_CDN=https://korp-cdn
-      - URL_LOADER=https://korp
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -292,6 +288,9 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
     networks:
       - servicos
     volumes:
@@ -306,6 +305,9 @@ services:
       - viasoft-portal
     environment:
       - ON_PREMISE_MODE=true
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -318,6 +320,9 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
     networks:
       - servicos
     volumes:
@@ -343,6 +348,9 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
     networks:
       - servicos
     volumes:
