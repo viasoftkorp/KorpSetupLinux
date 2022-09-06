@@ -91,7 +91,11 @@ then
     exit 12
 fi
 sudo apt install ansible --yes
-
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
+    exit 13
+fi
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
