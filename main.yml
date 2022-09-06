@@ -189,6 +189,12 @@
           tags:
             - VEN_WEB_01
 
+        - name: APV
+          ansible.builtin.import_role:
+            name: APV
+          tags:
+            - APV
+
         - name: object-storage
           ansible.builtin.import_role:
             name: object-storage

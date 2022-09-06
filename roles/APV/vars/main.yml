@@ -1,0 +1,5 @@
+services:
+  Viasoft.Approval:
+    db:
+      name: Viasoft_Approval
+      type: postgres
