@@ -8,5 +8,22 @@
   "ConnectionStrings": {
     "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=Viasoft_Approval; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"		
   },
-  "EnableEnvironmentDependentConnectionString": "false"
+  "EnableEnvironmentDependentConnectionString": "false",
+  "FirebaseMessaging": {
+    "SenderID": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.SenderID }}",
+    "ProjectId": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.ProjectId }}",
+    "ChannelId": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.ChannelId }}",
+    "GoogleCredential": {
+      "type": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.type }}",
+      "project_id": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.project_id }}",
+      "private_key_id": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.private_key_id }}",
+      "private_key": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.private_key }}",
+      "client_email": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.client_email }}",
+      "client_id": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.client_id }}",
+      "auth_uri": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.auth_uri }}",
+      "token_uri": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.token_uri }}",
+      "auth_provider_x509_cert_url": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.auth_provider_x509_cert_url }}",
+      "client_x509_cert_url": "{{ services_secrets['Viasoft.Approval'].FirebaseMessaging.GoogleCredential.client_x509_cert_url }}"
+    }
+  }
 }
