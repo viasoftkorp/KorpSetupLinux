@@ -1,9 +1,5 @@
 - name: instalação de pacote de zabbix
   ansible.builtin.apt:
-    deb: 
-
-- name: instalação de pacote de zabbix
-  ansible.builtin.apt:
     deb: https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.2-1+ubuntu22.04_all.deb
 
 - name: Atualização de cache do repositório
