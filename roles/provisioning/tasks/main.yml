@@ -1,84 +1,84 @@
-- name: Limpeza de cache do repositório
-  ansible.builtin.command: apt-get clean
-  become: true
-  args:
-    warn: false
+# - name: Limpeza de cache do repositório
+#   ansible.builtin.command: apt-get clean
+#   become: true
+#   args:
+#     warn: false
 
-- name: Atualização de cache do repositório
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600
-    force_apt_get: true
+# - name: Atualização de cache do repositório
+#   ansible.builtin.apt:
+#     update_cache: true
+#     cache_valid_time: 3600
+#     force_apt_get: true
 
-- name: Instalação de dependências padrões
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - python3
-    - python3-pip
-    # necessário para o funcionamento de become_user
-    - acl
-    # necessário para o funcionamento de postgresql
-    - libpq-dev
+# - name: Instalação de dependências padrões
+#   ansible.builtin.apt:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - python3
+#     - python3-pip
+#     # necessário para o funcionamento de become_user
+#     - acl
+#     # necessário para o funcionamento de postgresql
+#     - libpq-dev
 
-- name: Instalação de dependências padrões usando pip
-  ansible.builtin.pip:
-    name: "{{ item }}"
-  loop:
-    # Bibliotecas usadas pelo Ansible para usar o Postgres
-    - psycopg2
-    - cryptography>=3.0
+# - name: Instalação de dependências padrões usando pip
+#   ansible.builtin.pip:
+#     name: "{{ item }}"
+#   loop:
+#     # Bibliotecas usadas pelo Ansible para usar o Postgres
+#     - psycopg2
+#     - cryptography>=3.0
 
 - name: Requisição de informações padrões
   ansible.builtin.include_role:
     name: utils
     tasks_from: request_default_info
 
-- name: Configuração de sysctl.conf
-  ansible.posix.sysctl:
-    name: fs.inotify.max_user_instances
-    value: '524288'
-    state: present
-    reload: true
+# - name: Configuração de sysctl.conf
+#   ansible.posix.sysctl:
+#     name: fs.inotify.max_user_instances
+#     value: '524288'
+#     state: present
+#     reload: true
 
-- name: Criação de usuário de uso da korp no Linux
-  ansible.builtin.user:
-    name: "{{ linux_korp.user }}"
-    password: "{{ linux_korp.password | password_hash('sha512') }}"
-    comment: Korp User
-    group: root
-    groups:
-      - sudo
-      - www-data
-    state: present
-    system: true
-    create_home: true
-    shell: /bin/bash
+# - name: Criação de usuário de uso da korp no Linux
+#   ansible.builtin.user:
+#     name: "{{ linux_korp.user }}"
+#     password: "{{ linux_korp.password | password_hash('sha512') }}"
+#     comment: Korp User
+#     group: root
+#     groups:
+#       - sudo
+#       - www-data
+#     state: present
+#     system: true
+#     create_home: true
+#     shell: /bin/bash
 
-- name: "Mudança de dono de {{ korp_dir_path }}"
-  ansible.builtin.file:
-    path: "{{ korp_dir_path }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
+# - name: "Mudança de dono de {{ korp_dir_path }}"
+#   ansible.builtin.file:
+#     path: "{{ korp_dir_path }}"
+#     owner: "{{ linux_korp.user }}"
+#     group: root
 
-- name: Alteração de timezone
-  community.general.timezone:
-    name: Greenwich
+# - name: Alteração de timezone
+#   community.general.timezone:
+#     name: Greenwich
 
-- name: Configuração de hosts
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    line: "127.0.0.1 {{ frontend.dns.frontend }} {{ frontend.dns.api }} {{ frontend.dns.cdn }}"
-    owner: root
-    group: root
-    mode: '0644'
+# - name: Configuração de hosts
+#   ansible.builtin.lineinfile:
+#     path: /etc/hosts
+#     line: "127.0.0.1 {{ frontend.dns.frontend }} {{ frontend.dns.api }} {{ frontend.dns.cdn }}"
+#     owner: root
+#     group: root
+#     mode: '0644'
 
-- name: Setup do salt-minion
-  import_tasks: salt_minion_setup.yml
+# - name: Setup do salt-minion
+#   import_tasks: salt_minion_setup.yml
 
 - name: Setup de zabbix-agent2
   import_tasks: zabbix_setup.yml
 
-- name: Setup do Docker
-  import_tasks: docker_setup.yml
+# - name: Setup do Docker
+#   import_tasks: docker_setup.yml

@@ -17,8 +17,12 @@
     cache_valid_time: 3600
     force_apt_get: true
 
-- ansible.builtin.command: dpkg --get-selections
+- name: Limpeza de cache do repositório
+  ansible.builtin.command: dpkg --get-selections 
+  register: mymotd
 
+- debug:
+    msg: "{{ mymotd }}"
 
 - name: Instalação de zabbix-agent2
   ansible.builtin.apt:
