@@ -140,7 +140,7 @@
     path: "{{ dados_docker_dir_path }}/apprise"
   register: korp_volume_folder
 
-- name: "Criação de diretórios {{ dados_docker_dir_path }}/apprise"
+- name: "Criação de diretório {{ dados_docker_dir_path }}/apprise"
   ansible.builtin.file:
     path: "{{ dados_docker_dir_path }}/apprise"
     state: directory

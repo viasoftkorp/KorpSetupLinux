@@ -31,7 +31,7 @@
   ansible.builtin.copy:
     dest: "{{ korp_dir_path }}/certs/zabbix.psk"
     owner: "root"
-    mode: '0400'
+    mode: '0444'
     content: "{{ services_secrets.Others.Zabbix.PSK.Key }}"
 
 - name: Configuração de zabbix-agent2
