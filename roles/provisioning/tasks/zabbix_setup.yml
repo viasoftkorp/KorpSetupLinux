@@ -11,6 +11,11 @@
   ansible.builtin.apt:
     deb: /tmp/zabbix.deb
 
+- name: Allow python to be upgraded
+  ansible.builtin.dpkg_selections:
+    name: zabbix-release
+    selection: install
+
 - name: Atualização de cache do repositório
   ansible.builtin.apt:
     update_cache: true
