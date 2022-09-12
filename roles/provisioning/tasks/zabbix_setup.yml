@@ -21,6 +21,10 @@
   ansible.builtin.apt:
     name: zabbix-agent2
     state: present
+  register: result
+  retries: 5
+  delay: 5
+  until: result is not failed
 
 - name: Verificação de diretório de certs
   ansible.builtin.stat:
