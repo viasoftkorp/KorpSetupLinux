@@ -82,3 +82,17 @@
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml
+
+# volume de apprise é criado separadamente pois seu owner é diferente
+- name: "Verificação de {{ dados_docker_dir_path }}/apprise"
+  ansible.builtin.stat:
+    path: "{{ dados_docker_dir_path }}/apprise"
+  register: korp_volume_folder
+
+- name: "Criação de diretório {{ dados_docker_dir_path }}/apprise"
+  ansible.builtin.file:
+    path: "{{ dados_docker_dir_path }}/apprise"
+    state: directory
+    mode: '0770'
+    owner: www-data
+    group: www-data
