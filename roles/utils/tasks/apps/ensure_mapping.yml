@@ -1,0 +1,29 @@
+- name: Definição de variável apps_map
+  ansible.builtin.set_fact:
+    apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
+
+- name: Definição de serviços não versionados
+  ansible.builtin.set_fact:
+    apps_map: "{{ apps_map | combine(
+      {
+        'unversioned': [id]
+      },
+      recursive=True, list_merge='append_rp') }}"
+  when: has_unversioned_services
+
+- name: Definição de serviços versionados
+  ansible.builtin.set_fact:
+    apps_map: "{{ apps_map | combine(
+      {
+        'versioned': {
+          version_without_build: [id]
+        }
+      },
+      recursive=True, list_merge='append_rp') }}"
+  when: has_versioned_services
+
+- name: "Escrita de arquivo {{ config_dir_path }}/korp_services.yml"
+  ansible.builtin.copy:
+    dest: "{{ config_dir_path }}/korp_services.yml"
+    mode: '0644'
+    content: "{{ apps_map | to_yaml }}"

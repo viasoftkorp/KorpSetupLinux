@@ -1,0 +1,12 @@
+- name: 
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars:
+    remove_versioned: true
+    remove_unversioned: false
+    version_without_build: "2022.2.0"
+    apps_to_remove:
+      - APV
+      
+  tasks:

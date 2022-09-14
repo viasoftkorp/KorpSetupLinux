@@ -27,7 +27,7 @@ services:
       - "8600:8600/tcp"
       - "8600:8600/udp"
     volumes:
-      - "{{ korp_dir_path }}/configs/consul-server.json:/consul/config/server.json"
+      - "{{ config_dir_path }}/consul-server.json:/consul/config/server.json"
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
     networks:
       - servicos
@@ -43,8 +43,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - {{ korp_dir_path }}/configs/nginx/ssl_conf:/etc/nginx/ssl_conf
-      - {{ korp_dir_path }}/configs/nginx/conf.d/:/etc/nginx/conf.d/
+      - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
+      - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
       - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos
@@ -120,7 +120,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - "{{ korp_dir_path }}/configs/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "{{ config_dir_path }}/redis.conf:/usr/local/etc/redis/redis.conf"
     labels:
       com.centurylinklabs.watchtower.enable: false
 

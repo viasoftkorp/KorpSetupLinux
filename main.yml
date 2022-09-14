@@ -45,162 +45,21 @@
             - REL01
             - default-setup
 
-        - name: FLOW01
+        # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
+        - name: 
           ansible.builtin.import_role:
-            name: FLOW01
-          tags:
-            - FLOW01
+            name: "{{ item }}"
+          loop: "{{ apps }}"
+          loop_control:
+            loop_var: app_name
+          tags: install-apps
 
-        - name: Engenharia
-          ansible.builtin.import_role:
-            name: engenharia
-          tags:
-            - engenharia
-
-        - name: Contabil
-          ansible.builtin.import_role:
-            name: contabil
-          tags:
-            - contabil
-
-        - name: ERP
-          ansible.builtin.import_role:
-            name: ERP
-          tags:
-            - ERP
-
-        - name: Fiscal
-          ansible.builtin.import_role:
-            name: fiscal
-          tags:
-            - fiscal
-
-        - name: Faturamento
-          ansible.builtin.import_role:
-            name: faturamento
-          tags:
-            - faturamento
-
-        - name: Logistica
-          ansible.builtin.import_role:
-            name: logistica
-          tags:
-            - logistica
-
-        - name: Vendas
-          ansible.builtin.import_role:
-            name: vendas
-          tags:
-            - vendas
-
-        - name: PCRG001
-          ansible.builtin.import_role:
-            name: PCRG001
-          tags:
-            - PCRG001
-
-        - name: PRO09
-          ansible.builtin.import_role:
-            name: PRO09
-          tags:
-            - PRO09
-
-        - name: LOG102
-          ansible.builtin.import_role:
-            name: LOG102
-          tags:
-            - LOG102
-
-        - name: LOG103
-          ansible.builtin.import_role:
-            name: LOG103
-          tags:
-            - LOG103
-
-        - name: MOB02
-          ansible.builtin.import_role:
-            name: MOB02
-          tags:
-            - MOB02
-
-        - name: VEN07_W
-          ansible.builtin.import_role:
-            name: VEN07_W
-          tags:
-            - VEN07_W
-
-        - name: VEN26
-          ansible.builtin.import_role:
-            name: VEN26
-          tags:
-            - VEN26
-
-        - name: Compras
-          ansible.builtin.import_role:
-            name: compras
-          tags:
-            - compras
-
-        - name: PES00
-          ansible.builtin.import_role:
-            name: PES00
-          tags:
-            - PES00
-
-        - name: PES01
-          ansible.builtin.import_role:
-            name: PES01
-          tags:
-            - PES01
-
-        - name: LOG00
-          ansible.builtin.import_role:
-            name: LOG00
-          tags:
-            - LOG00
-
-        - name: LOG01_W
-          ansible.builtin.import_role:
-            name: LOG01_W
-          tags:
-            - LOG01_W
-
-        - name: FAT12
-          ansible.builtin.import_role:
-            name: FAT12
-          tags:
-            - FAT12
-
-        - name: CON51_W
-          ansible.builtin.import_role:
-            name: CON51_W
-          tags:
-            - CON51_W
-
-        - name: FIN63_W
-          ansible.builtin.import_role:
-            name: FIN63_W
-          tags:
-            - FIN63_W
-
-        - name: VEN_WEB_01
-          ansible.builtin.import_role:
-            name: VEN_WEB_01
-          tags:
-            - VEN_WEB_01
-
-        - name: APV
-          ansible.builtin.import_role:
-            name: APV
-          tags:
-            - APV
-
-        - name: object-storage
-          ansible.builtin.import_role:
-            name: object-storage
-          tags:
-            - never
-            - object-storage
+        # task executa update para a versão '{{ version_without_build }}', utilizando os APPs em '{{ config_dir_path }}/korp_services.yml'
+        - name:
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps_update/main.yml
+          tags: update
 
         # essa deve ser a ultima task
         - name: Finishing
