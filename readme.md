@@ -226,11 +226,11 @@ Chamaremos AppId/Domínio de `ID`
 
     x-extra_hosts:
       &default-extra_hosts
-      - "db_mssql: $DB_MSSQL"
-      - "app_server: $APP_SERVER"
-      - "{{ frontend.dns.api }}: $API_GATEWAY"
-      - "{{ frontend.dns.frontend }}: $PORTAL_GATEWAY"
-      - "{{ frontend.dns.cdn }}: $CDN_GATEWAY"
+      - "db_mssql:$DB_MSSQL"
+      - "app_server:$APP_SERVER"
+      - "{{ frontend.dns.api }}:$API_GATEWAY"
+      - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
+      - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
 
     networks:
       servicos:
