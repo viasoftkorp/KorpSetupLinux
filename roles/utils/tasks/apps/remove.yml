@@ -7,14 +7,20 @@
     - name: Remoção de aplicativos do compose - versionado
       community.docker.docker_compose:
         state: absent
-        project_src: "{{ versioned_compose_dir_path }}/"
+        project_src: "{{ compose_dir_path }}/{{ removed_version }}"
         files:
           - "{{ app_name }}-compose.yml"
       when: remove_versioned
 
-    - name: Atualização de registro de apps
+    - name: "Remoção de {{ app_name }} do registro de apps"
       ansible.builtin.set_fact:
-        apps_map: "{{ apps_map.versioned[version_without_build] | reject('equalto', app_name) | list }}"
+        apps_map: "{{ apps_map | combine(
+          {
+            'versioned': {
+              removed_version: apps_map.versioned[removed_version] | reject('equalto', app_name)
+            }
+          },
+          recursive=True, list_merge='replace') }}"
       when: remove_versioned
 
     - name: Remoção de aplicativos do compose - não versionado
@@ -25,9 +31,13 @@
           - "{{ app_name }}-compose.yml"
       when: remove_unversioned
 
-    - name: Atualização de registro de apps
+    - name: "Remoção de {{ app_name }} do registro de apps"
       ansible.builtin.set_fact:
-        apps_map: "{{ apps_map.unversioned[version_without_build] | reject('equalto', app_name) | list }}"
+        apps_map: "{{ apps_map | combine(
+          {
+            'unversioned': apps_map.unversioned | reject('equalto', app_name)
+          },
+          recursive=True, list_merge='replace') }}"
       when: remove_unversioned
 
     - name: "Escrita de arquivo {{ config_dir_path }}/korp_services.yml"

@@ -23,6 +23,7 @@
           tags:
             - infrastructure
             - default-setup
+            - update-apps
 
         - name: Infrastructure-web
           ansible.builtin.import_role:
@@ -30,6 +31,7 @@
           tags:
             - infrastructure-web
             - default-setup
+            - update-apps
 
         - name: Infrastructure-desktop
           ansible.builtin.import_role:
@@ -37,6 +39,7 @@
           tags:
             - infrastructure-desktop
             - default-setup
+            - update-apps
 
         - name: REL01
           ansible.builtin.import_role:
@@ -44,6 +47,7 @@
           tags:
             - REL01
             - default-setup
+            - update-apps
 
         # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
         - name: Instalação de apps
@@ -62,11 +66,12 @@
             tasks_from: apps/update.yml
           tags: 
             - never
-            - update
+            - update-apps
 
         # Variáveis esperadas:
         #   remove_versioned: bool
         #   remove_unversioned: bool
+        #   removed_version: string '2022.1.0'
         #   apps_to_remove: []
         - name: Remoção de apps
           ansible.builtin.include_role:
