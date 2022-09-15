@@ -18,6 +18,7 @@
   vars:
     service_name: "{{ item.key }}"
     id: infrastructure-desktop
+    skip_app_register: true
   with_dict: "{{ services }}"
   loop_control:
     extended: true

@@ -88,6 +88,8 @@
       ansible.builtin.include_role:
         name: utils
         tasks_from: apps/ensure_mapping.yml
+      when:
+        - not (skip_app_register is defined and skip_app_register)
 
   when:
     - ansible_loop.last

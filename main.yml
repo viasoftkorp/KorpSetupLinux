@@ -47,7 +47,6 @@
           tags:
             - REL01
             - default-setup
-            - update-apps
 
         # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
         - name: Instalação de apps
