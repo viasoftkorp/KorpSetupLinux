@@ -1,17 +1,22 @@
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
-    latest_installed_version: "0.0.0"
+- name: Update de apps
+  block:
+    - name: Definição de variáveis
+      ansible.builtin.set_fact:
+        apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
+        latest_installed_version: "0.0.0"
 
-- name: Verificação de ultima versão instalada
-  ansible.builtin.set_fact:
-    latest_installed_version: "{{ item.key }}"
-  with_dict: "{{ apps_map.versioned }}"
-  when: latest_installed_version is version(item.key, '<')
+    - name: Verificação de ultima versão instalada
+      ansible.builtin.set_fact:
+        latest_installed_version: "{{ item.key }}"
+      with_dict: "{{ apps_map.versioned }}"
+      when: latest_installed_version is version(item.key, '<')
 
-- name: Instalação de APPs
-  ansible.builtin.include_role:
-    name: "{{ app_name }}"
-  loop: "{{ (apps_map.versioned[latest_installed_version] + apps_map.unversioned) | unique }}"
-  loop_control:
-    loop_var: app_name
+    - name: Instalação de apps
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: apps/install.yml
+      loop: "{{ (apps_map.versioned[latest_installed_version] + apps_map.unversioned) | unique }}"
+      loop_control:
+        loop_var: app_name
+
+  tags: always

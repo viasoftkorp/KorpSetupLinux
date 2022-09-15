@@ -1,0 +1,8 @@
+# Deve ser chamado dentro de loop
+# Recebe 'app_name' como nome da role que será instalada
+
+- name: Instalação de apps
+  ansible.builtin.import_role:
+    name: "{{ app_name }}"
+  # tags 'always' é necessário aqui pois usamos 'include_role'
+  tags: always

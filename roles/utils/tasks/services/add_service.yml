@@ -56,7 +56,7 @@
 
 # essa task só acontece na ultima iteração do loop
 # isso é necessário pois a configuração de composes só deve acontecer uma vez, quando todos os serviços já estão configurados
-- name:
+- name: Setup de app
   block:
     - name: Checagem de compose - versionado
       ansible.builtin.stat:
@@ -72,7 +72,7 @@
       # por algum motivo, o ansible dá erro executando essa task como super user
       become: false
 
-    - name:
+    - name: Definição de versões
       ansible.builtin.set_fact:
         has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
         has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
@@ -91,5 +91,3 @@
 
   when:
     - ansible_loop.last
-
-

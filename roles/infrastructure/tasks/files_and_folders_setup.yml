@@ -142,12 +142,11 @@
 
 - name: "Garantia de existência de {{ config_dir_path }}/korp_services.yml"
   ansible.builtin.copy:
-    path: "{{ config_dir_path }}/korp_services.yml"
-    state: touch
+    dest: "{{ config_dir_path }}/korp_services.yml"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
     content: |
       unversioned:
       versioned:
-    when: not korp_services_file.stat.exists
+  when: not korp_services_file.stat.exists
