@@ -1,35 +1,39 @@
-- name: Definição de variável apps_map
-  ansible.builtin.set_fact:
-    apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
+- name: Remoção de app
+  block:
+    - name: Definição de variável apps_map
+      ansible.builtin.set_fact:
+        apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
 
-- name: Remoção de aplicativos do compose - versionado
-  community.docker.docker_compose:
-    state: absent
-    project_src: "{{ versioned_compose_dir_path }}/"
-    files:
-      - "{{ app_name }}-compose.yml"
-  when: remove_versioned
+    - name: Remoção de aplicativos do compose - versionado
+      community.docker.docker_compose:
+        state: absent
+        project_src: "{{ versioned_compose_dir_path }}/"
+        files:
+          - "{{ app_name }}-compose.yml"
+      when: remove_versioned
 
-- name: Atualização de registro de apps
-  ansible.builtin.set_fact:
-    apps_map: "{{ apps_map.versioned[version_without_build] | reject('equalto', app_name) | list }}"
-  when: remove_versioned
+    - name: Atualização de registro de apps
+      ansible.builtin.set_fact:
+        apps_map: "{{ apps_map.versioned[version_without_build] | reject('equalto', app_name) | list }}"
+      when: remove_versioned
 
-- name: Remoção de aplicativos do compose - não versionado
-  community.docker.docker_compose:
-    state: absent
-    project_src: "{{ compose_dir_path }}/"
-    files:
-      - "{{ app_name }}-compose.yml"
-  when: remove_unversioned
+    - name: Remoção de aplicativos do compose - não versionado
+      community.docker.docker_compose:
+        state: absent
+        project_src: "{{ compose_dir_path }}/"
+        files:
+          - "{{ app_name }}-compose.yml"
+      when: remove_unversioned
 
-- name: Atualização de registro de apps
-  ansible.builtin.set_fact:
-    apps_map: "{{ apps_map.unversioned[version_without_build] | reject('equalto', app_name) | list }}"
-  when: remove_unversioned
+    - name: Atualização de registro de apps
+      ansible.builtin.set_fact:
+        apps_map: "{{ apps_map.unversioned[version_without_build] | reject('equalto', app_name) | list }}"
+      when: remove_unversioned
 
-- name: "Escrita de arquivo {{ config_dir_path }}/korp_services.yml"
-  ansible.builtin.copy:
-    dest: "{{ config_dir_path }}/korp_services.yml"
-    mode: '0644'
-    content: "{{ apps_map | to_yaml }}"
+    - name: "Escrita de arquivo {{ config_dir_path }}/korp_services.yml"
+      ansible.builtin.copy:
+        dest: "{{ config_dir_path }}/korp_services.yml"
+        mode: '0644'
+        content: "{{ apps_map | to_yaml }}"
+
+  tags: always

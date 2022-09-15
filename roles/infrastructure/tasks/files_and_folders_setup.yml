@@ -135,7 +135,7 @@
     - "{{ dados_docker_dir_path }}/portainer"
 
 
-- name: Verificação de diretório de composes
+- name: "Verificação de existência de {{ config_dir_path }}/korp_services.yml"
   ansible.builtin.stat:
     path: "{{ config_dir_path }}/korp_services.yml"
   register: korp_services_file
