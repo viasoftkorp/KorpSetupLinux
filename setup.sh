@@ -214,7 +214,7 @@ fi
 
 
 # Execução de playbook bootstrap-playbook.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "$token", "gateway_url":"$gateway_url", "apps":[$apps]}' -C TD-978
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "'$token'", "gateway_url":"'$gateway_url'", "apps":['$apps']}' -C TD-978
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
