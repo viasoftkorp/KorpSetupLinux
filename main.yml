@@ -11,9 +11,9 @@
     - name: Execução de playbook
       block:
         - name: Default setup
-          ansible.builtin.import_role:
+          ansible.builtin.include_role:
             name: utils
-            tasks_from: default_setup
+            tasks_from: default/default_setup.yml
           tags:
             - always
 

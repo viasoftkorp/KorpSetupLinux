@@ -1,0 +1,12 @@
+- name: Default Setup
+  block:
+    - name: Requisição de informações padrões
+      import_tasks: request_default_info.yml
+
+    - name: Configuração de docker
+      community.docker.docker_login:
+        username: korp
+        password: "{{ services_secrets.Others.Docker.AccessToken }}"
+
+  # tags 'always' é necessário aqui pois usamos 'include_role'
+  tags: always

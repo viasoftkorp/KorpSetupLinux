@@ -1,0 +1,25 @@
+- name: Requisição de informações padrões
+  block:
+    - name: Validação de token
+      ansible.builtin.uri:
+        url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+        return_content: true
+      register: response
+
+    - name: Configuração de tenant_id
+      ansible.builtin.set_fact:
+        tenant_id: "{{ response.json.tenantId }}"
+        version_without_build: "{{ response.json.version }}"
+
+    - name: Coleta de secrets
+      ansible.builtin.uri:
+        url: "{{ gateway_url }}/vault/manager/server-deploy/secrets/{{ token }}"
+        return_content: true
+      register: response
+
+    - name: Definição de secrets
+      ansible.builtin.set_fact:
+        services_secrets: "{{ response.json }}"
+
+  # tags 'always' é necessário aqui pois usamos 'include_role'
+  tags: always
