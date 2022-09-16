@@ -271,18 +271,6 @@ Chamaremos AppId/Domínio de `ID`
     services:
     ```
 
-5. adição de role no playbook
-
-    em `main.yml` adicione as seguintes linhas **ANTES** da linhas contendo `finishing:
-
-    ``` yml
-    - name: <ID>
-      ansible.builtin.import_role:
-        name: <ID>
-      tags:
-        - <ID>
-    ```
-
 ---
 
 ## Execução de PlayBook
@@ -305,3 +293,24 @@ Para a realização de linting, utilize a ferramenta [Ansible Lint](https://ansi
 ``` bash
 ansible-lint <PlayBook_Name.yml>
 ```
+
+---
+
+Idealmente, o setup será chamado executando o seguinte comando
+
+  ``` bash
+  curl -s https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/master/setup.sh --output /tmp/setup.sh && bash /tmp/setup.sh token=<token>
+  ```
+
+Porém para testes, os seguintes comandos podem ser usados:
+
+  ``` bash
+  # remoção #
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
+
+  # instalação #
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
+
+  # update #
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br"}' --tags=update
+  ```
