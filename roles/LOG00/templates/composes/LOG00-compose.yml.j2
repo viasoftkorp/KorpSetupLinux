@@ -15,7 +15,7 @@ networks:
 
 services:
   LOG00:
-    image: "korp/viasoft.logistics.preregistration-frontend:3.1.x"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration-frontend:3.1.x"
     container_name: "LOG00"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -30,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-logistics-preregistration:
-    image: "korp/viasoft.logistics.preregistration:3.0.x"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration:3.0.x"
     container_name: "Viasoft.Logistics.PreRegistration"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

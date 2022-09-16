@@ -6,6 +6,9 @@ version_without_build: ""
 # essa variável pode ser sobrescrita durante chamada de playbook
 gateway_url: ""
 
+# variável pode assumir os valores 'korp' ou 'korpcicd'
+docker_account: "korp"
+
 korp_dir_path: /etc/korp
 
 dados_docker_dir_path: "{{ korp_dir_path }}/dados-docker"

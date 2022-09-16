@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-engenharia-core:
-    image: "korp/viasoft.engenharia.core:1.0.x"
+    image: "{{ docker_account }}/viasoft.engenharia.core:1.0.x"
     container_name: "Viasoft.Engenharia.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-engenharia-custoorcamento:
-    image: "korp/viasoft.engenharia.custoorcamento:1.0.x"
+    image: "{{ docker_account }}/viasoft.engenharia.custoorcamento:1.0.x"
     container_name: "Viasoft.Engenharia.CustoOrcamento"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-engenharia-gateway:
-    image: "korp/viasoft.engenharia.gateway:1.0.x"
+    image: "{{ docker_account }}/viasoft.engenharia.gateway:1.0.x"
     container_name: "Viasoft.Engenharia.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -54,7 +54,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   ENG50_W:
-    image: "korp/viasoft.engenharia.core-frontend:1.0.x"
+    image: "{{ docker_account }}/viasoft.engenharia.core-frontend:1.0.x"
     container_name: "ENG50_W"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

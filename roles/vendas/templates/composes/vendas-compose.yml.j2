@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-sales-core:
-    image: "korp/viasoft.sales.core:3.1.x"
+    image: "{{ docker_account }}/viasoft.sales.core:3.1.x"
     container_name: "Viasoft.Sales.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft.commercialproposal-core:
-    image: "korp/viasoft.sales.commercialproposal.core:3.3.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.3.x"
     container_name: "Viasoft.Sales.CommercialProposal.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft.commercialproposal-sync:
-    image: "korp/viasoft.sales.commercialproposal.sync:3.2.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.2.x"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -54,7 +54,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-vendas-custeioproduto:
-    image: "korp/viasoft.vendas.custeioproduto:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto:1.0.x"
     container_name: "Viasoft.Vendas.CusteioProduto"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -67,7 +67,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-vendas-custeioproduto-gateway:
-    image: "korp/viasoft.vendas.custeioproduto.gateway:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto.gateway:1.0.x"
     container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -80,7 +80,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-customerportfolio:
-    image: "korp/viasoft.sales.customerportfolio:2.2.x"
+    image: "{{ docker_account }}/viasoft.sales.customerportfolio:2.2.x"
     container_name: "Viasoft.Sales.CustomerPortfolio"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -93,7 +93,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-discount:
-    image: "korp/viasoft.sales.discount:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.discount:2.1.x"
     container_name: "Viasoft.Sales.Discount"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -106,7 +106,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-pricelist:
-    image: "korp/viasoft.sales.pricelist:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.pricelist:2.1.x"
     container_name: "Viasoft.Sales.PriceList"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -119,7 +119,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   CDP01:
-    image: "korp/viasoft.vendas.custeioproduto-frontend:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto-frontend:1.0.x"
     container_name: "CDP01"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -134,7 +134,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   VEN27:
-    image: "korp/viasoft.sales.commercialproposal-frontend:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.1.x"
     container_name: "VEN27"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -149,7 +149,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-customers:
-    image: "korp/viasoft.sales.customers:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.customers:2.1.x"
     container_name: "Viasoft.Sales.Customers"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

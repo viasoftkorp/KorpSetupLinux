@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-audittrail-client:
-    image: "korp/viasoft.audittrail.client:3.2.x"
+    image: "{{ docker_account }}/viasoft.audittrail.client:3.2.x"
     container_name: "Viasoft.Audittrail.Client"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -30,7 +30,7 @@ services:
       - servicos
 
   viasoft-email:
-    image: "korp/viasoft.email:1.3.x"
+    image: "{{ docker_account }}/viasoft.email:1.3.x"
     container_name: "Viasoft.Email"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -46,7 +46,7 @@ services:
       - servicos
 
   korp-legacy-authentication:
-    image: "korp/korp.legacy.authentication:1.5.x"
+    image: "{{ docker_account }}/korp.legacy.authentication:1.5.x"
     container_name: "Korp.Legacy.Authentication"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -59,7 +59,7 @@ services:
       - servicos
 
   viasoft-legacy-httpproxy:
-    image: "korp/viasoft.legacy.httpproxy:1.2.x"
+    image: "{{ docker_account }}/viasoft.legacy.httpproxy:1.2.x"
     container_name: "Viasoft.Legacy.Httpproxy"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -75,7 +75,7 @@ services:
       - servicos
 
   viasoft-welcomepage-dashboard:
-    image: "korp/viasoft.welcomepage.dashboard:1.4.x"
+    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x"
     container_name: "Viasoft.WelcomePage.Dashboard"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -88,7 +88,7 @@ services:
       - servicos
 
   viasoft-systemupdate:
-    image: "korp/viasoft.systemupdate:1.2.x"
+    image: "{{ docker_account }}/viasoft.systemupdate:1.2.x"
     container_name: "Viasoft.SystemUpdate"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -102,7 +102,7 @@ services:
       - servicos
 
   viasoft-integration-ecommerce:
-    image: "korp/viasoft.integration.ecommerce:1.0.x"
+    image: "{{ docker_account }}/viasoft.integration.ecommerce:1.0.x"
     container_name: "Viasoft.Integration.Ecommerce"
     restart: always
     extra_hosts: *default-extra_hosts

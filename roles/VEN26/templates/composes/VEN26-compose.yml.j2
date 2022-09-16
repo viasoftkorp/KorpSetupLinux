@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-sales-crm-core:
-    image: "korp/viasoft.sales.crm.core:4.1.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.core:4.1.x"
     container_name: "Viasoft.Sales.CRM.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-sales-crm-accounts:
-    image: "korp/viasoft.sales.crm.accounts:3.2.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.accounts:3.2.x"
     container_name: "Viasoft.Sales.CRM.Accounts"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   viasoft-sales-crm-activities:
-    image: "korp/viasoft.sales.crm.activities:3.1.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.activities:3.1.x"
     container_name: "Viasoft.Sales.CRM.Activities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -55,7 +55,7 @@ services:
 
     
   viasoft-sales-crm-goals:
-    image: "korp/viasoft.sales.crm.goals:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.goals:2.1.x"
     container_name: "Viasoft.Sales.CRM.Goals"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -68,7 +68,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
       
   viasoft-sales-crm-leads:
-    image: "korp/viasoft.sales.crm.leads:4.2.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.leads:4.2.x"
     container_name: "Viasoft.Sales.CRM.Leads"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -81,7 +81,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
         
   viasoft-sales-crm-opportunities:
-    image: "korp/viasoft.sales.crm.opportunities:4.2.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.opportunities:4.2.x"
     container_name: "Viasoft.Sales.CRM.Opportunities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -94,7 +94,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
           
   viasoft-sales-crm-qualification:
-    image: "korp/viasoft.sales.crm.qualification:4.1.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.qualification:4.1.x"
     container_name: "Viasoft.Sales.CRM.Qualification"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -107,7 +107,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
             
   viasoft-sales-crm-reporting:
-    image: "korp/viasoft.sales.crm.reporting:3.1.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.reporting:3.1.x"
     container_name: "Viasoft.Sales.CRM.Reporting"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -120,7 +120,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
               
   viasoft-sales-crm-sync:
-    image: "korp/viasoft.sales.crm.sync:2.0.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.sync:2.0.x"
     container_name: "Viasoft.Sales.CRM.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -133,7 +133,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   VEN26:
-    image: "korp/viasoft.sales.crm.core-frontend:3.2.x"
+    image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:3.2.x"
     container_name: "VEN26"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

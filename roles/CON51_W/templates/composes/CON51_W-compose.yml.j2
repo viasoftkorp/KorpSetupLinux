@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-contabil-dre:
-    image: "korp/viasoft.contabil.dre:1.3.x"
+    image: "{{ docker_account }}/viasoft.contabil.dre:1.3.x"
     container_name: "Viasoft.Contabil.Dre"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-contabil-gateway:
-    image: "korp/viasoft.contabil.gateway:1.2.x"
+    image: "{{ docker_account }}/viasoft.contabil.gateway:1.2.x"
     container_name: "Viasoft.Contabil.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   CON51_W:
-    image: "korp/viasoft.contabil.core-frontend:1.2.x"
+    image: "{{ docker_account }}/viasoft.contabil.core-frontend:1.2.x"
     container_name: "CON51_W"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

@@ -15,7 +15,7 @@ networks:
 
 services:
   LOG01_W:
-    image: "korp/viasoft.logistics.product-frontend:2.1.x"
+    image: "{{ docker_account }}/viasoft.logistics.product-frontend:2.1.x"
     container_name: "LOG01_W"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -30,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-logistics-products:
-    image: "korp/viasoft.logistics.products:3.0.x"
+    image: "{{ docker_account }}/viasoft.logistics.products:3.0.x"
     container_name: "Viasoft.Logistics.Products"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

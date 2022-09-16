@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-financeiro-dre:
-    image: "korp/viasoft.financeiro.dre:1.2.x"
+    image: "{{ docker_account }}/viasoft.financeiro.dre:1.2.x"
     container_name: "Viasoft.Financeiro.Dre"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-financeiro-gateway:
-    image: "korp/viasoft.financeiro.gateway:1.2.x"
+    image: "{{ docker_account }}/viasoft.financeiro.gateway:1.2.x"
     container_name: "Viasoft.Financeiro.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   FIN63_W:
-    image: "korp/viasoft.financeiro.core-frontend:1.1.x"
+    image: "{{ docker_account }}/viasoft.financeiro.core-frontend:1.1.x"
     container_name: "FIN63_W"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

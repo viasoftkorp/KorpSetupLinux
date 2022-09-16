@@ -34,7 +34,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     ``` yml
     <service_name_lowercase>-<version>:
-      image: "korp/<service_name_lowercase>:<version>.x"
+      image: "{{ docker_account }}/<service_name_lowercase>:<version>.x"
       container_name: "<service_name>-<version>"
       restart: on-failure:10
       extra_hosts: *default-extra_hosts
@@ -155,7 +155,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
 
     ``` yml
     korp-logistica-picking-2022-2-0: # aqui usamos '-' ao invés de '.'
-        image: "korp/korp.logistica.picking:2022.2.0.x" # nome deve se com letras minúsculas
+        image: "{{ docker_account }}/korp.logistica.picking:2022.2.0.x" # nome deve se com letras minúsculas
         container_name: "Korp.Logistica.Picking-2022.2.0" # nome deve ser conforme o bitbucket, com letras maiúsculas
         restart: on-failure:10
         extra_hosts: *default-extra_hosts

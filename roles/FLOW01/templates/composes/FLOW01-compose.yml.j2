@@ -15,7 +15,7 @@ networks:
 
 services:
   korp-flow:
-    image: "korp/korp.flow:1.1.x"
+    image: "{{ docker_account }}/korp.flow:1.1.x"
     container_name: "Korp.Flow"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   FLOW01:
-    image: "korp/korp.flow-frontend:1.1.x"
+    image: "{{ docker_account }}/korp.flow-frontend:1.1.x"
     container_name: "FLOW01"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -43,7 +43,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   SDK-FLOW:
-    image: "korp/korp.flow-frontend-package:1.1.x"
+    image: "{{ docker_account }}/korp.flow-frontend-package:1.1.x"
     container_name: "SDK.FLOW"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

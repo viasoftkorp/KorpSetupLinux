@@ -86,7 +86,7 @@ services:
       com.centurylinklabs.watchtower.enable: false
 
   {{ rabbitmq_container_name }}:
-    image: "korp/rabbitmq:1.1.0"
+    image: "{{ docker_account }}/rabbitmq:1.1.0"
     container_name: "{{ rabbitmq_container_name }}"
     # não remover esse hostname porque o RABBITMQ utiliza o hostname da máquina para compor as pastas internas
     # e cada vez que um container inicia, seu nome é alterado caso não esteja especificado
@@ -168,7 +168,7 @@ services:
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
   korp-legacy-frontend-router:
-    image: "korp/korp.legacy.frontend-router:1.0.x"
+    image: "{{ docker_account }}/korp.legacy.frontend-router:1.0.x"
     container_name: "Korp.Legacy.Frontend-router"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -180,7 +180,7 @@ services:
         ipv4_address: 172.18.128.1
 
   viasoft-loader:
-    image: "korp/viasoft.loader:2.1.x"
+    image: "{{ docker_account }}/viasoft.loader:2.1.x"
     container_name: "Viasoft.Loader"
     restart: always
     extra_hosts: *default-extra_hosts

@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-vendas-orcamento-core:
-    image: "korp/viasoft.vendas.orcamento.core:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.core:1.0.x"
     container_name: "Viasoft.Vendas.Orcamento.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -28,7 +28,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-vendas-orcamento-gateway:
-    image: "korp/viasoft.vendas.orcamento.gateway:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:1.0.x"
     container_name: "Viasoft.Vendas.Orcamento.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -41,7 +41,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-legacy-logistica:
-    image: "korp/viasoft.legacy.logistica:1.0.x"
+    image: "{{ docker_account }}/viasoft.legacy.logistica:1.0.x"
     container_name: "Viasoft.Legacy.Logistica"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -54,7 +54,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   VEN07_W:
-    image: "korp/viasoft.vendas.orcamento-frontend:1.0.x"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento-frontend:1.0.x"
     container_name: "VEN07_W"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

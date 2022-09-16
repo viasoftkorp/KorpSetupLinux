@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-faturamento-core:
-    image: "korp/viasoft.faturamento.core:1.0.x"
+    image: "{{ docker_account }}/viasoft.faturamento.core:1.0.x"
     container_name: "Viasoft.Faturamento.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +29,7 @@ services:
 
 services:
   viasoft-billing-nfe:
-    image: "korp/viasoft.billing.nfe:2.3.x"
+    image: "{{ docker_account }}/viasoft.billing.nfe:2.3.x"
     container_name: "Viasoft.Billing.NFE"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
