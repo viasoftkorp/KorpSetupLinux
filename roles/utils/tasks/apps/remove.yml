@@ -14,7 +14,7 @@
       ansible.builtin.set_fact:
         has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
         has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
-        apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
+        apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
     - name: Remoção de aplicativos do compose - versionado
       community.docker.docker_compose:
@@ -52,10 +52,11 @@
           recursive=True, list_merge='replace') }}"
       when: remove_unversioned and has_unversioned_services
 
-    - name: "Escrita de arquivo {{ config_dir_path }}/korp_services.yml"
+    - name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
       ansible.builtin.copy:
-        dest: "{{ config_dir_path }}/korp_services.yml"
+        dest: "{{ config_dir_path }}/installed_apps.yml"
         mode: '0644'
         content: "{{ apps_map | to_yaml }}"
 
+  # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always

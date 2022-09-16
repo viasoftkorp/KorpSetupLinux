@@ -135,18 +135,18 @@
     - "{{ dados_docker_dir_path }}/portainer"
 
 
-- name: "Verificação de existência de {{ config_dir_path }}/korp_services.yml"
+- name: "Verificação de existência de {{ config_dir_path }}/installed_apps.yml"
   ansible.builtin.stat:
-    path: "{{ config_dir_path }}/korp_services.yml"
-  register: korp_services_file
+    path: "{{ config_dir_path }}/installed_apps.yml"
+  register: installed_apps_file
 
-- name: "Garantia de existência de {{ config_dir_path }}/korp_services.yml"
+- name: "Garantia de existência de {{ config_dir_path }}/installed_apps.yml"
   ansible.builtin.copy:
-    dest: "{{ config_dir_path }}/korp_services.yml"
+    dest: "{{ config_dir_path }}/installed_apps.yml"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
     content: |
       unversioned:
       versioned:
-  when: not korp_services_file.stat.exists
+  when: not installed_apps_file.stat.exists

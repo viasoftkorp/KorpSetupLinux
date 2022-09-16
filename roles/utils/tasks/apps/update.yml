@@ -2,7 +2,7 @@
   block:
     - name: Definição de variáveis
       ansible.builtin.set_fact:
-        apps_map: "{{ lookup('file', '{{ config_dir_path }}/korp_services.yml') | from_yaml }}"
+        apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
         latest_installed_version: "0.0.0"
 
     - name: Verificação de ultima versão instalada

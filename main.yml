@@ -23,7 +23,8 @@
           tags:
             - infrastructure
             - default-setup
-            - update-apps
+            - update
+            - install
 
         - name: Infrastructure-web
           ansible.builtin.import_role:
@@ -31,7 +32,8 @@
           tags:
             - infrastructure-web
             - default-setup
-            - update-apps
+            - update
+            - install
 
         - name: Infrastructure-desktop
           ansible.builtin.import_role:
@@ -39,7 +41,8 @@
           tags:
             - infrastructure-desktop
             - default-setup
-            - update-apps
+            - update
+            - install
 
         - name: REL01
           ansible.builtin.import_role:
@@ -47,7 +50,8 @@
           tags:
             - REL01
             - default-setup
-            - update-apps
+            - update
+            - install
 
         # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
         - name: Instalação de apps
@@ -57,16 +61,16 @@
           loop: "{{ apps }}"
           loop_control:
             loop_var: app_name
-          tags: install-apps
+          tags: install
 
-        # task executa update para a versão '{{ version_without_build }}', utilizando os APPs em '{{ config_dir_path }}/korp_services.yml'
+        # task executa update para a versão '{{ version_without_build }}', utilizando os APPs em '{{ config_dir_path }}/installed_apps.yml'
         - name: Atualização de apps
           ansible.builtin.include_role:
             name: utils
             tasks_from: apps/update.yml
           tags: 
             - never
-            - update-apps
+            - update
 
         # Variáveis esperadas:
         #   remove_versioned: bool
@@ -82,7 +86,7 @@
             loop_var: app_name
           tags:
             - never
-            - remove-apps
+            - remove
 
         # essa deve ser a ultima task
         - name: Finishing
