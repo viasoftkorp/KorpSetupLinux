@@ -1,6 +1,6 @@
 - name: Transferência de arquivos de configuração em files
   ansible.builtin.copy:
-    dest: "{{ korp_dir_path }}/configs/"
+    dest: "{{ config_dir_path }}/"
     src: configs/
     owner: "{{ linux_korp.user }}"
     group: root
@@ -34,7 +34,7 @@
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
 - name: Configuração e transferência de arquivos de configuração em templates
   ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/configs/{{ item[:-3] | basename }}"
+    dest: "{{ config_dir_path }}/{{ item[:-3] | basename }}"
     src: "configs/{{ item | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
@@ -46,12 +46,12 @@
   block:
     - name: Verificação de diretório de configuração de nginx
       ansible.builtin.stat:
-        path: "{{ korp_dir_path }}/configs/nginx/conf.d"
+        path: "{{ config_dir_path }}/nginx/conf.d"
       register: korp_nginx_conf_folder
 
     - name: Criação de diretório de configuração de nginx
       ansible.builtin.file:
-        path: "{{ korp_dir_path }}/configs/nginx/conf.d"
+        path: "{{ config_dir_path }}/nginx/conf.d"
         state: directory
         mode: '0755'
         owner: "{{ linux_korp.user }}"
@@ -60,7 +60,7 @@
 
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:
-        dest: "{{ korp_dir_path }}/configs/nginx/conf.d/{{ item[:-3] | basename }}"
+        dest: "{{ config_dir_path }}/nginx/conf.d/{{ item[:-3] | basename }}"
         src: "configs/nginx/conf.d/{{ item | basename }}"
         owner: "{{ linux_korp.user }}"
         group: root
@@ -133,3 +133,20 @@
     - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
     - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
     - "{{ dados_docker_dir_path }}/portainer"
+
+
+- name: "Verificação de existência de {{ config_dir_path }}/installed_apps.yml"
+  ansible.builtin.stat:
+    path: "{{ config_dir_path }}/installed_apps.yml"
+  register: installed_apps_file
+
+- name: "Garantia de existência de {{ config_dir_path }}/installed_apps.yml"
+  ansible.builtin.copy:
+    dest: "{{ config_dir_path }}/installed_apps.yml"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+    content: |
+      unversioned:
+      versioned:
+  when: not installed_apps_file.stat.exists

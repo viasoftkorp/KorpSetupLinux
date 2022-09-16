@@ -35,12 +35,6 @@ else
     fi
 fi
 
-if [ "$apps" == "" ]; then
-    apps="default-setup"
-else
-    apps="default-setup,$apps"
-fi
-
 
 for ARGUMENT in "$@"
 do
@@ -214,7 +208,7 @@ fi
 
 
 # Execução de playbook bootstrap-playbook.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars "token=$token" --extra-vars "gateway_url=$gateway_url" --tags "$apps"
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "'$token'", "gateway_url":"'$gateway_url'", "apps":['$apps']}' --tags=default-setup,install
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"

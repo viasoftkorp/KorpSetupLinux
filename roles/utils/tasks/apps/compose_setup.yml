@@ -1,17 +1,3 @@
-- name: Checagem de compose - versionado
-  ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
-  register: versioned_compose_result
-  # por algum motivo, o ansible dá erro executando essa task como super user
-  become: false
-
-- name: Checagem de compose - não versionado
-  ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
-  register: unversioned_compose_result
-  # por algum motivo, o ansible dá erro executando essa task como super user
-  become: false
-
 - name: "Configuração e transferência de arquivos de compose de {{ id }} - versionado"
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ compose_name[:-3] | basename }}"
@@ -23,7 +9,7 @@
     "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search', '.yml.j2') }}"
   loop_control:
     loop_var: compose_name
-  when: versioned_compose_result.stat.exists
+  when: has_versioned_services
 
 - name: "Configuração e transferência de arquivos de compose de {{ id }} - não versionado"
   ansible.builtin.template:
@@ -36,7 +22,7 @@
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
   loop_control:
     loop_var: compose_name
-  when: unversioned_compose_result.stat.exists
+  when: has_unversioned_services
 
 - name: "Criação e inicialização de {{ id }}-compose - versionado"
   community.docker.docker_compose:
@@ -44,7 +30,7 @@
     env_file: "{{ docker_env_file_path }}"
     files:
       - "{{ id }}-compose.yml"
-  when: versioned_compose_result.stat.exists
+  when: has_versioned_services
 
 - name: Criação e inicialização de {{ id }}-compose - não versionado"
   community.docker.docker_compose:
@@ -52,4 +38,4 @@
     env_file: "{{ docker_env_file_path }}"
     files:
       - "{{ id }}-compose.yml"
-  when: unversioned_compose_result.stat.exists
+  when: has_unversioned_services
