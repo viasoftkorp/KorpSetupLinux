@@ -16,12 +16,19 @@
 - name: Definição de variável
   ansible.builtin.set_fact:
     ansible_fabio_config: "{{ lookup('file', 'configs/fabio/config') | split('\r\n') }}"
+    apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
 - name: Validação de configuração
   ansible.builtin.set_fact:
     consul_fabio_config: "{{ consul_fabio_config + [item] }}"
   when: not (consul_fabio_config | regex_search(item + '*'))
   loop: "{{ ansible_fabio_config }}"
+
+- name: Remoção de configuração de object-storage caso necessário
+  ansible.builtin.set_fact:
+    consul_fabio_config: "{{ consul_fabio_config | difference(item) }}"
+  when: (item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')) and ('object-storage' in apps_map.unversioned)
+  loop: "{{ consul_fabio_config }}"
 
 - name: Garantia de configuração de fabio ao consul
   community.general.consul_kv:
