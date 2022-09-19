@@ -1,7 +1,9 @@
 - name: Default Setup
   block:
     - name: Requisição de informações padrões
-      import_tasks: request_default_info.yml
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: default/request_default_info.yml
 
     - name: Configuração de docker
       community.docker.docker_login:
