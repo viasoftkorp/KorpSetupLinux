@@ -4,8 +4,6 @@ DECLARE @CLIENT_ID INT
 DECLARE @RESOURCE_ID INT
 DECLARE @SECRET VARCHAR(MAX)
 
-DROP TABLE IF EXISTS #services
-
 CREATE TABLE #services(ServiceName varchar(max),  ServiceDescription varchar(max));
 INSERT INTO #services (ServiceName, ServiceDescription)
 values ('{{ service_name }}', '{{ service_name }}')
