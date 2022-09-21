@@ -1,13 +1,15 @@
 ---
-# é pega durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure"
-version_without_build: ""
-
-# não colocar "/" no final dessa gateway, pois utilizamos no KV Global. lá espera-se que vem sem "/"
-# essa variável pode ser sobrescrita durante chamada de playbook
+# parâmetros *devem* ser passados durante chamada do playbook
+token: ""
+  # não colocar "/" no final dessa gateway, pois utilizamos no KV Global. lá espera-se que vem sem "/"
+  # essa variável pode ser sobrescrita durante chamada de playbook
 gateway_url: ""
 
-# variável pode assumir os valores 'korp' ou 'korpcicd'
-docker_account: "korp"
+version_without_build: ""
+tenant_id: ""
+
+# pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.docker_account'
+docker_account: ""
 
 korp_dir_path: /etc/korp
 
@@ -28,12 +30,22 @@ postgres_container_name: postgres
 apprise_container_name: apprise
 
 frontend:
-  endpoints:
-    gateway_url: "https://korp-api.local"
-    cdn_url: "https://korp-cdn.local"
-    frontend_url: "https://korp.local"
+  # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
   dns:
-    api: korp-api.local
-    frontend: korp.local
-    cdn: korp-cdn.local
-    
+    api: ""
+    frontend: ""
+    cdn: ""
+  # configurado com base nos valores de 'frontend.dns'
+  endpoints:
+    gateway_url: ""
+    cdn_url: ""
+    frontend_url: ""
+
+# essas variáveis podem ser passadas como extra-vars durante a chamada dos playbooks
+customs:
+  docker_account: ""
+  frontend:
+    dns:
+      api: ""
+      frontend: ""
+      cdn: ""
