@@ -216,6 +216,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
   -C TD-985 \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
+  --tags=default-setup,install
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
