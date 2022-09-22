@@ -213,7 +213,6 @@ fi
 
 # Execução de playbook bootstrap-playbook.yml
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
-  -C TD-985 \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=default-setup,install \
