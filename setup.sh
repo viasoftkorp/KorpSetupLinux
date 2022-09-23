@@ -16,12 +16,17 @@ create_random_string() {
 #   gateway_url="<gateway_url>"
 
 
-apps=""
+apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
+
 ini_file_path="./setup_config.ini"
 
-if test -f $ini_file_path; 
+if test -f $ini_file_path;
 then
     apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
     echo "$apps"
@@ -206,9 +211,27 @@ inventory = /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
-
 # Execução de playbook bootstrap-playbook.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "'$token'", "gateway_url":"'$gateway_url'", "apps":['$apps']}' --tags=default-setup,install
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key \
+  --tags=default-setup,install \
+  --extra-vars='{
+    "token": "'$token'",
+    "gateway_url": "'$gateway_url'",
+    "customs": {
+      "docker_account": "'$docker_account'",
+      "frontend": {
+        "dns": {
+          "api": "'$dns_api'",
+          "frontend": "'$dns_frontend'",
+          "cdn": "'$dns_cdn'"
+        }
+      }
+    },
+    "apps":['$apps']
+  }'
+
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"

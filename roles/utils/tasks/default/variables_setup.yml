@@ -1,0 +1,90 @@
+- name: Setup de variáveis
+  block:
+    - name: Validação de variáveis
+      ansible.builtin.fail:
+        msg: Uma ou mais variáveis padrões não forma definidas.
+      when: (token | length == 0) or (gateway_url | length == 0)
+
+    - name: Validação de token
+      ansible.builtin.uri:
+        url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+        return_content: true
+      register: response
+
+    - name: Configuração de tenant_id
+      ansible.builtin.set_fact:
+        tenant_id: "{{ response.json.tenantId }}"
+        version_without_build: "{{ response.json.version }}"
+
+    - name: Coleta de secrets
+      ansible.builtin.uri:
+        url: "{{ gateway_url }}/vault/manager/server-deploy/secrets/{{ token }}"
+        return_content: true
+      register: response
+
+    - name: Definição de secrets
+      ansible.builtin.set_fact:
+        services_secrets: "{{ response.json }}"
+
+    - name: Configuração de variáveis personalizadas
+      block:
+        - name: Definição de variáveis
+          ansible.builtin.set_fact:
+            docker_account: "{{ services_secrets.Others.Docker.Account }}"
+            frontend: "{{ frontend | combine(
+              {
+                'dns': {
+                  'api': services_secrets.Others.DNSs.api,
+                  'frontend': services_secrets.Others.DNSs.frontend,
+                  'cdn': services_secrets.Others.DNSs.cdn
+                }
+              }, recursive=True) }}"
+
+        - name: "Definição de variável 'frontend.dns.api'"
+          ansible.builtin.set_fact:
+            frontend: "{{ frontend | combine(
+              {
+                'dns': {
+                  'api':  customs.frontend.dns.api
+                }
+              }, recursive=True) }}"
+          when: not ( customs.frontend.dns.api | length == 0)
+
+        - name: "Definição de variável 'frontend.dns.frontend'"
+          ansible.builtin.set_fact:
+            frontend: "{{ frontend | combine(
+              {
+                'dns': {
+                  'frontend':  customs.frontend.dns.frontend
+                }
+              }, recursive=True) }}"
+          when: not ( customs.frontend.dns.frontend | length == 0)
+
+        - name: "Definição de variável 'frontend.dns.cdn'"
+          ansible.builtin.set_fact:
+            frontend: "{{ frontend | combine(
+              {
+                'dns': {
+                  'cdn':  customs.frontend.dns.cdn
+                }
+              }, recursive=True) }}"
+          when: not ( customs.frontend.dns.cdn | length == 0)
+
+        - name: "Definição de variáveis 'frontend.endpoints'"
+          ansible.builtin.set_fact:
+            frontend: "{{ frontend | combine(
+              {
+                'endpoints': {
+                  'gateway_url': 'https://' + frontend.dns.api,
+                  'cdn_url': 'https://' + frontend.dns.cdn,
+                  'frontend_url': 'https://' + frontend.dns.frontend
+                }
+              }, recursive=True) }}"
+
+        - name: Definição de variável docker_account
+          ansible.builtin.set_fact:
+            docker_account: "{{ customs.docker_account }}"
+          when: not (customs.docker_account | length == 0)
+
+  # tags 'always' é necessário aqui pois usamos 'include_role'
+  tags: always

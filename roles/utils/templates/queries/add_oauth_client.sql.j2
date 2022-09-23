@@ -4,6 +4,9 @@ DECLARE @CLIENT_ID INT
 DECLARE @RESOURCE_ID INT
 DECLARE @SECRET VARCHAR(MAX)
 
+
+IF OBJECT_ID('tempdb..#services') IS NOT NULL DROP TABLE #services
+
 CREATE TABLE #services(ServiceName varchar(max),  ServiceDescription varchar(max));
 INSERT INTO #services (ServiceName, ServiceDescription)
 values ('{{ service_name }}', '{{ service_name }}')
@@ -14,10 +17,10 @@ DECLARE SERVICES_CURSOR CURSOR for
 select ServiceName, ServiceDescription from #services
 
 OPEN SERVICES_CURSOR  
-  
+
 FETCH NEXT FROM SERVICES_CURSOR   
 INTO @SERVICE_NAME, @SERVICE_DESCRIPTION
- 
+
 WHILE @@FETCH_STATUS = 0  
 BEGIN
    IF NOT EXISTS (SELECT 1 FROM ApiResources WHERE [Name] = @SERVICE_NAME)

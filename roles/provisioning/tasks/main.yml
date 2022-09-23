@@ -33,7 +33,7 @@
 - name: Requisição de informações padrões
   ansible.builtin.include_role:
     name: utils
-    tasks_from: default/request_default_info.yml
+    tasks_from: default/variables_setup.yml
 
 - name: Configuração de sysctl.conf
   ansible.posix.sysctl:

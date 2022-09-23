@@ -61,7 +61,10 @@
           loop: "{{ apps }}"
           loop_control:
             loop_var: app_name
-          tags: install
+          tags: 
+            - install
+            # tag utilizada para facilitar teste do setup, não deve ser utilizada fora de ambiente de teste
+            - install-only
 
         # task executa update para a versão '{{ version_without_build }}', utilizando os APPs em '{{ config_dir_path }}/installed_apps.yml'
         - name: Atualização de apps
@@ -71,6 +74,8 @@
           tags: 
             - never
             - update
+            # tag utilizada para facilitar teste do setup, não deve ser utilizada fora de ambiente de teste
+            - update-only
 
         # Variáveis esperadas:
         #   remove_versioned: bool
