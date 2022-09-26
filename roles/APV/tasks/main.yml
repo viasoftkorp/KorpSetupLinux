@@ -1,6 +1,6 @@
 - name: definição de variáveis
   set_fact:
-    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
 - name: adição de serviços de APV
   ansible.builtin.include_role:

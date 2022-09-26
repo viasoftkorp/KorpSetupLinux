@@ -10,7 +10,7 @@
 
 - name: Definição de variáveis
   ansible.builtin.set_fact:
-    services: "{{ (lookup('file', 'vars/main.yml') | from_yaml)['services'] }}"
+    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
 # precisa estar antes do Viasoft.Authentication, pois o mesmo cria os clients a partir do Consul
 - name: Adição de serviços de infrastructure-web - sem oauth
@@ -32,7 +32,7 @@
 # esses serviços devem ser adicionados depois do setup do Viasoft.Authentication
 - name: Definição de variáveis
   ansible.builtin.set_fact:
-    services: "{{ (lookup('file', 'vars/services_with_oauth.yml') | from_yaml)['services'] }}"
+    services: "{{ (lookup('ansible.builtin.template', 'vars/services_with_oauth.yml') | from_yaml)['services'] }}"
 
 - name: Adição de serviços de infrastructure-web - com oauth
   ansible.builtin.include_role:
