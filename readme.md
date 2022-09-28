@@ -299,7 +299,7 @@ ansible-lint <PlayBook_Name.yml>
 Idealmente, o setup será chamado executando o seguinte comando
 
   ``` bash
-  curl -s https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/master/setup.sh --output /tmp/setup.sh && bash /tmp/setup.sh token=<token>
+  curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/master/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh token=<token>
   ```
 
 Porém para testes, os seguintes comandos podem ser usados:
