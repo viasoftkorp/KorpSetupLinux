@@ -11,66 +11,51 @@
     content: |
       {{ self_signed_cert.passphrase }}
 
-- name: Geração de chave privada para certificado auto-assinado (RSA, 4096)
+- name: Geração de chave privada para o certificado assinado pela CA (RSA, 2048)
   community.crypto.openssl_privatekey:
-    size: 4096
+    size: 2048
     type: RSA
-    path: "{{ self_signed_cert_privatekey_path }}"
-    backup: true
+    path: "{{ self_signed_cert_privatekey_path }}"    
     passphrase: "{{ self_signed_cert.passphrase }}"
     cipher: auto
+    backup: true
 
-- name: Geração de CSR (certificate signing request) para geração certificado auto-assinado
+- name: Geração de CSR (certificate signing request) para geração do certificado assinado pela CA
   community.crypto.openssl_csr:
     path: "{{ self_signed_certs_directory }}/cert.csr"
     privatekey_path: "{{ self_signed_cert_privatekey_path }}"
     privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
-    backup: true
-    common_name: korp.com.br
-    organization_name: Korp Informática LTDA
-    state_or_province_name: Paraná
-    countryName: BR
+    country_name: BR
+    state_or_province_name: Parana
+    locality_name: Curitiba
+    organization_name: Korp Informatica LTDA
+    common_name: Korp Informatica
     key_usage:
       - digitalSignature
       - keyEncipherment
     key_usage_critical: true
+    basic_constraints:
+      - 'CA:FALSE'
+    basic_constraints_critical: true
+    extended_key_usage:
+      - serverAuth
+      - clientAuth
+    extended_key_usage_critical: true
+    create_subject_key_identifier: true
     subject_alt_name:
       - "DNS:{{ frontend.dns.frontend }}"
       - "DNS:{{ frontend.dns.api }}"
       - "DNS:{{ frontend.dns.cdn }}"
+    backup: true
 
-- name: Geração do certificado auto-assinado com OpenSSL
+- name: Geração do certificado assinado pela CA
   community.crypto.x509_certificate:
-    path: "{{ self_signed_cert_path }}"
-    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    path: "{{ self_signed_cert_path }}"    
     csr_path: "{{ self_signed_certs_directory }}/cert.csr"
-    provider: selfsigned
-    selfsigned_not_after: +18000d
+    provider: ownca
+    ownca_path: "{{ self_signed_ca_cert_path }}"
+    ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
+    ownca_privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    ownca_not_after: +365d
+    ownca_not_before: "-1d"
     backup: true
-
-- name: Geração de PFX do certificado auto-assinado
-  community.crypto.openssl_pkcs12:
-    action: export
-    path: "{{ self_signed_cert_pfx_path }}"
-    passphrase: "{{ self_signed_cert.passphrase }}"
-    certificate_path: "{{ self_signed_cert_path }}"
-    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
-    friendly_name: korp.com.br
-    backup: true
-
-- name: Configuração de certificados no servidor
-  ansible.builtin.copy:
-    dest: "/usr/local/share/ca-certificates"
-    src: "{{ self_signed_cert_path }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0775'
-  become: true
-  become_user: root
-
-- name: Atualização de certificados no servidor
-  ansible.builtin.command: update-ca-certificates
-  become: true
-  become_user: root

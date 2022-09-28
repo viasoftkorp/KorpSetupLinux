@@ -1,0 +1,65 @@
+- name: Criação do diretório em que as os arquivos de certificado ficarão
+  ansible.builtin.file:
+    path: "{{ self_signed_certs_directory }}/"
+    state: directory
+    mode: '0755'
+
+- name: Geração de chave privada para o certificado da CA (RSA, 4096)
+  community.crypto.openssl_privatekey:
+    size: 4096
+    type: RSA
+    path: "{{ self_signed_ca_cert_privatekey_path }}"    
+    passphrase: "{{ self_signed_cert.passphrase }}"
+    cipher: auto
+    backup: true
+
+- name: Geração de CSR (certificate signing request) para geração a CA
+  community.crypto.openssl_csr:
+    path: "{{ self_signed_certs_directory }}/ca-cert.csr"
+    privatekey_path: "{{ self_signed_ca_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    country_name: BR
+    state_or_province_name: Parana
+    locality_name: Curitiba
+    organization_name: Korp Informatica LTDA
+    common_name: Korp Informatica CA
+    use_common_name_for_san: false
+    key_usage:
+      - digitalSignature
+      - keyEncipherment
+      - keyCertSign    
+    key_usage_critical: true    
+    basic_constraints:
+      - 'CA:TRUE'
+    basic_constraints_critical: true
+    extended_key_usage:
+      - serverAuth
+      - clientAuth
+    extended_key_usage_critical: true
+    create_subject_key_identifier: true
+    backup: true
+
+- name: Geração do certificado CA auto-assinado
+  community.crypto.x509_certificate:
+    path: "{{ self_signed_ca_cert_path }}"
+    privatekey_path: "{{ self_signed_ca_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    csr_path: "{{ self_signed_certs_directory }}/ca-cert.csr"
+    provider: selfsigned
+    selfsigned_not_after: +10950d
+    backup: true
+
+- name: Configuração de certificados no servidor
+  ansible.builtin.copy:
+    dest: "/usr/local/share/ca-certificates"
+    src: "{{ self_signed_ca_cert_path }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0775'
+  become: true
+  become_user: root
+
+- name: Atualização de certificados no servidor
+  ansible.builtin.command: update-ca-certificates
+  become: true
+  become_user: root
