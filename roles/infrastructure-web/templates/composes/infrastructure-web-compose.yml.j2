@@ -37,6 +37,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - GATEWAY_HOST=fabio
       - ROUTES_ENDPOINT=http://fabio:9998/api/routes
     volumes:
@@ -54,6 +55,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -69,6 +71,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - URL_CDN={{ frontend.endpoints.cdn_url }}
       - URL_LOADER={{ frontend.endpoints.frontend_url }}
     volumes:
@@ -86,6 +89,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -99,6 +103,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -114,6 +119,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -129,6 +135,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -144,6 +151,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -157,6 +165,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -170,6 +179,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -183,6 +193,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -196,6 +207,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -209,6 +221,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - FILE_LOCATION=/app/FileProviderResource
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
@@ -224,6 +237,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -237,6 +251,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -250,6 +265,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -263,6 +279,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -276,6 +293,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -291,6 +309,7 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
     volumes:
@@ -308,6 +327,7 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -323,6 +343,7 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
     volumes:
@@ -336,6 +357,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
@@ -351,6 +373,7 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
     volumes:
