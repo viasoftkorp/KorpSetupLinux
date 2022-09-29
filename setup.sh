@@ -11,14 +11,14 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>" - OBRIGATÓRIO
-#   run_bootstrap=true OBRIGATORIO PRIMEIRA VEZ
+#   token="<token>" - OBRIGATÓRIO#  
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2"
-#   install=<true> instala 
-#   remove_app=<true>  remove
-#   update=<true   atualiza 
+#   run_bootstrap=false ira rodar o main.yml e não bootstrap-playbook.yml  (padrão true)
+
+
+
 
 
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
@@ -220,43 +220,23 @@ inventory = /etc/korp/ansible/inventory.yml
     # Corrige a permição dos arquivos
     sudo chmod 644 /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
+    
 fi
 
-if [ "$remove_versioninstall_apps" == "" ];
+# verificação caso não deseja que rode o bootstrap-playbook.yml
+run_bootstrap=True
+playbook_name=""
+declare -u run_bootstrap
+run_bootstrap=$run_bootstrap
+if [ $run_bootstrap == "FALSE" ];
 then
-# caso não digita nada vai ser inserido nada e não vai rodar o programa.
-  echo ""
-else     
-       # desinstala os apps
-       ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
-       #pega os apps logo na frente 
-       apps=${$remove_versioninstall_apps%/} 
-      #instala os apps em base do que foi digitado na frente
-      ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":['$apps']}' --tags=install
+  playbook_name=main.yml
+  echo $playbook_name 
+else
+   playbook_name="bootstrap-playbook.yml"
+   echo $playbook_name
 fi
-
-#Flag caso true  roda a instalação.
-if [ "$install" = true ];
-then 
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
-fi
-
-#Flag caso true  roda a desinstalação.
-if["$remove_app" = true ];
-then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
-fi
-
-#Flag caso true  roda a atualização.
-if["$update" = true ];
-then
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br"}' --tags=update
-fi
-
-# Execução de playbook bootstrap-playbook.yml caso a variavel run_bootstrap=true for digitado
-if [ "$run_bootstrap" = true ];
-then 
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=default-setup,install \
@@ -276,29 +256,6 @@ then
     "apps":['$apps']
   }'
   
-else 
- ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git 
- main.yml \
-  --limit localhost \
-  --vault-id /etc/korp/ansible/.vault_key \
-  --tags=default-setup,install \
-  --extra-vars='{
-    "token": "'$token'",
-    "gateway_url": "'$gateway_url'",
-    "customs": {
-      "docker_account": "'$docker_account'",
-      "frontend": {
-        "dns": {
-          "api": "'$dns_api'",
-          "frontend": "'$dns_frontend'",
-          "cdn": "'$dns_cdn'"
-        }
-      }
-    },
-    "apps":['$apps']
-  }'
-fi
-
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
