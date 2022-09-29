@@ -60,7 +60,7 @@
     "RefreshRolesFrequencySeconds": "300"
   },
   "ApiWebKey": "{{ services_secrets.Global.ApiWebKey }}",
-  "GatewayFrontendUrl": "{{services_secrets.GatewayFrontendUrl}}",
+  "GatewayFrontendUrl": "{{services_secrets.Global.GatewayFrontendUrl}}",
   "GatewayUrl": "{{ gateway_url }}",
   "LegacyGateway": "{{ frontend.endpoints.gateway_url }}",
   "CORS": "{{ frontend.endpoints.frontend_url }}",
