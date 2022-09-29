@@ -16,6 +16,9 @@ create_random_string() {
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2"
+#   install=<true> instala 
+#   remove_app=<true>  remove
+#   update=<true   atualiza 
 
 
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
@@ -58,7 +61,7 @@ then
    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 else
       
-        apps=$i$install_apps%/   #apps=$(echo $ARGUMENT ) 
+        apps=${$install_apps%/} 
 fi
 
 # Validação de gateway_url
@@ -136,7 +139,6 @@ fi
 
 
 # Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
-
 if [ $is_first_install = True ];
 then
 
@@ -218,6 +220,37 @@ inventory = /etc/korp/ansible/inventory.yml
     # Corrige a permição dos arquivos
     sudo chmod 644 /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
+fi
+
+if [ "$remove_versioninstall_apps" == "" ];
+then
+# caso não digita nada vai ser inserido nada e não vai rodar o programa.
+  echo ""
+else     
+       # desinstala os apps
+       ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
+       #pega os apps logo na frente 
+       apps=${$remove_versioninstall_apps%/} 
+      #instala os apps em base do que foi digitado na frente
+      ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
+fi
+
+#Flag caso true  roda a instalação.
+if [ "$install" = true ];
+then 
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
+fi
+
+#Flag caso true  roda a desinstalação.
+if["$remove_app" = true ];
+then
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
+fi
+
+#Flag caso true  roda a atualização.
+if["$update" = true ];
+then
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br"}' --tags=update
 fi
 
 # Execução de playbook bootstrap-playbook.yml caso a variavel run_bootstrap=true for digitado
