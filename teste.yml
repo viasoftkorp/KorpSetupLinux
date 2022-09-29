@@ -2,4 +2,4 @@
   
   tasks:
       - debug:
-          var: ansible_facts["cmdline"]
+          var: ansible_facts
