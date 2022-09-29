@@ -1,7 +1,12 @@
 ---
-- hosts: 127.0.0.1
+- hosts: localhost
   tasks:
+  - name: Print versão
+    ansible.builtin.debug:
+    msg: "{{ ansible_distribution_version }}"
+
   - name: Verificando se a versão do Linux é 22.04
+    debug: 
     ansible.builtin.fail:
       msg: "{{ ansible_failed_result }}"
     when: ansible_distribution_version != "22.04"
