@@ -7,7 +7,7 @@
 
   - name: Verificando se a versão do Linux é 22.04 
     ansible.builtin.fail:
-      msg: "{{ ansible_failed_result }}"
+      msg: "{{ ansible_distribution_version }} não é compatível"
       #apenas para teste
     when: ansible_distribution_version != "22.05"
     
