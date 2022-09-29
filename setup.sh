@@ -268,7 +268,7 @@ then
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
-          "frontend": "'$dns_frontend'"
+          "frontend": "'$dns_frontend'",
           "cdn": "'$dns_cdn'"
         }
       }
