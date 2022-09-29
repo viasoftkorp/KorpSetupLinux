@@ -14,6 +14,7 @@ create_random_string() {
 #   token="<token>" - OBRIGATÓRIO
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
+#   install_apps="<apps1,apps2"
 
 
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
@@ -22,7 +23,6 @@ ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
 then
-    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -51,6 +51,14 @@ do
    export "$KEY"="$VALUE"
 done
 
+if [ "$install_apps" == "" ];
+then
+   
+   apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+else
+      
+        apps=$i$install_apps%/   #apps=$(echo $ARGUMENT ) 
+fi
 
 # Validação de gateway_url
 if [ "$gateway_url" == "" ];
