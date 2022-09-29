@@ -1,7 +1,7 @@
 - hosts: localhost
   tasks:
-  - name: Colotando infos do linux
-    debug: msg="{{ item }}"
-    with_items: 
-    - "{{ ansible_distribution }}"
-    - "{{ ansible_distribution_version }}"
+  - name: Verificando se a versão do Linux é 22.04
+    ansible.builtin.fail:
+    msg: "{{ ansible_failed_result }}"
+    when: ansible_distribution_version != "22.04"
+    
