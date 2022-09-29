@@ -13,7 +13,7 @@
 - name: Verificando se a versão do ubuntu é 22.04 
   ansible.builtin.fail:
     msg: A versão do ubuntu deve ser 22.04
-    when: ansible_distribution_version != "22.04"
+  when: ansible_distribution_version != "22.04"
 
 - name: Instalação de dependências padrões
   ansible.builtin.apt:
