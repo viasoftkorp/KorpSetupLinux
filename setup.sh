@@ -12,6 +12,7 @@ create_random_string() {
 # Leitura de parâmetros passados para o script
 # parametros esperados:
 #   token="<token>" - OBRIGATÓRIO
+#   run_bootstrap=true OBRIGATORIO PRIMEIRA VEZ
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2"
@@ -219,8 +220,10 @@ inventory = /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
 fi
 
-# Execução de playbook bootstrap-playbook.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+# Execução de playbook bootstrap-playbook.yml caso a variavel run_bootstrap=true for digitado
+if [ "$run_bootstrap" = true ];
+then 
+  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=default-setup,install \
@@ -239,6 +242,29 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
     },
     "apps":['$apps']
   }'
+  
+else 
+ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git 
+ main.yml \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key \
+  --tags=default-setup,install \
+  --extra-vars='{
+    "token": "'$token'",
+    "gateway_url": "'$gateway_url'",
+    "customs": {
+      "docker_account": "'$docker_account'",
+      "frontend": {
+        "dns": {
+          "api": "'$dns_api'",
+          "frontend": "'$dns_frontend'",
+          "cdn": "'$dns_cdn'"
+        }
+      }
+    },
+    "apps":['$apps']
+  }'
+fi
 
 if [ $? != 0 ]
 then
