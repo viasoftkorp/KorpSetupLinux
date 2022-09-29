@@ -18,9 +18,6 @@ create_random_string() {
 #   run_bootstrap=false ira rodar o main.yml e não bootstrap-playbook.yml  (padrão true)
 
 
-
-
-
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
 
 ini_file_path="./setup_config.ini"
