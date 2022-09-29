@@ -232,7 +232,7 @@ else
        #pega os apps logo na frente 
        apps=${$remove_versioninstall_apps%/} 
       #instala os apps em base do que foi digitado na frente
-      ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
+      ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":['$apps']}' --tags=install
 fi
 
 #Flag caso true  roda a instalação.
@@ -268,7 +268,7 @@ then
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
-          "frontend": "'$dns_frontend'",
+          "frontend": "'$dns_frontend'"
           "cdn": "'$dns_cdn'"
         }
       }
