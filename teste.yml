@@ -1,10 +1,7 @@
-- hosts: "127.0.0.1"
-  
+- hosts: localhost
   tasks:
-      - name: Printando ansible facts
-      - debug:
-          msg: "{{ item }}"
-          with_items: 
-          - "{{ ansible_distribution }}"   
-          - "{{ ansible_distribution_version }}" 
-      
+  - name: Colotando infos do linux
+    debug: msg="{{ item }}"
+    with_items: 
+    - "{{ ansible_distribution }}"
+    - "{{ ansible_distribution_version }}"
