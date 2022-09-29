@@ -1,5 +1,10 @@
 - hosts: "127.0.0.1"
   
   tasks:
+      - name: Printando ansible facts
       - debug:
-          var: ansible_facts["ansible_distribution_version"]
+          msg: "{{ item }}"
+          with_items: 
+          - "{{ ansible_distribution }}"   
+          - "{{ ansible_distribution_version }}" 
+      
