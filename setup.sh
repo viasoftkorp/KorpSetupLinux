@@ -14,12 +14,12 @@ create_random_string() {
 #   token="<token>" - OBRIGATÓRIO#  
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
-#   install_apps="<apps1,apps2"
-#   run_bootstrap=false ira rodar o main.yml e não bootstrap-playbook.yml  (padrão true)
+#   install_apps="<apps1,apps2>"
+#   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 
 
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
-
+run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
@@ -41,7 +41,6 @@ else
     fi
 fi
 
-
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -53,20 +52,18 @@ do
 done
 
 if [ "$install_apps" == "" ];
-then
-   
+then   
    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
-else
-      
-        apps=${$install_apps%/} 
+else      
+   apps=${$install_apps} 
 fi
 
 # Validação de gateway_url
 if [ "$gateway_url" == "" ];
 then
-  gateway_url = "https://gateway.korp.com.br"
+    gateway_url = "https://gateway.korp.com.br"
 else
-  gateway_url=${gateway_url%/}
+   gateway_url=${gateway_url%/}
 fi
 
 
@@ -221,19 +218,15 @@ inventory = /etc/korp/ansible/inventory.yml
 fi
 
 # verificação caso não deseja que rode o bootstrap-playbook.yml
-run_bootstrap=True
 playbook_name=""
-declare -u run_bootstrap
-run_bootstrap=$run_bootstrap
-if [ $run_bootstrap == "FALSE" ];
+if [ ${run_bootstrap^^} == "FALSE" ];
 then
-  playbook_name=main.yml
-  echo $playbook_name 
+    playbook_name="main.yml" 
 else
-   playbook_name="bootstrap-playbook.yml"
-   echo $playbook_name
+    playbook_name="bootstrap-playbook.yml"  
 fi
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
+
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=default-setup,install \
@@ -252,7 +245,7 @@ fi
     },
     "apps":['$apps']
   }'
-  
+
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
