@@ -10,7 +10,7 @@
     cache_valid_time: 3600
     force_apt_get: true
 
-- name: Verificação de versão do sistema 
+- name: Verificação da versão do sistema operacional
   ansible.builtin.fail:
     msg: A versão do ubuntu deve ser 22.04
   when: ansible_distribution_version != "22.04"
