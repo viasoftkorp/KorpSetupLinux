@@ -11,18 +11,19 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>" - OBRIGATÓRIO
+#   token="<token>" - OBRIGATÓRIO#  
 #   disk="<sdx>"
 #   gateway_url="<gateway_url>"
+#   install_apps="<apps1,apps2>"
+#   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 
 
 apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
-
+run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
 then
-    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -40,7 +41,6 @@ else
     fi
 fi
 
-
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -51,13 +51,19 @@ do
    export "$KEY"="$VALUE"
 done
 
+if [ "$install_apps" == "" ];
+then   
+   apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+else      
+   apps=${$install_apps} 
+fi
 
 # Validação de gateway_url
 if [ "$gateway_url" == "" ];
 then
-  gateway_url = "https://gateway.korp.com.br"
+    gateway_url = "https://gateway.korp.com.br"
 else
-  gateway_url=${gateway_url%/}
+   gateway_url=${gateway_url%/}
 fi
 
 
@@ -127,7 +133,6 @@ fi
 
 
 # Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
-
 if [ $is_first_install = True ];
 then
 
@@ -209,10 +214,19 @@ inventory = /etc/korp/ansible/inventory.yml
     # Corrige a permição dos arquivos
     sudo chmod 644 /etc/korp/ansible/inventory.yml
     sudo chmod 444 /etc/korp/ansible/.vault_key
+    
 fi
 
-# Execução de playbook bootstrap-playbook.yml
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+# verificação caso não deseja que rode o bootstrap-playbook.yml
+playbook_name=""
+if [ ${run_bootstrap^^} == "FALSE" ];
+then
+    playbook_name="main.yml" 
+else
+    playbook_name="bootstrap-playbook.yml"  
+fi
+
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=default-setup,install \
