@@ -20,7 +20,7 @@ versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
 docker_env_file_path: "{{ compose_dir_path }}/.env"
 
 self_signed_certs_directory: "{{ korp_dir_path }}/certs"
-self_signed_cert_privatekey_path: "{{ self_signed_certs_directory }}/cert.key"
+self_signed_cert_privatekey_path: "{{ self_signed_certs_directory }}/cert.key" 
 self_signed_cert_path: "{{ self_signed_certs_directory }}/cert.crt"
 self_signed_cert_pfx_path: "{{ self_signed_certs_directory }}/cert.pfx"
 self_signed_ca_cert_privatekey_path: "{{ self_signed_certs_directory }}/ca-cert.key"

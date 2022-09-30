@@ -22,6 +22,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
     volumes:
@@ -38,6 +39,7 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
     volumes:

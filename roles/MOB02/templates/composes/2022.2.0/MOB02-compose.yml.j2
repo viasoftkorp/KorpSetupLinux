@@ -22,6 +22,7 @@ services:
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
       - "{{ dados_docker_dir_path }}/MOB02/reports/:/app/reports/"
