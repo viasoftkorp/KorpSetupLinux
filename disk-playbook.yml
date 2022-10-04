@@ -43,6 +43,18 @@
 
           when: korp_disk == ""
 
+        - name: Checagem de espaço total Disco Root
+          ansible.builtin.fail:
+            msg:
+              - "Falha disco não tem espaço total disponivel para rodar aplicação "
+          when : ((ansible_mounts|json_query('[?mount == `/`].size_total'))[0] /1024/1024/1024 | int ) < (0.9 * root_disk_minimum_size | int )
+
+        - name: Checagem de Espaço livre Korp Disk
+          ansible.builtin.fail:
+            msg:
+              - "Falha disco da korp não tem espaço livre disponivel  suficiente "
+          when: (ansible_devices[korp_disk].size |  regex_replace('[^0-9^.]','') | int)  < korp_data_disk_minimum_size
+
         - name: Criação de 'grupo de volume'
           community.general.lvg:
             vg: "{{ vg_korp_name }}"
