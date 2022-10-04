@@ -43,14 +43,14 @@
 
           when: korp_disk == ""
 
-        - name: Checagem de espaço
+        - name: Checagem de tamanho de discos
           block:
             - name: Checagem de espaço total Disco Root
               ansible.builtin.fail:
                 msg:
                   - "Falha O espaço do dispositivo de boot é menor do que o espaço mínimo requisitado. "
-                 # selecionamos o dispositivo que está montado em '/' (root), e pegamos o tamanho todas desse dispositivo
-                 # o tamanho retornado está em bites, por isso fazemos  3 divisões 1024, transformano o valor para GB
+                 # selecionamos o dispositivo que está montado em '/' (root), e # pegamos o tamanho desse dispositivo
+                 # o tamanho retornado está em bites, por isso fazemos 3 divisões de 1024, transformando o valor para GB
                  # após isso é feito um comparativo de 90% do minímo necessario com a variavel root_disk_minimum_size
               when : ((ansible_mounts|json_query('[?mount == `/`].size_total'))[0] /1024/1024/1024 | int ) < (0.9 * root_disk_minimum_size | int )
 
@@ -58,7 +58,8 @@
               ansible.builtin.fail:
                 msg:
                   - "Falha O espaço do disco de dados é menor do que o espaço mínimo requisitado. "
-                  #seleciona  o tamanho do disk korp e é feito uma formatação #utilizando regex para remover caracteres especiais e #convertendo para inteiro, após isso é feito um comparador do #minimo necessario com a varivavel korp_data_disk_minimum_size
+                  # seleciona  o tamanho do disk korp e é feito uma formatação # utilizando regex para remover caracteres especiais e  
+                  # convertendo para inteiro, após isso é feito um comparador #  do minimo necessario com a varivavel korp_data_disk_minimum_size
               when: (ansible_devices[korp_disk].size |  regex_replace('[^0-9^.]','') | int)  < korp_data_disk_minimum_size         
 
         - name: Criação de 'grupo de volume'
