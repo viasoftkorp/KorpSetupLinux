@@ -1,8 +1,8 @@
 ---
 - hosts: 127.0.0.1
+  become: true 
   tasks:
     - name: Coletando informações do container
-      become: true 
       community.docker.docker_container_info:
         name: nginx
       register: result  
