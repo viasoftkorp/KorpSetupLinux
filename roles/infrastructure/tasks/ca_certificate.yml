@@ -63,3 +63,6 @@
   ansible.builtin.command: update-ca-certificates
   become: true
   become_user: root
+  notify: 
+    - Coletando informações do container
+    - Debug informações container
