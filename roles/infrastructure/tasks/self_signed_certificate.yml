@@ -59,3 +59,14 @@
     ownca_not_after: +365d
     ownca_not_before: "-1d"
     backup: true
+
+- name: Geração de PFX do certificado auto-assinado
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ self_signed_cert_pfx_path }}"
+    passphrase: "{{ self_signed_cert.passphrase }}"
+    certificate_path: "{{ self_signed_cert_path }}"
+    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
+    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    friendly_name: korp.com.br
+    backup: true
