@@ -22,7 +22,7 @@
 
     - name: Debug informações container
       Debug:
-        msg: {{result.container}}
+        msg: "{{result.container}}" 
 
     - name: restart nginx no docker 
       community.docker.docker_container:
