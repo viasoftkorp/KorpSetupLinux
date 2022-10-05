@@ -13,4 +13,4 @@
 
     - name: Debug informações container
       ansible.builtin.debug:
-        msg: "{{result.container}}" 
+        msg: "{{result.container['State']['Status']}}" 
