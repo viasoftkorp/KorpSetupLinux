@@ -4,7 +4,11 @@
     - name: Coletando informações do container
       community.docker.docker_container_info:
         name: nginx
-      register: result
+      register: result  
+      
+    - name: Does container exist?
+      ansible.builtin.debug:
+        msg: "The container {{ 'exists' if result.exists else 'does not exist' }}"
 
     - name: Debug informações container
       ansible.builtin.debug:
