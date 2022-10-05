@@ -15,7 +15,7 @@
     register: result
 
 - name: Debug informações container
-  Debug:
+  ansible.builtin.debug:
     msg: "{{result.container}}" 
 
 
