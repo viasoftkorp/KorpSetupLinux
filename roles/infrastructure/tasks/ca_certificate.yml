@@ -63,22 +63,3 @@
   ansible.builtin.command: update-ca-certificates
   become: true
   become_user: root
-  notify: 
-    - Coletando informações do container
-    - Debug informações container
-
-  handlers:
-    - name: Coletando informações do container
-      community.docker.docker_container_info:
-       name: nginx
-      register: result
-
-    - name: Debug informações container
-      Debug:
-        msg: "{{result.container}}" 
-
-    - name: restart nginx no docker 
-      community.docker.docker_container:
-       name: nginx
-       restart: true
-      when: result.container['state']['Status'] == "running"
