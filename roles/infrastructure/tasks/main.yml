@@ -10,9 +10,6 @@
 
 - name: Provisão da CA para geração do certificado
   ansible.builtin.import_tasks: ca_certificate.yml
-  register: output
-  ansible.builtin.debug:
-   msg: "{{output.changed}}"
  
 - name: Provisão do certificado assinado pela CA
   ansible.builtin.import_tasks: self_signed_certificate.yml  
