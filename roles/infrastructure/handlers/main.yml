@@ -11,8 +11,3 @@
     state: started
     restart: true
   when: result.exists
-
-- name: Teste
-  ansible.builtin.debug:
-    msg: "{{result.exists}}"
-
