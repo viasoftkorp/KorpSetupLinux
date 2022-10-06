@@ -59,9 +59,6 @@
     ownca_not_after: +365d
     ownca_not_before: "-1d"
     backup: true
-  notify:
-    - Coletando informações do container
-    - Reiniciando container nginx 
 
 - name: Geração de PFX do certificado auto-assinado
   community.crypto.openssl_pkcs12:

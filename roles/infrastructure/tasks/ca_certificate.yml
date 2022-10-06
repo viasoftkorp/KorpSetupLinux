@@ -48,9 +48,6 @@
     provider: selfsigned
     selfsigned_not_after: +10950d
     backup: true
-  notify:
-    - Coletando informações do container
-    - Reiniciando container nginx 
 
 - name: Configuração de certificados no servidor
   ansible.builtin.copy:
