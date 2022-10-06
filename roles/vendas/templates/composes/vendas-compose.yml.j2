@@ -143,7 +143,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   VEN27:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.2.x"
     container_name: "VEN27"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
