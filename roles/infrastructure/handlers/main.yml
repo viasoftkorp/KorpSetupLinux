@@ -1,0 +1,13 @@
+- name: Coletando informações do container
+  become: true
+  community.docker.docker_container_info:
+    name: nginx
+  register: result
+
+- name: Reiniciando container nginx
+  become: true
+  community.docker.docker_container:
+    name: nginx
+    state: started
+    restart: true
+  when: result.exists
