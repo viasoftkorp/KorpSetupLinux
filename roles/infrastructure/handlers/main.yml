@@ -12,11 +12,7 @@
     restart: true
   when: result.exists
 
-- name: TESTE DEBUG TESTE TESTE TEESTE
-  become: true
-  community.docker.docker_container_info:
-    name: nginx
-  register: result
+- name: Teste
   ansible.builtin.debug:
     msg: "{{result.exists}}"
-    
+

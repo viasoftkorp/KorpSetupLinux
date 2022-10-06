@@ -67,4 +67,5 @@
   become: true
   become_user: root
   notify:
-   - TESTE DEBUG TESTE TESTE TEESTE
+   - Coletando informações do container
+   - Teste
