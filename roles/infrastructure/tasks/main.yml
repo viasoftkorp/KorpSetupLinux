@@ -8,21 +8,9 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
-
-- name: Coletando informações do container
-  community.docker.docker_container_info:
-    name: nginx
-    register: result
-
-- name: Debug informações container
-  ansible.builtin.debug:
-    msg: "{{result.container}}" 
-
-
-
 - name: Provisão da CA para geração do certificado
   ansible.builtin.import_tasks: ca_certificate.yml
-
+ 
 - name: Provisão do certificado assinado pela CA
   ansible.builtin.import_tasks: self_signed_certificate.yml  
 
