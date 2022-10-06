@@ -10,6 +10,9 @@
 
 - name: Provisão da CA para geração do certificado
   ansible.builtin.import_tasks: ca_certificate.yml
+  notify::
+   - Coletando informações do container
+   - Reiniciando container nginx
  
 - name: Provisão do certificado assinado pela CA
   ansible.builtin.import_tasks: self_signed_certificate.yml  
