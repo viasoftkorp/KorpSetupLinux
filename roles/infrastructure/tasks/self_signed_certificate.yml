@@ -70,3 +70,6 @@
     privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
     friendly_name: korp.com.br
     backup: true
+  notify:
+    - Coletando informações do container
+    - Reiniciando container nginx 

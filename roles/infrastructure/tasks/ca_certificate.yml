@@ -58,6 +58,9 @@
     mode: '0775'
   become: true
   become_user: root
+  notify:
+    - Coletando informações do container
+    - Reiniciando container nginx 
 
 - name: Atualização de certificados no servidor
   ansible.builtin.command: update-ca-certificates
