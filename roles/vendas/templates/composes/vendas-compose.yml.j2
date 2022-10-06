@@ -29,7 +29,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft.commercialproposal-core:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.3.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.4.x"
     container_name: "Viasoft.Sales.CommercialProposal.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -43,7 +43,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft.commercialproposal-sync:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.2.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.3.x"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -143,7 +143,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   VEN27:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.1.x"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.2.x"
     container_name: "VEN27"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -161,6 +161,20 @@ services:
   viasoft-sales-customers:
     image: "{{ docker_account }}/viasoft.sales.customers:2.1.x"
     container_name: "Viasoft.Sales.Customers"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  
+  viasoft.commercialproposal-gateway:
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.0.x"
+    container_name: "Viasoft.Sales.CommercialProposal.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:

@@ -49,3 +49,10 @@ services:
     db:
       name: Viasoft_Sales_Customers
       type: mssql
+
+  Korp.Vendas.AutomatizacaoDeFrete:
+
+  Viasoft.Sales.CommercialProposal.Gateway:
+    db:
+      name: Viasoft_Sales_CommercialProposal_Gateway
+      type: postgres
