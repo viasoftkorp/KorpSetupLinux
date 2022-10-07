@@ -1,0 +1,12 @@
+services:
+
+  Viasoft.Vendas.CusteioProduto.Gateway:
+    db:
+      name: Viasoft_Vendas_CusteioProduto_Gateway
+      type: postgres
+
+  Viasoft.Vendas.CusteioProduto:
+    db:
+      name: Viasoft_Vendas_CusteioProduto
+      type: postgres
+ 

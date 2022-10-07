@@ -1,0 +1,13 @@
+services:
+
+  Viasoft.Sales.CommercialProposal.Core:
+    db:
+      name: Viasoft_Sales_CommercialProposal_Core
+      type: mssql
+
+  Viasoft.Sales.CommercialProposal.Sync:
+    db:
+      name: Viasoft_Sales_CommercialProposal_Sync
+      type: mssql
+
+ 

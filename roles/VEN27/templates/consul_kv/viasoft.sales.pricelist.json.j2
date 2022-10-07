@@ -1,0 +1,11 @@
+{
+  "Authorization": {
+    "Secret": "{{ secret }}"
+  },
+  "ServiceBus": {
+    "StorageConnectionString": "Server=db_mssql; Database=Viasoft_Sales_PriceList; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False; MultipleActiveResultSets=true;"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=db_mssql; Database=Viasoft_Sales_PriceList; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False;"
+  }
+}
