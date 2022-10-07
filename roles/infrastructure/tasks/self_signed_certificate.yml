@@ -71,5 +71,4 @@
     friendly_name: korp.com.br
     backup: true
   notify:
-    - Coletando informações do container
-    - Reiniciando container nginx 
+  - Restart Nginx
