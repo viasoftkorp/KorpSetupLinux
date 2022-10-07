@@ -2,7 +2,7 @@
   become: true
   community.docker.docker_container_info:
     name: nginx
-    register: result
+  register: result
   listen: Restart Nginx
 
   # O container pode ainda não existir, por isso a verificação.
