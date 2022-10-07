@@ -28,62 +28,6 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft.commercialproposal-core:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.4.x"
-    container_name: "Viasoft.Sales.CommercialProposal.Core"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft.commercialproposal-sync:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.3.x"
-    container_name: "Viasoft.Sales.CommercialProposal.Sync"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-vendas-custeioproduto:
-    image: "{{ docker_account }}/viasoft.vendas.custeioproduto:1.0.x"
-    container_name: "Viasoft.Vendas.CusteioProduto"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  viasoft-vendas-custeioproduto-gateway:
-    image: "{{ docker_account }}/viasoft.vendas.custeioproduto.gateway:1.0.x"
-    container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
   viasoft-sales-customerportfolio:
     image: "{{ docker_account }}/viasoft.sales.customerportfolio:2.2.x"
     container_name: "Viasoft.Sales.CustomerPortfolio"
@@ -124,39 +68,7 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  CDP01:
-    image: "{{ docker_account }}/viasoft.vendas.custeioproduto-frontend:1.0.x"
-    container_name: "CDP01"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-  VEN27:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.2.x"
-    container_name: "VEN27"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/" 
 
   viasoft-sales-customers:
     image: "{{ docker_account }}/viasoft.sales.customers:2.1.x"

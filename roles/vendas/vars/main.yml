@@ -4,26 +4,6 @@ services:
       name: Viasoft_Sales_Core
       type: mssql
 
-  Viasoft.Sales.CommercialProposal.Core:
-    db:
-      name: Viasoft_Sales_CommercialProposal_Core
-      type: mssql
-
-  Viasoft.Sales.CommercialProposal.Sync:
-    db:
-      name: Viasoft_Sales_CommercialProposal_Sync
-      type: mssql
-
-  Viasoft.Vendas.CusteioProduto:
-    db:
-      name: Viasoft_Vendas_CusteioProduto
-      type: postgres
-
-  Viasoft.Vendas.CusteioProduto.Gateway:
-    db:
-      name: Viasoft_Vendas_CusteioProduto_Gateway
-      type: postgres
-
   Viasoft.Sales.CustomerPortfolio:
     db:
       name: Viasoft_Sales_CustomerPortfolio
