@@ -6,4 +6,5 @@ dependencies:
   - role: fiscal
   - role: PES00
   - role: PES01
+  - role: LOG00
 
