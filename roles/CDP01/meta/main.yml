@@ -4,4 +4,5 @@ dependencies:
   - role: L0G01_W
   - role: vendas
   - role: compras
+  - role: ERP
 

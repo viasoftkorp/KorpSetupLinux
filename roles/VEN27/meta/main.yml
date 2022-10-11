@@ -10,3 +10,4 @@ dependencies:
   - role: PES00
   - role: PES01
   - role: REL01
+  - role: ERP
