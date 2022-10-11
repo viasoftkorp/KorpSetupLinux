@@ -1,7 +1,7 @@
 dependencies:
   - role: engenharia
   - role: LOG00
-  - role: L0G01_W
+  - role: LOG01_W
   - role: vendas
   - role: compras
   - role: ERP
