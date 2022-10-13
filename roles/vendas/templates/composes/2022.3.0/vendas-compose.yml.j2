@@ -14,9 +14,9 @@ networks:
       name: servicos
 
 services:
-  korp-vendas-custoproduto-2022-2-0:
-    image: "{{ docker_account }}/korp.vendas.custoproduto:2022.2.0.x"
-    container_name: "Korp.Vendas.CustoProduto-2022.2.0"
+  korp-vendas-custoproduto-2022-3-0:
+    image: "{{ docker_account }}/korp.vendas.custoproduto:2022.3.0.x"
+    container_name: "Korp.Vendas.CustoProduto-2022.3.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
