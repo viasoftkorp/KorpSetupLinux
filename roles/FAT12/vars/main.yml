@@ -1,5 +1,4 @@
 services:
-
   Viasoft.Billing.CTE:
     db:
       name: Viasoft_Billing_CTE
