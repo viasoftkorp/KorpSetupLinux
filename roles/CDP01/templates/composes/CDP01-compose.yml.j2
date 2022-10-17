@@ -29,8 +29,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-
-
+      
   viasoft-vendas-custeioproduto:
     image: "{{ docker_account }}/viasoft.vendas.custeioproduto:1.0.x"
     container_name: "Viasoft.Vendas.CusteioProduto"
