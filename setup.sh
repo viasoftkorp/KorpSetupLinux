@@ -16,9 +16,10 @@ create_random_string() {
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
+#   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 
 
-apps=""; docker_account=""; dns_api=""; dns_frontend=""; dns_cdn="";
+apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -55,7 +56,14 @@ if [ "$install_apps" == "" ];
 then   
    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 else      
-   apps=${$install_apps} 
+   apps=$install_apps
+fi
+
+if [ "$custom_tags" == "" ];
+then   
+   ansible_tags="default-setup,install"
+else      
+   ansible_tags=$custom_tags
 fi
 
 # Validação de gateway_url
@@ -229,7 +237,7 @@ fi
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
-  --tags=default-setup,install \
+  --tags=$ansible_tags \
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
