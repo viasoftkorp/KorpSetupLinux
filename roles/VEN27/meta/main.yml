@@ -1,0 +1,13 @@
+dependencies:
+  - role: vendas
+  - role: contabil
+  - role: faturamento
+  - role: financeiro
+  - role: fiscal
+  - role: LOG00
+  - role: LOG01_W
+  - role: logistica
+  - role: PES00
+  - role: PES01
+  - role: REL01
+  - role: ERP
