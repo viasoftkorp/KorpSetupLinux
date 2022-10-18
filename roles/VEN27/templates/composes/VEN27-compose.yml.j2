@@ -30,7 +30,7 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
-  viasoft_commercialproposal-sync:
+  viasoft-commercialproposal-sync:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.3.x"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
     restart: on-failure:10
@@ -44,7 +44,7 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  viasoft.commercialproposal-core:
+  viasoft-commercialproposal-core:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.4.x"
     container_name: "Viasoft.Sales.CommercialProposal.Core"
     restart: on-failure:10
