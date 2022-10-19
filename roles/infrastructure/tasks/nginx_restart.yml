@@ -4,11 +4,6 @@
     name: nginx
   register: result
 
-- name: debug infos container
-  become: true
-  ansible.builtin.debug:
-    msg: "{{result.container['State']}}"
-
   # O container pode ainda não existir, por isso a verificação.
 - name: Reiniciando container nginx 
   become: true
