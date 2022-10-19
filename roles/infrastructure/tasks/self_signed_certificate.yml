@@ -72,6 +72,6 @@
     backup: true
   register: status
   
-- name: Reiniciando nginx
+- name: Reinício do container nginx
   ansible.builtin.import_tasks: nginx_restart.yml  
   when: status.changed
