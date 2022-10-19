@@ -3,7 +3,7 @@
   community.docker.docker_container_info:
     name: nginx
   register: result
-  debug:
+  ansible.builtin.debug:
     msg: "{{result.container['State']}}"
   listen: Restart Nginx
 
