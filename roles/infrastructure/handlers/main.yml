@@ -9,7 +9,7 @@
   become: true
   ansible.builtin.debug:
     msg: "{{result.container['State']}}"
-  lister: Restart Nginx
+  listen: Restart Nginx
 
   # O container pode ainda não existir, por isso a verificação.
 - name: Reiniciando container nginx 
