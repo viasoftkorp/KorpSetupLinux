@@ -70,3 +70,8 @@
     privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
     friendly_name: korp.com.br
     backup: true
+  register: status
+  
+- name: Reinício do container nginx
+  ansible.builtin.import_tasks: nginx_restart.yml  
+  when: status.changed
