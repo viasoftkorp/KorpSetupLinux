@@ -129,9 +129,7 @@ else
     fi
 fi
 
-
 # Validação do arquivo de inventário para saber se o setup está sendo rodado pela primeira vez, ou não
-
 is_first_install=False
 
 if ! sudo test -f /etc/korp/ansible/inventory.yml ;
@@ -139,6 +137,8 @@ then
     is_first_install=True
 fi
 
+#true is_first_install = True , else is_first_install = False 
+if $VerificacaoAnsible $0; then e is_first_install = True ; else is_first_install = False ; fi
 
 # Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
 if [ $is_first_install = True ];
@@ -149,12 +149,23 @@ then
 
     echo -e "\n-----------------------\n"
     echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
-    read -e -p "IP de acesso: " sql_ip
-    read -e -p "Usuário com permissões administrativas: " sql_user
-    read -e -p "Senha do usuário: " sql_pass
+    read -e -p "Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? 1-sim 2-nao" Chk_sql 
+    if [ $Chk_sql == "1" ]
+    then 
+        read -e -p "IP de acesso do sql de Produção: " sql_ip
+        read -e -p "Usuário com permissões administrativas do sql de Produção: " sql_user
+        read -e -p "Senha do usuário do sql de Produção: " sql_pass
+        read -e -p "IP de acesso do sql de Homologação: " testing_sql_ip
+        read -e -p "Usuário com permissões administrativas do sql de Homologação: " testing_sql_user
+        read -e -p "Senha do usuário do sql de Homologação: " testing_sql_pass
+    else
+        read -e -p "IP do servidor de SQL Server: " sql_ip
+        read -e -p "Usuário com permissões administrativas servidor de SQL Server: " sql_user
+        read -e -p "Senha do usuário servidor de SQL Server: " sql_pass
+        testing_sql_ip=$sql_ip; testing_sql_user=$sql_user; testing_sql_pass=$sql_pass;
+    fi    
     read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
     application_server_address=${application_server_address:-$sql_ip}
-
 
     # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
     mssql_korp_pass="$(create_random_string)"
@@ -164,8 +175,7 @@ then
     redis_pass="$(create_random_string)"
     minio_access_key="$(create_random_string)"
     minio_secret_key="$(create_random_string)"
-
-
+    
     # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
     echo """
 all:
@@ -184,6 +194,12 @@ all:
             address: $sql_ip
             default_user: $sql_user
             default_password: $sql_pass
+            korp_user: korp.services
+            korp_password: $mssql_korp_pass
+          testing_mssql:
+            address: $testing_sql_ip
+            default_user: $testing_sql_user
+            default_password: $testing_sql_pass
             korp_user: korp.services
             korp_password: $mssql_korp_pass
           postgres:
