@@ -166,7 +166,6 @@ then
     fi    
     read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
     application_server_address=${application_server_address:-$sql_ip}
-
     # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
     mssql_korp_pass="$(create_random_string)"
     postgres_korp_pass="$(create_random_string)"
