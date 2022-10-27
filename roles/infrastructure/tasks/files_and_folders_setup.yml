@@ -2,7 +2,6 @@
   ansible.builtin.copy:
     dest: "{{ config_dir_path }}/"
     src: configs/
-    owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
 
