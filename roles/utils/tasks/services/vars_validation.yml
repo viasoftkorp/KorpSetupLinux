@@ -35,3 +35,9 @@
 - name: "Definição de service_vars para {{ service_name }}"
   ansible.builtin.set_fact:
     service_vars: "{{ services[service_name] }}"
+
+- name: "Definição de service_vars para {{ service_name }}"
+  ansible.builtin.set_fact:
+    service_vars:
+      db:
+        name: "{{ service_vars.db.name }}-{{ db_sufix }}"

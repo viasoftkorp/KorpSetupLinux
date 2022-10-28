@@ -19,7 +19,7 @@ create_random_string() {
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 
 
-apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn="";
+apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -89,6 +89,15 @@ else
         echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"
         exit 09
     fi
+fi
+
+# Validação de sufixo
+
+if [ "$db_sufix" == "" ];
+then
+    db_sufix = ""
+else
+   db_sufix=$db_sufix
 fi
 
 
@@ -251,7 +260,8 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
         }
       }
     },
-    "apps":['$apps']
+    "apps":['$apps'],
+    "db_sufix": "'$db_sufix'"
   }'
 
 if [ $? != 0 ]
