@@ -40,4 +40,4 @@
   ansible.builtin.set_fact:
     service_vars:
       db:
-        name: "{{ service_vars.db.name }}-{{ db_sufix }}"
+        name: service_vars.db.name 
