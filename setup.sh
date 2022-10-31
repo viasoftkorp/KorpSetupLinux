@@ -252,6 +252,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
     "gateway_url": "'$gateway_url'",
     "customs": {
       "docker_account": "'$docker_account'",
+      "db_sufix": "'$db_sufix'",
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
@@ -260,8 +261,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
         }
       }
     },
-    "apps":['$apps'],
-    "db_sufix": "'$db_sufix'"
+    "apps":['$apps']
   }'
 
 if [ $? != 0 ]
