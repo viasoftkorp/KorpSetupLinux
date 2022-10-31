@@ -5,4 +5,4 @@ Contents
    :maxdepth: 2
    :caption: Utils
    
-   docs/sytem_update
+   files/sytem_update
