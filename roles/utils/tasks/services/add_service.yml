@@ -35,61 +35,61 @@
     tasks_from: oauth_client/ensure_client
   when: not service_vars.oauth_client.skip
 
-- name: "Criação de bancos de dados para {{ service_name }}"
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: "create_db/{{ service_vars.db.type }}"
-  vars:
-    db_name: "{{ service_vars.db.name }}"
-  when: service_vars.db is defined
+# - name: "Criação de bancos de dados para {{ service_name }}"
+#   ansible.builtin.include_role:
+#     name: utils
+#     tasks_from: "create_db/{{ service_vars.db.type }}"
+#   vars:
+#     db_name: "{{ service_vars.db.name }}"
+#   when: service_vars.db is defined
 
-- name: "Garantia da existência dos diretórios de volume de {{ service_name }}"
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/ensure_volume_folder
-  vars:
-    volume_path: "{{ volume_dir }}"
-  loop: "{{ service_vars.volumes_directories }}"
-  loop_control:
-    loop_var: volume_dir
-  when: service_vars.volumes_directories is defined
+# - name: "Garantia da existência dos diretórios de volume de {{ service_name }}"
+#   ansible.builtin.include_role:
+#     name: utils
+#     tasks_from: services/ensure_volume_folder
+#   vars:
+#     volume_path: "{{ volume_dir }}"
+#   loop: "{{ service_vars.volumes_directories }}"
+#   loop_control:
+#     loop_var: volume_dir
+#   when: service_vars.volumes_directories is defined
 
-# essa task só acontece na ultima iteração do loop
-# isso é necessário pois a configuração de composes só deve acontecer uma vez, quando todos os serviços já estão configurados
-- name: Setup de app
-  block:
-    - name: Checagem de compose - versionado
-      ansible.builtin.stat:
-        path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
-      register: versioned_compose_result
-      # por algum motivo, o ansible dá erro executando essa task como super user
-      become: false
+# # essa task só acontece na ultima iteração do loop
+# # isso é necessário pois a configuração de composes só deve acontecer uma vez, quando todos os serviços já estão configurados
+# - name: Setup de app
+#   block:
+#     - name: Checagem de compose - versionado
+#       ansible.builtin.stat:
+#         path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
+#       register: versioned_compose_result
+#       # por algum motivo, o ansible dá erro executando essa task como super user
+#       become: false
 
-    - name: Checagem de compose - não versionado
-      ansible.builtin.stat:
-        path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
-      register: unversioned_compose_result
-      # por algum motivo, o ansible dá erro executando essa task como super user
-      become: false
+#     - name: Checagem de compose - não versionado
+#       ansible.builtin.stat:
+#         path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
+#       register: unversioned_compose_result
+#       # por algum motivo, o ansible dá erro executando essa task como super user
+#       become: false
 
-    - name: Definição de versões
-      ansible.builtin.set_fact:
-        has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
-        has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
+#     - name: Definição de versões
+#       ansible.builtin.set_fact:
+#         has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
+#         has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
 
-    - name: "Setup de docker compose de {{ id }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: apps/compose_setup.yml
-      when:
-        - not (skip_compose is defined and skip_compose)
+#     - name: "Setup de docker compose de {{ id }}"
+#       ansible.builtin.include_role:
+#         name: utils
+#         tasks_from: apps/compose_setup.yml
+#       when:
+#         - not (skip_compose is defined and skip_compose)
 
-    - name: "Garantia de registro de {{ id }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: apps/ensure_mapping.yml
-      when:
-        - not (skip_app_register is defined and skip_app_register)
+#     - name: "Garantia de registro de {{ id }}"
+#       ansible.builtin.include_role:
+#         name: utils
+#         tasks_from: apps/ensure_mapping.yml
+#       when:
+#         - not (skip_app_register is defined and skip_app_register)
 
-  when:
-    - ansible_loop.last
+#   when:
+#     - ansible_loop.last
