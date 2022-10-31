@@ -3,6 +3,6 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Utils
+   :caption: Tutoriais
    
    files/sytem_update

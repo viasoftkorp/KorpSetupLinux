@@ -1,7 +1,5 @@
-Configuração de SystemUpdate no servidor Linux
--------------------------------------------------------------------------
-
-Os arquivos ``Octopus.inf`` e ``OctopusUpdate.exe`` precisam estar no volume de ``Viasoft.SystemUpdate`` no servidor Linux. Para isso:
+Disponibilizando atualização do Korp no servidor Linux
+------------------------------------------------------
 
 #. Edite os arquivos conforme o necessário(o mesmo procedimento que já é feito hoje no servidor Windows).
 
