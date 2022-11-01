@@ -46,10 +46,11 @@
 
 - name: "Definição de service_vars com sufixo para {{ service_name }}"
   ansible.builtin.set_fact:
-    services_vars: "{{services_vars | combine(new_item, recursive=true) }}"
-  vars:
-    new_item: "{ '{{ item.key }}': { 'name': db_sufix } }"
-  with_dict: "{{ services_vars }}"
+    service_vars: "{{service_vars | combine({
+          'db': {
+            'name': db_sufix
+          }
+      }), recursive=true) }}"
   when: db_sufix is defined and db_sufix != None
 
 - name: "Print variavel service_vars dbName"
