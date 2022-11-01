@@ -45,7 +45,7 @@
     service_vars: "{{ services_vars | combine(
       {  
           'db': {
-            'name': service_vars.db.name'-'db_sufix
+            'name': service_vars.db.name+'-'+db_sufix
           }
       },
       recursive=True) }}"
