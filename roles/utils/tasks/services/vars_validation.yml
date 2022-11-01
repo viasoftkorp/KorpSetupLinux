@@ -51,3 +51,6 @@
       recursive=True) }}"
   when: db_sufix is undefined or db_sufix == None
 
+- name: "Print variavel service_vars dbName"
+  ansible.builtin.debug:
+    msg: "{{service_vars.db.name}}"
