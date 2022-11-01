@@ -22,7 +22,7 @@
 
     - name: Print variavel do jkv
       ansible.builtin.debug:
-        msg: result.prop
+        msg: "{{result.prop}}"
 
     - name: "Edição de kv de {{ service_name }} no consul"
       community.general.consul_kv:
