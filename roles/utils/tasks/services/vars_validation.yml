@@ -49,7 +49,7 @@
     service_vars: "{{ services_vars | combine(
       {  
           'db': {
-            'name': {{db_sufix}}
+            'name': 'foi alterado ?'
           }
       },
       recursive=True) }}"
