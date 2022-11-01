@@ -51,6 +51,6 @@
       recursive=True) }}"
   when: db_sufix is undefined or db_sufix == None
 
-- name: "Print variavel service_vars"
+- name: "Print variavel db_sufix"
   ansible.builtin.debug:
-    msg: "{{service_vars}}"
+    msg: "{{db_sufix}}"
