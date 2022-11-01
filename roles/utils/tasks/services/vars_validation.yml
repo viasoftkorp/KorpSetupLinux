@@ -48,7 +48,7 @@
   ansible.builtin.set_fact:
     service_vars: "{{service_vars | combine({
           'db': {
-            'name': db_sufix
+            'name': service_vars.db.name+'-'+db_sufix
           }
       }, recursive=true) }}"
   when: db_sufix is defined and db_sufix != None
