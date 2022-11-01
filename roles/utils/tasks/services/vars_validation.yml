@@ -50,7 +50,7 @@
           'db': {
             'name': db_sufix
           }
-      }), recursive=true) }}"
+      }, recursive=true) }}"
   when: db_sufix is defined and db_sufix != None
 
 - name: "Print variavel service_vars dbName"
