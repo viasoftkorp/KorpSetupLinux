@@ -6,7 +6,7 @@
     "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=Viasoft_Faturamento_Core; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
   },
   "ConnectionStrings": {
-    "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database=teste; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
+    "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{services_vars.db.name}}-{{db_sufix}}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
   },
   "EnableEnvironmentDependentConnectionString": "false"
 }
