@@ -45,11 +45,11 @@
     service_vars: "{{ services_vars | combine(
       {  
           'db': {
-            'name': db_sufix
+            'name': service_vars.db.name - db_sufix
           }
       },
       recursive=True) }}"
-  when: db_sufix is undefined or db_sufix == None
+  when: db_sufix is defined and db_sufix != None
 
 - name: "Print variavel service_vars dbName"
   ansible.builtin.debug:
