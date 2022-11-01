@@ -1,6 +1,8 @@
 Disponibilizando atualização do Korp no servidor Linux
 ------------------------------------------------------
 
+Esse tutorial também pode ser visualizado pelo vídeo `Disponibilizando atualização do Korp no servidor Linux`_,
+
 #. Edite os arquivos conforme o necessário(o mesmo procedimento que já é feito hoje no servidor Windows).
 
 #. Copiar os arquivos editados para o servidor Linux.
@@ -37,4 +39,5 @@ Disponibilizando atualização do Korp no servidor Linux
 
         Os dois arquivos copiados devem aparecer como retorno do comando.
 
+.. _Disponibilizando atualização do Korp no servidor Linux: https://vimeo.com/766215305/a44f763c1a
 .. _Filezila: https://filezilla-project.org/download.php#close
