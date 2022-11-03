@@ -134,7 +134,6 @@ is_first_install=False
 
 if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
-    is_first_install=True 
     # Cria e diretórios que serão usados depois
     sudo mkdir -p /etc/korp/ansible/
      # Criação de senha aleatória usada pelo ansible-vault
@@ -150,92 +149,13 @@ then
     [defaults]
     inventory = /etc/korp/ansible/inventory.yml
     """ | sudo tee /etc/ansible/ansible.cfg > /dev/null
-else 
-   sudo ansible-vault decrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-fi
-
-
-# Encripta 'inventory.yml' com ansible-vault
+  # Encripta 'inventory.yml' com ansible-vault
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-# Corrige a permição dos arquivos
-sudo chmod 644 /etc/korp/ansible/inventory.yml
-
-
-# Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
-if [ $is_first_install = True ];
-then
-    sudo ansible-vault decrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-    echo -e "\n-----------------------\n"
-    echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
-    read -e -p "Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? 1-sim 2-nao" Chk_sql 
-    if [ $Chk_sql == "1" ]
-    then 
-        read -e -p "IP de acesso do sql de Produção: " sql_ip
-        read -e -p "Usuário com permissões administrativas do sql de Produção: " sql_user
-        read -e -p "Senha do usuário do sql de Produção: " sql_pass
-        read -e -p "IP de acesso do sql de Homologação: " testing_sql_ip
-        read -e -p "Usuário com permissões administrativas do sql de Homologação: " testing_sql_user
-        read -e -p "Senha do usuário do sql de Homologação: " testing_sql_pass
-    else
-        read -e -p "IP do servidor de SQL Server: " sql_ip
-        read -e -p "Usuário com permissões administrativas servidor de SQL Server: " sql_user
-        read -e -p "Senha do usuário servidor de SQL Server: " sql_pass
-        testing_sql_ip=$sql_ip; testing_sql_user=$sql_user; testing_sql_pass=$sql_pass;
-    fi    
-    read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
-    application_server_address=${application_server_address:-$sql_ip}
-    # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
-    mssql_korp_pass="$(create_random_string)"
-    postgres_korp_pass="$(create_random_string)"
-    linux_korp_pass="$(create_random_string)"
-    rabbitmq_korp_pass="$(create_random_string)"
-    redis_pass="$(create_random_string)"
-    minio_access_key="$(create_random_string)"
-    minio_secret_key="$(create_random_string)"
-
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git "inventory-platbook.yml" \ --vault id /etc/korp/ansible/.vault_key \
---extra-vars='{
-  		  app_server:
-            address: "'$application_server_address'"
-          linux_korp:
-            user: "korp"
-            password: "'$linux_korp_pass'"
-          self_signed_cert:
-            passphrase: korp
-          mssql:
-            address: "'$sql_ip'"
-            default_user: "'$sql_user'"
-            default_password: "'$sql_pass'"
-            korp_user: korp.services
-            korp_password: "'$mssql_korp_pass'"
-          testing_mssql:
-            address: "'$testing_sql_ip'"
-            default_user: "'$testing_sql_user'"
-            default_password: "'$testing_sql_pass'"
-            korp_user: korp.services
-            korp_password: "'$mssql_korp_pass'"
-          postgres:
-            address: 127.0.0.1
-            default_user: postgres
-            default_password: postgres
-            korp_user: korp.services
-            korp_password: "'$postgres_korp_pass'"
-          rabbitmq:
-            korp_user: korp.services
-            korp_password: "'$rabbitmq_korp_pass'"
-          redis:
-            password: "'$redis_pass'"
-          minio:
-            access_key: "'$minio_access_key'"
-            secret_key: "'$minio_secret_key'"
-          general:
-            introspection_secret: "'$(cat /proc/sys/kernel/random/uuid)'"
-            }'
-
-    # Encripta 'inventory.yml' com ansible-vault
-    sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-    
 fi
+# playbook para inserir dados no arquivo  inventario vazio ou dados já existentes 
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git inventory-playbook.yml \  --vault-id /etc/korp/ansible/.vault_key
+
+sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 
 # verificação caso não deseja que rode o bootstrap-playbook.yml
 playbook_name=""
