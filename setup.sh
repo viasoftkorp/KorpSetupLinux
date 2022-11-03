@@ -129,24 +129,42 @@ else
     fi
 fi
 
-# Validação do arquivo de inventário para saber se o setup está sendo rodado pela primeira vez, ou não
+# Validação do arquivo de inventário para saber se o setup está sendo rodado pela primeira vez.
 is_first_install=False
 
 if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
-    is_first_install=True
+    is_first_install=True 
+    # Cria e diretórios que serão usados depois
+    sudo mkdir -p /etc/korp/ansible/
+     # Criação de senha aleatória usada pelo ansible-vault
+    echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
+    sudo chown root:root /etc/korp/ansible/.vault_key  
+    #cria permissao para vault_key  
+    sudo chmod 444 /etc/korp/ansible/.vault_key  
+    #cria inventory.yml  
+    touch /etc/korp/ansible/inventory.yml 
+    # Corrige a permição dos arquivos
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
+    echo """  
+    [defaults]
+    inventory = /etc/korp/ansible/inventory.yml
+    """ | sudo tee /etc/ansible/ansible.cfg > /dev/null
+else 
+   sudo ansible-vault decrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 fi
 
-#true is_first_install = True , else is_first_install = False 
-if $VerificacaoAnsible $0; then e is_first_install = True ; else is_first_install = False ; fi
+
+# Encripta 'inventory.yml' com ansible-vault
+sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
+# Corrige a permição dos arquivos
+sudo chmod 644 /etc/korp/ansible/inventory.yml
+
 
 # Caso seja a primeira instalação, irá gerar os arquivos/configurações nocessários(as)
 if [ $is_first_install = True ];
 then
-
-    # Cria e diretórios que serão usados depois
-    sudo mkdir -p /etc/korp/ansible/
-
+    sudo ansible-vault decrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     echo -e "\n-----------------------\n"
     echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
     read -e -p "Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? 1-sim 2-nao" Chk_sql 
@@ -174,69 +192,48 @@ then
     redis_pass="$(create_random_string)"
     minio_access_key="$(create_random_string)"
     minio_secret_key="$(create_random_string)"
-    
-    # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
-    echo """
-all:
-  children:
-    nodes:
-      hosts:
-        localhost:
-          app_server:
-            address: $application_server_address
+
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git "inventory-platbook.yml" \ --vault id /etc/korp/ansible/.vault_key \
+--extra-vars='{
+  		  app_server:
+            address: "'$application_server_address'"
           linux_korp:
-            user: korp
-            password: $linux_korp_pass
+            user: "korp"
+            password: "'$linux_korp_pass'"
           self_signed_cert:
             passphrase: korp
           mssql:
-            address: $sql_ip
-            default_user: $sql_user
-            default_password: $sql_pass
+            address: "'$sql_ip'"
+            default_user: "'$sql_user'"
+            default_password: "'$sql_pass'"
             korp_user: korp.services
-            korp_password: $mssql_korp_pass
+            korp_password: "'$mssql_korp_pass'"
           testing_mssql:
-            address: $testing_sql_ip
-            default_user: $testing_sql_user
-            default_password: $testing_sql_pass
+            address: "'$testing_sql_ip'"
+            default_user: "'$testing_sql_user'"
+            default_password: "'$testing_sql_pass'"
             korp_user: korp.services
-            korp_password: $mssql_korp_pass
+            korp_password: "'$mssql_korp_pass'"
           postgres:
             address: 127.0.0.1
             default_user: postgres
             default_password: postgres
             korp_user: korp.services
-            korp_password: $postgres_korp_pass
+            korp_password: "'$postgres_korp_pass'"
           rabbitmq:
             korp_user: korp.services
-            korp_password: $rabbitmq_korp_pass
+            korp_password: "'$rabbitmq_korp_pass'"
           redis:
-            password: $redis_pass
+            password: "'$redis_pass'"
           minio:
-            access_key: $minio_access_key
-            secret_key: $minio_secret_key
+            access_key: "'$minio_access_key'"
+            secret_key: "'$minio_secret_key'"
           general:
-            introspection_secret: $(cat /proc/sys/kernel/random/uuid)
-
-""" | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
-
-    sudo chmod 644 /etc/korp/ansible/inventory.yml
-
-    echo """
-[defaults]
-inventory = /etc/korp/ansible/inventory.yml
-""" | sudo tee /etc/ansible/ansible.cfg > /dev/null
-
-    # Criação de senha aleatória usada pelo ansible-vault
-    echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
-    sudo chown root:root /etc/korp/ansible/.vault_key
+            introspection_secret: "'$(cat /proc/sys/kernel/random/uuid)'"
+            }'
 
     # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-
-    # Corrige a permição dos arquivos
-    sudo chmod 644 /etc/korp/ansible/inventory.yml
-    sudo chmod 444 /etc/korp/ansible/.vault_key
     
 fi
 
