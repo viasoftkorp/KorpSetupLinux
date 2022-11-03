@@ -51,7 +51,7 @@
             'name': service_vars.db.name+'-'+db_sufix
           }
       }, recursive=true) }}"
-  when: db_sufix is defined and db_sufix != ""
+  when: services_vars.db is defined and db_sufix is defined and db_sufix != ""
 
 - name: "Print variavel service_vars dbName"
   ansible.builtin.debug:
