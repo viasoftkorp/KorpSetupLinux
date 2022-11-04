@@ -103,6 +103,7 @@
     dest: "{{ docker_env_file_path }}"
     mode: '0644'
     content: |
+      TESTING_DB_MSSQL={{ testing_mssql.address }}
       DB_MSSQL={{ mssql.address }}
       APP_SERVER={{ app_server.address }}
       AUTO_UPDATE_CRON=0 0 3 * * *
