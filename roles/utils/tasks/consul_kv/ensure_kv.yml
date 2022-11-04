@@ -19,11 +19,7 @@
         current_kv: "{{ retrieved_kv.data.Value | from_json }}"
         new_kv: "{{ new_kv }}"
       register: result
-
-    - name: Print variavel do jkv
-      ansible.builtin.debug:
-        msg: "{{result.prop}}"
-
+      
     - name: "Edição de kv de {{ service_name }} no consul"
       community.general.consul_kv:
         key: "{{ service_name }}"
