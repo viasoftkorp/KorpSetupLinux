@@ -36,14 +36,6 @@
   ansible.builtin.set_fact:
     service_vars: "{{ services[service_name] }}"
 
-- name: "Print variavel service_vars"
-  ansible.builtin.debug:
-    msg: "{{service_vars}}"
-
-- name: "Print variavel db_sufix"
-  ansible.builtin.debug:
-    msg: "{{db_sufix}}"
-
 - name: "Definição de service_vars com sufixo para {{ service_name }}"
   ansible.builtin.set_fact:
     service_vars: "{{service_vars | combine({
@@ -53,6 +45,4 @@
       }, recursive=true) }}"
   when: services_vars.db is defined and db_sufix is defined and db_sufix != ""
 
-- name: "Print variavel service_vars dbName"
-  ansible.builtin.debug:
-    msg: "{{service_vars.db.name}}"
+
