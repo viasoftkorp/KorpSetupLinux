@@ -1,6 +1,6 @@
 ---
-- hosts: 127.0.0.1 
-  connection: local  
+- hosts: localhost
+  become: true
   tasks:
     - name: ImportarInventario
       ansible.builtin.set_fact:
