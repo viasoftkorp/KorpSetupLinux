@@ -129,9 +129,6 @@ else
     fi
 fi
 
-# Validação do arquivo de inventário para saber se o setup está sendo rodado pela primeira vez.
-is_first_install=False
-
 if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
     # Cria e diretórios que serão usados depois
