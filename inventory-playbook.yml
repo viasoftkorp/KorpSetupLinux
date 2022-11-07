@@ -1,299 +1,302 @@
 ---
-- hosts: localhost
-
-
-  tasks:  
-
+- hosts: localhost  
+  tasks:
     - name: ImportarInventario
       ansible.builtin.set_fact:
         inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
 
-    - name: Checagem se Possui dois SQL Server
-      ansible.builtin.pause:        
+    - name: Verificação de servidores de SQL Server
+      ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? S - sim N - nao"
       register: Chk_sql
-      when:  inventory.all.children.nodes.hosts.localhost.testing_mssql.address is not defined 
-      
-    - name: 2 SQL Producao, Homologacao
-      block:
+      when: inventory.all.children.nodes.hosts.localhost.mssql_mssql.address is not defined
 
-        - name : Sql_Producao_ip  
-          ansible.builtin.pause:        
-            prompt: "IP de acesso do sql de Produção: "  
-          register: sql_ip 
+    - name: Coleta de informações
+      block: #trata-se de um bloco para definir dois servidores SQL's 
+        - name: Coleta de IP de acesso do SQL Server de Produção
+          ansible.builtin.pause:
+            prompt: "IP de acesso do sql de Produção: "
+          register: sql_ip
 
-        - name : Sql_Producao_name
-          ansible.builtin.pause:        
-            prompt: "Usuário com permissões administrativas do sql de Produção: "  
-          register: sql_user  
+        - name: Sql_Producao_name
+          ansible.builtin.pause:
+            prompt: "Usuário com permissões administrativas do sql de Produção: "
+          register: sql_user
 
-        - name : Sql_Producao_pass
-          ansible.builtin.pause:        
-            prompt: "Senha do usuário do sql de Produção: "  
-          register: sql_pass 
+        - name: Sql_Producao_pass
+          ansible.builtin.pause:
+            prompt: "Senha do usuário do sql de Produção: "
+          register: sql_pass
 
-        - name : Sql_testing_ip  
-          ansible.builtin.pause:        
-            prompt: "IP de acesso do sql de Homologação:"  
-          register: testing_sql_ip         
+        - name: Sql_testing_ip
+          ansible.builtin.pause:
+            prompt: "IP de acesso do sql de Homologação:"
+          register: testing_sql_ip
 
-        - name : Sql_testing_name
-          ansible.builtin.pause:        
-            prompt: "Usuário com permissões administrativas do sql de Homologação: "  
-          register: testing_sql_user            
+        - name: Sql_testing_name
+          ansible.builtin.pause:
+            prompt: "Usuário com permissões administrativas do sql de Homologação: "
+          register: testing_sql_user
 
-        - name : Sql_testing_pass
-          ansible.builtin.pause:        
-            prompt: "Senha do usuário do sql de Homologação: "  
+        - name: Sql_testing_pass
+          ansible.builtin.pause:
+            prompt: "Senha do usuário do sql de Homologação: "
           register: testing_sql_pass
 
           #necessario para nao quebrar logica da funcao - name: testing_mssql
-        - name : set_testing_sql_dependents
+          #Definição de variáveis do inventário
+        - name: set_testing_sql_dependents
           ansible.builtin.set_fact: 
-            sql_ips: "{{ sql_ip.user_input }}"  
+            sql_ips: "{{ sql_ip.user_input }}"
             sql_user: "{{ sql_user.user_input }}"
-            sql_pass: "{{ sql_pass.user_input }}"  
+            sql_pass: "{{ sql_pass.user_input }}"
             testing_sql_ip: "{{  testing_sql_ip.user_input }}"
             testing_sql_user: "{{  testing_sql_user.user_input }}"
             testing_sql_pass: "{{  testing_sql_pass.user_input }}"
-          
-      when:  Chk_sql is not skipped  and Chk_sql.user_input |upper == "S"  
 
-    - name: Somente um SQL Server 
-      block:
+      when: Chk_sql is not skipped  and Chk_sql.user_input |upper == "S"
 
-        - name : Sql_server_Ip  
-          ansible.builtin.pause:        
-            prompt: "IP do servidor de SQL Server:"  
-          register: sql_ip           
+    - name: Somente um SQL Server
+      block: #bloco criado para criar apenas um servidor SQL
+        - name: Sql_server_Ip
+          ansible.builtin.pause:
+            prompt: "Verificação de servidor de SQL Server: "
+          register: sql_ip
 
-        - name : Sql_Producao_name
-          ansible.builtin.pause:        
-            prompt: "Usuário com permissões administrativas servidor de SQL Server: "  
-          register: sql_user  
+        - name: Sql_Producao_name
+          ansible.builtin.pause:
+            prompt: "Usuário com permissões administrativas servidor de SQL Server: "
+          register: sql_user
 
-        - name : Sql_Producao_pass
-          ansible.builtin.pause:        
-            prompt: "Senha do usuário servidor de SQL Server:  "  
-          register: sql_pass 
+        - name: Sql_Producao_pass
+          ansible.builtin.pause:
+            prompt: "Senha do usuário servidor de SQL Server:  "
+          register: sql_pass
 
         - name: testing_sql_ip_whenChkEqualsN
           ansible.builtin.set_fact:
             sql_ips: "{{ sql_ip.user_input }}"
             sql_user: "{{ sql_user.user_input }}"
             sql_pass: "{{ sql_pass.user_input }}"
-            testing_sql_ip: "{{  sql_ip.user_input }}"   
-            testing_sql_user: "{{  sql_user.user_input }}" 
-            testing_sql_pass: "{{  sql_pass.user_input }}"  
+            testing_sql_ip: "{{  sql_ip.user_input }}"
+            testing_sql_user: "{{  sql_user.user_input }}"
+            testing_sql_pass: "{{  sql_pass.user_input }}"
 
-      when: Chk_sql is not skipped  and  Chk_sql.user_input |upper == "N"  
+      when: Chk_sql is not skipped  and  Chk_sql.user_input |upper == "N"
 
-    - name : application_server_address
-      ansible.builtin.pause:        
-        prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) "  
-      register: application_server_address 
+    - name: application_server_address
+      ansible.builtin.pause:
+        prompt: "Agora, informe o IP do Servidor de aplicações: "
+      register: application_server_address
       when: Chk_sql is not skipped
 
-    - name : SetApplication_server_address
+    - name: SetApplication_server_address
       ansible.builtin.set_fact:
         application_server_address: "{{ application_server_address.user_input }}"
-      when: Chk_sql is not skipped 
+      when: Chk_sql is not skipped
 
-    - name : Application_Null_var
+    - name: Application_Null_var
       ansible.builtin.set_fact:
-        application_server_address: "{{ sql_ips }}"        
-      when: Chk_sql is not skipped     
+        application_server_address: "{{ sql_ips }}"
+      when: Chk_sql is not skipped
 
-    #utiliza a mesma senha randomica   
-    - name : Mssql_korp_password_stringRandom         
+    #utiliza a mesma senha randomica
+    - name: Mssql_korp_password_stringRandom
       ansible.builtin.set_fact:
-         mssql_korp_passRandom : "{{ lookup('community.general.random_string', base64=True) }}"
+        mssql_korp_passRandom: "{{ lookup('community.general.random_string', base64=True) }}"
 
-    - name : Inserindo Template
+    - name: Inserindo Template
       block:
-      - name: templateInventory
-        ansible.builtin.set_fact:
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: 
-        when: inventory.all.children.nodes.hosts.localhost is not defined 
+        - name: templateInventory
+          ansible.builtin.set_fact:
+            inventory:
+              all:
+                children:
+                  nodes:
+                    hosts:
+                      localhost:
+          when: inventory.all.children.nodes.hosts.localhost is not defined
 
-      - name: CaminhodoInventario
-        ansible.builtin.set_fact:
-          path_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"  
+        - name: CaminhodoInventario
+          ansible.builtin.set_fact:
+            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
-      - name: App_server
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{  inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'app_server' : { 
-                            'address' : path_inventory.app_server.addess | default (application_server_address)                   
-                        }
-                      }, 
-                        recursive=True) }}"
+    - name: Definição de App_server
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{  inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'app_server' : {
+                    'address' : shrink_inventory.app_server.addess | default (application_server_address)
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: Linux_korp
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                      'linux_korp' : {
-                      'user' : path_inventory.linux_korp.user | default ('korp') ,
-                      'password' : path_inventory.linux_korp.password | default (lookup('community.general.random_string', base64=True))  
-                      }
-                      }, 
-                        recursive=True) }}"
+    - name: Linux_korp
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'linux_korp' : {
+                    'user' : shrink_inventory.linux_korp.user | default ('korp') ,
+                    'password' : shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', base64=True))
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: Self_signed_cert
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'self_signed_cert' :{
-                          'passphrase' : path_inventory.self_signed_cert.passphrase | default ('korp')
-                        }
-                      }, 
-                        recursive=True, list_merge='keep') }}"
-      - name: Mssql
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'mssql' : {
-                          'address' : path_inventory.mssql.address | default (sql_ips), 
-                          'default_user' : path_inventory.mssql.default_user | default (sql_user), 
-                          'default_password' : path_inventory.mssql.default_password | default (sql_pass), 
-                          'korp_user' : path_inventory.mssql.korp_user | default ('korp.services'), 
-                          'korp_password' : path_inventory.mssql.korp_password | default (mssql_korp_passRandom)                   
-                        }
-                      }, 
-                        recursive=True) }}"
+    - name: Self_signed_cert
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'self_signed_cert' :{
+                    'passphrase' : shrink_inventory.self_signed_cert.passphrase | default ('korp')
+                    }
+                    },
+                    recursive=True, list_merge='keep') }}"
+    - name: Mssql
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'mssql' : {
+                    'address' : shrink_inventory.mssql.address | default (sql_ips),
+                    'default_user' : shrink_inventory.mssql.default_user | default (sql_user),
+                    'default_password' : shrink_inventory.mssql.default_password | default (sql_pass),
+                    'korp_user' : shrink_inventory.mssql.korp_user | default ('korp.services'),
+                    'korp_password' : shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: Testing_mssql
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'testing_mssql' : {
-                          'address' : path_inventory.mssql.address | default (testing_sql_ip), 
-                          'default_user' : path_inventory.mssql.default_user | default (testing_sql_user), 
-                          'default_password' : path_inventory.mssql.default_password | default (testing_sql_pass), 
-                          'korp_user' : path_inventory.mssql.korp_user | default ('korp.services'), 
-                          'korp_password' : path_inventory.mssql.korp_password | default (mssql_korp_passRandom)                   
-                        }
-                      }, 
-                        recursive=True) }}"       
+    - name: Testing_mssql
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'testing_mssql' : {
+                    'address' : shrink_inventory.mssql.address | default (testing_sql_ip),
+                    'default_user' : shrink_inventory.mssql.default_user | default (testing_sql_user),
+                    'default_password' : shrink_inventory.mssql.default_password | default (testing_sql_pass),
+                    'korp_user' : shrink_inventory.mssql.korp_user | default ('korp.services'),
+                    'korp_password' : shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: Postgres
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'postgres' : {
-                          'address' : path_inventory.postgres.address | default ('127.0.0.1') , 
-                          'default_user' : path_inventory.postgres.default_user | default ('postgres') , 
-                          'default_password' : path_inventory.postgres.default_password |  default ('postgres'), 
-                          'korp_user' : path_inventory.postgres.korp_user | default ('korp.services'), 
-                          'korp_password' : path_inventory.postgres.korp_password | default (lookup('community.general.random_string', base64=True))                   
-                        }
-                      }, 
-                        recursive=True) }}"
+    - name: Postgres
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'postgres' : {
+                    'address' : shrink_inventory.postgres.address | default ('127.0.0.1') ,
+                    'default_user' : shrink_inventory.postgres.default_user | default ('postgres') ,
+                    'default_password' : shrink_inventory.postgres.default_password |  default ('postgres'),
+                    'korp_user' : shrink_inventory.postgres.korp_user | default ('korp.services'),
+                    'korp_password' : shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', base64=True))
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: Rabbitmq
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'rabbitmq' : {
-                          'korp_user' : path_inventory.rabbitmq.korp_user | default ('korp.services') , 
-                          'korp_password' : path_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', base64=True))                    
-                        }
-                      }, 
-                        recursive=True) }}"
-      - name: Redis
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'redis' : {
-                            'password' : path_inventory.redis.password | default (lookup('community.general.random_string', base64=True))                    
-                        }
-                      }, 
-                        recursive=True) }}"
-                        
-      - name: Minio
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'minio' : {
-                            'acess_key' : path_inventory.minio.acess_key | default (lookup('community.general.random_string', base64=True)) ,
-                            'secret_key' : path_inventory.minio.secret_key| default (lookup('community.general.random_string', base64=True))                     
-                        }
-                      }, 
-                        recursive=True) }}"
+    - name: Rabbitmq
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'rabbitmq' : {
+                    'korp_user' : shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
+                    'korp_password' : shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', base64=True))
+                    }
+                    },
+                    recursive=True) }}"
+    - name: Redis
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'redis' : {
+                    'password' : shrink_inventory.redis.password | default (lookup('community.general.random_string', base64=True))
+                    }
+                    },
+                    recursive=True) }}"
 
-      - name: General
-        ansible.builtin.set_fact:      
-          inventory:
-            all:
-              children:
-                nodes:
-                  hosts:
-                    localhost: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-                      {
-                        'general' : {
-                            'introspection_secret' : path_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper  )       
-                        }
-                      }, 
-                        recursive=True) }}"
+    - name: Minio
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'minio' : {
+                    'acess_key' : shrink_inventory.minio.acess_key | default (lookup('community.general.random_string', base64=True)) ,
+                    'secret_key' : shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', base64=True))
+                    }
+                    },
+                    recursive=True) }}"
 
-        #Funcao de inserir a variavel no arquivo.
-      - name: Criando-ArquivoInventory
-        copy:
-          content: '{{inventory | to_nice_yaml(indent=2) }}'
-          dest: /etc/korp/ansible/inventory.yml
-        delegate_to: localhost
+    - name: General
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost:
+                    "{{ inventory.all.children.nodes.hosts.localhost | combine(
+                    {
+                    'general' : {
+                    'introspection_secret' : shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper  )
+                    }
+                    },
+                    recursive=True) }}"
 
-
-
+      #Funcao de inserir a variavel no arquivo.
+    - name: Criando-ArquivoInventory
+      copy:
+        content: "{{inventory | to_nice_yaml(indent=2) }}"
+        dest: /etc/korp/ansible/inventory.yml
+      delegate_to: localhost
