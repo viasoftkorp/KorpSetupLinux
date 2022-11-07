@@ -95,7 +95,8 @@ fi
 
 if [ "$db_sufix" == "" ];
 then
-    dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    echo "entrei no if do db_sufix"
+    db_sufix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 fi
 
 
