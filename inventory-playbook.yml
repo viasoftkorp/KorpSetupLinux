@@ -301,3 +301,4 @@
         content: "{{inventory | to_nice_yaml(indent=2) }}"
         dest: /etc/korp/ansible/inventory.yml
       delegate_to: localhost
+      become: true
