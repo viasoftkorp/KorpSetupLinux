@@ -153,7 +153,8 @@ then
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 fi
 # playbook para inserir dados no arquivo  inventario vazio ou dados já existentes 
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git inventory-playbook.yml \  --vault-id /etc/korp/ansible/.vault_key  -C DEVOPS-80
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git inventory-playbook.yml -C DEVOPS-80 --vault-id /etc/korp/ansible/.vault_key  --limit localhost
+  
 
 
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
