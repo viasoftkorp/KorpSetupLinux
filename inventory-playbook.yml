@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  become: true
+  become: false 
   tasks:
     - name: ImportarInventario
       ansible.builtin.set_fact:
