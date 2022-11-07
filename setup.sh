@@ -95,9 +95,7 @@ fi
 
 if [ "$db_sufix" == "" ];
 then
-    db_sufix = ""
-else
-   db_sufix=$db_sufix
+    db_sufix = $(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 fi
 
 

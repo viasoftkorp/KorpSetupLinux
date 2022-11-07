@@ -36,7 +36,7 @@
   ansible.builtin.set_fact:
     service_vars: "{{ services[service_name] }}"
 
-- name: "Definição de service_vars com sufixo para {{ service_name }}"
+- name: "Definição de sufixo do nome do banco de dados"
   ansible.builtin.set_fact:
     service_vars: "{{service_vars | combine({
           'db': {
