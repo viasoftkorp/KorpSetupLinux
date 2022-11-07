@@ -95,7 +95,7 @@ fi
 
 if [ "$db_sufix" == "" ];
 then
-    db_sufix = $(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 fi
 
 
