@@ -139,7 +139,7 @@ then
     #cria permissao para vault_key  
     sudo chmod 444 /etc/korp/ansible/.vault_key  
     #cria inventory.yml  
-    touch /etc/korp/ansible/inventory.yml 
+    sudo touch /etc/korp/ansible/inventory.yml 
     # Corrige a permição dos arquivos
     sudo chmod 644 /etc/korp/ansible/inventory.yml
     echo """  
