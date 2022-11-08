@@ -6,7 +6,8 @@
     - name: ImportarInventario
       ansible.builtin.set_fact:
         inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
-
+        become: true
+        
     - name: Verificação de servidores de SQL Server
       ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? S - sim N - nao"
