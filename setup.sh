@@ -153,7 +153,7 @@ fi
 # Instalando o playbook em logo em seguida executa-lo para iniciar interacao de shell 
 wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml
 
-ansible-playbook /tmp/inventory-playbook.yml  --vault-id /etc/korp/ansible/.vault_key -K
+ansible-playbook /tmp/inventory-playbook.yml  --vault-id /etc/korp/ansible/.vault_key 
 
 #playbook após executado necessario fazer encriptacao 
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
