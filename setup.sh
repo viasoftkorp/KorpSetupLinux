@@ -158,6 +158,9 @@ ansible-playbook /tmp/inventory-playbook.yml  --vault-id /etc/korp/ansible/.vaul
 #playbook após executado necessario fazer encriptacao 
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 
+rm /tmp/inventory-playbook.yml
+
+
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 # verificação caso não deseja que rode o bootstrap-playbook.yml
 playbook_name=""
