@@ -301,7 +301,7 @@
     - name: Criando-ArquivoInventory
       copy:
         content: "{{inventory | to_nice_yaml(indent=2) }}"
-        dest: /etc/korp/ansible/inventory.yml        
-      delegate_to: localhost
-      mode: '0644'
+        dest: /etc/korp/ansible/inventory.yml  
+        mode: '0644'      
+      delegate_to: localhost      
       become: true
