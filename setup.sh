@@ -140,9 +140,7 @@ then
     sudo chmod 444 /etc/korp/ansible/.vault_key  
     #cria inventory.yml  
     sudo touch /etc/korp/ansible/inventory.yml 
-    echo $(ls -l /etc/korp/ansible)
-    sudo chmod 644 /etc/korp/ansible/inventory.yml
-    echo $(ls -l /etc/korp/ansible)
+    sudo chmod 644 /etc/korp/ansible/inventory.yml    
     # Corrige a permição dos arquivos
     echo """  
     [defaults]
@@ -150,11 +148,7 @@ then
     """ | sudo tee /etc/ansible/ansible.cfg > /dev/null
     # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
-
     sudo chmod 644 /etc/korp/ansible/inventory.yml
-
-    echo $(ls -l /etc/korp/ansible)
-
 fi
 # Instalando o playbook em logo em seguida executa-lo para iniciar interacao de shell 
 wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml
