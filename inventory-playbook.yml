@@ -87,7 +87,7 @@
 
     - name: application_server_address
       ansible.builtin.pause:
-        prompt: "Agora, informe o IP do Servidor de aplicações: "
+        prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
       register: application_server_address
       when: Chk_sql is not skipped
 
@@ -99,7 +99,7 @@
     - name: Application_Null_var
       ansible.builtin.set_fact:
         application_server_address: "{{ sql_ips }}"
-      when: Chk_sql is not skipped
+      when: Chk_sql is not skipped  and application_server_address == ""
 
     #utiliza a mesma senha randomica
     - name: Mssql_korp_password_stringRandom
