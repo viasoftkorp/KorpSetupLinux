@@ -1,12 +1,10 @@
 ---
 - hosts: localhost  
-  connection: local
-  become: true
+  connection: local  
   tasks:
     - name: ImportarInventario
       ansible.builtin.set_fact:
-        inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
-     
+        inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"     
 
     - name: Verificação de servidores de SQL Server
       ansible.builtin.pause:
