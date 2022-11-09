@@ -57,7 +57,7 @@
             testing_sql_user: "{{  testing_sql_user.user_input }}"
             testing_sql_pass: "{{  testing_sql_pass.user_input }}"
 
-      when: Chk_sql is not skipped  and Chk_sql.user_input |upper == "S"
+      when: Chk_sql.skipped is false  and Chk_sql.user_input |upper == "S"
 
     - name: Somente um SQL Server
       block: #bloco criado para criar apenas um servidor SQL
@@ -85,23 +85,27 @@
             testing_sql_user: "{{  sql_user.user_input }}"
             testing_sql_pass: "{{  sql_pass.user_input }}"
 
-      when: Chk_sql is not skipped  and  Chk_sql.user_input |upper == "N"
+      when: Chk_sql.skipped == false  and  Chk_sql.user_input |upper == "N"
 
-    - name: application_server_address
-      ansible.builtin.pause:
-        prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
-      register: application_server_address
-      when: Chk_sql is not skipped
+    - name: Servidor de Aplicacao 
+      block: #bloco criado para criar e configurar servidor de aplicacao 
+      - name: application_server_address
+        ansible.builtin.pause:
+          prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
+        register: application_server_address
+        when: Chk_sql.skipped is false
 
-    - name: SetApplication_server_address
-      ansible.builtin.set_fact:
-        application_server_address: "{{ application_server_address.user_input }}"
-      when: Chk_sql is not skipped
+      - name: SetApplication_server_address
+        ansible.builtin.set_fact:
+          application_server_address: "{{ application_server_address.user_input }}"
+        when: Chk_sql.skipped is false
 
-    - name: Application_Null_var
-      ansible.builtin.set_fact:
-        application_server_address: "{{ sql_ips }}"
-      when: Chk_sql is not skipped  and application_server_address == ""
+      - name: Application_Null_var
+        ansible.builtin.set_fact:
+          application_server_address: "{{ sql_ips }}"
+        when: Chk_sql.skipped is false  and application_server_address == ""
+      
+      when: Chk_sql.skipped == false
 
     #utiliza a mesma senha randomica
     - name: Mssql_korp_password_stringRandom
@@ -135,7 +139,7 @@
                     "{{  inventory.all.children.nodes.hosts.localhost | combine(
                     {
                     'app_server' : {
-                    'address' : inventory.all.children.nodes.hosts.localhost.app_server.addess | default (application_server_address)                    
+                    'address' : shrink_inventory.app_server.addess | default (application_server_address)                    
                     }
                     },
                     recursive=True) }}"
