@@ -89,22 +89,23 @@
 
     - name: Servidor de Aplicacao 
       block: #bloco criado para criar e configurar servidor de aplicacao 
+
       - name: application_server_address
         ansible.builtin.pause:
           prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
-        register: application_server_address_set
+        register: application_server_address
         when: Chk_sql.skipped is not defined
 
       - name: SetApplication_server_address
         ansible.builtin.set_fact:
-          application_server_address: "{{ application_server_address_set.user_input }}"
+          application_set_server_address: "{{ application_server_address.user_input }}"
         when: Chk_sql.skipped is not defined
       
 
       - name: Application_Null_var
         ansible.builtin.set_fact:
-          application_server_address: "{{ sql_ips }}"
-        when: application_server_address == ""
+          application_set_server_address: "{{ sql_ips }}"
+        when: application_set_server_address == ""
       
       when: Chk_sql.skipped is not defined
 
@@ -141,7 +142,7 @@
                     "{{  inventory.all.children.nodes.hosts.localhost | combine(
                     {
                     'app_server' : {
-                    'address' : shrink_inventory.app_server.addess | default (application_server_address)
+                    'address' : shrink_inventory.app_server.addess | default (application_set_server_address)
                     }
                     },
                     recursive=True) }}"
