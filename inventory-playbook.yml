@@ -96,7 +96,7 @@
 
       - name: SetApplication_server_address
         ansible.builtin.set_fact:
-          application_server_address: "{{ application_server_address.user_input }}"      
+          application_server_address: "{{ application_server_address.user_input }}"
 
       - name: Application_Null_var
         ansible.builtin.set_fact:
@@ -138,7 +138,7 @@
                     "{{  inventory.all.children.nodes.hosts.localhost | combine(
                     {
                     'app_server' : {
-                    'address' : shrink_inventory.app_server.addess | default (application_server_address)                    
+                    'address' : shrink_inventory.app_server.addess | default (application_server_address)
                     }
                     },
                     recursive=True) }}"
@@ -304,7 +304,7 @@
     - name: Criando-ArquivoInventory
       copy:
         content: "{{inventory | to_nice_yaml(indent=2) }}"
-        dest: /etc/korp/ansible/inventory.yml  
-        mode: '0644'  
+        dest: /etc/korp/ansible/inventory.yml
+        mode: '0644'
       delegate_to: localhost 
 
