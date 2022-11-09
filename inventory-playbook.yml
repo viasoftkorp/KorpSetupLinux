@@ -13,6 +13,11 @@
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? S - sim N - nao"
       register: Chk_sql
       when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
+    
+    - name: Set and Fact
+      set.fact:
+        
+
 
     - name: Coleta de informações
       block: #trata-se de um bloco para definir dois servidores SQL's 
@@ -57,7 +62,7 @@
             testing_sql_user: "{{  testing_sql_user.user_input }}"
             testing_sql_pass: "{{  testing_sql_pass.user_input }}"
 
-      when: Chk_sql.skipped is false  and Chk_sql.user_input |upper == "S"
+      when: Chk_sql.skipped is not defined   and Chk_sql.user_input |upper == "S"
 
     - name: Somente um SQL Server
       block: #bloco criado para criar apenas um servidor SQL
@@ -85,7 +90,7 @@
             testing_sql_user: "{{  sql_user.user_input }}"
             testing_sql_pass: "{{  sql_pass.user_input }}"
 
-      when: Chk_sql.skipped == false  and  Chk_sql.user_input |upper == "N"
+      when: Chk_sql.skipped is not defined  and  Chk_sql.user_input |upper == "N"
 
     - name: Servidor de Aplicacao 
       block: #bloco criado para criar e configurar servidor de aplicacao 
@@ -93,19 +98,17 @@
         ansible.builtin.pause:
           prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
         register: application_server_address
-        when: Chk_sql.skipped is false
 
       - name: SetApplication_server_address
         ansible.builtin.set_fact:
-          application_server_address: "{{ application_server_address.user_input }}"
-        when: Chk_sql.skipped is false
+          application_server_address: "{{ application_server_address.user_input }}"      
 
       - name: Application_Null_var
         ansible.builtin.set_fact:
           application_server_address: "{{ sql_ips }}"
-        when: Chk_sql.skipped is false  and application_server_address == ""
+        when: Chk_sql.skipped is not defined   and application_server_address == ""
       
-      when: Chk_sql.skipped == false
+      when: Chk_sql.skipped is not defined
 
     #utiliza a mesma senha randomica
     - name: Mssql_korp_password_stringRandom
