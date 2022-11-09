@@ -101,7 +101,7 @@
       - name: Application_Null_var
         ansible.builtin.set_fact:
           application_server_address: "{{ sql_ips }}"
-        when: Chk_sql.skipped is not defined   and application_server_address == ""
+        when: application_server_address == ""
       
       when: Chk_sql.skipped is not defined
 
