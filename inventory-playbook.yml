@@ -13,7 +13,7 @@
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados  SQL? Exemplo : Homologação e  Produção? S - sim N - nao"
       register: Chk_sql
       when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
-      
+
     - name: Coleta de informações
       block: #trata-se de um bloco para definir dois servidores SQL's 
         - name: Coleta de IP de acesso do SQL Server de Produção
@@ -109,6 +109,7 @@
     - name: Mssql_korp_password_stringRandom
       ansible.builtin.set_fact:
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', base64=True) }}"
+      when: Chk_sql.skipped is not defined
 
     - name: Inserindo Template
       block:
