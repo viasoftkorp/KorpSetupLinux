@@ -135,7 +135,7 @@
                     "{{  inventory.all.children.nodes.hosts.localhost | combine(
                     {
                     'app_server' : {
-                    'address' : shrink_inventory.app_server.addess | default (application_server_address)
+                    'address' : inventory.all.children.nodes.hosts.localhost.app_server.addess | default (application_server_address)                    
                     }
                     },
                     recursive=True) }}"
