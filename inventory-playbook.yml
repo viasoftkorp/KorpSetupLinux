@@ -92,12 +92,12 @@
       - name: application_server_address
         ansible.builtin.pause:
           prompt: "Agora, informe o IP do Servidor de aplicações: (ou pressione enter para usar {{ sql_ips }} ) " 
-        register: application_server_address
+        register: application_server_address_set
         when: Chk_sql.skipped is not defined
 
       - name: SetApplication_server_address
         ansible.builtin.set_fact:
-          application_server_address: "{{ application_server_address.user_input }}"
+          application_server_address: "{{ application_server_address_set.user_input }}"
         when: Chk_sql.skipped is not defined
       
 
