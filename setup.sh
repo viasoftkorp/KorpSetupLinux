@@ -137,7 +137,7 @@ then
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key  
     #cria permissao para vault_key  
-    sudo chmod 444 /etc/korp/ansible/.vault_key  
+    sudo chmod 444 /etc/korp/ansiblels/.vault_key  
     #cria inventory.yml  
     sudo touch /etc/korp/ansible/inventory.yml 
     sudo chmod 644 /etc/korp/ansible/inventory.yml    
