@@ -86,5 +86,10 @@
             docker_account: "{{ customs.docker_account }}"
           when: not (customs.docker_account | length == 0)
 
+        - name: Definição de variável db_sufix
+          ansible.builtin.set_fact:
+            db_sufix: "{{ customs.db_sufix }}"
+          when: not (customs.db_sufix | length == 0)
+
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
