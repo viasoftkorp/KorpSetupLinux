@@ -17,6 +17,7 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   db_sufix="<db_sufix>" - OPCINOAL
 
 
 apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
@@ -260,7 +261,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
       }
     },
     "apps":['$apps']
-  }'
+  }' -C DEVEOPS-81
 
 if [ $? != 0 ]
 then
