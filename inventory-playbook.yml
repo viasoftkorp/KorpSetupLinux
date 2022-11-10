@@ -164,12 +164,13 @@
               'redis' : {
                 'password' : shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
             },
-            'postgres' : {
-              'address' : shrink_inventory.postgres.address | default ('127.0.0.1') ,
-              'default_user' : shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password' : shrink_inventory.postgres.default_password |  default ('postgres'),
-              'korp_user' : shrink_inventory.postgres.korp_user | default ('korp.services'),
-              'korp_password' : shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', base64=True))
+
+             'postgres' : {
+                'address' : shrink_inventory.postgres.address | default ('127.0.0.1') ,
+                'default_user' : shrink_inventory.postgres.default_user | default ('postgres') ,
+                'default_password' : shrink_inventory.postgres.default_password |  default ('postgres'),
+                'korp_user' : shrink_inventory.postgres.korp_user | default ('korp.services'),
+                'korp_password' : shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', base64=True))
             },
               'minio' : {
                 'access_key' : shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
