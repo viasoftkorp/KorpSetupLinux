@@ -111,7 +111,7 @@
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', base64=True) }}"
       when: Chk_sql.skipped is not defined
 
-    - name: Inserindo Template
+    - name: Inserção de template
       block:
         - name: templateInventory
           ansible.builtin.set_fact:
@@ -123,11 +123,11 @@
                       localhost:
           when: inventory.all.children.nodes.hosts.localhost is not defined
 
-        - name: CaminhodoInventario
+        - name: Definicao do atalho caminho inventario
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"            
 
-    - name: Inventario
+    - name: Criação De Inventario
       ansible.builtin.set_fact:
         shrink_inventory: "{{  inventory.all.children.nodes.hosts.localhost | combine(
           {
@@ -168,7 +168,8 @@
             },
             'general' : {
               'introspection_secret' : shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
-            }},recursive=True)}}"    
+            }
+          }, recursive=True ) }}"    
 
     - name: Converting_Shrink
       ansible.builtin.set_fact:
