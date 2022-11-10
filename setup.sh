@@ -17,6 +17,7 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   db_sufix="<db_sufix>" - OPCINOAL
 
 
 apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
@@ -26,6 +27,12 @@ ini_file_path="./setup_config.ini"
 if test -f $ini_file_path;
 then
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+
+    if [ "$db_sufix" == "" ]
+    then
+        db_sufix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    fi
+
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -90,14 +97,6 @@ else
         exit 09
     fi
 fi
-
-# Validação de sufixo
-
-if [ "$db_sufix" == "" ];
-then
-    db_sufix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
-fi
-
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
@@ -260,7 +259,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
       }
     },
     "apps":['$apps']
-  }'
+  }' -C DEVOPS-81
 
 if [ $? != 0 ]
 then
