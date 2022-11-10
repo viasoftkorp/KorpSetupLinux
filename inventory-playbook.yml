@@ -10,7 +10,7 @@
         
     - name: Verificação de servidores de SQL Server
       ansible.builtin.pause:
-        prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados SQL? Exemplo : Homologação e Produção? S - sim N - nao"
+        prompt: "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server: Possui 2 banco de dados SQL? Exemplo : Homologação e Produção? Digite  S = sim  ou N = nao"
       register: Chk_sql
       when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
 
@@ -51,11 +51,12 @@
         - name: set_testing_sql_dependents
           ansible.builtin.set_fact: 
             sql_ips: "{{ sql_ip.user_input }}"
-            sql_user: "{{ sql_user.user_input }}"
-            sql_pass: "{{ sql_pass.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
             testing_sql_ip: "{{ testing_sql_ip.user_input }}"
             testing_sql_user: "{{ testing_sql_user.user_input }}"
             testing_sql_pass: "{{ testing_sql_pass.user_input }}"
+
 
       when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
 
@@ -79,8 +80,8 @@
         - name: testing_sql_ip_whenChkEqualsN
           ansible.builtin.set_fact:
             sql_ips: "{{ sql_ip.user_input }}"
-            sql_user: "{{ sql_user.user_input }}"
-            sql_pass: "{{ sql_pass.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
             testing_sql_ip: "{{ sql_ip.user_input }}"
             testing_sql_user: "{{ sql_user.user_input }}"
             testing_sql_pass: "{{ sql_pass.user_input }}"
@@ -126,6 +127,7 @@
         - name: Definicao do atalho caminho inventario
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
+            
 
     - name: Criação De inventario
       ansible.builtin.set_fact:
@@ -143,13 +145,13 @@
             },
             'mssql' : {
               'address' : shrink_inventory.mssql.address | default (sql_ips),
-              'default_user' : shrink_inventory.mssql.default_user | default (sql_user),
-              'default_password' : shrink_inventory.mssql.default_password | default (sql_pass),
+              'default_user' : shrink_inventory.mssql.default_user | default (sql_users),
+              'default_password' : shrink_inventory.mssql.default_password | default (sql_passs),
               'korp_user' : shrink_inventory.mssql.korp_user | default ('korp.services'),
               'korp_password' : shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
             },
             'testing_mssql' : {
-                'address' : shrink_inventory.mssql.address | default (testing_sql_ip),
+                'address' : shrink_inventory.mssql.address | default (testing_sql_ip) ,
                 'default_user' : shrink_inventory.mssql.default_user | default (testing_sql_user),
                 'default_password' : shrink_inventory.mssql.default_password | default (testing_sql_pass),
                 'korp_user' : shrink_inventory.mssql.korp_user | default ('korp.services'),
@@ -169,7 +171,7 @@
             'general' : {
               'introspection_secret' : shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
             }
-          }, recursive=True ) }}"
+          }, recursive=True) }}"
 
     - name: Converting Shrink
       ansible.builtin.set_fact:
@@ -179,7 +181,7 @@
               nodes:
                 hosts:
                   localhost: "{{ shrink_inventory }}"
-                  
+
       #Funcao de inserir a variavel no arquivo.
     - name: Deploy arquivo inventory na pasta
       copy:
