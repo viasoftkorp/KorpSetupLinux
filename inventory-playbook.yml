@@ -181,7 +181,7 @@
                   localhost: "{{ shrink_inventory }}"
                   
       #Funcao de inserir a variavel no arquivo.
-    - name: Deploi arquivo inventory na pasta
+    - name: Deploy arquivo inventory na pasta
       copy:
         content: "{{inventory | to_nice_yaml(indent=2) }}"
         dest: /etc/korp/ansible/inventory.yml
