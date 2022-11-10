@@ -108,7 +108,7 @@
     #utiliza a mesma senha randomica
     - name: Mssql_korp_password_stringRandom
       ansible.builtin.set_fact:
-        mssql_korp_passRandom: "{{ lookup('community.general.random_string', base64=True) }}"
+        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: Chk_sql.skipped is not defined
 
     - name: Inserção de template
@@ -136,7 +136,7 @@
             },
             'linux_korp' : {
               'user' : shrink_inventory.linux_korp.user | default ('korp') ,
-              'password' : shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', base64=True))
+              'password' : shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', special=False))
             },
             'self_signed_cert' :{
               'passphrase' : shrink_inventory.self_signed_cert.passphrase | default ('korp')
@@ -157,14 +157,14 @@
             }, 
               'rabbitmq' : {
                 'korp_user' : shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
-                'korp_password' : shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', base64=True))
+                'korp_password' : shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
             }, 
               'redis' : {
-                'password' : shrink_inventory.redis.password | default (lookup('community.general.random_string', base64=True))
+                'password' : shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
             },
               'minio' : {
-                'access_key' : shrink_inventory.minio.access_key | default (lookup('community.general.random_string', base64=True)) ,
-                'secret_key' : shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', base64=True))
+                'access_key' : shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
+                'secret_key' : shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
             },
             'general' : {
               'introspection_secret' : shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
