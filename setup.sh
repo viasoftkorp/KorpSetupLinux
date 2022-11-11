@@ -129,19 +129,21 @@ else
     fi
 fi
 
+# Entrará nesse 'if' caso o arquivo de inventário não exista
 if ! sudo test -f /etc/korp/ansible/inventory.yml ;
 then
     # Cria e diretórios que serão usados depois
     sudo mkdir -p /etc/korp/ansible/
-     # Criação de senha aleatória usada pelo ansible-vault
+    # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key  
-    #cria permissao para vault_key  
+    # Altera a permissão de .vault_key  
     sudo chmod 444 /etc/korp/ansible/.vault_key  
-    #cria inventory.yml  
+    # Cria inventory.yml  
     sudo touch /etc/korp/ansible/inventory.yml 
-    sudo chmod 644 /etc/korp/ansible/inventory.yml    
     # Corrige a permição dos arquivos
+    sudo chmod 644 /etc/korp/ansible/inventory.yml    
+    # Configuração de '/etc/ansible/ansible.cfg' para apontar o inventário para '/etc/korp/ansible/inventory.yml'
     echo """  
     [defaults]
     inventory = /etc/korp/ansible/inventory.yml
@@ -150,19 +152,19 @@ then
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
-# Instalando o playbook em logo em seguida executa-lo para iniciar interacao de shell 
-wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml
 
-ansible-playbook /tmp/inventory-playbook.yml  --vault-id /etc/korp/ansible/.vault_key 
+# Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
+wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml ### REMOVER O NOME DA BRANCH DEVOPS-80!!!!
 
-#playbook após executado necessario fazer encriptacao 
+ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key 
+
+# Encripta 'inventory.yml' com ansible-vault visto que essa operação não pode ser feita no playbook
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 
 rm /tmp/inventory-playbook.yml
 
 
-sudo chmod 644 /etc/korp/ansible/inventory.yml
-# verificação caso não deseja que rode o bootstrap-playbook.yml
+# Verificação caso não deseja que rode o bootstrap-playbook.yml
 playbook_name=""
 if [ ${run_bootstrap^^} == "FALSE" ];
 then
