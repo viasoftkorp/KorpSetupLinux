@@ -7,51 +7,51 @@
   connection: local
   become: true
   tasks:
-    - name: ImportarInventario
+    - name: Importar inventario
       ansible.builtin.set_fact:
         inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
         become: true
         
-    - name: Verificação de servidores de SQL Server
+    - name: Coleta de informações
       ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = nao)"
       register: Chk_sql
       when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
 
-    - name: Coleta de informações para dois servidores SQL Server
+    - name: Coleta de IP de acesso do SQL Server de Produção e homologação
       block:
-        - name: Coleta de IP de acesso do SQL Server de Produção
+        - name: Coleta do ip sql server
           ansible.builtin.pause:
             prompt: "Informe o IP de acesso do SQL Server de Produção"
           register: sql_ip
 
-        - name: Sql_Producao_name
+        - name: Coleta do usuario sql server
           ansible.builtin.pause:
             prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
           register: sql_user
 
-        - name: Sql_Producao_pass
+        - name: Coleta da senha sql server
           ansible.builtin.pause:
             prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
           register: sql_pass
 
-        - name: Sql_testing_ip
+        - name: Coleta do ip  testing sql server
           ansible.builtin.pause:
             prompt: "Informe o IP de acesso do SQL Server de Homologação"
           register: testing_sql_ip
 
-        - name: Sql_testing_name
+        - name: Coleta do nome  testing sql server
           ansible.builtin.pause:
             prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
           register: testing_sql_user
 
-        - name: Sql_testing_pass
+        - name: Coleta da senha testing sql server
           ansible.builtin.pause:
             prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
           register: testing_sql_pass
 
           # Definição de variáveis do inventário
-        - name: set_testing_sql_dependents
+        - name: Declarando as variaveis deste bloco
           ansible.builtin.set_fact: 
             sql_ips: "{{ sql_ip.user_input }}"
             sql_users: "{{ sql_user.user_input }}"
@@ -64,23 +64,23 @@
       when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
 
     - name: Coleta de informações para um servidore SQL Server
-      block:
-        - name: Sql_server_Ip
+      block:    # o Bloco trata de apenas um servidor de SQL
+        - name: Coleta do ip  sql server
           ansible.builtin.pause:
             prompt: "Informe o IP de acesso do SQL Server"
           register: sql_ip
 
-        - name: Sql_Producao_name
+        - name: Coleta do usuario sql server
           ansible.builtin.pause:
             prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
           register: sql_user
 
-        - name: Sql_Producao_pass
+        - name:  Coleta da senha  sql server
           ansible.builtin.pause:
             prompt: "Informe a senha do usuário administrativo no SQL Server"
           register: sql_pass
 
-        - name: testing_sql_ip_whenChkEqualsN
+        - name: Declarando as variaveis deste bloco
           ansible.builtin.set_fact:
             sql_ips: "{{ sql_ip.user_input }}"
             sql_users: "{{ sql_user.user_input }}"
@@ -114,7 +114,7 @@
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: Chk_sql.skipped is not defined
 
-    - name: Inserção de template
+    - name: Inserindo arquitetura quando arquivo esta vazio
       block:
         - name: templateInventory
           ansible.builtin.set_fact:
@@ -185,7 +185,7 @@
             }
           }, recursive=True) }}"
 
-    - name: Converting Shrink
+    - name: Inserindo modificações na variavel local
       ansible.builtin.set_fact:
         inventory:
           all:
