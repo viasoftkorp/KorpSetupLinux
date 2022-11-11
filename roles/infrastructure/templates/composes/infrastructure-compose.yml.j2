@@ -80,7 +80,7 @@ services:
       - "5432:5432"
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
-      - "{{ config_dir_path }}/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf"
+     #- "{{ config_dir_path }}/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf"
     networks:
       - servicos
     labels:
