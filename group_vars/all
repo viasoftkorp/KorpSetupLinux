@@ -11,6 +11,7 @@ tenant_id: ""
 # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.docker_account'
 docker_account: ""
 
+authentication_db_name: "Viasoft_Authentication"
 
 # tamanho minimo do disco da korp em Gigas/GB
 korp_data_disk_minimum_size: 10
