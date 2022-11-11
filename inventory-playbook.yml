@@ -93,16 +93,16 @@
 
     - name: Configuração de application Server
       block:
-        - name: application_server_address
+        - name: Coleta de ip do servidor de aplicação 
           ansible.builtin.pause:
             prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
           register: application_server_address
 
-        - name: SetApplicationServerAddress
+        - name: Declaração da variavel servidor de aplicação 
           ansible.builtin.set_fact:
             application_server_address: "{{ application_server_address.user_input }}"
 
-        - name: Application_null_var
+        - name: Verificação do servidor de aplicação 
           ansible.builtin.set_fact:
             application_server_address: "{{ sql_ips }}"
           when: application_server_address == ""
