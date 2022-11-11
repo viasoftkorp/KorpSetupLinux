@@ -51,7 +51,7 @@
           register: testing_sql_pass
 
           # Definição de variáveis do inventário
-        - name: Declarando as variaveis deste bloco
+        - name: Declaração de variáveis do SQL Server
           ansible.builtin.set_fact: 
             sql_ips: "{{ sql_ip.user_input }}"
             sql_users: "{{ sql_user.user_input }}"
@@ -80,7 +80,7 @@
             prompt: "Informe a senha do usuário administrativo no SQL Server"
           register: sql_pass
 
-        - name: Declarando as variaveis deste bloco
+        - name: Declaração de variáveis do SQL Server
           ansible.builtin.set_fact:
             sql_ips: "{{ sql_ip.user_input }}"
             sql_users: "{{ sql_user.user_input }}"
