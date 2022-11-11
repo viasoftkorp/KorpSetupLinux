@@ -157,9 +157,15 @@ fi
 wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml ### REMOVER O NOME DA BRANCH DEVOPS-80!!!!
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key 
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro durante a execução do playbook 'inventory-playbook.yml'.$(tput setaf 7)"
+    exit 14
+fi
 
 # Encripta 'inventory.yml' com ansible-vault visto que essa operação não pode ser feita no playbook
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
+sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 rm /tmp/inventory-playbook.yml
 
