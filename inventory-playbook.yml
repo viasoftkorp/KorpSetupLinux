@@ -26,7 +26,7 @@
 
         - name: Definição do atalho do caminho inventário
           ansible.builtin.set_fact:
-            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"        
+            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
         
     - name: Coleta de informações
       ansible.builtin.pause:
@@ -51,12 +51,12 @@
             prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
           register: sql_pass
 
-        - name: Coleta do ip  testing sql server
+        - name: Coleta do ip testing sql server
           ansible.builtin.pause:
             prompt: "Informe o IP de acesso do SQL Server de Homologação"
           register: testing_sql_ip
 
-        - name: Coleta do nome  testing sql server
+        - name: Coleta do nome testing sql server
           ansible.builtin.pause:
             prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
           register: testing_sql_user
@@ -80,8 +80,8 @@
       when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
 
     - name: Coleta de informações para um servidor de SQL Server
-      block:    # o Bloco trata de apenas um servidor de SQL
-        - name: Coleta do ip  sql server
+      block: # o Bloco trata de apenas um servidor de SQL
+        - name: Coleta do ip sql server
           ansible.builtin.pause:
             prompt: "Informe o IP de acesso do SQL Server"
           register: sql_ip
@@ -91,7 +91,7 @@
             prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
           register: sql_user
 
-        - name:  Coleta da senha  sql server
+        - name: Coleta da senha sql server
           ansible.builtin.pause:
             prompt: "Informe a senha do usuário administrativo no SQL Server"
           register: sql_pass
