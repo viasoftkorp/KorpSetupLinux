@@ -11,12 +11,28 @@
       ansible.builtin.set_fact:
         inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
         become: true
+
+    - name: Criação de estrutura do inventário
+      block:
+        - name: Definição de estrutura de inventario
+          ansible.builtin.set_fact:
+            inventory:
+              all:
+                children:
+                  nodes:
+                    hosts:
+                      localhost:
+          when: inventory.all.children.nodes.hosts.localhost is not defined
+
+        - name: Definição do atalho do caminho inventário
+          ansible.builtin.set_fact:
+            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"        
         
     - name: Coleta de informações
       ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = nao)"
       register: Chk_sql
-      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
+      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
 
     - name: Coleta de IP de acesso do SQL Server de Produção e homologação
       block:
@@ -113,22 +129,6 @@
       ansible.builtin.set_fact:
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: Chk_sql.skipped is not defined
-
-    - name: criação de estrutura do inventário
-      block:
-        - name: templateInventory
-          ansible.builtin.set_fact:
-            inventory:
-              all:
-                children:
-                  nodes:
-                    hosts:
-                      localhost:
-          when: inventory.all.children.nodes.hosts.localhost is not defined
-
-        - name: Definição do atalho do caminho inventário
-          ansible.builtin.set_fact:
-            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
