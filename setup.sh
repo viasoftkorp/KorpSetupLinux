@@ -26,6 +26,9 @@ ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
 then
+    echo "1"
+    echo "$install_apps"
+    install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
     db_sufix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -43,7 +46,8 @@ else
       exit 0
     fi
 fi
-
+echo "2"
+    echo "$install_apps"
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -53,13 +57,8 @@ do
 
    export "$KEY"="$VALUE"
 done
-
-if [ "$install_apps" == "" ];
-then   
-   apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
-else      
-   apps=$install_apps
-fi
+echo "3"
+    echo "$install_apps"
 
 if [ "$custom_tags" == "" ];
 then   
