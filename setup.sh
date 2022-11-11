@@ -20,7 +20,7 @@ create_random_string() {
 #   db_sufix="<db_sufix>" - OPCINOAL
 
 
-apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
+install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -36,7 +36,7 @@ then
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
-    echo "$apps"
+    echo "$install_apps"
 
 else
     echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
