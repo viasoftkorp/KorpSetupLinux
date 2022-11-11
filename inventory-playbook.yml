@@ -79,7 +79,7 @@
 
       when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
 
-    - name: Coleta de informações para um servidore SQL Server
+    - name: Coleta de informações para um servidor de SQL Server
       block:    # o Bloco trata de apenas um servidor de SQL
         - name: Coleta do ip  sql server
           ansible.builtin.pause:
