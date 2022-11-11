@@ -114,7 +114,7 @@
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: Chk_sql.skipped is not defined
 
-    - name: Inserindo arquitetura quando arquivo esta vazio
+    - name: criação de estrutura do inventário
       block:
         - name: templateInventory
           ansible.builtin.set_fact:
@@ -185,7 +185,7 @@
             }
           }, recursive=True) }}"
 
-    - name: Inserindo modificações na variavel local
+    - name: Ajuste de estrutura do inventário
       ansible.builtin.set_fact:
         inventory:
           all:
@@ -195,7 +195,7 @@
                   localhost: "{{ shrink_inventory }}"
 
       #Funcao de inserir a variavel no arquivo.
-    - name: Deploy arquivo inventory na pasta
+    - name: Escrita do arquivo de inventário
       copy:
         content: "{{inventory | to_nice_yaml(indent=2) }}"
         dest: /etc/korp/ansible/inventory.yml
