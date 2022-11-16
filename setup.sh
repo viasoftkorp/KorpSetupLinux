@@ -84,6 +84,7 @@ then
     exit 08
 else
     echo "entrou no else"
+    echo "$gateway_url"
 
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
     
