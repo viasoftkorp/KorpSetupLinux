@@ -102,7 +102,8 @@
         - name: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           ansible.builtin.set_fact:
             authentication_db_name: "{{ authentication_db_name }}-{{ db_sufix }}"
-          when: not (customs.db_sufix | length == 0) and authentication_db_name != authentication_db_name+'-'+db_sufix
+            already_defined: true
+          when: not (customs.db_sufix | length == 0) and already_defined != true
 
         - name: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
           ansible.builtin.debug:
