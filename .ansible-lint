@@ -1,6 +1,0 @@
-warn_list:  # or 'skip_list' to silence them completely
-  - command-instead-of-module  # Using command rather than module
-  - no-changed-when  # Commands should not change things if nothing needs doing
-  - ignore-errors
-  - meta-no-info
-  - role-name

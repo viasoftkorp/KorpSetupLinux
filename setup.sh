@@ -83,7 +83,10 @@ then
     echo "$(tput setaf 1)O token não foi passado como parâmetro. Utilize 'token=\"<token>\".$(tput setaf 7)"
     exit 08
 else
+    echo "entrou no else"
+
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
+    
     echo "$status_code"
 
     if [ "$status_code" != "200" ];
