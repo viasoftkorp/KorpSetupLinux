@@ -78,6 +78,8 @@ fi
 
 # Validação de token
 
+echo "$gateway_url"
+
 if [ "$token" == "" ];
 then
     echo "$(tput setaf 1)O token não foi passado como parâmetro. Utilize 'token=\"<token>\".$(tput setaf 7)"
