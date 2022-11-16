@@ -6,6 +6,10 @@
     uuid: "{{ secret }}"
   register: result
 
+- name: "debug do authentication"
+  ansible.builtin.debug:
+    msg: "{{ authentication_db_name }}"
+
 - name: "Adição de cliente oauth para {{ service_name }}"
   vars:
     secret_as_hash: "{{ result.secret }}"
