@@ -93,8 +93,8 @@
         
         - name: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           ansible.builtin.set_fact:
-            authentication_db_name: "{{ authentication_db_name }}-{{ customs.db_sufix }}"
-          when: not (customs.db_sufix | length == 0)
+            authentication_db_name: "{{ authentication_db_name }}"
+          when: not (authentication_db_name | length == 0)
 
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
