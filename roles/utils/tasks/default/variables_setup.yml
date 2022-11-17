@@ -91,26 +91,12 @@
             db_sufix: "{{ customs.db_sufix }}"
           when: not (customs.db_sufix | length == 0)
 
-        - name: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-          ansible.builtin.debug:
-           msg: "{{authentication_db_name}}"
-        
-        - name: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-          ansible.builtin.debug:
-           msg: "{{db_sufix}}"
-        
-        - name: VERIFICAR SE JÁ DUPLICOU
-          ansible.builtin.debug:
-           msg: "{{authentication_db_name+'-'+db_sufix}}"
-
-        - name: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
             authentication_db_name: "{{ authentication_db_name }}-{{ db_sufix }}"
           when: not (customs.db_sufix | length == 0) and authentication_db_name == "Viasoft_Authentication"
 
-        - name: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-          ansible.builtin.debug:
-           msg: "{{authentication_db_name}}"
+
 
         
 

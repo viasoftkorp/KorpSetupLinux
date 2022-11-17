@@ -26,7 +26,6 @@ ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
 then
-    echo "1"
     echo "$install_apps"
     install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
@@ -46,8 +45,7 @@ else
       exit 0
     fi
 fi
-echo "2"
-    echo "$install_apps"
+    
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -57,8 +55,6 @@ do
 
    export "$KEY"="$VALUE"
 done
-echo "3"
-    echo "$install_apps"
 
 if [ "$custom_tags" == "" ];
 then   
@@ -78,16 +74,11 @@ fi
 
 # Validação de token
 
-echo "$gateway_url"
-
 if [ "$token" == "" ];
 then
     echo "$(tput setaf 1)O token não foi passado como parâmetro. Utilize 'token=\"<token>\".$(tput setaf 7)"
     exit 08
 else
-    
-    echo "$gateway_url"
-
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
     
     echo "$status_code"
