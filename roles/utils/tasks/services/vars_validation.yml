@@ -43,6 +43,6 @@
             'name': service_vars.db.name+db_suffix_divider+db_suffix
           }
       }, recursive=true) }}"
-  when: service_vars.db is defined and db_suffix != "" and db_suffix_divider != ""
+  when: service_vars.db is defined and db_suffix != "" 
 
 
