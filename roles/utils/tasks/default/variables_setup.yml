@@ -99,10 +99,5 @@
             authentication_db_name: "{{ authentication_db_name }}{{ db_suffix_divider }}{{ db_suffix }}"
           when: not (db_suffix | length == 0)  and authentication_db_name == "Viasoft_Authentication"
 
-        - name: debug authentication_db_name
-          ansible.builtin.debug:
-            msg: "{{ authentication_db_name }}"
-        
-
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always

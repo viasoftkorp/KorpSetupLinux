@@ -17,7 +17,7 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
-#   db_suffix="<db_suffix>" - OPCINOAL
+#   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 
 
 install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix="";
