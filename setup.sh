@@ -80,8 +80,6 @@ then
 else
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
     
-    echo "$status_code"
-
     if [ "$status_code" != "200" ];
     then
         echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"
