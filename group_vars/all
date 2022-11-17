@@ -38,7 +38,8 @@ redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres
 apprise_container_name: apprise
-db_sufix: ""
+db_suffix: ""
+db_suffix_divider: ""
 
 frontend:
   # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
@@ -60,4 +61,5 @@ customs:
       api: ""
       frontend: ""
       cdn: ""
-  db_sufix: ""
+  db_suffix: ""
+  db_suffix_divider: ""

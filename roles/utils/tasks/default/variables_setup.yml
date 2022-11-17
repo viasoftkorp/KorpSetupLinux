@@ -86,18 +86,27 @@
             docker_account: "{{ customs.docker_account }}"
           when: not (customs.docker_account | length == 0)
 
-        - name: Definição de variável db_sufix
+        - name: Definição de variável db_suffix
           ansible.builtin.set_fact:
-            db_sufix: "{{ customs.db_sufix }}"
-          when: not (customs.db_sufix | length == 0)
+            db_suffix: "{{ customs.db_suffix }}"
+          when: not (customs.db_suffix | length == 0)
+
+        - name: Definição de variável db_suffix_divider
+          ansible.builtin.set_fact:
+            db_suffix_divider: "{{ customs.db_suffix_divider }}"
+          when: not (customs.db_suffix_divider | length == 0)
 
           # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
           # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
 
         - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
-            authentication_db_name: "{{ authentication_db_name }}-{{ db_sufix }}"
-          when: not (customs.db_sufix | length == 0) and authentication_db_name == "Viasoft_Authentication
-          
+            authentication_db_name: "{{ authentication_db_name }}{{db_suffix_divider}}{{ db_suffix }}"
+          when: not (db_suffix | length == 0) and not (db_suffix_divider | length == 0) and authentication_db_name == "Viasoft_Authentication
+
+        - name: Debug variavle authentication_db_name
+          ansible.builtin.debug:
+            msg: authentication_db_name
+
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always

@@ -17,10 +17,11 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
-#   db_sufix="<db_sufix>" - OPCINOAL
+#   db_suffix="<db_suffix>" - OPCINOAL
+#   db_suffix_divider="<db_suffix_divider>" - OPCINOAL
 
 
-install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_sufix="";
+install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix="";db_suffix_divider=""
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -28,7 +29,8 @@ if test -f $ini_file_path;
 then
     install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
-    db_sufix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_sufix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    db_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    db_suffix_divider=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix_divider[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -238,7 +240,8 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
     "gateway_url": "'$gateway_url'",
     "customs": {
       "docker_account": "'$docker_account'",
-      "db_sufix": "'$db_sufix'",
+      "db_suffix": "'$db_suffix'",
+      "db_suffix_divider": "'$db_suffix_divider'",
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
