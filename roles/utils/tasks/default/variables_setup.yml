@@ -101,7 +101,7 @@
 
         - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
-            authentication_db_name: "{{ authentication_db_name }}{{db_suffix_divider}}{{ db_suffix }}"
+            authentication_db_name: "{{ authentication_db_name }}-{{db_suffix_divider}}-{{ db_suffix }}"
           when: not (db_suffix | length == 0) and not (db_suffix_divider | length == 0) and authentication_db_name == "Viasoft_Authentication"
 
         - name: Debug variavle authentication_db_name
