@@ -91,11 +91,6 @@
             db_suffix: "{{ customs.db_suffix }}"
           when: not (customs.db_suffix | length == 0)
 
-        - name: Definição de variável db_suffix_divider
-          ansible.builtin.set_fact:
-            db_suffix_divider: "{{ customs.db_suffix_divider }}"
-          when: not (customs.db_suffix_divider | length == 0)
-
           # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
           # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
 
