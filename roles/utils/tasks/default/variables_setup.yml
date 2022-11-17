@@ -91,14 +91,13 @@
             db_sufix: "{{ customs.db_sufix }}"
           when: not (customs.db_sufix | length == 0)
 
+          # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
+          # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
+
         - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
             authentication_db_name: "{{ authentication_db_name }}-{{ db_sufix }}"
-          when: not (customs.db_sufix | length == 0) and authentication_db_name == "Viasoft_Authentication"
-
-
-
-        
-
+          when: not (customs.db_sufix | length == 0) and authentication_db_name == "Viasoft_Authentication
+          
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
