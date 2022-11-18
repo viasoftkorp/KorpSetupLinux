@@ -72,10 +72,7 @@ services:
 
   {{ postgres_container_name }}:
     image: "postgres:14"
-    command:
-      - "postgres"
-      - "-c"
-      - "max_connections=1000"
+    command: command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     container_name: "{{ postgres_container_name }}"
     restart: always
     environment:
@@ -84,6 +81,7 @@ services:
       - "5432:5432"
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
+      - "/etc/korp/configs/postgres/postgresql.conf:/etc/postgresql.conf"
     networks:
       - servicos
     labels:
