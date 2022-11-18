@@ -11,15 +11,16 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>" - OBRIGATÓRIO#  
-#   disk="<sdx>"
+#   token="<token>" - OBRIGATÓRIO
+#   disk="<sdx>" - OBRIGATÓRIO caso haja mais de um disco livre
+#   branch_name="<branch_name>" - OPCIONAL, caso não sejá passado, receberá 'master'
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 
 
-apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn="";
+apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; branch_name="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -57,6 +58,11 @@ then
    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 else      
    apps=$install_apps
+fi
+
+if [ "$branch_name" == "" ];
+then   
+    branch_name="master"
 fi
 
 if [ "$custom_tags" == "" ];
@@ -114,14 +120,14 @@ fi
 
 if [ "$disk" != "" ];
 then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk" -C $branch_name
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost -C $branch_name
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
@@ -235,6 +241,7 @@ else
 fi
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
+  -C $branch_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
