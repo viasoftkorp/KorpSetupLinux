@@ -11,8 +11,9 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>" - OBRIGATÓRIO#  
-#   disk="<sdx>"
+#   token="<token>" - OBRIGATÓRIO
+#   disk="<sdx>" - OBRIGATÓRIO caso haja mais de um disco livre
+#   branch_name="<branch_name>" - OPCIONAL, caso não sejá passado, receberá 'master'
 #   gateway_url="<gateway_url>"
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
@@ -20,7 +21,7 @@ create_random_string() {
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 
 
-install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix="";
+install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix=""; branch_name="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -109,14 +110,14 @@ fi
 
 if [ "$disk" != "" ];
 then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk" -C $branch_name
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost -C $branch_name
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
@@ -230,6 +231,7 @@ else
 fi
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
+  -C $branch_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
