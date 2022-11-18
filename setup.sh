@@ -252,7 +252,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
       }
     },
     "apps":['$apps']
-  }' 
+  }'
 
 if [ $? != 0 ]
 then
