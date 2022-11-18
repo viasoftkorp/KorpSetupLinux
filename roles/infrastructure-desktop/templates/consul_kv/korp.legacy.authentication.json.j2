@@ -8,6 +8,7 @@
   "ShouldEmptyPassword": false,
   "ShouldValidateAvailableCompanies": false,
   "ConnectionStrings": {
-    "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name={{service_vars.db.name}}"
-  }
+    "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=Korp.Legacy.Authentication"
+  },
+  "DatabaseTableName": "{{service_vars.db.name}}"
 }
