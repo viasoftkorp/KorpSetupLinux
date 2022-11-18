@@ -18,21 +18,24 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 
 
-apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; branch_name="";
+install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix=""; branch_name="";
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
 if test -f $ini_file_path;
 then
-    docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
+    db_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
-    echo "$apps"
+    echo "$install_apps"
 
 else
     echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
@@ -42,7 +45,7 @@ else
       exit 0
     fi
 fi
-
+    
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -52,18 +55,6 @@ do
 
    export "$KEY"="$VALUE"
 done
-
-if [ "$install_apps" == "" ];
-then   
-   apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
-else      
-   apps=$install_apps
-fi
-
-if [ "$branch_name" == "" ];
-then   
-    branch_name="master"
-fi
 
 if [ "$custom_tags" == "" ];
 then   
@@ -89,14 +80,13 @@ then
     exit 08
 else
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
-
+    
     if [ "$status_code" != "200" ];
     then
         echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"
         exit 09
     fi
 fi
-
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
@@ -250,6 +240,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
     "gateway_url": "'$gateway_url'",
     "customs": {
       "docker_account": "'$docker_account'",
+      "db_suffix": "'$db_suffix'",
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
@@ -258,8 +249,8 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
         }
       }
     },
-    "apps":['$apps']
-  }'
+    "apps":['$install_apps']
+  }' 
 
 if [ $? != 0 ]
 then
