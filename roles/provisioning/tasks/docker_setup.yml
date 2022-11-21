@@ -80,5 +80,5 @@
   community.docker.docker_network:
     name: servicos
     ipam_config:
-      - subnet: 172.18.0.0/16
-        iprange: 172.18.0.0/17
+      - subnet: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/16"
+        iprange: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/17"
