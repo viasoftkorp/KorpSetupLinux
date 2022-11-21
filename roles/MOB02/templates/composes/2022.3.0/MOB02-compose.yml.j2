@@ -15,7 +15,7 @@ networks:
 
 services:
   korp-mobile-2022-3-0:
-    image: "{{ docker_account }}/korp.mobile:2022.3.0.x"
+    image: "{{ docker_account }}/korp.mobile:2022.3.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Mobile-2022.3.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

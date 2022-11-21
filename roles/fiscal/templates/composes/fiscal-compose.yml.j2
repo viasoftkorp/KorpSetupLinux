@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-fiscal-core:
-    image: "{{ docker_account }}/viasoft.fiscal.core:1.0.x"
+    image: "{{ docker_account }}/viasoft.fiscal.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Fiscal.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +29,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-taxmanagement:
-    image: "{{ docker_account }}/viasoft.taxmanagement:2.1.x"
+    image: "{{ docker_account }}/viasoft.taxmanagement:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.TaxManagement"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

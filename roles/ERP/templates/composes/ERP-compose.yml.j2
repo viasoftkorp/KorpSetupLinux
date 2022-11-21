@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-erp-core:
-    image: "{{ docker_account }}/viasoft.erp.core:3.1.x"
+    image: "{{ docker_account }}/viasoft.erp.core:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +29,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-erp-sync:
-    image: "{{ docker_account }}/viasoft.erp.sync:2.0.x"
+    image: "{{ docker_account }}/viasoft.erp.sync:2.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Sync"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -43,7 +43,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-legacy-parametros:
-    image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.x"
+    image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Legacy.Parametros"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -57,7 +57,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-erp-activities:
-    image: "{{ docker_account }}/viasoft.erp.activities:3.1.x"
+    image: "{{ docker_account }}/viasoft.erp.activities:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Activities"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -71,7 +71,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   SYNC01:
-    image: "{{ docker_account }}/viasoft.erp.sync-frontend:1.0.x"
+    image: "{{ docker_account }}/viasoft.erp.sync-frontend:1.0.x{{ docker_image_suffix }}"
     container_name: "SYNC01"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -87,7 +87,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-organizationalstructuremanagement:
-    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x"
+    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.OrganizationalStructureManagement"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -101,7 +101,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-messagebird:
-    image: "{{ docker_account }}/viasoft.messagebird:2.1.x"
+    image: "{{ docker_account }}/viasoft.messagebird:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.MessageBird"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
