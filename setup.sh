@@ -111,7 +111,7 @@ fi
 
 if [ "$disk" != "" ];
 then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git -playbook.yml --limidiskt localhost --extra-vars "korp_disk=$disk" -C $branch_name
+    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk" -C $branch_name
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
