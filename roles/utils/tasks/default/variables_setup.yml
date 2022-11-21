@@ -97,6 +97,10 @@
             docker_image_suffix: "-{{ customs.docker_image_suffix }}"
           when: not (customs.docker_image_suffix | length == 0)
 
+        - name: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          ansible.builtin.debug:
+            msg: "{{ docker_image_suffix }}"
+
         - name: Definição de variável db_suffix
           ansible.builtin.set_fact:
             db_suffix: "{{ customs.db_suffix }}"
