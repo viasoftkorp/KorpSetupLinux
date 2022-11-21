@@ -87,15 +87,15 @@
             docker_account: "{{ customs.docker_account }}"
           when: not (customs.docker_account | length == 0)
 
-        - name: Adição de separador do sufixo docker_image_suffix vindo do Vault 
-          ansible.builtin.set_fact:
-            docker_image_suffix: "-{{ docker_image_suffix }}"
-          when: not (docker_image_suffix| length == 0)
-
         - name: Definição de variável docker_image_suffix
           ansible.builtin.set_fact:
-            docker_image_suffix: "-{{ customs.docker_image_suffix }}"
+            docker_image_suffix: "{{ customs.docker_image_suffix }}"
           when: not (customs.docker_image_suffix | length == 0)
+
+        - name: Adição de separador do sufixo docker_image_suffix
+          ansible.builtin.set_fact:
+            docker_image_suffix: "-{{ docker_image_suffix }}"
+          when: not (docker_image_suffix | length == 0)
 
         - name: Definição de variável db_suffix
           ansible.builtin.set_fact:
