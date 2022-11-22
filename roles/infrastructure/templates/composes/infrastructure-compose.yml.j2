@@ -72,7 +72,7 @@ services:
 
   {{ postgres_container_name }}:
     image: "postgres:14"
-    command: command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     container_name: "{{ postgres_container_name }}"
     restart: always
     environment:
@@ -82,7 +82,6 @@ services:
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
       - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
-
     networks:
       - servicos
     labels:
