@@ -162,6 +162,11 @@ then
     minio_access_key="$(create_random_string)"
     minio_secret_key="$(create_random_string)"
 
+    db_suffix_divider: "_"; mssql_korp_user_suffix=""
+    if [ "$db_suffix" != "" ];
+    then
+      mssql_korp_user_suffix="$db_suffix_divider$db_suffix"
+    fi
 
     # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
     echo """
@@ -181,7 +186,7 @@ all:
             address: $sql_ip
             default_user: $sql_user
             default_password: $sql_pass
-            korp_user: korp.services
+            korp_user: korp.services$mssql_korp_user_suffix
             korp_password: $mssql_korp_pass
           postgres:
             address: 127.0.0.1
@@ -200,6 +205,8 @@ all:
           general:
             introspection_secret: $(cat /proc/sys/kernel/random/uuid)
           docker_servicos_network_ip_address_start: 172.18
+          db_suffix_divider: $db_suffix_divider
+          db_suffix: "$db_suffix"
 
 """ | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
 
@@ -243,7 +250,6 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name
     "customs": {
       "docker_account": "'$docker_account'",
       "docker_image_suffix": "'$docker_image_suffix'",
-      "db_suffix": "'$db_suffix'",
       "frontend": {
         "dns": {
           "api": "'$dns_api'",
