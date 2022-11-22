@@ -12,7 +12,7 @@
     name: utils
     tasks_from: create_db/mssql
   vars:
-    db_name: Viasoft_Authentication
+    db_name: "{{ authentication_db_name }}"
 
 - name: Criação e inicialização do componente Viasoft.Authentication
   community.docker.docker_compose:

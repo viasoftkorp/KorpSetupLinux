@@ -11,6 +11,9 @@ tenant_id: ""
 # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.docker_account'
 docker_account: ""
 
+docker_image_suffix: ""
+
+authentication_db_name: "Viasoft_Authentication"
 
 # tamanho minimo do disco da korp em Gigas/GB
 korp_data_disk_minimum_size: 10
@@ -37,6 +40,8 @@ redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres
 apprise_container_name: apprise
+db_suffix: ""
+db_suffix_divider: "_"
 
 frontend:
   # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
@@ -53,8 +58,11 @@ frontend:
 # essas variáveis podem ser passadas como extra-vars durante a chamada dos playbooks
 customs:
   docker_account: ""
+  docker_image_suffix: ""
   frontend:
     dns:
       api: ""
       frontend: ""
       cdn: ""
+  db_suffix: ""
+  

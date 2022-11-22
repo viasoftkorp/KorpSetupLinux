@@ -13,5 +13,5 @@
     login_user: "{{ mssql.korp_user }}"
     login_password: "{{ mssql.korp_password }}"
     login_host: "{{ mssql.address }}"
-    name: Viasoft_Authentication
+    name: "{{ authentication_db_name }}"
     script: "{{ lookup('template', 'queries/add_oauth_client.sql.j2') | string }}"

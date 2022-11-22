@@ -3,10 +3,10 @@
     "Secret":"{{ secret }}"
   },
   "ServiceBus":{
-    "StorageConnectionString":"Server=db_mssql,1433; Database=Viasoft_Workflow_Orchestrator; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False"
+    "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
   },
   "ConnectionStrings":{
-    "DefaultConnection":"Server=db_mssql,1433; Database=Viasoft_Workflow_Orchestrator; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False"
+    "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
   },
   "Provisioning": {
     "EnableSchemaProvisioning": "false"
