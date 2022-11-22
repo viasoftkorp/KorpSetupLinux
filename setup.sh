@@ -162,7 +162,7 @@ then
     minio_access_key="$(create_random_string)"
     minio_secret_key="$(create_random_string)"
 
-    db_suffix_divider: "_"; mssql_korp_user_suffix=""
+    db_suffix_divider="_"; mssql_korp_user_suffix=""
     if [ "$db_suffix" != "" ];
     then
       mssql_korp_user_suffix="$db_suffix_divider$db_suffix"
