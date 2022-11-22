@@ -15,7 +15,7 @@ networks:
 
 services:
   korp-legacy-elt-2022-2-0:
-    image: "{{ docker_account }}/korp.legacy.elt:2022.2.0.x"
+    image: "{{ docker_account }}/korp.legacy.elt:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.ELT-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +29,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   viasoft-customer-portifolio-2022-2-0:
-    image: "{{ docker_account }}/viasoft.customer.portifolio:2022.2.0.x"
+    image: "{{ docker_account }}/viasoft.customer.portifolio:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Customer.Portifolio-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

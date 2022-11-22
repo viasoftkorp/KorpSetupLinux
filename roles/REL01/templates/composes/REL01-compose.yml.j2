@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-relatorios:
-    image: "{{ docker_account }}/viasoft.relatorios:1.3.x"
+    image: "{{ docker_account }}/viasoft.relatorios:1.3.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Relatorios"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +29,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-reporting-pivottable:
-    image: "{{ docker_account }}/viasoft.reporting.pivottable:1.2.x"
+    image: "{{ docker_account }}/viasoft.reporting.pivottable:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Reporting.PivotTable"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -43,7 +43,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   viasoft-relatorios-agendador:
-    image: "{{ docker_account }}/viasoft.relatorios.agendador:1.2.x"
+    image: "{{ docker_account }}/viasoft.relatorios.agendador:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Relatorios.Agendador"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

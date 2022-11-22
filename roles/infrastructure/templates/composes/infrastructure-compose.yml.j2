@@ -173,7 +173,7 @@ services:
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
   korp-legacy-frontend-router:
-    image: "{{ docker_account }}/korp.legacy.frontend-router:1.0.x"
+    image: "{{ docker_account }}/korp.legacy.frontend-router:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Frontend-router"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -185,7 +185,7 @@ services:
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.1"
 
   viasoft-loader:
-    image: "{{ docker_account }}/viasoft.loader:2.1.x"
+    image: "{{ docker_account }}/viasoft.loader:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Loader"
     restart: always
     extra_hosts: *default-extra_hosts

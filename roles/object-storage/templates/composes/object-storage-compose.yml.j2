@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-objectstorage-client:
-    image: "{{ docker_account }}/viasoft.objectstorage.client:1.5.x"
+    image: "{{ docker_account }}/viasoft.objectstorage.client:1.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ObjectStorage.Client"
     restart: always
     extra_hosts: *default-extra_hosts

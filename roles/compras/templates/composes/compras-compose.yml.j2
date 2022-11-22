@@ -15,7 +15,7 @@ networks:
 
 services:
   viasoft-compras-planilhaspreco:
-    image: "{{ docker_account }}/viasoft.compras.planilhaspreco:1.0.x"
+    image: "{{ docker_account }}/viasoft.compras.planilhaspreco:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Compras.PlanilhasPreco"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
