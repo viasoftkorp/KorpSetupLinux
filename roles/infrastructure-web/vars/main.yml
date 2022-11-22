@@ -62,7 +62,7 @@ services:
   Viasoft.Workflow.Orchestrator:
     db:
       name: Viasoft_Workflow_Orchestrator
-      type: mssql
+      type: postgres
     oauth_client:
       skip: true
 

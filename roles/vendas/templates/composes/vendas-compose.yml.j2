@@ -71,7 +71,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/" 
 
   viasoft-sales-customers:
-    image: "{{ docker_account }}/viasoft.sales.customers:2.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.customers:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Customers"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

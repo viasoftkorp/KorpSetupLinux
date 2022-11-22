@@ -199,6 +199,7 @@ all:
             secret_key: $minio_secret_key
           general:
             introspection_secret: $(cat /proc/sys/kernel/random/uuid)
+          docker_servicos_network_ip_address_start: 172.18
 
 """ | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
 

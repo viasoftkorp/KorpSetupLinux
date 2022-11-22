@@ -66,12 +66,13 @@ services:
       - "9998:9998"
     networks:
       servicos:
-        ipv4_address: 172.18.128.0
+        ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.0"
     labels:
       com.centurylinklabs.watchtower.enable: false
 
   {{ postgres_container_name }}:
     image: "postgres:14"
+    command: command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     container_name: "{{ postgres_container_name }}"
     restart: always
     environment:
@@ -80,7 +81,8 @@ services:
       - "5432:5432"
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
-      #- "{{ config_dir_path }}/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf"
+      - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
+
     networks:
       - servicos
     labels:
@@ -180,7 +182,7 @@ services:
       - OVERRIDE_PROXY_SCHEME=http
     networks:
       servicos:  
-        ipv4_address: 172.18.128.1
+        ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.1"
 
   viasoft-loader:
     image: "{{ docker_account }}/viasoft.loader:2.1.x{{ docker_image_suffix }}"
@@ -191,4 +193,4 @@ services:
       - backendUrl={{ frontend.endpoints.gateway_url }}
     networks:
       servicos:  
-        ipv4_address: 172.18.128.2
+        ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.2"
