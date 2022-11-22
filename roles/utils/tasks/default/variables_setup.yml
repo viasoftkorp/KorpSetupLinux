@@ -97,14 +97,8 @@
             docker_image_suffix: "-{{ docker_image_suffix }}"
           when: not (docker_image_suffix | length == 0)
 
-        - name: Definição de variável db_suffix
-          ansible.builtin.set_fact:
-            db_suffix: "{{ customs.db_suffix }}"
-          when: not (customs.db_suffix | length == 0)
-
-          # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
-          # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
-
+        # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
+        # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
         - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
             authentication_db_name: "{{ authentication_db_name }}{{ db_suffix_divider }}{{ db_suffix }}"
