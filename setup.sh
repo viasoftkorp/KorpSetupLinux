@@ -216,9 +216,8 @@ inventory = /etc/korp/ansible/inventory.yml
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
-
 # Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
-wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/DEVOPS-80/inventory-playbook.yml ### REMOVER O NOME DA BRANCH DEVOPS-80!!!!
+wget -P /tmp  https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/master/inventory-playbook.yml 
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key 
 if [ $? != 0 ]

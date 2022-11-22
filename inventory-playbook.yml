@@ -7,116 +7,14 @@
   connection: local
   become: true
   tasks:
-    - name: ImportarInventario
+    - name: Importar inventario
       ansible.builtin.set_fact:
         inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
         become: true
-        
-    - name: Verificação de servidores de SQL Server
-      ansible.builtin.pause:
-        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = nao)"
-      register: Chk_sql
-      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined
 
-    - name: Coleta de informações para dois servidores SQL Server
+    - name: Criação de estrutura do inventário
       block:
-        - name: Coleta de IP de acesso do SQL Server de Produção
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server de Produção"
-          register: sql_ip
-
-        - name: Sql_Producao_name
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
-          register: sql_user
-
-        - name: Sql_Producao_pass
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-          register: sql_pass
-
-        - name: Sql_testing_ip
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server de Homologação"
-          register: testing_sql_ip
-
-        - name: Sql_testing_name
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
-          register: testing_sql_user
-
-        - name: Sql_testing_pass
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-          register: testing_sql_pass
-
-          # Definição de variáveis do inventário
-        - name: set_testing_sql_dependents
-          ansible.builtin.set_fact: 
-            sql_ips: "{{ sql_ip.user_input }}"
-            sql_users: "{{ sql_user.user_input }}"
-            sql_passs: "{{ sql_pass.user_input }}"
-            testing_sql_ip: "{{ testing_sql_ip.user_input }}"
-            testing_sql_user: "{{ testing_sql_user.user_input }}"
-            testing_sql_pass: "{{ testing_sql_pass.user_input }}"
-
-
-      when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
-
-    - name: Coleta de informações para um servidore SQL Server
-      block:
-        - name: Sql_server_Ip
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server"
-          register: sql_ip
-
-        - name: Sql_Producao_name
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
-          register: sql_user
-
-        - name: Sql_Producao_pass
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server"
-          register: sql_pass
-
-        - name: testing_sql_ip_whenChkEqualsN
-          ansible.builtin.set_fact:
-            sql_ips: "{{ sql_ip.user_input }}"
-            sql_users: "{{ sql_user.user_input }}"
-            sql_passs: "{{ sql_pass.user_input }}"
-            testing_sql_ip: "{{ sql_ip.user_input }}"
-            testing_sql_user: "{{ sql_user.user_input }}"
-            testing_sql_pass: "{{ sql_pass.user_input }}"
-
-      when: Chk_sql.skipped is not defined and Chk_sql.user_input | upper == "N"
-
-    - name: Configuração de application Server
-      block:
-        - name: application_server_address
-          ansible.builtin.pause:
-            prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
-          register: application_server_address
-
-        - name: SetApplicationServerAddress
-          ansible.builtin.set_fact:
-            application_server_address: "{{ application_server_address.user_input }}"
-
-        - name: Application_null_var
-          ansible.builtin.set_fact:
-            application_server_address: "{{ sql_ips }}"
-          when: application_server_address == ""
-
-      when: Chk_sql.skipped is not defined
-
-    - name: Geração de senha aleatória para SQL Server
-      ansible.builtin.set_fact:
-        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
-      when: Chk_sql.skipped is not defined
-
-    - name: Inserção de template
-      block:
-        - name: templateInventory
+        - name: Definição de estrutura de inventario
           ansible.builtin.set_fact:
             inventory:
               all:
@@ -129,6 +27,108 @@
         - name: Definição do atalho do caminho inventário
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
+        
+    - name: Coleta de informações
+      ansible.builtin.pause:
+        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = nao)"
+      register: Chk_sql
+      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
+
+    - name: Coleta de IP de acesso do SQL Server de Produção e homologação
+      block:
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Produção"
+          register: sql_ip
+
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
+          register: sql_user
+
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: sql_pass
+
+        - name: Coleta do ip testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Homologação"
+          register: testing_sql_ip
+
+        - name: Coleta do nome testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
+          register: testing_sql_user
+
+        - name: Coleta da senha testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: testing_sql_pass
+
+          # Definição de variáveis do inventário
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact: 
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ testing_sql_ip.user_input }}"
+            testing_sql_user: "{{ testing_sql_user.user_input }}"
+            testing_sql_pass: "{{ testing_sql_pass.user_input }}"
+
+
+      when: Chk_sql.skipped is not defined and Chk_sql.user_input |upper == "S"
+
+    - name: Coleta de informações para um servidor de SQL Server
+      block: # o Bloco trata de apenas um servidor de SQL
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server"
+          register: sql_ip
+
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
+          register: sql_user
+
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server"
+          register: sql_pass
+
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact:
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ sql_ip.user_input }}"
+            testing_sql_user: "{{ sql_user.user_input }}"
+            testing_sql_pass: "{{ sql_pass.user_input }}"
+
+      when: Chk_sql.skipped is not defined and Chk_sql.user_input | upper == "N"
+
+    - name: Configuração de application Server
+      block:
+        - name: Coleta de ip do servidor de aplicação 
+          ansible.builtin.pause:
+            prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
+          register: application_server_address
+
+        - name: Declaração da variavel servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ application_server_address.user_input }}"
+
+        - name: Verificação do servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ sql_ips }}"
+          when: application_server_address == ""
+
+      when: Chk_sql.skipped is not defined
+
+    - name: Geração de senha aleatória para SQL Server
+      ansible.builtin.set_fact:
+        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
+      when: Chk_sql.skipped is not defined
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -185,7 +185,7 @@
             }
           }, recursive=True) }}"
 
-    - name: Converting Shrink
+    - name: Ajuste de estrutura do inventário
       ansible.builtin.set_fact:
         inventory:
           all:
@@ -195,7 +195,7 @@
                   localhost: "{{ shrink_inventory }}"
 
       #Funcao de inserir a variavel no arquivo.
-    - name: Deploy arquivo inventory na pasta
+    - name: Escrita do arquivo de inventário
       copy:
         content: "{{inventory | to_nice_yaml(indent=2) }}"
         dest: /etc/korp/ansible/inventory.yml
