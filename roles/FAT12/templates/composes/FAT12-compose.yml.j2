@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-billing-cte:
-    image: "{{ docker_account }}/viasoft.billing.cte:3.1.x"
+    image: "{{ docker_account }}/viasoft.billing.cte:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Billing.CTE"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -30,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-billing-cte-sefaz:
-    image: "{{ docker_account }}/viasoft.billing.cte.sefaz:3.1.x"
+    image: "{{ docker_account }}/viasoft.billing.cte.sefaz:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Billing.CTE.SEFAZ"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -44,7 +44,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   FAT12:
-    image: "{{ docker_account }}/viasoft.billing.cte-frontend:2.1.x"
+    image: "{{ docker_account }}/viasoft.billing.cte-frontend:2.1.x{{ docker_image_suffix }}"
     container_name: "FAT12"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-financeiro-core:
-    image: "{{ docker_account }}/viasoft.financeiro.core:1.0.x"
+    image: "{{ docker_account }}/viasoft.financeiro.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Financeiro.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -30,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-financialaccounting-installment:
-    image: "{{ docker_account }}/viasoft.financialaccounting.installment:2.2.x"
+    image: "{{ docker_account }}/viasoft.financialaccounting.installment:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.Installment"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
