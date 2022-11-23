@@ -69,7 +69,6 @@
             prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
           register: testing_sql_pass
 
-          # Definição de variáveis do inventário
         - name: Declaração de variáveis do SQL Server
           ansible.builtin.set_fact: 
             sql_ips: "{{ sql_ip.user_input }}"
@@ -79,7 +78,7 @@
             testing_sql_user: "{{ testing_sql_user.user_input }}"
             testing_sql_pass: "{{ testing_sql_pass.user_input }}"
 
-      when: chk_sql.skipped is not defined and chk_sql.user_input |upper == "S"
+      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
 
     - name: Coleta de informações para um servidor de SQL Server
       block: # o Bloco trata de apenas um servidor de SQL
