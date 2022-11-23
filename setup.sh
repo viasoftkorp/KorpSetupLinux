@@ -133,6 +133,80 @@ if ! sudo test -f /etc/korp/ansible/inventory.yml;
 then
     # Cria e diretórios que serão usados depois
     sudo mkdir -p /etc/korp/ansible/
+
+    echo -e "\n-----------------------\n"
+    echo "Para continuar a instalação, digite as seguintes informações sobre o servidor SQL Server:"
+    read -e -p "IP de acesso: " sql_ip
+    read -e -p "Usuário com permissões administrativas: " sql_user
+    read -e -p "Senha do usuário: " sql_pass
+    read -p "Agora, informe o IP do Servidor de aplicações (ou pressione enter para usar '$sql_ip'): " application_server_address
+    application_server_address=${application_server_address:-$sql_ip}
+
+
+    # Criação de senhas aleatórios para o usuário do mssql, postgres e do linux
+    mssql_korp_pass="$(create_random_string)"
+    postgres_korp_pass="$(create_random_string)"
+    linux_korp_pass="$(create_random_string)"
+    rabbitmq_korp_pass="$(create_random_string)"
+    redis_pass="$(create_random_string)"
+    minio_access_key="$(create_random_string)"
+    minio_secret_key="$(create_random_string)"
+
+    db_suffix_divider="_"; mssql_korp_user_suffix=""
+    if [ "$db_suffix" != "" ];
+    then
+      mssql_korp_user_suffix="$db_suffix_divider$db_suffix"
+    fi
+
+    # Cria arquivo 'ansible-vars.json' com base nas respostas das perguntas anteriores, e nas senhas geradas
+    echo """
+all:
+  children:
+    nodes:
+      hosts:
+        localhost:
+          app_server:
+            address: $application_server_address
+          linux_korp:
+            user: korp
+            password: $linux_korp_pass
+          self_signed_cert:
+            passphrase: korp
+          mssql:
+            address: $sql_ip
+            default_user: $sql_user
+            default_password: $sql_pass
+            korp_user: korp.services$mssql_korp_user_suffix
+            korp_password: $mssql_korp_pass
+          postgres:
+            address: 127.0.0.1
+            default_user: postgres
+            default_password: postgres
+            korp_user: korp.services
+            korp_password: $postgres_korp_pass
+          rabbitmq:
+            korp_user: korp.services
+            korp_password: $rabbitmq_korp_pass
+          redis:
+            password: $redis_pass
+          minio:
+            access_key: $minio_access_key
+            secret_key: $minio_secret_key
+          general:
+            introspection_secret: $(cat /proc/sys/kernel/random/uuid)
+          docker_servicos_network_ip_address_start: 172.18
+          db_suffix_divider: $db_suffix_divider
+          db_suffix: "$db_suffix"
+
+""" | sudo tee /etc/korp/ansible/inventory.yml > /dev/null
+
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
+
+    echo """
+[defaults]
+inventory = /etc/korp/ansible/inventory.yml
+""" | sudo tee /etc/ansible/ansible.cfg > /dev/null
+
     # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key  
