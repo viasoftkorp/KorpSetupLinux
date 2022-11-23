@@ -1,0 +1,212 @@
+#
+# Esse playbook assume que o arquivo `/etc/korp/ansible/inventory.yml` já foi criado, e criptografado
+# O aqruivo de inventário pode estar vazio, ou com alguns valores já definidos
+#
+---
+- hosts: localhost
+  connection: local
+  become: true
+  vars:
+    db_suffix_divider: "_"
+  tasks:
+
+    - name: Importação de inventário
+      ansible.builtin.set_fact:
+        inventory: "{{ (lookup('ansible.builtin.template', '/etc/korp/ansible/inventory.yml')|from_yaml) }}"
+        become: true
+
+    - name: Criação de estrutura do inventário
+      block:
+        - name: Definição de estrutura de inventario
+          ansible.builtin.set_fact:
+            inventory:
+              all:
+                children:
+                  nodes:
+                    hosts:
+                      localhost:
+          when: inventory.all.children.nodes.hosts.localhost is not defined
+
+        - name: Definição do atalho do caminho inventário
+          ansible.builtin.set_fact:
+            shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
+        
+    - name: Coleta de informações
+      ansible.builtin.pause:
+        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = não)"
+      register: chk_sql
+      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
+
+    - name: Coleta de IP de acesso do SQL Server de Produção e homologação
+      block:
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Produção"
+          register: sql_ip
+
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
+          register: sql_user
+
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: sql_pass
+
+        - name: Coleta do ip testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Homologação"
+          register: testing_sql_ip
+
+        - name: Coleta do nome testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
+          register: testing_sql_user
+
+        - name: Coleta da senha testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: testing_sql_pass
+
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact: 
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ testing_sql_ip.user_input }}"
+            testing_sql_user: "{{ testing_sql_user.user_input }}"
+            testing_sql_pass: "{{ testing_sql_pass.user_input }}"
+
+      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
+
+    - name: Coleta de informações para um servidor de SQL Server
+      block: # o Bloco trata de apenas um servidor de SQL
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server"
+          register: sql_ip
+
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
+          register: sql_user
+
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server"
+          register: sql_pass
+
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact:
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ sql_ip.user_input }}"
+            testing_sql_user: "{{ sql_user.user_input }}"
+            testing_sql_pass: "{{ sql_pass.user_input }}"
+
+      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "N"
+
+    - name: Configuração de application Server
+      block:
+        - name: Coleta de ip do servidor de aplicação 
+          ansible.builtin.pause:
+            prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
+          register: application_server_address
+
+        - name: Declaração da variavel servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ application_server_address.user_input }}"
+
+        - name: Verificação do servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ sql_ips }}"
+          when: application_server_address == ""
+
+      when: chk_sql.skipped is not defined
+
+    - name: Geração de senha aleatória para SQL Server
+      ansible.builtin.set_fact:
+        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
+      when: chk_sql.skipped is not defined
+
+    - name: Verificação de sufixo de banco de dados
+      ansible.builtin.set_fact:
+        db_suffix: ""
+      when: db_suffix is not defined
+
+    # Todas as variáveis do inventário são definidas nessa tasks
+    # Caso a propriedade já tenha um valor, ele não será alterado
+    # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
+    - name: Definição dos valores de inventário
+      ansible.builtin.set_fact:
+        shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
+          {
+            'app_server': {
+              'address': shrink_inventory.app_server.address | default ( application_server_address )
+            },
+            'linux_korp': {
+              'user': shrink_inventory.linux_korp.user | default ('korp') ,
+              'password': shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', special=False))
+            },
+            'self_signed_cert' :{
+              'passphrase': shrink_inventory.self_signed_cert.passphrase | default ('korp')
+            },
+            'mssql': {
+              'address': shrink_inventory.mssql.address | default (sql_ips),
+              'default_user': shrink_inventory.mssql.default_user | default (sql_users),
+              'default_password': shrink_inventory.mssql.default_password | default (sql_passs),
+              'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+              'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
+            },
+            'testing_mssql': {
+                'address': shrink_inventory.mssql.address | default (testing_sql_ip),
+                'default_user': shrink_inventory.mssql.default_user | default (testing_sql_user),
+                'default_password': shrink_inventory.mssql.default_password | default (testing_sql_pass),
+                'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+                'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
+            }, 
+              'rabbitmq': {
+                'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
+                'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
+            }, 
+              'redis': {
+                'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
+            },
+
+             'postgres': {
+                'address': shrink_inventory.postgres.address | default ('127.0.0.1') ,
+                'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
+                'default_password': shrink_inventory.postgres.default_password |  default ('postgres'),
+                'korp_user': shrink_inventory.postgres.korp_user | default ('korp.services'),
+                'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', special=False))
+            },
+              'minio': {
+                'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
+                'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
+            },
+            'general': {
+              'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
+            },
+            'docker_servicos_network_ip_address_start': shrink_inventory.docker_servicos_network_ip_address_start | default('172.18'),
+            'db_suffix_divider': shrink_inventory.db_suffix_divider | default(db_suffix_divider),
+            'db_suffix': shrink_inventory.db_suffix  | default(db_suffix)
+          }, recursive=True) }}"
+
+    - name: Ajuste de estrutura do inventário
+      ansible.builtin.set_fact:
+        inventory:
+          all:
+            children:
+              nodes:
+                hosts:
+                  localhost: "{{ shrink_inventory }}"
+
+      #Funcao de inserir a variavel no arquivo.
+    - name: Escrita do arquivo de inventário
+      copy:
+        content: "{{inventory | to_nice_yaml(indent=2) }}"
+        dest: /etc/korp/ansible/inventory.yml
+        mode: '0644'
+      delegate_to: localhost

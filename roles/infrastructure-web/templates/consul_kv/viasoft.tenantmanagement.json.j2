@@ -10,6 +10,9 @@
     "GlobalUserId": "{{ mssql.korp_user }}",
     "GlobalPassword": "{{ mssql.korp_password }}",
     "GlobalTemplate": "Server=db_mssql,1433; Database={0}; User Id={1}; Password={2}; Encrypt=False",
+    "GlobalTestingUserId": "{{ testing_mssql.korp_user }}",
+    "GlobalTestingPassword": "{{ testing_mssql.korp_password }}",
+    "GlobalTestingTemplate": "Server=testing_db_mssql,1433; Database={0}; User Id={1}; Password={2}; Encrypt=False"
   },
   "Provisioning":{
     "EnableSchemaProvisioning":"false"
