@@ -18,6 +18,7 @@ create_random_string() {
 #   install_apps="<apps1,apps2>"
 #   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   # variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 
 
@@ -135,12 +136,12 @@ then
     # Criação de senha aleatória usada pelo ansible-vault
     echo $(create_random_string) | sudo tee /etc/korp/ansible/.vault_key > /dev/null
     sudo chown root:root /etc/korp/ansible/.vault_key  
-    # Altera a permissão de .vault_key  
-    sudo chmod 444 /etc/korp/ansible/.vault_key  
-    # Cria inventory.yml  
+    # Altera a permissão de .vault_key
+    sudo chmod 444 /etc/korp/ansible/.vault_key
+    # Cria inventory.yml
     sudo touch /etc/korp/ansible/inventory.yml 
     # Corrige a permição dos arquivos
-    sudo chmod 644 /etc/korp/ansible/inventory.yml    
+    sudo chmod 644 /etc/korp/ansible/inventory.yml
     # Configuração de '/etc/ansible/ansible.cfg' para apontar o inventário para '/etc/korp/ansible/inventory.yml'
     echo """  
     [defaults]
