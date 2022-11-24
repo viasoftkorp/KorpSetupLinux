@@ -158,7 +158,7 @@ services:
     networks:
       - servicos
     environment:
-      - WATCHTOWER_HTTP_API_TOKEN "{{ services_secrets.Others.WatchTower.ApiToken }}"
+      - WATCHTOWER_HTTP_API_TOKEN: "{{ services_secrets.Others.WatchTower.ApiToken }}"
       - REPO_USER: "{{ services_secrets.Others.Docker.AccessCredentials.Login }}"
       - REPO_PASS: "{{ services_secrets.Others.Docker.AccessCredentials.Password }}"
       - WATCHTOWER_NOTIFICATIONS_HOSTNAME: "{{ tenant_id }}"
