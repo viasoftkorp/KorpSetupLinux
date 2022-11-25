@@ -167,7 +167,9 @@ services:
       - WATCHTOWER_NOTIFICATION_MSTEAMS_HOOK_URL="{{ services_secrets.Others.WatchTower.WebHooks.MsTeams }}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --http-api-update --http-api-periodic-polls --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CRON" 
+    command: --http-api-update --http-api-periodic-polls --include-stopped --revive-stopped --cleanup --schedule "$AUTO_UPDATE_CRON"
+    ports:
+      - 8080:8080 
 
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
