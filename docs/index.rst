@@ -6,3 +6,4 @@ Contents
    :caption: Tutoriais
    
    files/atualizacao_sistema
+   files/infraestrutura_pos_implantacao
