@@ -1,9 +1,6 @@
 
 
 {
-  "CdnUrl":"{{ frontend.endpoints.cdn_url }}",
-  "GatewayCdnUrl":"{{ services_secrets.Global.GatewayCdnUrl }}",
-
   "Serilog": {
     "Using": [
       "Serilog.Expressions"
@@ -89,5 +86,7 @@
     "Endpoints": "{{ redis_container_name }}:6379",
     "Password": "{{ redis.password }}"
   },
-  "KorpRegisterApiKey": "{{ services_secrets.Global.KorpRegisterApiKey }}"
+  "KorpRegisterApiKey": "{{ services_secrets.Global.KorpRegisterApiKey }}",
+  "CdnUrl":"{{ frontend.endpoints.cdn_url }}",
+  "GatewayCdnUrl": "{{ services_secrets.Global.GatewayCdnUrl }}"
 }
