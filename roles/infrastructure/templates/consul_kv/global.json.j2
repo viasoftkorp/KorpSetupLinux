@@ -1,4 +1,9 @@
+
+
 {
+  "CdnUrl":"{{ frontend.endpoints.cdn_url }}",
+  "GatewayCdnUrl":"{{ services_secrets.Global.ApiWebKey.GatewayCdnUrl }}",
+
   "Serilog": {
     "Using": [
       "Serilog.Expressions"
@@ -7,6 +12,7 @@
       "OverrideDefault": true,
       "MessageTemplate": "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"
     },
+
     "MinimumLevel": {
       "Default": "Warning",
       "Override": {
@@ -14,8 +20,9 @@
         "Microsoft.EntityFrameworkCore": "Warning",
         "Rebus": "Warning",
         "Hangfire": "Warning"
-      }
+      },
     },
+
     "WriteTo": [
       {
         "Name": "Console"
