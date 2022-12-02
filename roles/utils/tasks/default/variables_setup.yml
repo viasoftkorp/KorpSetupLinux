@@ -31,6 +31,7 @@
         - name: Definição de variáveis
           ansible.builtin.set_fact:
             docker_account: "{{ services_secrets.Others.Docker.Account }}"
+            docker_image_suffix: "{{ services_secrets.Others.Docker.ImageSuffix }}"
             frontend: "{{ frontend | combine(
               {
                 'dns': {
@@ -86,14 +87,18 @@
             docker_account: "{{ customs.docker_account }}"
           when: not (customs.docker_account | length == 0)
 
-        - name: Definição de variável db_suffix
+        - name: Definição de variável docker_image_suffix
           ansible.builtin.set_fact:
-            db_suffix: "{{ customs.db_suffix }}"
-          when: not (customs.db_suffix | length == 0)
+            docker_image_suffix: "{{ customs.docker_image_suffix }}"
+          when: not (customs.docker_image_suffix | length == 0)
 
-          # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
-          # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
+        - name: Adição de separador do sufixo docker_image_suffix
+          ansible.builtin.set_fact:
+            docker_image_suffix: "-{{ docker_image_suffix }}"
+          when: not (docker_image_suffix | length == 0)
 
+        # authentication_db_name == "Viasoft_Authentication" serve para definir o sufixo de Authentication apenas
+        # uma vez, já que essa task é executada mais de uma vez ao decorrer do setup
         - name: Definição de variável authentication_db_name
           ansible.builtin.set_fact:
             authentication_db_name: "{{ authentication_db_name }}{{ db_suffix_divider }}{{ db_suffix }}"

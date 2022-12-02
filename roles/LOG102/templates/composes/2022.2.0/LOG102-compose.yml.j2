@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
@@ -15,7 +16,7 @@ networks:
 
 services:
   korp-logistica-picking-2022-2-0:
-    image: "{{ docker_account }}/korp.logistica.picking:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistic-picking-analisedeestoque-2022.2.0:
-    image: "{{ docker_account }}/korp.logistica.picking.analisedeestoque:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking.analisedeestoque:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.AnaliseDeEstoque-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -43,7 +44,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-controlepedidos-2022-2-0:
-    image: "{{ docker_account }}/korp.logistica.picking.controlepedidos:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking.controlepedidos:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.ControlePedidos-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -57,7 +58,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-faturamento-2022-2-0:
-    image: "{{ docker_account }}/korp.logistica.picking.faturamento:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking.faturamento:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.Faturamento-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -71,7 +72,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-logistica-picking-ordemproducao-2022-2-0:
-    image: "{{ docker_account }}/korp.logistica.picking.ordemproducao:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking.ordemproducao:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.OrdemProducao-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -85,7 +86,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-faturamento-solicitacaodefaturamento-2022-2-0:
-    image: "{{ docker_account }}/korp.faturamento.solicitacaodefaturamento:2022.2.0.x"
+    image: "{{ docker_account }}/korp.faturamento.solicitacaodefaturamento:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Faturamento.SolicitacaoDeFaturamento-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -99,7 +100,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   LOG102-2022-2-0:
-    image: "{{ docker_account }}/korp.logistica.picking-frontend:2022.2.0.x"
+    image: "{{ docker_account }}/korp.logistica.picking-frontend:2022.2.0.x{{ docker_image_suffix }}"
     container_name: "LOG102-2022.2.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

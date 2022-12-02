@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
@@ -15,7 +16,7 @@ networks:
 
 services:
   VEN_WEB_01-2022-3-0:
-    image: "{{ docker_account }}/korp.vendas.automatizacaodefrete-frontend:2022.3.0.x"
+    image: "{{ docker_account }}/korp.vendas.automatizacaodefrete-frontend:2022.3.0.x{{ docker_image_suffix }}"
     container_name: "VEN_WEB_01-2022.3.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -31,7 +32,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   korp-vendas-automatizacaodefrete-2022-3-0:
-    image: "{{ docker_account }}/korp.vendas.automatizacaodefrete:2022.3.0.x"
+    image: "{{ docker_account }}/korp.vendas.automatizacaodefrete:2022.3.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Vendas.AutomatizacaoDeFrete-2022.3.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

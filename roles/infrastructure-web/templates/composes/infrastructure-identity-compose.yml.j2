@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
@@ -15,7 +16,7 @@ networks:
 
 services:
   viasoft-authentication:
-    image: "{{ docker_account }}/viasoft.authentication:1.5.x"
+    image: "{{ docker_account }}/viasoft.authentication:1.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Authentication"
     restart: always
     extra_hosts: *default-extra_hosts

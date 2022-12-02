@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
@@ -15,7 +16,7 @@ networks:
 
 services:
   LOG00:
-    image: "{{ docker_account }}/viasoft.logistics.preregistration-frontend:3.1.x"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration-frontend:3.1.x{{ docker_image_suffix }}"
     container_name: "LOG00"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -31,7 +32,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-logistics-preregistration:
-    image: "{{ docker_account }}/viasoft.logistics.preregistration:3.0.x"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration:3.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Logistics.PreRegistration"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

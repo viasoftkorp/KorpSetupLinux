@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-ep-acl-messaging:
-    image: "{{ docker_account }}/viasoft.erp.acl.messaging:1.0.x"
+    image: "{{ docker_account }}/viasoft.erp.acl.messaging:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.ACL.Messaging"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts

@@ -3,6 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
@@ -15,7 +16,7 @@ networks:
 
 services:
   korp-logistica-carga-2022-1-0:
-    image: "{{ docker_account }}/korp.logistica.carga:2022.1.0.x"
+    image: "{{ docker_account }}/korp.logistica.carga:2022.1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Carga-2022.1.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -29,7 +30,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   PCRG001-2022-1-0:
-    image: "{{ docker_account }}/korp.logistica.carga-frontend:2022.1.0.x"
+    image: "{{ docker_account }}/korp.logistica.carga-frontend:2022.1.0.x{{ docker_image_suffix }}"
     container_name: "PCRG001-2022.1.0"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
