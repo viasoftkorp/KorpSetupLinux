@@ -1,0 +1,8 @@
+services:
+  Viasoft.Apprise.Proxy:
+    db:
+      name: Viasoft_Apprise_Proxy
+      type: mssql
+    oauth_client:
+      skip: true
+
