@@ -9,5 +9,5 @@ dependencies:
   - role: LOG00
   - role: LOG01_W
   - role: workflow 
-  - role: Geolocation
+  - role: geolocation
   - role: apprise
