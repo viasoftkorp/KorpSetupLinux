@@ -12,3 +12,5 @@ dependencies:
   - role: PES00
   - role: LOG00
   - role: LOG01_W
+  - role: apprise
+ 
