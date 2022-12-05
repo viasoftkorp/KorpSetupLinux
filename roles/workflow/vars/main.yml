@@ -1,8 +1,8 @@
 services:
 
   Viasoft.Workflow.Orchestrator:
-  db:
-    name: Viasoft_Workflow_Orchestrator
-    type: postgres
+    db:
+      name: Viasoft_Workflow_Orchestrator
+      type: postgres
 
 
