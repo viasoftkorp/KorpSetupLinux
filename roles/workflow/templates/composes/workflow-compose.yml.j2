@@ -13,7 +13,7 @@ networks:
   servicos:
     external:
       name: servicos
-
+services:
   viasoft-workflow-orchestrator:
     image: "{{ docker_account }}/viasoft.workflow.orchestrator:1.6.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Workflow.Orchestrator"
