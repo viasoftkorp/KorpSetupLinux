@@ -2,13 +2,13 @@
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: Adição de serviços de <ID>
+- name: Adição de serviços de integration-ecommerce
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
   vars:
     service_name: "{{ item.key }}"
-    id: <ID>
+    id: integration-ecommerce
   with_dict: "{{ services }}"
   loop_control:
     extended: true

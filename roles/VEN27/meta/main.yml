@@ -11,4 +11,5 @@ dependencies:
   - role: PES01
   - role: REL01
   - role: ERP
-  - role: apprise
+  - role: workflow 
+  - role: geolocation  
