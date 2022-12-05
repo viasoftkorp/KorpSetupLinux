@@ -12,4 +12,4 @@ dependencies:
   - role: REL01
   - role: ERP
   - role: workflow 
-  - role: geolocation  
+  - role: Geolocation
