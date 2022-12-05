@@ -14,6 +14,7 @@ networks:
     external:
       name: servicos
 
+services:
   viasoft-geolocation:
     image: "{{ docker_account }}/viasoft.geolocation:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Geolocation"
