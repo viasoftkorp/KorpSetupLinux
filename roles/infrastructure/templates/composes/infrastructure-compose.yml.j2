@@ -154,7 +154,7 @@ services:
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
-    #restart: always
+    restart: always
     networks:
       - servicos
     environment:
