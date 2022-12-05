@@ -3,6 +3,10 @@ Infraestrutura pós implantação
 
 A Infraestrutura interna é altera após a implantação e migração do servidor Linux. Essa pagina irá explica a estrutura antes e depois.
 
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://player.vimeo.com/video/776717674?h=df3da82da5" frameborder="0" allowfullscreen></iframe>
+
 Infraestrutura pré implantação
 ==============================
 
@@ -41,7 +45,7 @@ A cima esta um diagrama exemplificando o fluxo de comunicação entre o Korp e o
 
 - Bancos de Dado do SQL Server
 
-    Os únicos bascos utilizados pelo Korp são as bases do cliente, sedo geralmente duas, uma de homologação, e uma de produção.
+    Os únicos bancos utilizados pelo Korp são as bases do cliente, sedo geralmente duas, uma de homologação, e uma de produção.
 
 
 Infraestrutura após a implantação
@@ -92,7 +96,26 @@ O diagrama a cima exemplificando o fluxo de comunicação entre o Korp, o servid
 
         De forma geral, todos os serviços ``ViasoftKorp*`` são migrados para o servidor Linux, com exceção de ``ViasoftKorpLicenseServer`` e ``ViasoftKorpGateway``
     
-    No Servidor Linux, além 
+    No Servidor Linux, além dos serviços migrados, também rodam serviços novos, utilizados pelo sistema.
+
+- Bancos de Dado do SQL Server
+
+    Além das bases do cliente, são criados diversos outros bancos, em sua maioria com os prefixos ``Viasoft``.
+
+.. warning::
+    **TODOS OS NOVOS BANCOS PRECISAM ESTAR NA ROTINA DE BACKUP**
+
+- Bancos de Postgres
+
+    É criado um gerenciador de banco de dados Postgres, rodando no servidor Linux.
+
+    Nesse Postgres, estão diversos bancos de uso do sistema.
+
+    Devem ser feito backup de todos esses bancos.
+    
+        Para isso, basta fazer o backup do disco de dados disponibilizado no servidor linux, esse disco está montado em ``/etc/korp``
+
+
 
 
 
