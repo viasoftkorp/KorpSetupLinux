@@ -14,17 +14,16 @@ networks:
     external:
       name: servicos
 
-services:
-  <service_name_lowercase>-<version>:
-    image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
-    container_name: "<service_name>-<version>"
-    restart: on-failure:10
+  viasoft-geolocation:
+    image: "{{ docker_account }}/viasoft.geolocation:1.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Geolocation"
+    restart: always
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+    networks:
+      - servicos
