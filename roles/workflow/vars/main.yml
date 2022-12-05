@@ -4,6 +4,5 @@ services:
   db:
     name: Viasoft_Workflow_Orchestrator
     type: postgres
-  oauth_client:
-    skip: true
+
 
