@@ -7,6 +7,8 @@ A Infraestrutura interna é altera após a implantação e migração do servido
 
     <iframe width="560" height="315" src="https://player.vimeo.com/video/776717674?h=df3da82da5" frameborder="0" allowfullscreen></iframe>
 
+O video a cima é complemento dessa documentação, abordando alguns do mesmos tópicos citados nela.
+
 Infraestrutura pré implantação
 ==============================
 
