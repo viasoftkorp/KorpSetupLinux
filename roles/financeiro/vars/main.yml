@@ -7,6 +7,11 @@ services:
   Viasoft.FinancialAccounting.Installment:
     db:
       name: Viasoft_FinancialAccounting_Installment
-      type: postgres
+      type: mssql
+
+  Viasoft.FinancialAccounting.AccountsReceivable:
+    db:
+      name: Viasoft_FinancialAccounting_AccountsReceivable
+      type: mssql
 
   Korp.Financial.Situation:
