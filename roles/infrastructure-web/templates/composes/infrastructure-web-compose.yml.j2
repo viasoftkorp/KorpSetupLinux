@@ -243,21 +243,6 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
-
-  viasoft-workflow-orchestrator:
-    image: "{{ docker_account }}/viasoft.workflow.orchestrator:1.6.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Workflow.Orchestrator"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-    networks:
-      - servicos
-
   viasoft-quickfilter:
     image: "{{ docker_account }}/viasoft.quickfilter:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.QuickFilter"
@@ -285,21 +270,6 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
-
-  viasoft-apprise-proxy:
-    image: "{{ docker_account }}/viasoft.apprise.proxy:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Apprise.Proxy"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-    networks:
-      - servicos
-
   login:
     image: "{{ docker_account }}/viasoft.authentication-frontend:1.0.x{{ docker_image_suffix }}"
     container_name: "login"
@@ -348,22 +318,7 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-  
-  viasoft-geolocation:
-    image: "{{ docker_account }}/viasoft.geolocation:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Geolocation"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-    networks:
-      - servicos
-  
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/" 
   REL01:
     image: "{{ docker_account }}/viasoft.relatorios-frontend:2.1.x{{ docker_image_suffix }}"
     container_name: "REL01"

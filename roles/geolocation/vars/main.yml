@@ -1,0 +1,5 @@
+services:
+  Viasoft.Geolocation:
+    db:
+      name: Viasoft_Geolocation
+      type: mssql
