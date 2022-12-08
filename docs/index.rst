@@ -20,3 +20,4 @@ Contents
    :caption: Guias
 
    files/guias/logs_portainer
+   files/guias/homologacao

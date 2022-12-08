@@ -11,6 +11,8 @@ As credenciais de acesso são:
     - senha: ``korp!4518``
 
 
+----
+
 Leitura de logs
 ===============
 
@@ -28,28 +30,31 @@ Leitura de logs
 
 #. Clicar em ``Logs``
 
-Interagindo com os logs
-#######################
+**Interagindo com os logs**
 
-- ``Auto-refresh logs`` Quando habilitado, os logs irão ser atualizados em tempo real
+    - ``Auto-refresh logs``: Quando habilitado, os logs irão ser atualizados em tempo real.
 
-- ``Search``: Filtro por texto
+    - ``Search``: Filtro por texto.
 
-- ``Lines``: A quantidade de linhas do log que serão mostradas na tela
+    - ``Lines``: A quantidade de linhas do log que serão mostradas na tela.
 
+    - ``Download Logs``: Irá baixar logs em um arquivo
+
+----
 
 Reinicio de Serviços
 ====================
 
+#. Acessar o 'Portainer' pelo endereço http://korp.local:9011
 
-Como reiniciar um serviço no servidor LINUX
-1.	Acessar o endereço http://korp.local:9011
-2.	Preencher as credenciais
-a.	usuário: admin
-b.	senha: korp!4518
-3.	Acessar o ambiente "local"
-4.	Acessar o tópico "Containers"
-5.	Na caixa de pesquisa, digitar o nome do serviço desejado
-6.	Selecionar o serviço pelo checkbox na sua linha
-7.	Clicar no botão "Restart"
+#.	Preencher as credenciais
 
+#.	Acessar o ambiente "local"
+
+#.	Acessar o tópico "Containers"
+
+#.	Na caixa de pesquisa, digitar o nome do serviço desejado
+
+#.	Selecionar o serviço pelo checkbox na sua linha
+
+#.	Clicar no botão "Restart"
