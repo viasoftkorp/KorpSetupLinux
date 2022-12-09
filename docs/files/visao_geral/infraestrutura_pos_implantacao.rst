@@ -3,6 +3,8 @@ Infraestrutura pós implantação
 
 A Infraestrutura interna é altera após a implantação e migração do servidor Linux. Essa pagina irá explica a estrutura antes e depois.
 
+Nesse servidor LINUX, roda uma versão simplificada do Portal da Korp junto com os aplicativos licenciados a vocês. Esse ambiente é acionado por três DNS e também está em cima de um certificado gerado por uma CA (Autoridade de certificação) criada no próprio servidor. Portanto vocês também terão que disponibilizar esse certificado às estações de trabalho.
+
 .. raw:: html
 
     <iframe width="560" height="315" src="https://player.vimeo.com/video/776717674?h=df3da82da5" frameborder="0" allowfullscreen></iframe>
@@ -14,7 +16,7 @@ Infraestrutura pré implantação
 
 Esse tópico aborda o ambiente de clientes que fazem uso do Korp antes da implantação do servidor Linux, apenas com o servidor aplicações Windows.
 
-.. image:: ../images/infraestrutura_pre_implantacao.png
+.. image:: ../../images/infraestrutura_pre_implantacao.png
     :width: 600
 
 A cima esta um diagrama exemplificando o fluxo de comunicação entre o Korp e os os serviços instalados no servidor Windows.
@@ -55,7 +57,7 @@ Infraestrutura após a implantação
 
 Esse tópico aborda o ambiente do cliente após a implantação e migração do servidor de aplicações Linux.
 
-.. image:: ../images/infraestrutura_pos_implantacao.png
+.. image:: ../../images/infraestrutura_pos_implantacao.png
     :width: 600
 
 O diagrama a cima exemplificando o fluxo de comunicação entre o Korp, o servidor de aplicações Linux, e o servidor de Aplicações Windows.
