@@ -5,6 +5,7 @@ Contents
    :maxdepth: 2
    :caption: Visão Geral
    
+   files/visao_geral/intruducao
    files/visao_geral/infraestrutura_pos_implantacao
 
 
@@ -19,5 +20,5 @@ Contents
    :maxdepth: 2
    :caption: Guias
 
-   files/guias/logs_portainer
+   files/guias/guia_portainer
    files/guias/homologacao
