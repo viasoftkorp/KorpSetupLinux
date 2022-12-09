@@ -5,6 +5,10 @@ Após a implantação do servidor Linux, é necessário fazer sua homologação,
 
 Após o período de homologação, é feita então a migração do servidor de Aplicações Windows para o servidor de Aplicações Linux.
 
+Assim que tiver os tópicos de DNS e CA configurados corretamente, já é possível acessar o ambiente pelo endereço Portal Local utilizando as mesmas credenciais do Korp. 
+
+É importante lembrar que as permissões do Korp ERP não se aplicam ao ambiente WEB, portanto para o primeiro acesso terá que utilizar o usuário raiz do licenciamento o e-mail. O login desse usuário pode ser confirmado pelo aplicativo de Admin do Portal. 
+
 Especificações de DNS
 =====================
 
@@ -15,9 +19,11 @@ Especificações de DNS
 Disponibilizando a CA nas estações de trabalho
 ==============================================
 
-O certificado da CA está no servidor LINUX, mas deixarei um link de comodidade aqui para vocês pegarem ele 
+O certificado da CA está no servidor LINUX, mas deixarei um link de comodidade aqui para vocês pegarem ele  
 
-São duas opções disponíveis para a importação da CA: ________________
+O certificado da CA pode ser obtido copiando o arquivo ca-cert.crt que está disponível na home do servidor Linux do usuário que foi disponibilizado para instalação. 
+
+São duas opções disponíveis para a importação da CA:
 
  - O cliente tem AD e disponibiliza a CA via política
  
