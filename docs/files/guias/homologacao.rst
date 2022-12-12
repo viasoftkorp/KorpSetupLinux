@@ -15,7 +15,7 @@ Porém, antes de poder fazer o acesso, os seguintes passos precisam ser feitos:
 Configuração de DNS
 ###################
 
-Configurar os seguintes DNSs para resolverem os edereços indicados:
+Configurar os seguintes DNSs para resolverem os endereços indicados:
 
   - korp.local deve resolver para o servidor LINUX
   - korp-api.local deve resolver para o servidor LINUX
@@ -46,14 +46,14 @@ Acesso ao portal local
 
 Assim que os tópicos de DNS e CA estiverem configurados corretamente, já é possível acessar o ambiente pelo endereço https://korp.local.
 
-É importante lembrar que as permissões do Korp ERP não se aplicam ao ambiente WEB, portanto para o primeiro acesso terá que utilizar o login do usuário raiz do licenciamento o e-mail.
+É importante lembrar que as permissões do Korp ERP não se aplicam ao ambiente WEB, portanto para o primeiro acesso terá que utilizar o login do usuário raiz do licenciamento do e-mail.
 
 Para confirmar o login desse usuário, pode-se acessar o https://portal.com.com.br, pelo aplicativo de Admin.
 
 Homologando o portal local
 ##########################
 
-Para a homologação do portal local, deve-se fazer o uso dos aplicativos licensidos.
+Para a homologação do portal local, deve-se fazer o uso dos aplicativos licenciados.
 
 ----
 
@@ -67,7 +67,7 @@ Homologação do Korp
 
 #. Verificar que é possível realizar o login
 
-#. Verificar que as notícias na tela inicial aparecam corretamente
+#. Verificar que as notícias na tela inicial aparecem corretamente
 
 #. Configurar os parâmetros de servidor de e-mail (não esqueça de realizar o logout e login após altera-los):
   
@@ -84,7 +84,7 @@ Homologação do Korp
 
 ----
 
-Outros tópicos que devem ser feitos durante a homolocação
+Outros tópicos que devem ser feitos durante a homologação
 =========================================================
 
 Configurando o envio de e-mail de falha
