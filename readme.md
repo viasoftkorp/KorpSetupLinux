@@ -34,7 +34,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     ``` yml
     <service_name_lowercase>-<version>:
-      image: "{{ docker_account }}/<service_name_lowercase>:<version>.x"
+      image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
       container_name: "<service_name>-<version>"
       restart: on-failure:10
       extra_hosts: *default-extra_hosts
