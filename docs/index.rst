@@ -15,6 +15,7 @@ Contents
    :caption: Tutoriais
 
    files/tutoriais/atualizacao_sistema
+   files/tutoriais/configuracao_ambiente
 
 
 .. toctree::
