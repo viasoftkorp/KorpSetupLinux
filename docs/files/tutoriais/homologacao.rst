@@ -22,10 +22,22 @@ Para confirmar o login desse usuário, pode-se acessar o https://portal.com.com.
 
 Para a homologação do portal local, deve-se fazer o uso dos aplicativos licenciados.
 
+Caso ainda não esteja ambientado com portal assista o vídeo abaixo que abordara entre outros assuntos, como autorizar usuários a terem acessos aos aplicativos (min 02:30).
+
+.. note:: 
+  
+    No video é abordado o gerenciamento de autorizações e permissões no Portal Nuvem, nesse caso faça as alterações pelo Portal Local.
+    O gerenciamento de usuários contudo, ainda é feito pelo `Portal Nuvem <https://portal.korp.com.br>`_.
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://player.vimeo.com/video/569973315" frameborder="0" allowfullscreen></iframe>
+
+
 ----
 
 Homologando o Korp
-===================
+##################
 
 #.  Nas estações de trabalho, realizar as seguintes alterações no arquivo ``config.json``
   

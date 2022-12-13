@@ -1,8 +1,8 @@
 Configurando o Ambiente
 -----------------------
 
-Configuração de DNS
-###################
+Configurando as entradas de DNS
+###############################
 
 Configurar os seguintes DNSs para resolverem os endereços indicados:
 

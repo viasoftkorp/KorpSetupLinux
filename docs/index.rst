@@ -14,9 +14,9 @@ Contents
    :maxdepth: 2
    :caption: Tutoriais
 
-   files/tutoriais/atualizacao_sistema
    files/tutoriais/configuracao_ambiente
-   files/tutoriais/portal_web
+   files/tutoriais/homologacao
+   files/tutoriais/atualizacao_sistema
 
 
 .. toctree::
@@ -24,4 +24,4 @@ Contents
    :caption: Guias
 
    files/guias/guia_portainer
-   files/guias/homologacao
+   

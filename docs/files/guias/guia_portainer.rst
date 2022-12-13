@@ -1,5 +1,5 @@
-Gerenciamento de serviços do Servidor Linux
--------------------------------------------
+Gerenciando serviços no Servidor Linux
+--------------------------------------
 
 O gerenciamento dos serviços Korp que rodam no servidor Linux pode ser feito por meio da ferramente `portainer`.
 
@@ -13,21 +13,15 @@ As credenciais de acesso são:
 
 ----
 
-Leitura de logs
-===============
+Visualizando logs
+=================
 
-#. Acessar o 'Portainer' pelo endereço http://korp.local:9011
-
-#.	Preencher as credenciais
-
-#.	Acessar o ambiente "local"
-
-#.	Acessar o tópico "Containers"
-
-#.	Na caixa de pesquisa, digitar o nome do serviço desejado
-
+#. Acessar o `Portainer <http://korp.local:9011>`_
+#. Preencher as credenciais
+#. Acessar o ambiente "local"
+#. Acessar o tópico "Containers"
+#. Na caixa de pesquisa, digitar o nome do serviço desejado
 #. Clicar no nome do serviço
-
 #. Clicar em ``Logs``
 
 **Interagindo com os logs**
@@ -42,19 +36,13 @@ Leitura de logs
 
 ----
 
-Reinicio de Serviços
-====================
+Reiniciando um serviço
+======================
 
-#. Acessar o 'Portainer' pelo endereço http://korp.local:9011
-
-#.	Preencher as credenciais
-
-#.	Acessar o ambiente "local"
-
-#.	Acessar o tópico "Containers"
-
-#.	Na caixa de pesquisa, digitar o nome do serviço desejado
-
-#.	Selecionar o serviço pelo checkbox na sua linha
-
-#.	Clicar no botão "Restart"
+#. Acessar o `Portainer <http://korp.local:9011>`_
+#. Preencher as credenciais
+#. Acessar o ambiente "local"
+#. Acessar o tópico "Containers"
+#. Na caixa de pesquisa, digitar o nome do serviço desejado
+#. Selecionar o serviço pelo checkbox na sua linha
+#. Clicar no botão "Restart"
