@@ -16,6 +16,7 @@ Contents
 
    files/tutoriais/atualizacao_sistema
    files/tutoriais/configuracao_ambiente
+   files/tutoriais/portal_web
 
 
 .. toctree::
