@@ -1,0 +1,5 @@
+services:
+  Viasoft.Qualidade.Inspecao.Background:
+    db:
+      name: Viasoft_Qualidade_Inspecao_Background
+      type: postgres
