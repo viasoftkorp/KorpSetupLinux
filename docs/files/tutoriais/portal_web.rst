@@ -4,10 +4,10 @@ Conhecendo os recursos do Portal Web
 .. note:: 
   
     Tudo o que você precisa saber sobre o Portal Korp:
-        - Como criar novos usuários: 01:27min
-        - Como inativar e reativar usuários: 02:05min
-        - Como autorizar usuários a terem acessos aos aplicativos: 02:30min
-        - Como permitir que usuários mexam e alterem aplicativos: 03:54min
+        - Como criar novos usuários.
+        - Como inativar e reativar usuários.
+        - Como autorizar usuários a terem acessos aos aplicativos.
+        - Como permitir que usuários mexam e alterem aplicativos.
 
 ----
 
