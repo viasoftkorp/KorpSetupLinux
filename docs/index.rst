@@ -5,7 +5,7 @@ Contents
    :maxdepth: 2
    :caption: Visão Geral
    
-   files/visao_geral/intruducao
+   files/visao_geral/introducao
    files/visao_geral/especificacoes_servidor
    files/visao_geral/infraestrutura_pos_implantacao
 
@@ -17,6 +17,7 @@ Contents
    files/tutoriais/configuracao_ambiente
    files/tutoriais/homologacao
    files/tutoriais/virada_servidores
+   files/tutoriais/atualizacao_sistema
 
 
 .. toctree::
