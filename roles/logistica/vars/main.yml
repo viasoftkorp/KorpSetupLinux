@@ -9,7 +9,7 @@ services:
       name: Viasoft_Logistica_Inventario_Background
       type: postgres
 
-  Viasoft.Logistica.AjusteEstoque.Background:
-    db:
-      name: Viasoft_Logistica_AjusteEstoque_Background
-      type: postgres
+  # Viasoft.Logistica.AjusteEstoque.Background:
+  #   db:
+  #     name: Viasoft_Logistica_AjusteEstoque_Background
+  #     type: postgres
