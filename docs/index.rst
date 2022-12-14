@@ -16,7 +16,7 @@ Contents
 
    files/tutoriais/configuracao_ambiente
    files/tutoriais/homologacao
-   files/tutoriais/atualizacao_sistema
+   files/tutoriais/virada_servidores
 
 
 .. toctree::
