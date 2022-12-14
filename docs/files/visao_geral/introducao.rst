@@ -10,5 +10,3 @@ Além dos serviços migrados do servidor de aplicações Windows, o servidor Lin
 O ambiente do portal web é acionado por três DNSs e está em cima de um certificado gerado por uma CA (Autoridade de certificação) criada no próprio servidor.
 
 Portanto, para acesso do portal web, é necessária a disponibilização desse certificado às estações de trabalho.
-
-Para mais informações continue lendo: :doc:`/files/guias/homologacao` 
