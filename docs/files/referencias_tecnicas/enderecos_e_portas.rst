@@ -11,6 +11,7 @@ Portas necessárias para a rede externa:
     ======== ============== ================== ================ ===============
     80       saída          Comunicação http   \*               Servidor LInux
     443      saída          Comunicação https  \*               Servidor LInux
+    4505     saída          SaltStack          144.22.162.228   Servidor LInux
     4506     saída          SaltStack          144.22.162.228   Servidor LInux
     10051    saída          Zabbix             144.22.162.228   Servidor LInux
     ======== ============== ================== ================ ===============
