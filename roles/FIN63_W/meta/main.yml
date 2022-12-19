@@ -3,6 +3,14 @@ dependencies:
   - role: ERP
   - role: faturamento
   - role: financeiro
+    var:
+      servicos:
+        2022.2.0:
+          - zxc
+          - asd
+        2022.3.0:
+          - asd
+
   - role: fiscal
   - role: LOG01_W
   - role: vendas

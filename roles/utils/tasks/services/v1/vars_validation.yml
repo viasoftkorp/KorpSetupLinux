@@ -1,0 +1,50 @@
+
+# ---
+# - name: "Validação de variáveis de {{ service_name }}"
+#   ansible.builtin.fail:
+#     msg: "Um ou mais valores não foram setados nas variáveis de {{ service_name }}"
+#   when: services[service_name].db is defined and (services[service_name].db.type is undefined or services[service_name].db.type == None) or
+        
+
+# - name: "Validação de \"oauth_client\" de {{ service_name }}"
+#   ansible.builtin.set_fact:
+#     services: "{{ services | combine(
+#       {
+#         service_name : {
+#           'oauth_client': {
+#             'skip': false
+#           }
+#         }
+#       },
+#       recursive=True) }}"
+#   when:
+#     - services[service_name].oauth_client is undefined or services[service_name].oauth_client.skip is undefined
+
+# - name: "Validação de \"db.name\" de {{ service_name }}"
+#   ansible.builtin.set_fact:
+#     services: "{{ services | combine(
+#       {
+#         service_name : {
+#           'db': {
+#             'name':  service_name | replace('.','_')
+#           }
+#         }
+#       },
+#       recursive=True) }}"
+#   when:
+#     - services[service_name].db is defined and (services[service_name].db.name is undefined or services[service_name].db.name == None)
+
+# - name: "Definição de service_vars para {{ service_name }}"
+#   ansible.builtin.set_fact:
+#     service_vars: "{{ services[service_name] }}"
+
+# - name: "Definição de sufixo do nome do banco de dados"
+#   ansible.builtin.set_fact:
+#     service_vars: "{{service_vars | combine({
+#           'db': {
+#             'name': service_vars.db.name+db_suffix_divider+db_suffix
+#           }
+#       }, recursive=true) }}"
+#   when: service_vars.db is defined and db_suffix != "" 
+
+

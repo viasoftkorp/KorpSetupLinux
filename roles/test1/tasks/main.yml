@@ -1,0 +1,6 @@
+- name: Adição de serviços de REL01
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/v1/add_service
+  vars:
+    id: REL01

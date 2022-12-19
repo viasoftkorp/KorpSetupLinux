@@ -9,7 +9,7 @@ version_without_build: ""
 tenant_id: ""
 
 # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.docker_account'
-docker_account: ""
+docker_account: "korp"
 
 docker_image_suffix: ""
 
@@ -44,9 +44,9 @@ apprise_container_name: apprise
 frontend:
   # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
   dns:
-    api: ""
-    frontend: ""
-    cdn: ""
+    api: "123"
+    frontend: "qwe"
+    cdn: "asd"
   # configurado com base nos valores de 'frontend.dns'
   endpoints:
     gateway_url: ""

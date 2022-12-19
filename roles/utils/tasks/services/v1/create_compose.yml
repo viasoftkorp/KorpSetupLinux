@@ -1,0 +1,84 @@
+# - name: Definição de variáveis
+#   ansible.builtin.set_fact:
+#     service_name: "{{ item.key}}"
+#     service_props: "{{ service_props }}"
+#     image_name: "{{ service_name | lower }}"
+#     container_name: "{{ image_name | replace('.','-')"
+#     image_tag: "{{ service_propsversion }}{{ docker_image_suffix }}"
+
+- name: set_fact1
+  vars:
+    image_name: "{{ service_name | lower }}"
+  ansible.builtin.set_fact:
+    image_name: "{{ service_name | lower }}"
+    container_name: "{{ image_name | replace('.','-') }}"
+    image_tag: "{{ service_props.version }}{{ docker_image_suffix }}"
+  when: service_props.is_legacy_versioned is defined and not service_props.is_legacy_versioned
+
+- name:
+  block:
+
+  - name: Resolução de versão
+    set_fact:
+      service_version_without_build: |
+        {% set aa = (service_props.version).split('.') %}
+        {% set _ = aa.pop(-1) %}
+        {{ aa | join('.') }}
+
+  - name: set_fact1
+    vars:
+      image_name: "{{ service_name | lower }}"
+    ansible.builtin.set_fact:
+      image_name: "{{ service_name | lower }}-{{ service_version_without_build | replace('.','-') }}"
+      container_name: "{{ image_name | replace('.','-') }}"
+      image_tag: "{{ service_props.version }}{{ docker_image_suffix }}"
+    when: service_props.is_legacy_versioned is defined and not service_props.is_legacy_versioned
+
+  - name: set_fact12
+    ansible.builtin.set_fact:
+      msg: "{{ ( version | split('.')).pop(-1) }}" # | join('.')}}"
+    loop: "{{ service_props.version | list }}"
+    loop_control:
+      loop_var: version
+
+  - name: debug1
+    debug:
+      msg: "{{ asdf }}"
+
+  when: service_props.is_legacy_versioned is undefined or service_props.is_legacy_versioned
+
+- name: Leitura de template do container
+  ansible.builtin.set_fact:
+    container_template: "{{ (lookup('template', 'composes/container.yml.j2')) | from_yaml  }}"
+
+- name: Adição de 'volumes' ao container
+  ansible.builtin.set_fact:
+    container_template: "{{ container_template | combine(
+      {
+        container_name: {
+          'volumes': service_props.volumes
+        }
+      },
+      recursive=True, list_merge='append_rp') }}"
+  when: service_props.volumes is defined
+
+- name: Adição de 'environment' ao container
+  ansible.builtin.set_fact:
+    container_template: "{{ container_template | combine(
+      {
+        container_name: {
+          'environment': service_props.environment
+        }
+      },
+      recursive=True, list_merge='append_rp') }}"
+  when: service_props.environment is defined
+
+
+
+- name: Adição de container ao compose
+  ansible.builtin.set_fact:
+    compose_template: "{{ compose_template | combine(
+      {
+        'services': container_template
+      },
+      recursive=True) }}"

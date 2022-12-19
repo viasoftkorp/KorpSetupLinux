@@ -1,17 +1,30 @@
 services:
   Viasoft.Financeiro.Core:
+    version: 1.0.x
     db:
       name: Viasoft_Financeiro_Core
       type: postgres
 
   Viasoft.FinancialAccounting.Installment:
+    version: 2.2.x
     db:
       name: Viasoft_FinancialAccounting_Installment
       type: mssql
 
   Viasoft.FinancialAccounting.AccountsReceivable:
+    version: 2.0.x
     db:
       name: Viasoft_FinancialAccounting_AccountsReceivable
       type: mssql
 
   Korp.Financial.Situation:
+    versions:
+      2022.1.0.x:
+      2022.2.0.x:
+        environment:
+          - "ON_PREMISE_MODE=true"
+      2022.3.0.x:
+        volumes:
+          - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+

@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+    # - name: set_fact12
+    #   vars:
+    #     asd: ['2022.2.0.x']
+    #   # ansible.builtin.set_fact:
+    #   debug:
+    #     msg: "{{ ( version | split('.')).pop(-3) }}" # | join('.')}}"
+    #   loop: "{{ asd | list }}"
+    #   loop_control:
+    #     loop_var: version
+
+  - name: Remove nth element from the list
+    set_fact:
+      asdfasdf: |
+          {% set _ = my_list.pop(index) %}
+          {{ my_list | join('.') }}
+    vars:
+      my_list: [1, 2, 3, 4, 5, 6]
+      index: 2
+
+  - name: asdfasdf
+    debug:
+      msg: "{{ asdfasdf }}"
+    # - name: Instalação de apps
+    #   ansible.builtin.import_role:
+    #     name: test1
+
