@@ -30,5 +30,6 @@ Documentação
    :maxdepth: 2
    :caption: Referências Técnicas
 
-   files/referencias_tecnicas/enderecos_e_portas
+   files/referencias_tecnicas/portas_utilizadas
+   files/referencias_tecnicas/enderecos_utilizados
 
