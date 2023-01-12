@@ -25,8 +25,8 @@
     name: master
     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
   vars:
-    user: "{{ mssql.korp_user }}"
-    pass: "{{ mssql.korp_password }}"
+    mssql_user: "{{ mssql.korp_user }}"
+    mssql_pass: "{{ mssql.korp_password }}"
 
 - name: Criação de usuário de uso da korp no SQL Server - Testing
   community.general.mssql_script:
@@ -36,8 +36,8 @@
     name: master
     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
   vars:
-    user: "{{ testing_mssql.korp_user }}"
-    pass: "{{ testing_mssql.korp_password }}"
+    mssql_user: "{{ testing_mssql.korp_user }}"
+    mssql_pass: "{{ testing_mssql.korp_password }}"
 
 - name: Criação e inicialização de default-compose
   community.docker.docker_compose:
