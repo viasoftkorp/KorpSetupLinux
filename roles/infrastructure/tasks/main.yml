@@ -17,13 +17,27 @@
 - name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
-- name: Criação de usuário de uso da korp no SQL Server
+- name: Criação de usuário de uso da korp no SQL Server - Produção
   community.general.mssql_script:
     login_user: "{{ mssql.default_user }}"
     login_password: "{{ mssql.default_password }}"
     login_host: "{{ mssql.address }}"
     name: master
     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
+  vars:
+    user: "{{ mssql.korp_user }}"
+    pass: "{{ mssql.korp_password }}"
+
+- name: Criação de usuário de uso da korp no SQL Server - Testing
+  community.general.mssql_script:
+    login_user: "{{ testing_mssql.default_user }}"
+    login_password: "{{ testing_mssql.default_password }}"
+    login_host: "{{ testing_mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
+  vars:
+    user: "{{ testing_mssql.korp_user }}"
+    pass: "{{ testing_mssql.korp_password }}"
 
 - name: Criação e inicialização de default-compose
   community.docker.docker_compose:
