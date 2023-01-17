@@ -99,7 +99,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-          
+
   viasoft-sales-crm-qualification:
     image: "{{ docker_account }}/viasoft.sales.crm.qualification:4.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CRM.Qualification"
@@ -113,7 +113,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-            
+
   viasoft-sales-crm-reporting:
     image: "{{ docker_account }}/viasoft.sales.crm.reporting:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CRM.Reporting"
@@ -127,7 +127,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-              
+
   viasoft-sales-crm-sync:
     image: "{{ docker_account }}/viasoft.sales.crm.sync:2.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CRM.Sync"
@@ -141,7 +141,7 @@ services:
       - servicos
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
-  
+
   VEN26:
     image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:3.3.x{{ docker_image_suffix }}"
     container_name: "VEN26"
