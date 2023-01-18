@@ -8,6 +8,7 @@
   become: true
   vars:
     db_suffix_divider: "_"
+    db_user: "korp.services"
   tasks:
 
     - name: Importação de inventário
@@ -134,6 +135,11 @@
     - name: Verificação de sufixo de banco de dados
       ansible.builtin.set_fact:
         db_suffix: ""
+      when: db_suffix is defined
+
+    - name: Verificação de sufixo de banco de dados
+      ansible.builtin.set_fact:
+        db_user: "{{ db_user }}{{ db_suffix_divider }}{{ db_suffix }}"
       when: db_suffix is not defined
 
     # Todas as variáveis do inventário são definidas nessa tasks
@@ -157,14 +163,14 @@
               'address': shrink_inventory.mssql.address | default (sql_ips),
               'default_user': shrink_inventory.mssql.default_user | default (sql_users),
               'default_password': shrink_inventory.mssql.default_password | default (sql_passs),
-              'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+              'korp_user': shrink_inventory.mssql.korp_user | default (db_user),
               'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
             },
             'testing_mssql': {
                 'address': shrink_inventory.mssql.address | default (testing_sql_ip),
                 'default_user': shrink_inventory.mssql.default_user | default (testing_sql_user),
                 'default_password': shrink_inventory.mssql.default_password | default (testing_sql_pass),
-                'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+                'korp_user': shrink_inventory.mssql.korp_user | default (db_user),
                 'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
             }, 
               'rabbitmq': {
