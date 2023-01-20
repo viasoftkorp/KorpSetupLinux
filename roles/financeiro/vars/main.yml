@@ -15,5 +15,7 @@ services:
       type: mssql
 
   Korp.Legacy.Financeiro:
-
+      name: Viasoft_Legacy_Financeiro
+      type: mssql
+      
   Korp.Financial.Situation:
