@@ -14,4 +14,9 @@ services:
       name: Viasoft_FinancialAccounting_AccountsReceivable
       type: mssql
 
+  Korp.Legacy.Financeiro:
+    db:
+      name: Viasoft_Legacy_Financeiro
+      type: mssql
+
   Korp.Financial.Situation:
