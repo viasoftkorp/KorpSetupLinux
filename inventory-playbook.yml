@@ -132,16 +132,16 @@
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: chk_sql.skipped is not defined
 
-    - name: Definição de usuário do SQL Server
-      ansible.builtin.set_fact:
-        mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
-      when: db_suffix is defined
 
     - name: Verificação de sufixo de banco de dados
       ansible.builtin.set_fact:
         db_suffix: ""
       when: db_suffix is not defined
 
+    - name: Definição de usuário do SQL Server
+      ansible.builtin.set_fact:
+        mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
+      when: db_suffix != "" 
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
