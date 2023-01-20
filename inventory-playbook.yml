@@ -31,7 +31,7 @@
         - name: Definição do atalho do caminho inventário
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
-        
+
     - name: Coleta de informações
       ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = não)"
