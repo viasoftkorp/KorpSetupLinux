@@ -8,6 +8,7 @@
   become: true
   vars:
     db_suffix_divider: "_"
+    mssql_user: "korp.services"
   tasks:
 
     - name: Importação de inventário
@@ -30,7 +31,7 @@
         - name: Definição do atalho do caminho inventário
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
-        
+
     - name: Coleta de informações
       ansible.builtin.pause:
         prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = não)"
@@ -131,10 +132,16 @@
         mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
       when: chk_sql.skipped is not defined
 
+
     - name: Verificação de sufixo de banco de dados
       ansible.builtin.set_fact:
         db_suffix: ""
       when: db_suffix is not defined
+
+    - name: Definição de usuário do SQL Server
+      ansible.builtin.set_fact:
+        mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
+      when: db_suffix != "" 
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -157,24 +164,23 @@
               'address': shrink_inventory.mssql.address | default (sql_ips),
               'default_user': shrink_inventory.mssql.default_user | default (sql_users),
               'default_password': shrink_inventory.mssql.default_password | default (sql_passs),
-              'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+              'korp_user': shrink_inventory.mssql.korp_user | default (mssql_user),
               'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
             },
             'testing_mssql': {
                 'address': shrink_inventory.mssql.address | default (testing_sql_ip),
                 'default_user': shrink_inventory.mssql.default_user | default (testing_sql_user),
                 'default_password': shrink_inventory.mssql.default_password | default (testing_sql_pass),
-                'korp_user': shrink_inventory.mssql.korp_user | default ('korp.services'),
+                'korp_user': shrink_inventory.mssql.korp_user | default (mssql_user),
                 'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
-            }, 
+            },
               'rabbitmq': {
                 'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
                 'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
-            }, 
+            },
               'redis': {
                 'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
             },
-
              'postgres': {
                 'address': shrink_inventory.postgres.address | default ('127.0.0.1') ,
                 'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
