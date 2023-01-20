@@ -143,15 +143,6 @@
         mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
       when: db_suffix != "" 
 
-
-    - name: asdf
-      debug:
-        msg: 
-          - "-----------------------asd-asd-asd-asd-as-das-d-as-d-as-ads-ads-ads-das-das-sd-as-das-d-sa-"
-          - "{{ mssql_user }}"
-          - "{{ db_suffix }}"
-
-
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
     # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
