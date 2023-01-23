@@ -111,3 +111,4 @@ services:
     networks:
       - servicos
     volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
