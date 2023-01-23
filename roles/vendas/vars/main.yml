@@ -36,3 +36,8 @@ services:
     db:
       name: Viasoft_Sales_CommercialProposal_Gateway
       type: postgres
+
+  Viasoft.Vendas.Core:
+    db:
+      name: Viasoft_Vendas_Core
+      type: postgres
