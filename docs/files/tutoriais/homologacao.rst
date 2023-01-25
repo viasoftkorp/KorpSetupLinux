@@ -18,7 +18,7 @@ Homologando o portal local
 
 É importante lembrar que as permissões do Korp ERP não se aplicam ao ambiente WEB, portanto para o primeiro acesso terá que utilizar o login do usuário raiz do licenciamento do e-mail.
 
-Para confirmar o login desse usuário, pode-se acessar o https://portal.com.com.br, pelo aplicativo de Admin.
+Para confirmar o login desse usuário, pode-se acessar o https://portal.korp.com.com.br, pelo aplicativo de Admin.
 
 Para a homologação do portal local, deve-se fazer o uso dos aplicativos licenciados.
 
