@@ -44,6 +44,11 @@ Essa configuração serve para avisar o usuário caso haja um problema com o env
     :SmtpPassWord: senha da conta SMTP
     :SmtpPort: porta do provedor SMTP
     :SmtpUserName: usuário da conta SMTP
+    :Crypto: tipo de criptografia utilizado:
+
+      - ``StartTLS``
+      - ``SSLTLS``
+      - ``None`` (nenhuma/não utilizar)
 
 #. Reiniciar o serviço Viasoft.Email
 #. Verificar que recebeu um e-mail na caixa de entrada da conta configurada no campo "FromAdress"
