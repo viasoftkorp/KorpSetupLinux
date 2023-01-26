@@ -19,3 +19,8 @@ Abaixo estão os requisitos mínimos do servidor, sendo que estes poderá ser ne
 * 2 cores de processamento.
 
 Para garantir quais as especificações recomendas em cada caso, é necessário consultar a equipe de implantação.
+
+.. warning::
+  * O servidor e usuário do Linux NÃO pode ser KORP.
+
+  * O servidor deve esta configurado com IP fixo.
