@@ -21,6 +21,6 @@ Abaixo estão os requisitos mínimos do servidor, sendo que estes poderá ser ne
 Para garantir quais as especificações recomendas em cada caso, é necessário consultar a equipe de implantação.
 
 .. warning::
-  * Nome de usuário e servidor Linux NÃO pode ser KORP.
+  * Nome de Usuário e Servidor Linux NÃO pode ser KORP.
 
   * Servidor Linux deve estar configurado com IP fixo.
