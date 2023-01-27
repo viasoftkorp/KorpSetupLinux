@@ -86,7 +86,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   viasoft.commercialproposal-gateway:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
