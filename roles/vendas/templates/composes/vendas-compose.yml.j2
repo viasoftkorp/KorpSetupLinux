@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-sales-core:
-    image: "{{ docker_account }}/viasoft.sales.core:3.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.core:3.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
