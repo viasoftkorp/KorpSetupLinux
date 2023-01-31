@@ -44,7 +44,7 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
   viasoft-financialaccounting-accountsreceivable:
-    image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.AccountsReceivable"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
