@@ -22,6 +22,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -38,6 +39,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -55,6 +57,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -69,6 +72,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - HTTP_PORT=1505
@@ -86,6 +90,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -100,6 +105,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:

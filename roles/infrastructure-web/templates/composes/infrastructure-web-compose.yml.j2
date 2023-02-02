@@ -37,6 +37,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - GATEWAY_HOST=fabio
@@ -55,6 +56,7 @@ services:
       - viasoft-core-hybridproxy
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -71,6 +73,7 @@ services:
       - viasoft-tenantmanagement
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - URL_CDN={{ frontend.endpoints.cdn_url }}
@@ -89,6 +92,7 @@ services:
       - viasoft-tenantmanagement
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -103,6 +107,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -119,6 +124,7 @@ services:
       - viasoft-tenantmanagement
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -135,6 +141,7 @@ services:
       - viasoft-tenantmanagement
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -151,6 +158,7 @@ services:
       - viasoft-tenantmanagement
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -165,6 +173,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -179,6 +188,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -193,6 +203,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -207,6 +218,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -221,6 +233,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
       - FILE_LOCATION=/app/FileProviderResource
@@ -237,6 +250,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -250,6 +264,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -264,6 +279,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
@@ -277,6 +293,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
@@ -295,6 +312,7 @@ services:
       - viasoft-portal
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
@@ -311,6 +329,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
@@ -326,6 +345,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ more_than8gb }}
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
