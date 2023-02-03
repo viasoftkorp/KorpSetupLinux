@@ -1,3 +1,7 @@
+- name: Correção de mobile
+  ansible.builtin.include_tasks:
+    file: mobile_fix.yml
+
 - name: Definição de variáveis
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
