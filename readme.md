@@ -40,7 +40,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }} # Essa ENV é apenas necessária para serviços em C#
+        - USE_SERVERGC={{ use_servergc }} # Essa ENV é apenas necessária para serviços em C#
         - URL_CONSUL=http://consul-server:8500
       networks:
         - servicos
