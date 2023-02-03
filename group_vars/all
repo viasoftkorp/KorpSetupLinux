@@ -22,7 +22,7 @@ korp_data_disk_minimum_size: 10
 root_disk_minimum_size: 30
 
 # Minímo de memória necessário para ativação do GC Server no .Net
-minimum_required_memory_GcServer: 8192
+minimum_required_memory_GcServer: 2048
 
 korp_dir_path: /etc/korp
 
