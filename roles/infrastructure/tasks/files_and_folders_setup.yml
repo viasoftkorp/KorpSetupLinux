@@ -97,10 +97,6 @@
     group: root
   when: not korp_compose_folder.stat.exists
 
-- name: Verificação da quantidade de RAM
-  ansible.builtin.set_fact:
-    use_servergc: "{{ (ansible_memtotal_mb | int) >= minimum_required_memory_GcServer }}"
-
 - name: Criação de arquivo de variáveis de ambiente para docker
   ansible.builtin.copy:
     dest: "{{ docker_env_file_path }}"

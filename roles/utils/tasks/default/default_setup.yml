@@ -10,5 +10,9 @@
         username: "{{ services_secrets.Others.Docker.Account }}"
         password: "{{ services_secrets.Others.Docker.AccessToken }}"
 
+    - name: Verificação da quantidade de RAM
+      ansible.builtin.set_fact:
+        use_servergc: "{{ (ansible_memtotal_mb | int) >= minimum_required_memory_GcServer }}"
+
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
