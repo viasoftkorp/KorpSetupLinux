@@ -1,0 +1,42 @@
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
+    app_name: 'MOB02'
+    versions_with_mobile: []
+    apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+
+- name: Definição de versões com mobile
+  ansible.builtin.set_fact:
+    versions_with_mobile: "{{ versions_with_mobile | default([]) + [ item ] }}"
+  when: app_name in apps_map.versioned[item]
+  loop: "{{ apps_map.versioned | list }}"
+
+- name: "Parada de containers versionados de {{ app_name }}"
+  community.docker.docker_compose:
+    project_src: "{{ compose_dir_path }}/{{ item }}"
+    state: absent
+    files:
+      - "{{ app_name }}-compose.yml"
+  loop: "{{ versions_with_mobile }}"
+
+- name: "Remoção de arquivos de compose versionados de {{ app_name }}"
+  ansible.builtin.file:
+    path: "{{ compose_dir_path }}/{{ item }}/{{ app_name }}-compose.yml"
+    state: absent
+  loop: "{{ versions_with_mobile }}"
+
+- name: "Remoção de {{ app_name }} do registro de apps versionado"
+  ansible.builtin.set_fact:
+    apps_map: "{{ apps_map | combine(
+      {
+        'versioned': {
+          item: apps_map.versioned[item] | reject('equalto', app_name)
+        }
+      },
+      recursive=True, list_merge='replace') }}"
+  loop: "{{ versions_with_mobile }}"
+
+- name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
+  ansible.builtin.copy:
+    dest: "{{ config_dir_path }}/installed_apps.yml"
+    mode: '0644'
+    content: "{{ apps_map | to_yaml }}"
