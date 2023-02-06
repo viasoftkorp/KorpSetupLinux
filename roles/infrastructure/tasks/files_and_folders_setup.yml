@@ -109,6 +109,7 @@
       API_GATEWAY=172.17.0.1
       PORTAL_GATEWAY=172.17.0.1
       CDN_GATEWAY=172.17.0.1
+      USE_SERVERGC={{ use_servergc }}
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
