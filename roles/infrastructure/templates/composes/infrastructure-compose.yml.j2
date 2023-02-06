@@ -187,19 +187,5 @@ services:
       servicos:  
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.2"
 
-  testegc-teste:
-    image: "gustavokorp/dockerhub:latest"
-    container_name: "testegc"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
       
