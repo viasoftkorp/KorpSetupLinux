@@ -5,6 +5,9 @@ Apos a homologação do servidor Linux, e garantia de seu funcionamento, o clien
 
 O procedimento de virada consistem e migrar os serviços ``Viasoft`` do servidor de aplicações Windows para o servidor de aplicações Linux.
 
+.. warning::
+
+    Durante o processo de virada, alguns serviços utilizados pelo Korp serão migrados para o servidor Linux, fazendo com que o Korp não funcione.
 
 Pré requisitos da virada
 ========================
