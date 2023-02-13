@@ -8,6 +8,7 @@ Documentação
    files/visao_geral/introducao
    files/visao_geral/especificacoes_servidor
    files/visao_geral/infraestrutura_pos_implantacao
+   files/visao_geral/backups
 
 
 .. toctree::
