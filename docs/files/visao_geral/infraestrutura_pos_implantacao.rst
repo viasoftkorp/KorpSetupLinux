@@ -118,9 +118,3 @@ O diagrama a cima exemplificando o fluxo de comunicação entre o Korp, o servid
     Devem ser feito backup de todos esses bancos.
     
         Para isso, basta fazer o backup do disco de dados disponibilizado no servidor linux, esse disco está montado em ``/etc/korp``
-
-
-
-
-
-
