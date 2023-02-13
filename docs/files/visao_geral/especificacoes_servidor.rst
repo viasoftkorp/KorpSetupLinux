@@ -24,3 +24,5 @@ Para garantir quais as especificações recomendas em cada caso, é necessário 
   * Nome de Usuário e Servidor Linux NÃO pode ser KORP.
 
   * Servidor Linux deve estar configurado com IP fixo.
+  
+  * Nenhuma máquina na rede pode ter o Nome do Computador: KORP
