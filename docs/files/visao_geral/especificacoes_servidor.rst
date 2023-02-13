@@ -26,4 +26,4 @@ Para garantir quais as especificações recomendas em cada caso, é necessário 
 
   * Servidor Linux deve estar configurado com IP fixo.
 
-  * Nenhuma máquina na rede pode ter o ``korp``, visto que isso irá causar problemas na resolução do dns ``korp.local``
+  * Nenhuma máquina na rede pode ter o nome ``korp``, visto que isso irá causar problemas na resolução do dns ``korp.local``
