@@ -57,16 +57,17 @@ services:
     volumes:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
 
-  korp-legacy-financeiro:
-    image: "{{ docker_account }}/korp.legacy.financeiro:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Financeiro"
-    restart: on-failure:10
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  ## serviço ainda não publicado em prod
+  # korp-legacy-financeiro:
+  #   image: "{{ docker_account }}/korp.legacy.financeiro:1.0.x{{ docker_image_suffix }}"
+  #   container_name: "Korp.Legacy.Financeiro"
+  #   restart: on-failure:10
+  #   extra_hosts: *default-extra_hosts
+  #   environment:
+  #     - ON_PREMISE_MODE=true
+  #     - URL_CONSUL=http://consul-server:8500
+  #     - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+  #   networks:
+  #     - servicos
+  #   volumes:
+  #     - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
