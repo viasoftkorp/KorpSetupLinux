@@ -1,0 +1,46 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ frontend.dns.api }}:$API_GATEWAY"
+  - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-rma-core-2022-4-0:
+    image: "{{ docker_account }}/korp.rma.core:2022.4.0.x{{ docker_image_suffix }}"
+    container_name: "Korp.RMA.Core-2022.4.0"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  QUA02_W-2022-3-0:
+    image: "{{ docker_account }}/korp.qualidade.inspecaosaida-frontend:2022.3.0.x{{ docker_image_suffix }}"
+    container_name: "QUA02_W-2022.3.0"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
