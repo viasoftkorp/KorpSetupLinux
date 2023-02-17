@@ -34,12 +34,13 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
     ``` yml
     <service_name_lowercase>-<version>:
-      image: "{{ docker_account }}/<service_name_lowercase>:<version>.x"
+      image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
       container_name: "<service_name>-<version>"
       restart: on-failure:10
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
+        - USE_SERVERGC={{ use_servergc }} # Essa ENV é apenas necessária para serviços em C#
         - URL_CONSUL=http://consul-server:8500
       networks:
         - servicos
@@ -161,6 +162,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
         extra_hosts: *default-extra_hosts
         environment:
           - ON_PREMISE_MODE=true
+          - USE_SERVERGC={{ use_servergc }} # Essa ENV é apenas necessária para serviços em C#
           - URL_CONSUL=http://consul-server:8500
         networks:
           - servicos

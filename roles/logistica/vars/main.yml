@@ -4,12 +4,12 @@ services:
 
   Korp.Logistica.SaldoProdutos:
 
-  # Viasoft.Logistica.Inventario.Background:
-  #   db:
-  #     name: Viasoft_Logistica_Inventario_Background
-  #     type: postgres
+  Viasoft.Logistica.Inventario.Background:
+    db:
+      name: Viasoft_Logistica_Inventario_Background
+      type: postgres
 
-  # Viasoft.Logistica.AjusteEstoque.Background:
-  #   db:
-  #     name: Viasoft_Logistica_AjusteEstoque_Background
-  #     type: postgres
+  Viasoft.Logistica.AjusteEstoque.Background:
+    db:
+      name: Viasoft_Logistica_AjusteEstoque_Background
+      type: postgres

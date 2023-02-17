@@ -16,12 +16,13 @@ networks:
 
 services:
   viasoft-sales-core:
-    image: "{{ docker_account }}/viasoft.sales.core:3.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.core:3.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Core"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
@@ -36,6 +37,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
@@ -50,6 +52,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
@@ -64,6 +67,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
@@ -78,6 +82,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
@@ -86,12 +91,28 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
   
   viasoft.commercialproposal-gateway:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+  
+  viasoft.vendas-core:
+    image: "{{ docker_account }}/viasoft.vendas.core:1.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Core"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
