@@ -81,6 +81,20 @@
 
       when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
 
+    - name: Verificação de testing_mssql
+      ansible.builtin.set_fact:
+        shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
+          {
+            'testing_mssql': {
+              'address': shrink_inventory.mssql.address,
+              'default_user': shrink_inventory.mssql.default_user,
+              'default_password': shrink_inventory.mssql.default_password,
+              'korp_user': shrink_inventory.mssql.korp_user,
+              'korp_password': shrink_inventory.mssql.korp_password
+            }
+          }, recursive=True) }}"
+      when: shrink_inventory.mssql is defined and (shrink_inventory.testing_mssql is not defined )
+
     - name: Coleta de informações para um servidor de SQL Server
       block: # o Bloco trata de apenas um servidor de SQL
         - name: Coleta do ip sql server
@@ -168,29 +182,29 @@
               'korp_password': shrink_inventory.mssql.korp_password | default (mssql_korp_passRandom)
             },
             'testing_mssql': {
-                'address': shrink_inventory.testing_mssql.address | default (testing_sql_ip),
-                'default_user': shrink_inventory.testing_mssql.default_user | default (testing_sql_user),
-                'default_password': shrink_inventory.testing_mssql.default_password | default (testing_sql_pass),
-                'korp_user': shrink_inventory.testing_mssql.korp_user | default (mssql_user),
-                'korp_password': shrink_inventory.testing_mssql.korp_password | default (mssql_korp_passRandom)
+              'address': shrink_inventory.testing_mssql.address | default (testing_sql_ip),
+              'default_user': shrink_inventory.testing_mssql.default_user | default (testing_sql_user),
+              'default_password': shrink_inventory.testing_mssql.default_password | default (testing_sql_pass),
+              'korp_user': shrink_inventory.testing_mssql.korp_user | default (mssql_user),
+              'korp_password': shrink_inventory.testing_mssql.korp_password | default (mssql_korp_passRandom)
             },
-              'rabbitmq': {
-                'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
-                'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
+            'rabbitmq': {
+              'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
+              'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
             },
-              'redis': {
-                'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
+            'redis': {
+              'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
             },
-             'postgres': {
-                'address': shrink_inventory.postgres.address | default ('127.0.0.1') ,
-                'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-                'default_password': shrink_inventory.postgres.default_password |  default ('postgres'),
-                'korp_user': shrink_inventory.postgres.korp_user | default ('korp.services'),
-                'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', special=False))
+            'postgres': {
+              'address': shrink_inventory.postgres.address | default ('127.0.0.1') ,
+              'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
+              'default_password': shrink_inventory.postgres.default_password |  default ('postgres'),
+              'korp_user': shrink_inventory.postgres.korp_user | default ('korp.services'),
+              'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', special=False))
             },
-              'minio': {
-                'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
-                'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
+            'minio': {
+              'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
+              'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
             },
             'general': {
               'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
