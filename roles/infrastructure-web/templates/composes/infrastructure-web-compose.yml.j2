@@ -29,6 +29,8 @@ services:
       - servicos
     labels:
       com.centurylinklabs.watchtower.enable: false
+    ports:
+      - "9110:9000"
 
   viasoft-core-hybridproxy:
     image: "{{ docker_account }}/viasoft.core.hybridproxy:1.0.x{{ docker_image_suffix }}"
