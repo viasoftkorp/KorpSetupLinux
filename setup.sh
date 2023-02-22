@@ -152,6 +152,8 @@ then
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
 
+rm -f  /tmp/inventory-playbook.yml
+
 # Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
 wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/inventory-playbook.yml
 
