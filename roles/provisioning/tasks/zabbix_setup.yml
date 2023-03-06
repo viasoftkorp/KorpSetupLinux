@@ -1,6 +1,13 @@
 - name: Instalação de pacote de zabbix
   ansible.builtin.apt:
     deb: https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.2-2%2Bubuntu22.04_all.deb
+  register: zabbix_install_output
+  ignore_errors: true
+
+- name: Validação de instalação de zabbix
+  ansible.builtin.fail:
+      msg: "Erro durante instalação do zabbix: {{ zabbix_install_output.msg }}"
+  when: zabbix_install_output.failed and zabbix_install_output.msg != "A later version is already installed"
 
 - name: Atualização de cache do repositório
   ansible.builtin.apt:

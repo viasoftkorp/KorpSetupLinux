@@ -30,6 +30,7 @@ services:
       - "{{ dados_docker_dir_path }}/apprise/:/config"
     labels:
       com.centurylinklabs.watchtower.enable: false
+
   viasoft-apprise-proxy:
     image: "{{ docker_account }}/viasoft.apprise.proxy:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Apprise.Proxy"
