@@ -8,13 +8,6 @@
   "ConnectionStrings": {
     "DefaultConnection": "Server=db_mssql,1433; Database={{ service_vars.db.name }}; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False"
   },
-  "Designer": {
-    "DefaultConnectionString": {
-      "Username": "{{ mssql.korp_user }}",
-      "Password": "{{ mssql.korp_password }}",
-      "GatewayAddress": "db_mssql"
-    }
-  },
   "Provisioning": {
     "EnableSchemaProvisioning": "false"
   }
