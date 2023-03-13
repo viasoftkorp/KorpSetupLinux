@@ -168,7 +168,7 @@
               'address': shrink_inventory.app_server.address | default ( application_server_address )
             },
             'linux_korp': {
-              'user': shrink_inventory.linux_korp.user | default ('korp') ,
+              'user': shrink_inventory.linux_korp.user | default ('korp'),
               'password': shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', special=False))
             },
             'self_signed_cert' :{
@@ -189,22 +189,26 @@
               'korp_password': shrink_inventory.testing_mssql.korp_password | default (mssql_korp_passRandom)
             },
             'rabbitmq': {
-              'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services') ,
+              'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services'),
               'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
             },
             'redis': {
               'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
             },
             'postgres': {
-              'address': shrink_inventory.postgres.address | default ('127.0.0.1') ,
+              'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
               'default_password': shrink_inventory.postgres.default_password |  default ('postgres'),
               'korp_user': shrink_inventory.postgres.korp_user | default ('korp.services'),
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', special=False))
             },
             'minio': {
-              'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)) ,
+              'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)),
               'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
+            },
+            'minio_new': {
+              'access_key': shrink_inventory.minio_new.access_key | default (lookup('community.general.random_string', special=False)),
+              'secret_key': shrink_inventory.minio_new.secret_key | default (lookup('community.general.random_string', special=False))
             },
             'general': {
               'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )

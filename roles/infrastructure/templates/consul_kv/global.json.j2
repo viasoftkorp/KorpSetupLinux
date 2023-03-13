@@ -48,6 +48,18 @@
     "SecretAccessKey": "{{ minio.secret_key }}",
     "useSSL": false
   },
+  "MinioConfigNew": {
+    "EndPoint": "minio-server-new:9000",
+    "AccessKeyID": "{{ minio_new.access_key }}",
+    "SecretAccessKey": "{{ minio_new.secret_key }}",
+    "useSSL": false
+  },
+  "#MinioConfigGateway": {
+    "#EndPoint": "minio-api.korp.com.br",
+    "#AccessKeyID": "",
+    "#SecretAccessKey": "",
+    "#useSSL": true
+  },
   "OnPremiseLicensedTenants": "{{ tenant_id }}",
   "HostTenantId": "16a7571e-7ff6-479e-a6f5-3514414179dc",
   "SqlIdleConnections": "10",

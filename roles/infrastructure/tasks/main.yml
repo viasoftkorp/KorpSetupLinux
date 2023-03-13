@@ -59,6 +59,10 @@
     login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
+# TODO
+# - name: Configuração de minio da nuvem
+#   ansible.builtin.import_tasks: minio_config.yml
+
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
     name: utils
