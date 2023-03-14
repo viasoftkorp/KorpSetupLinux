@@ -9,5 +9,11 @@
   "ShouldMirrorMinioObjects": true,
   "ShouldMirrorMinioObjectsV1": true,
   "CourtYear": 2020,
-  "OffSetSecondsFetchObjects": 60
+  "OffSetSecondsFetchObjects": 60,
+  "NotifyWebhooks": [
+    {
+      "ServiceName": "Viasoft.ELT",
+      "Endpoint": "/Analystics/ELT/%s"
+    }
+  ],
 }
