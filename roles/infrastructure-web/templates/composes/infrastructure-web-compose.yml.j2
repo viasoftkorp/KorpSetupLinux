@@ -38,10 +38,10 @@ services:
     command: server /data --console-address ":9001"
     restart: always
     environment:
-      - MINIO_ACCESS_KEY={{ minio_new.access_key }}
-      - MINIO_SECRET_KEY={{ minio_new.secret_key }}
+      - MINIO_ROOT_USER={{ minio_new.access_key }}
+      - MINIO_ROOT_PASSWORD={{ minio_new.secret_key }}
     volumes:
-      - "{{ dados_docker_dir_path }}/minio-server/:/data"
+      - "{{ dados_docker_dir_path }}/minio-server-new/:/data"
     networks:
       - servicos
     labels:
