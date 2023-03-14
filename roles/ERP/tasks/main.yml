@@ -12,3 +12,10 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+- name: "Garantia de kv no consul para Viasoft.ELT"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: 'consul_kv/ensure_kv'
+  vars:
+    service_name: Viasoft.ELT
