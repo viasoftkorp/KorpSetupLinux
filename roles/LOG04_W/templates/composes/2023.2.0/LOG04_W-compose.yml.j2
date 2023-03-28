@@ -1,0 +1,48 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ frontend.dns.api }}:$API_GATEWAY"
+  - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-logistica-estoque-ajusteestoque-2023-2-0:
+    image: "{{ docker_account }}/korp.logistica.estoque.ajusteestoque:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Korp.Logistica.Estoque.AjusteEstoque-2023.2.0"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+
+  LOG04_W-2023-2-0:
+    image: "{{ docker_account }}/korp.logistica.estoque.ajusteestoque-frontend:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "LOG04_W-2023.2.0"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
