@@ -15,7 +15,7 @@ Configurar os seguintes DNSs para resolverem os endereços indicados:
 Disponibilizando a CA nas estações de trabalho
 ##############################################
 
-Disponibilizar um certificado para as estação que irão utilizar o portal Local.
+O certificado deverá ser instalado em todas as estações de trabalho, ou seja, computadores que acessão o Korp ERP e korp WEB.
 
 O certificado da CA pode ser obtido copiando o arquivo ``ca-cert.crt`` que está disponível na ``home`` do usuário que foi disponibilizado para instalação no servidor Linux.
 
