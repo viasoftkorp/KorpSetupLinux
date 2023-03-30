@@ -2,6 +2,9 @@ version: "3.8"
 
 x-extra_hosts:
   &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
   - "{{ frontend.dns.api }}:$API_GATEWAY"
   - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
   - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
@@ -18,9 +21,7 @@ services:
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
-      - URL_GATEWAY={{ frontend.endpoints.gateway_url }}
-      - URL_CDN={{ frontend.endpoints.cdn_url }}
-      - URL_LOADER={{ frontend.endpoints.frontend_url }}
+      - ON_PREMISE_MODE=true
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     volumes:
