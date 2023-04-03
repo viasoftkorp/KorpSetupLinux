@@ -16,4 +16,4 @@ Apenas o backup do disco de dados, já garante segurança dos dados. Porém reco
 SQL Server
 ==========
 
-É necessário backup de todos os bancos usados pelo korp. Isso incluí todas as bases do clientes, e os bacos com o prefixo prefixos ``Viasoft``. 
+É necessário backup de todos os bancos usados pelo korp. Isso incluí todas as bases do clientes(produção e homologação), e os bancos com o prefixos ``Viasoft``. 
