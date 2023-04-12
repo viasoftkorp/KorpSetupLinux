@@ -7,7 +7,6 @@ Documentação
    
    files/visao_geral/introducao
    files/visao_geral/especificacoes_servidor
-   files/visao_geral/infraestrutura_pos_implantacao
    files/visao_geral/backups
 
 
@@ -19,6 +18,8 @@ Documentação
    files/tutoriais/homologacao
    files/tutoriais/virada_servidores
    files/tutoriais/atualizacao_sistema
+   
+   files/tutoriais/disponibilizacao_externa
 
 
 .. toctree::
