@@ -7,7 +7,6 @@ Documentação
    
    files/visao_geral/introducao
    files/visao_geral/especificacoes_servidor
-   files/visao_geral/infraestrutura_pos_implantacao
    files/visao_geral/backups
 
 
@@ -20,12 +19,12 @@ Documentação
    files/tutoriais/virada_servidores
    files/tutoriais/atualizacao_sistema
 
-
 .. toctree::
    :maxdepth: 2
    :caption: Guias
 
    files/guias/guia_portainer
+   files/guias/disponibilizacao_externa
 
 .. toctree::
    :maxdepth: 2
