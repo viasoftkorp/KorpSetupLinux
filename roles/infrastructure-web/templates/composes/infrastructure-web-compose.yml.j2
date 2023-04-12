@@ -277,7 +277,6 @@ services:
       - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
     networks:
       - servicos
-
   viasoft-quickfilter:
     image: "{{ docker_account }}/viasoft.quickfilter:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.QuickFilter"
