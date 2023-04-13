@@ -18,15 +18,13 @@ Documentação
    files/tutoriais/homologacao
    files/tutoriais/virada_servidores
    files/tutoriais/atualizacao_sistema
-   
-   files/tutoriais/disponibilizacao_externa
-
 
 .. toctree::
    :maxdepth: 2
    :caption: Guias
 
    files/guias/guia_portainer
+   files/guias/disponibilizacao_externa
 
 .. toctree::
    :maxdepth: 2
