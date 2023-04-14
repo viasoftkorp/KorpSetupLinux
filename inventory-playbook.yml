@@ -183,8 +183,8 @@
 
         - name: Certificado customizado
           block:
-            - name:
-              ansible.builtin.pause: leitura de pasta de certificados
+            - name: leitura de pasta de certificados
+              ansible.builtin.pause:
                 prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
               register: custom_certs_folder_return
 
