@@ -349,8 +349,6 @@
               },
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             }
-            {# 'dns': { TODO
-            } #}
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
