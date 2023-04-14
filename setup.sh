@@ -78,7 +78,8 @@ then
 else
    gateway_url=${gateway_url%/}
 fi
-
+# TODO - remover comentário abaixo
+: <<'END_COMMENT'
 
 # Validação de token
 
@@ -157,6 +158,8 @@ then
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
+
+END_COMMENT
 
 sudo rm -f /tmp/inventory-playbook.yml
 

@@ -39,135 +39,138 @@
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
-    - name: Coleta de informações
-      ansible.builtin.pause:
-        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim ou N = não)"
-      register: chk_sql
-      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
+    # - name: Coleta de informações
+    #   ansible.builtin.pause:
+    #     prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim ou N = não)"
+    #   register: chk_sql
+    #   when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
 
-    - name: Coleta de IP de acesso do SQL Server de Produção e homologação
-      block:
-        - name: Coleta do ip sql server
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server de Produção"
-          register: sql_ip
+    # - name: Coleta de IP de acesso do SQL Server de Produção e homologação
+    #   block:
+    #     - name: Coleta do ip sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o IP de acesso do SQL Server de Produção"
+    #       register: sql_ip
 
-        - name: Coleta do usuario sql server
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
-          register: sql_user
+    #     - name: Coleta do usuario sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
+    #       register: sql_user
 
-        - name: Coleta da senha sql server
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-          register: sql_pass
+    #     - name: Coleta da senha sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+    #       register: sql_pass
 
-        - name: Coleta do ip testing sql server
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server de Homologação"
-          register: testing_sql_ip
+    #     - name: Coleta do ip testing sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o IP de acesso do SQL Server de Homologação"
+    #       register: testing_sql_ip
 
-        - name: Coleta do nome testing sql server
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
-          register: testing_sql_user
+    #     - name: Coleta do nome testing sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
+    #       register: testing_sql_user
 
-        - name: Coleta da senha testing sql server
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-          register: testing_sql_pass
+    #     - name: Coleta da senha testing sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+    #       register: testing_sql_pass
 
-        - name: Declaração de variáveis do SQL Server
-          ansible.builtin.set_fact: 
-            sql_ips: "{{ sql_ip.user_input }}"
-            sql_users: "{{ sql_user.user_input }}"
-            sql_passs: "{{ sql_pass.user_input }}"
-            testing_sql_ip: "{{ testing_sql_ip.user_input }}"
-            testing_sql_user: "{{ testing_sql_user.user_input }}"
-            testing_sql_pass: "{{ testing_sql_pass.user_input }}"
+    #     - name: Declaração de variáveis do SQL Server
+    #       ansible.builtin.set_fact: 
+    #         sql_ips: "{{ sql_ip.user_input }}"
+    #         sql_users: "{{ sql_user.user_input }}"
+    #         sql_passs: "{{ sql_pass.user_input }}"
+    #         testing_sql_ip: "{{ testing_sql_ip.user_input }}"
+    #         testing_sql_user: "{{ testing_sql_user.user_input }}"
+    #         testing_sql_pass: "{{ testing_sql_pass.user_input }}"
 
-      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
+    #   when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
 
-    - name: Verificação de testing_mssql
-      ansible.builtin.set_fact:
-        shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-          {
-            'testing_mssql': {
-              'address': shrink_inventory.mssql.address,
-              'default_user': shrink_inventory.mssql.default_user,
-              'default_password': shrink_inventory.mssql.default_password,
-              'korp_user': shrink_inventory.mssql.korp_user,
-              'korp_password': shrink_inventory.mssql.korp_password
-            }
-          }, recursive=True) }}"
-      when: shrink_inventory.mssql is defined and (shrink_inventory.testing_mssql is not defined )
+    # - name: Verificação de testing_mssql
+    #   ansible.builtin.set_fact:
+    #     shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
+    #       {
+    #         'testing_mssql': {
+    #           'address': shrink_inventory.mssql.address,
+    #           'default_user': shrink_inventory.mssql.default_user,
+    #           'default_password': shrink_inventory.mssql.default_password,
+    #           'korp_user': shrink_inventory.mssql.korp_user,
+    #           'korp_password': shrink_inventory.mssql.korp_password
+    #         }
+    #       }, recursive=True) }}"
+    #   when: shrink_inventory.mssql is defined and (shrink_inventory.testing_mssql is not defined )
 
-    - name: Coleta de informações para um servidor de SQL Server
-      block: # o Bloco trata de apenas um servidor de SQL
-        - name: Coleta do ip sql server
-          ansible.builtin.pause:
-            prompt: "Informe o IP de acesso do SQL Server"
-          register: sql_ip
+    # - name: Coleta de informações para um servidor de SQL Server
+    #   block: # o Bloco trata de apenas um servidor de SQL
+    #     - name: Coleta do ip sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o IP de acesso do SQL Server"
+    #       register: sql_ip
 
-        - name: Coleta do usuario sql server
-          ansible.builtin.pause:
-            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
-          register: sql_user
+    #     - name: Coleta do usuario sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
+    #       register: sql_user
 
-        - name: Coleta da senha sql server
-          ansible.builtin.pause:
-            prompt: "Informe a senha do usuário administrativo no SQL Server"
-          register: sql_pass
+    #     - name: Coleta da senha sql server
+    #       ansible.builtin.pause:
+    #         prompt: "Informe a senha do usuário administrativo no SQL Server"
+    #       register: sql_pass
 
-        - name: Declaração de variáveis do SQL Server
-          ansible.builtin.set_fact:
-            sql_ips: "{{ sql_ip.user_input }}"
-            sql_users: "{{ sql_user.user_input }}"
-            sql_passs: "{{ sql_pass.user_input }}"
-            testing_sql_ip: "{{ sql_ip.user_input }}"
-            testing_sql_user: "{{ sql_user.user_input }}"
-            testing_sql_pass: "{{ sql_pass.user_input }}"
+    #     - name: Declaração de variáveis do SQL Server
+    #       ansible.builtin.set_fact:
+    #         sql_ips: "{{ sql_ip.user_input }}"
+    #         sql_users: "{{ sql_user.user_input }}"
+    #         sql_passs: "{{ sql_pass.user_input }}"
+    #         testing_sql_ip: "{{ sql_ip.user_input }}"
+    #         testing_sql_user: "{{ sql_user.user_input }}"
+    #         testing_sql_pass: "{{ sql_pass.user_input }}"
 
-      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "N"
+    #   when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "N"
 
-    - name: Configuração de application Server
-      block:
-        - name: Coleta de ip do servidor de aplicação 
-          ansible.builtin.pause:
-            prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
-          register: application_server_address
+    # - name: Configuração de application Server
+    #   block:
+    #     - name: Coleta de ip do servidor de aplicação 
+    #       ansible.builtin.pause:
+    #         prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
+    #       register: application_server_address
 
-        - name: Declaração da variavel servidor de aplicação 
-          ansible.builtin.set_fact:
-            application_server_address: "{{ application_server_address.user_input }}"
+    #     - name: Declaração da variavel servidor de aplicação 
+    #       ansible.builtin.set_fact:
+    #         application_server_address: "{{ application_server_address.user_input }}"
 
-        - name: Verificação do servidor de aplicação 
-          ansible.builtin.set_fact:
-            application_server_address: "{{ sql_ips }}"
-          when: application_server_address == ""
+    #     - name: Verificação do servidor de aplicação 
+    #       ansible.builtin.set_fact:
+    #         application_server_address: "{{ sql_ips }}"
+    #       when: application_server_address == ""
 
-      when: chk_sql.skipped is not defined
+    #   when: chk_sql.skipped is not defined
 
-    - name: Geração de senha aleatória para SQL Server
-      ansible.builtin.set_fact:
-        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
-      when: chk_sql.skipped is not defined
+    # - name: Geração de senha aleatória para SQL Server
+    #   ansible.builtin.set_fact:
+    #     mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
+    #   when: chk_sql.skipped is not defined
 
 
-    - name: Verificação de sufixo de banco de dados
-      ansible.builtin.set_fact:
-        db_suffix: ""
-      when: db_suffix is not defined
+    # - name: Verificação de sufixo de banco de dados
+    #   ansible.builtin.set_fact:
+    #     db_suffix: ""
+    #   when: db_suffix is not defined
 
-    - name: Definição de usuário do SQL Server
-      ansible.builtin.set_fact:
-        mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
-      when: db_suffix != "" 
+    # - name: Definição de usuário do SQL Server
+    #   ansible.builtin.set_fact:
+    #     mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
+    #   when: db_suffix != "" 
 
     - name: Verificação de arquivos de certificados
       ansible.builtin.stat:
         path: "{{ cert_crt_path }}"
       register: cert_file_status
+
+    - debug:
+        msg: "{{ cert_file_status }}"
 
     - name: Definição de configurações de certificado
       block:
@@ -342,12 +345,11 @@
               },
               'self_signed': {
                 'certificate': shrink_inventory.certs.self_signed.certificate | default(self_signed_certificate),
-                'passphrase'  shrink_inventory.certs.self_signed.passphrase | default ('korp')
-              }
+                'passphrase':  shrink_inventory.certs.self_signed.passphrase | default ('korp')
+              },
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             }
             {# 'dns': { TODO
-              
             } #}
           }, recursive=True) }}"
 
