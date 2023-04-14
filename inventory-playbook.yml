@@ -9,6 +9,12 @@
   vars:
     db_suffix_divider: "_"
     mssql_user: "korp.services"
+
+    # valores padrões, podem ser alterados durante o playbook
+    custom_certificate: false
+    custom_cert_has_pass_file: null
+    self_signed_certificate: true
+
   tasks:
 
     - name: Importação de inventário
@@ -159,38 +165,60 @@
 
     - name: Verificação de arquivos de certificados
       ansible.builtin.stat:
-        path: "{{ self_signed_crt_path }}"
+        path: "{{ certs_directory }}"
       register: cert_file_status
 
     - name: Definição de configurações de certificado
       block:
-        - name: Coleta de informações
-          ansible.builtin.pause:
-            prompt: "Há certificado customizado? (S = sim ou N = não)"
-          register: chk_cert
+        - name: Setup de certificado iterativo
+          block:
+            - name: Coleta de informações
+              ansible.builtin.pause:
+                prompt: "Há certificado customizado? (S = sim ou N = não)"
+              register: chk_cert
 
-        - name: Coleta de informações
-          ansible.builtin.pause:
-            prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
-          register: chk_cert_pass
-          when: chk_cert.user_input | upper == "S"
+            - name: Coleta de informações
+              ansible.builtin.pause:
+                prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
+              register: chk_cert_pass
+              when: chk_cert.user_input | upper == "S"
 
-        - name: Definição de variáveis
-          ansible.builtin.set_fact:
-            custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
-            custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
-            self_signed_certificate: "{{ chk_cert.user_input | upper == 'N' }}"
+            - name: Definição de variáveis
+              ansible.builtin.set_fact:
+                custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
+                custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
+                self_signed_certificate: "{{ chk_cert.user_input | upper == 'N' }}"
+
+          when: setupinfo_custom_cert is undefined
+
+        - name: Setup de certificados por linha de comando
+          block:
+            - name: Garantia de definição de flags
+              ansible.builtin.fail:
+                msg: "Uma ou mais flag de configuração de certificado não foram passadass."
+              when: setupinfo_custom_cert_has_pass is undefined or setupinfo_custom_cert_path is undefined
+              
+            - name: Definição de variáveis
+              ansible.builtin.set_fact:
+                custom_certificate: true
+                custom_cert_has_pass_file: "{{ setupinfo_custom_cert_has_pass }}"
+                self_signed_certificate: false
+                custom_certs_folder: "{{ setupinfo_custom_cert_path }}"
+
+          when: setupinfo_custom_cert is defined and (setupinfo_custom_cert == true)
 
         - name: Certificado customizado
           block:
-            - name: leitura de pasta de certificados
+            - name: Leitura de pasta de certificados
               ansible.builtin.pause:
                 prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
+              when: setupinfo_custom_cert is undefined
               register: custom_certs_folder_return
 
             - name: Definição de caminho de pasta de certificados
               ansible.builtin.set_fact:
                 custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
+              when: setupinfo_custom_cert is undefined
 
             - name: Garantia de "/" no caminho da pasta de certificados
               ansible.builtin.set_fact:

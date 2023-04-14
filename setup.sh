@@ -20,7 +20,9 @@ create_random_string() {
 #   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 #   # variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
-
+#   custom_cert=false - OPCIONAL, caso passado tona obrigatório a variável 'custom_cert_path'
+#   custom_cert_has_pass=false - OBRIGATÓRIO caso custom_cert==true - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
+#   custom_cert_path="<certs_path>" - OBRIGATÓRIO caso custom_cert==true - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
 
 install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix=""; branch_name=""; docker_image_suffix="";
 run_bootstrap="True"
@@ -31,10 +33,14 @@ then
     install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
     docker_image_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_image_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
-    db_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+
+    db_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    custom_cert=$(sed -nr "/^\[OPTIONS\]/ { :l /^custom_cert[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    custom_cert_has_pass=$(sed -nr "/^\[OPTIONS\]/ { :l /^custom_cert_has_pass[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    custom_cert_path=$(sed -nr "/^\[OPTIONS\]/ { :l /^custom_cert_path[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
     echo "$install_apps"
@@ -152,14 +158,17 @@ then
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
 
-rm -f /tmp/inventory-playbook.yml
+sudo rm -f /tmp/inventory-playbook.yml
 
 # Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
 wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/inventory-playbook.yml
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
-    "db_suffix": "'$db_suffix'"
+    "db_suffix": "'$db_suffix'",
+    "setupinfo_custom_cert": "'$custom_cert'",
+    "setupinfo_custom_cert_has_pass": "'$custom_cert_has_pass'",
+    "setupinfo_custom_cert_path": "'$custom_cert_path'"
   }'
 
 if [ $? != 0 ]

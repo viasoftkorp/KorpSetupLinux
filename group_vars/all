@@ -38,7 +38,7 @@ cert_crt_path: "{{ certs_directory }}/cert.crt"
 cert_pfx_path: "{{ certs_directory }}/cert.pfx"
 cert_pass_path: "{{ certs_directory }}/cert.pass"
 self_signed_ca_cert_privatekey_path: "{{ certs_directory }}/ca-cert.key"
-containers_cert_path: "{{ certs_directory }}/ca-cert.crt"
+self_signed_ca_cert_path: "{{ certs_directory }}/ca-cert.crt"
 containers_cert_path: ""
 
 redis_container_name: redis
