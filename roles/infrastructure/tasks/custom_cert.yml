@@ -1,0 +1,53 @@
+- name: Criação do diretório em que as os arquivos de certificado ficarão
+  ansible.builtin.file:
+    path: "{{ certs_directory }}/"
+    state: directory
+    mode: '0755'
+
+- name: Correção de permissão de arquivos
+  ansible.builtin.file:
+    path: "{{ certs_directory }}/{{ itme.name }}"
+    owner: korp
+    group: root
+    mode: "{{ item.mode }}"
+  when: item.name != "cert.pass" or certs.custom.has_pass_file
+  loop:
+    - name: "cert.crt"
+      mode: "644"
+    - name: "cert.key"
+      mode: "600"
+    - name: "cert.pass"
+      mode: "744"
+
+- name: Geração de PFX do certificado auto-assinado com key sem passphrase
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ cert_pfx_path }}"
+    passphrase: "{{ certs.pfx_passphrase }}"
+
+    certificate_path: "{{ cert_crt_path }}"
+    privatekey_path: "{{ cert_privatekey_path }}"
+
+    friendly_name: korp.com.br
+    backup: true
+  register: pfx_status
+  when: not certs.custom.has_pass_file
+
+- name: Geração de PFX do certificado auto-assinado com key com passphrase
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ cert_pfx_path }}"
+    passphrase: "{{ certs.pfx_passphrase }}"
+
+    certificate_path: "{{ cert_crt_path }}"
+    privatekey_path: "{{ cert_privatekey_path }}"
+    privatekey_passphrase: "{{ lookup('ansible.builtin.file', cert_pass_path) }}"
+
+    friendly_name: korp.com.br
+    backup: true
+  register: pfx_status
+  when: certs.custom.has_pass_file
+
+- name: Reinício do container nginx
+  ansible.builtin.import_tasks: nginx_restart.yml  
+  when: pfx_status.changed

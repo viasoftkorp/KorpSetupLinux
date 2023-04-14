@@ -24,11 +24,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-sales-pricecontrol-2023-2-0:
     image: "{{ docker_account }}/korp.sales.pricecontrol:2023.2.0.x{{ docker_image_suffix }}"
@@ -39,11 +39,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-vendas-listapreco-2023-2-0:
     image: "{{ docker_account }}/korp.vendas.listapreco:2023.2.0.x{{ docker_image_suffix }}"
@@ -54,8 +54,8 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

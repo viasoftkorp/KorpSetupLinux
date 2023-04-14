@@ -8,11 +8,19 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
-- name: Provisão da CA para geração do certificado
-  ansible.builtin.import_tasks: ca_certificate.yml
+- name: Configuração de certificado padrão
+  block:
+  - name: Provisão da CA para geração do certificado
+    ansible.builtin.import_tasks: ca_certificate.yml
 
-- name: Provisão do certificado assinado pela CA
-  ansible.builtin.import_tasks: self_signed_certificate.yml  
+  - name: Provisão do certificado assinado pela CA
+    ansible.builtin.import_tasks: self_signed_certificate.yml
+
+  when: not certs.custom.certificate
+
+- name: Configuração de certificado customizado
+  ansible.builtin.import_task: custom_scert.yml
+  when: certs.custom.certificate
 
 - name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml

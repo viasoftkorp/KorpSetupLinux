@@ -1,30 +1,30 @@
 - name: Criação do diretório em que as os arquivos de certificado ficarão
   ansible.builtin.file:
-    path: "{{ self_signed_certs_directory }}/"
+    path: "{{ certs_directory }}/"
     state: directory
     mode: '0755'
 
 - name: Criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
   ansible.builtin.copy:
-    dest: "{{ self_signed_certs_directory }}/cert.pass"
+    dest: "{{ certs_directory }}/cert.pass"
     mode: '0744'
     content: |
-      {{ self_signed_cert.passphrase }}
+      {{ certs.self_signed.passphrase }}
 
 - name: Geração de chave privada para o certificado assinado pela CA (RSA, 2048)
   community.crypto.openssl_privatekey:
     size: 2048
     type: RSA
-    path: "{{ self_signed_cert_privatekey_path }}"    
-    passphrase: "{{ self_signed_cert.passphrase }}"
+    path: "{{ cert_privatekey_path }}"    
+    passphrase: "{{ certs.self_signed.passphrase }}"
     cipher: auto
     backup: true
 
 - name: Geração de CSR (certificate signing request) para geração do certificado assinado pela CA
   community.crypto.openssl_csr:
-    path: "{{ self_signed_certs_directory }}/cert.csr"
-    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    path: "{{ certs_directory }}/cert.csr"
+    privatekey_path: "{{ cert_privatekey_path }}"
+    privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
     country_name: BR
     state_or_province_name: Parana
     locality_name: Curitiba
@@ -50,12 +50,12 @@
 
 - name: Geração do certificado assinado pela CA
   community.crypto.x509_certificate:
-    path: "{{ self_signed_cert_path }}"    
-    csr_path: "{{ self_signed_certs_directory }}/cert.csr"
+    path: "{{ cert_crt_path }}"    
+    csr_path: "{{ certs_directory }}/cert.csr"
     provider: ownca
     ownca_path: "{{ self_signed_ca_cert_path }}"
     ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
-    ownca_privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    ownca_privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
     ownca_not_after: +365d
     ownca_not_before: "-1d"
     backup: true
@@ -63,15 +63,15 @@
 - name: Geração de PFX do certificado auto-assinado
   community.crypto.openssl_pkcs12:
     action: export
-    path: "{{ self_signed_cert_pfx_path }}"
-    passphrase: "{{ self_signed_cert.passphrase }}"
-    certificate_path: "{{ self_signed_cert_path }}"
-    privatekey_path: "{{ self_signed_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    path: "{{ cert_pfx_path }}"
+    passphrase: "{{ certs.pfx_passphrase  }}"
+    certificate_path: "{{ cert_crt_path }}"
+    privatekey_path: "{{ cert_privatekey_path }}"
+    privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
     friendly_name: korp.com.br
     backup: true
   register: status
-  
+
 - name: Reinício do container nginx
   ansible.builtin.import_tasks: nginx_restart.yml  
   when: status.changed

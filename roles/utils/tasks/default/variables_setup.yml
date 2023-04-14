@@ -26,6 +26,16 @@
       ansible.builtin.set_fact:
         services_secrets: "{{ response.json }}"
 
+    - name: Definição de containers_cert_path para custom
+      ansible.builtin.set_fact:
+        containers_cert_path: "{{ cert_crt_path }}"
+      when: certs.custom.certificate
+
+    - name: Definição de containers_cert_path para self_signed
+      ansible.builtin.set_fact:
+        containers_cert_path: "{{ self_signed_ca_cert_path }}"
+      when: certs.self_signed.certificate
+
     - name: Configuração de variáveis personalizadas
       block:
         - name: Definição de variáveis

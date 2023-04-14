@@ -24,11 +24,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-accounts:
     image: "{{ docker_account }}/viasoft.sales.crm.accounts:3.2.x{{ docker_image_suffix }}"
@@ -39,11 +39,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   viasoft-sales-crm-activities:
     image: "{{ docker_account }}/viasoft.sales.crm.activities:3.1.x{{ docker_image_suffix }}"
@@ -54,11 +54,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
     
   viasoft-sales-crm-goals:
@@ -70,11 +70,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
       
   viasoft-sales-crm-leads:
     image: "{{ docker_account }}/viasoft.sales.crm.leads:4.2.x{{ docker_image_suffix }}"
@@ -85,11 +85,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
         
   viasoft-sales-crm-opportunities:
     image: "{{ docker_account }}/viasoft.sales.crm.opportunities:4.2.x{{ docker_image_suffix }}"
@@ -100,11 +100,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-qualification:
     image: "{{ docker_account }}/viasoft.sales.crm.qualification:4.1.x{{ docker_image_suffix }}"
@@ -115,11 +115,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-reporting:
     image: "{{ docker_account }}/viasoft.sales.crm.reporting:3.1.x{{ docker_image_suffix }}"
@@ -130,11 +130,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-sync:
     image: "{{ docker_account }}/viasoft.sales.crm.sync:2.0.x{{ docker_image_suffix }}"
@@ -145,11 +145,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   VEN26:
     image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:3.3.x{{ docker_image_suffix }}"
@@ -162,8 +162,8 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

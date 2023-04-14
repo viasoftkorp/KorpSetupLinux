@@ -34,7 +34,7 @@
 
     - name: Coleta de informações
       ansible.builtin.pause:
-        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim  ou N = não)"
+        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim ou N = não)"
       register: chk_sql
       when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
 
@@ -157,6 +157,99 @@
         mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
       when: db_suffix != "" 
 
+    - name: Verificação de arquivos de certificados
+      ansible.builtin.stat:
+        path: "{{ self_signed_crt_path }}"
+      register: cert_file_status
+
+    - name: Definição de configurações de certificado
+      block:
+        - name: Coleta de informações
+          ansible.builtin.pause:
+            prompt: "Há certificado customizado? (S = sim ou N = não)"
+          register: chk_cert
+
+        - name:
+          ansible.builtin.pause:
+            prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
+          register: chk_cert_pass
+          when: chk_cert.user_input | upper == "S"
+
+        - name:
+          ansible.builtin.set_fact:
+            custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
+            custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
+            self_signed_certificate: "{{ chk_cert.user_input | upper == 'N' }}"
+
+        - name: Certificado customizado
+          block:
+            - name:
+              ansible.builtin.pause: leitura de pasta de certificados
+                prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
+              register: custom_certs_folder_return
+
+            - name: Definição de caminho de pasta de certificados
+                ansible.builtin.set_fact:
+                  custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
+
+            - name: Garantia de "/" no caminho da pasta de certificados
+                ansible.builtin.set_fact:
+                  custom_certs_folder: "{{ custom_certs_folder }}/"
+                when: custom_certs_folder | last != "/"            
+
+            - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
+              ansible.builtin.stat:
+                path: "{{ custom_certs_folder }}/cert.crt"
+              register: cert_crt_file_status
+
+            - name: "Leitura de {{ custom_certs_folder }}/cert.key"
+              ansible.builtin.stat:
+                path: "{{ custom_certs_folder }}/cert.key"
+              register: cert_key_file_status
+
+            - name: "Leitura de {{ custom_certs_folder }}/cert.pass"
+              ansible.builtin.stat:
+                path: "{{ custom_certs_folder }}/cert.pass"
+              register: cert_pass_file_status
+              when: custom_cert_has_pass_file
+
+            - name: Garantia de existência de arquivos de certificado
+              ansible.builtin.fail:
+                msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
+              when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.status.exists)
+
+            - name: Criação do diretório em que as os arquivos de certificado ficarão
+              ansible.builtin.file:
+                path: "{{ self_signed_crts_directory }}/"
+                state: directory
+                mode: '0755'
+            
+            - name: Copia de arquivos de certificado
+              ansible.builtin.copy:
+                dest: "{{ self_signed_crts_directory }}/{{ item }}"
+                src: "{{ custom_certs_folder }}/{{ item }}"
+                # owner e permissões dos arquivos serão alteradas depois
+                owner: root
+                group: root
+                mode: '0777'
+              when: item != "cert.pass" or custom_cert_has_pass_file
+              loop:
+                - "cert.crt"
+                - "cert.key"
+                - "cert.pass"
+
+          when: custom_certificate
+
+      when: not cert_file_status.stat.exists
+
+    - name:
+      ansible.builtin.set_fact:
+        custom_certificate: false
+        custom_cert_has_pass_file: false
+        self_signed_certificate: true
+      when: cert_file_status.stat.exists and (shrink_inventory.certs.custom.certificate is not defined)
+
+
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
     # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
@@ -170,9 +263,6 @@
             'linux_korp': {
               'user': shrink_inventory.linux_korp.user | default ('korp'),
               'password': shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', special=False))
-            },
-            'self_signed_cert' :{
-              'passphrase': shrink_inventory.self_signed_cert.passphrase | default ('korp')
             },
             'mssql': {
               'address': shrink_inventory.mssql.address | default (sql_ips),
@@ -215,7 +305,21 @@
             },
             'docker_servicos_network_ip_address_start': shrink_inventory.docker_servicos_network_ip_address_start | default('172.18'),
             'db_suffix_divider': shrink_inventory.db_suffix_divider | default(db_suffix_divider),
-            'db_suffix': shrink_inventory.db_suffix  | default(db_suffix)
+            'db_suffix': shrink_inventory.db_suffix | default(db_suffix),
+            'certs': {
+              'custom': {
+                'certificate': shrink_inventory.certs.custom.certificate | default(custom_certificate),
+                'has_pass_file': shrink_inventory.certs.custom.has_pass_file | default(custom_cert_has_pass_file)
+              },
+              'self_signed': {
+                'certificate': shrink_inventory.certs.self_signed.certificate | default(self_signed_certificate),
+                'passphrase'  shrink_inventory.certs.self_signed.passphrase | default ('korp')
+              }
+              'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
+            }
+            {# 'dns': { TODO
+              
+            } #}
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
