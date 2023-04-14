@@ -28,6 +28,10 @@ install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
+custom_cert=""
+custom_cert_has_pass=""
+custom_cert_path=""
+
 if test -f $ini_file_path;
 then
     install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -78,8 +82,6 @@ then
 else
    gateway_url=${gateway_url%/}
 fi
-# TODO - remover comentário abaixo
-: <<'END_COMMENT'
 
 # Validação de token
 
@@ -158,8 +160,6 @@ then
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
-
-END_COMMENT
 
 sudo rm -f /tmp/inventory-playbook.yml
 

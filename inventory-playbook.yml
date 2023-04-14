@@ -9,7 +9,7 @@
   vars:
     db_suffix_divider: "_"
     mssql_user: "korp.services"
-    cert_crt_path: "/etc/korp/certs/cert.crt"
+    cert_directory: "/etc/korp/certs"
 
     # valores padrões, podem ser alterados durante o playbook
     custom_certificate: false
@@ -39,144 +39,138 @@
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
-    # - name: Coleta de informações
-    #   ansible.builtin.pause:
-    #     prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim ou N = não)"
-    #   register: chk_sql
-    #   when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
+    - name: Coleta de informações
+      ansible.builtin.pause:
+        prompt: "Para continuar a instalação, digite as seguintes informações sobre o SQL Server:\nPossui 2 servidores para o SQL Server, um para Homologação e outro para Produção?\n(S = sim ou N = não)"
+      register: chk_sql
+      when: inventory.all.children.nodes.hosts.localhost.mssql.address is not defined 
 
-    # - name: Coleta de IP de acesso do SQL Server de Produção e homologação
-    #   block:
-    #     - name: Coleta do ip sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o IP de acesso do SQL Server de Produção"
-    #       register: sql_ip
+    - name: Coleta de IP de acesso do SQL Server de Produção e homologação
+      block:
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Produção"
+          register: sql_ip
 
-    #     - name: Coleta do usuario sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
-    #       register: sql_user
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Produção"
+          register: sql_user
 
-    #     - name: Coleta da senha sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-    #       register: sql_pass
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: sql_pass
 
-    #     - name: Coleta do ip testing sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o IP de acesso do SQL Server de Homologação"
-    #       register: testing_sql_ip
+        - name: Coleta do ip testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server de Homologação"
+          register: testing_sql_ip
 
-    #     - name: Coleta do nome testing sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
-    #       register: testing_sql_user
+        - name: Coleta do nome testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server de Homologação"
+          register: testing_sql_user
 
-    #     - name: Coleta da senha testing sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
-    #       register: testing_sql_pass
+        - name: Coleta da senha testing sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server de Produção"
+          register: testing_sql_pass
 
-    #     - name: Declaração de variáveis do SQL Server
-    #       ansible.builtin.set_fact: 
-    #         sql_ips: "{{ sql_ip.user_input }}"
-    #         sql_users: "{{ sql_user.user_input }}"
-    #         sql_passs: "{{ sql_pass.user_input }}"
-    #         testing_sql_ip: "{{ testing_sql_ip.user_input }}"
-    #         testing_sql_user: "{{ testing_sql_user.user_input }}"
-    #         testing_sql_pass: "{{ testing_sql_pass.user_input }}"
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact: 
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ testing_sql_ip.user_input }}"
+            testing_sql_user: "{{ testing_sql_user.user_input }}"
+            testing_sql_pass: "{{ testing_sql_pass.user_input }}"
 
-    #   when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
+      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "S"
 
-    # - name: Verificação de testing_mssql
-    #   ansible.builtin.set_fact:
-    #     shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
-    #       {
-    #         'testing_mssql': {
-    #           'address': shrink_inventory.mssql.address,
-    #           'default_user': shrink_inventory.mssql.default_user,
-    #           'default_password': shrink_inventory.mssql.default_password,
-    #           'korp_user': shrink_inventory.mssql.korp_user,
-    #           'korp_password': shrink_inventory.mssql.korp_password
-    #         }
-    #       }, recursive=True) }}"
-    #   when: shrink_inventory.mssql is defined and (shrink_inventory.testing_mssql is not defined )
+    - name: Verificação de testing_mssql
+      ansible.builtin.set_fact:
+        shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
+          {
+            'testing_mssql': {
+              'address': shrink_inventory.mssql.address,
+              'default_user': shrink_inventory.mssql.default_user,
+              'default_password': shrink_inventory.mssql.default_password,
+              'korp_user': shrink_inventory.mssql.korp_user,
+              'korp_password': shrink_inventory.mssql.korp_password
+            }
+          }, recursive=True) }}"
+      when: shrink_inventory.mssql is defined and (shrink_inventory.testing_mssql is not defined )
 
-    # - name: Coleta de informações para um servidor de SQL Server
-    #   block: # o Bloco trata de apenas um servidor de SQL
-    #     - name: Coleta do ip sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o IP de acesso do SQL Server"
-    #       register: sql_ip
+    - name: Coleta de informações para um servidor de SQL Server
+      block: # o Bloco trata de apenas um servidor de SQL
+        - name: Coleta do ip sql server
+          ansible.builtin.pause:
+            prompt: "Informe o IP de acesso do SQL Server"
+          register: sql_ip
 
-    #     - name: Coleta do usuario sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
-    #       register: sql_user
+        - name: Coleta do usuario sql server
+          ansible.builtin.pause:
+            prompt: "Informe o nome de um usuário com permissões administrativas no SQL Server"
+          register: sql_user
 
-    #     - name: Coleta da senha sql server
-    #       ansible.builtin.pause:
-    #         prompt: "Informe a senha do usuário administrativo no SQL Server"
-    #       register: sql_pass
+        - name: Coleta da senha sql server
+          ansible.builtin.pause:
+            prompt: "Informe a senha do usuário administrativo no SQL Server"
+          register: sql_pass
 
-    #     - name: Declaração de variáveis do SQL Server
-    #       ansible.builtin.set_fact:
-    #         sql_ips: "{{ sql_ip.user_input }}"
-    #         sql_users: "{{ sql_user.user_input }}"
-    #         sql_passs: "{{ sql_pass.user_input }}"
-    #         testing_sql_ip: "{{ sql_ip.user_input }}"
-    #         testing_sql_user: "{{ sql_user.user_input }}"
-    #         testing_sql_pass: "{{ sql_pass.user_input }}"
+        - name: Declaração de variáveis do SQL Server
+          ansible.builtin.set_fact:
+            sql_ips: "{{ sql_ip.user_input }}"
+            sql_users: "{{ sql_user.user_input }}"
+            sql_passs: "{{ sql_pass.user_input }}"
+            testing_sql_ip: "{{ sql_ip.user_input }}"
+            testing_sql_user: "{{ sql_user.user_input }}"
+            testing_sql_pass: "{{ sql_pass.user_input }}"
 
-    #   when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "N"
+      when: chk_sql.skipped is not defined and chk_sql.user_input | upper == "N"
 
-    # - name: Configuração de application Server
-    #   block:
-    #     - name: Coleta de ip do servidor de aplicação 
-    #       ansible.builtin.pause:
-    #         prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
-    #       register: application_server_address
+    - name: Configuração de application Server
+      block:
+        - name: Coleta de ip do servidor de aplicação 
+          ansible.builtin.pause:
+            prompt: "Agora, informe o IP do Servidor de aplicações Windows: (ou pressione enter para usar {{ sql_ips }})"
+          register: application_server_address
 
-    #     - name: Declaração da variavel servidor de aplicação 
-    #       ansible.builtin.set_fact:
-    #         application_server_address: "{{ application_server_address.user_input }}"
+        - name: Declaração da variavel servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ application_server_address.user_input }}"
 
-    #     - name: Verificação do servidor de aplicação 
-    #       ansible.builtin.set_fact:
-    #         application_server_address: "{{ sql_ips }}"
-    #       when: application_server_address == ""
+        - name: Verificação do servidor de aplicação 
+          ansible.builtin.set_fact:
+            application_server_address: "{{ sql_ips }}"
+          when: application_server_address == ""
 
-    #   when: chk_sql.skipped is not defined
+      when: chk_sql.skipped is not defined
 
-    # - name: Geração de senha aleatória para SQL Server
-    #   ansible.builtin.set_fact:
-    #     mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
-    #   when: chk_sql.skipped is not defined
+    - name: Geração de senha aleatória para SQL Server
+      ansible.builtin.set_fact:
+        mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
+      when: chk_sql.skipped is not defined
 
 
-    # - name: Verificação de sufixo de banco de dados
-    #   ansible.builtin.set_fact:
-    #     db_suffix: ""
-    #   when: db_suffix is not defined
+    - name: Verificação de sufixo de banco de dados
+      ansible.builtin.set_fact:
+        db_suffix: ""
+      when: db_suffix is not defined
 
-    # - name: Definição de usuário do SQL Server
-    #   ansible.builtin.set_fact:
-    #     mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
-    #   when: db_suffix != "" 
+    - name: Definição de usuário do SQL Server
+      ansible.builtin.set_fact:
+        mssql_user: "{{ mssql_user }}{{ db_suffix_divider }}{{ db_suffix }}"
+      when: db_suffix != "" 
 
     - name: Verificação de arquivos de certificados
       ansible.builtin.stat:
-        path: "{{ cert_crt_path }}"
+        path: "{{ cert_directory }}/cert.crt"
       register: cert_file_status
-
-    - debug:
-        msg: "{{ cert_file_status }}"
 
     - name: Definição de configurações de certificado
       block:
-        - debug:
-            msg: "1"
-
         - name: Setup de certificado iterativo
           block:
             - name: Coleta de informações
@@ -184,53 +178,59 @@
                 prompt: "Há certificado customizado? (S = sim ou N = não)"
               register: chk_cert
 
-            - name: Coleta de informações
-              ansible.builtin.pause:
-                prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
-              register: chk_cert_pass
+            - name: Setup de arquivo de senha
+              block:
+                - name: Coleta de informações de arquivo de senha
+                  ansible.builtin.pause:
+                    prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
+                  register: chk_cert_pass
+
+                - name: Definição de custom_cert_has_pass_file
+                  ansible.builtin.set_fact:
+                    custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
+
               when: chk_cert.user_input | upper == "S"
 
-            - name: Definição de variáveis
+            - name: Definição de variáveis de arquivo de senha
               ansible.builtin.set_fact:
                 custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
-                custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
                 self_signed_certificate: "{{ chk_cert.user_input | upper == 'N' }}"
 
-          when: setupinfo_custom_cert is undefined
+          when: setupinfo_custom_cert == ""
 
         - name: Setup de certificados por linha de comando
           block:
             - name: Garantia de definição de flags
               ansible.builtin.fail:
-                msg: "Uma ou mais flag de configuração de certificado não foram passadass."
-              when: setupinfo_custom_cert_has_pass is undefined or setupinfo_custom_cert_path is undefined
-              
+                msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
+              when: setupinfo_custom_cert_has_pass == "" or setupinfo_custom_cert_path == ""
+
             - name: Definição de variáveis
               ansible.builtin.set_fact:
                 custom_certificate: true
-                custom_cert_has_pass_file: "{{ setupinfo_custom_cert_has_pass }}"
+                custom_cert_has_pass_file: "{{ setupinfo_custom_cert_has_pass | bool }}"
                 self_signed_certificate: false
                 custom_certs_folder: "{{ setupinfo_custom_cert_path }}"
 
-          when: setupinfo_custom_cert is defined and (setupinfo_custom_cert == true)
+          when: setupinfo_custom_cert | bool
 
         - name: Certificado customizado
           block:
             - name: Leitura de pasta de certificados
               ansible.builtin.pause:
                 prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
-              when: setupinfo_custom_cert is undefined
+              when: setupinfo_custom_cert == ""
               register: custom_certs_folder_return
 
             - name: Definição de caminho de pasta de certificados
               ansible.builtin.set_fact:
                 custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
-              when: setupinfo_custom_cert is undefined
+              when: setupinfo_custom_cert == ""
 
             - name: Garantia de "/" no caminho da pasta de certificados
               ansible.builtin.set_fact:
-                custom_certs_folder: "{{ custom_certs_folder }}/"
-              when: custom_certs_folder | last != "/"            
+                custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
+              when: custom_certs_folder | last == "/"            
 
             - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
               ansible.builtin.stat:
@@ -251,17 +251,17 @@
             - name: Garantia de existência de arquivos de certificado
               ansible.builtin.fail:
                 msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
-              when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.status.exists)
+              when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.stat.exists)
 
             - name: Criação do diretório em que as os arquivos de certificado ficarão
               ansible.builtin.file:
-                path: "{{ self_signed_crts_directory }}/"
+                path: "{{ cert_directory }}/"
                 state: directory
                 mode: '0755'
 
             - name: Copia de arquivos de certificado
               ansible.builtin.copy:
-                dest: "{{ self_signed_crts_directory }}/{{ item }}"
+                dest: "{{ cert_directory }}/{{ item }}"
                 src: "{{ custom_certs_folder }}/{{ item }}"
                 # owner e permissões dos arquivos serão alteradas depois
                 owner: root
@@ -277,18 +277,12 @@
 
       when: not cert_file_status.stat.exists
 
-      
-    - debug:
-        msg: "2"
-      when: not cert_file_status.stat.exists
-
     - name: Definição de variáveis
       ansible.builtin.set_fact:
         custom_certificate: false
         custom_cert_has_pass_file: false
         self_signed_certificate: true
       when: cert_file_status.stat.exists and (shrink_inventory.certs.custom.certificate is not defined)
-
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
