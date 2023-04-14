@@ -169,13 +169,13 @@
             prompt: "Há certificado customizado? (S = sim ou N = não)"
           register: chk_cert
 
-        - name:
+        - name: Coleta de informações
           ansible.builtin.pause:
             prompt: "O certificado contém senha(cert.pass)? (S = sim ou N = não)"
           register: chk_cert_pass
           when: chk_cert.user_input | upper == "S"
 
-        - name:
+        - name: Definição de variáveis
           ansible.builtin.set_fact:
             custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
             custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
@@ -189,13 +189,13 @@
               register: custom_certs_folder_return
 
             - name: Definição de caminho de pasta de certificados
-                ansible.builtin.set_fact:
-                  custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
+              ansible.builtin.set_fact:
+                custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
 
             - name: Garantia de "/" no caminho da pasta de certificados
-                ansible.builtin.set_fact:
-                  custom_certs_folder: "{{ custom_certs_folder }}/"
-                when: custom_certs_folder | last != "/"            
+              ansible.builtin.set_fact:
+                custom_certs_folder: "{{ custom_certs_folder }}/"
+              when: custom_certs_folder | last != "/"            
 
             - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
               ansible.builtin.stat:
@@ -242,7 +242,7 @@
 
       when: not cert_file_status.stat.exists
 
-    - name:
+    - name: Definição de variáveis
       ansible.builtin.set_fact:
         custom_certificate: false
         custom_cert_has_pass_file: false
