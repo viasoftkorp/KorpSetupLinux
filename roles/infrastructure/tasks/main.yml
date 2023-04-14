@@ -18,8 +18,9 @@
 
   when: not certs.custom.certificate
 
+
 - name: Configuração de certificado customizado
-  ansible.builtin.import_task: custom_cert.yml
+  ansible.builtin.import_tasks: custom_cert.yml
   when: certs.custom.certificate
 
 - name: Configuração de arquivos e pastas

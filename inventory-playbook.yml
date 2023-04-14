@@ -13,7 +13,7 @@
 
     # valores padrões, podem ser alterados durante o playbook
     custom_certificate: false
-    custom_cert_has_pass_file: null
+    custom_cert_has_pass_file: false
     self_signed_certificate: true
 
   tasks:
