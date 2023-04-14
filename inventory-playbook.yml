@@ -174,6 +174,9 @@
 
     - name: Definição de configurações de certificado
       block:
+        - debug:
+            msg: "1"
+
         - name: Setup de certificado iterativo
           block:
             - name: Coleta de informações
@@ -255,7 +258,7 @@
                 path: "{{ self_signed_crts_directory }}/"
                 state: directory
                 mode: '0755'
-            
+
             - name: Copia de arquivos de certificado
               ansible.builtin.copy:
                 dest: "{{ self_signed_crts_directory }}/{{ item }}"
@@ -272,6 +275,11 @@
 
           when: custom_certificate
 
+      when: not cert_file_status.stat.exists
+
+      
+    - debug:
+        msg: "2"
       when: not cert_file_status.stat.exists
 
     - name: Definição de variáveis
