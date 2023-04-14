@@ -9,6 +9,7 @@
   vars:
     db_suffix_divider: "_"
     mssql_user: "korp.services"
+    certs_directory: "/etc/korp/certs"
 
     # valores padrões, podem ser alterados durante o playbook
     custom_certificate: false
