@@ -9,7 +9,7 @@
   vars:
     db_suffix_divider: "_"
     mssql_user: "korp.services"
-    certs_directory: "/etc/korp/certs"
+    cert_crt_path: "/etc/korp/certs/cert.crt"
 
     # valores padrões, podem ser alterados durante o playbook
     custom_certificate: false
@@ -166,7 +166,7 @@
 
     - name: Verificação de arquivos de certificados
       ansible.builtin.stat:
-        path: "{{ certs_directory }}"
+        path: "{{ cert_crt_path }}"
       register: cert_file_status
 
     - name: Definição de configurações de certificado
