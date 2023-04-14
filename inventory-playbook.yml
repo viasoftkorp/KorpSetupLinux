@@ -275,7 +275,7 @@
 
           when: custom_certificate
 
-      when: not cert_file_status.stat.exists
+      when: not cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
     - name: Definição de variáveis
       ansible.builtin.set_fact:
