@@ -99,3 +99,26 @@
     mode: '0770'
     owner: www-data
     group: www-data
+
+# essa task deve ser feita aqui pois precisamos do usuário root para alterar o owner dos arquivos
+- name: Correção de permissão de arquivos de certificado
+  ansible.builtin.file:
+    path: "{{ certs_directory }}/{{ item.name }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: "{{ item.mode }}"
+  when: certs.custom.certificate and (item.name != "cert.pass" or certs.custom.has_pass_file)
+  loop:
+    - name: "cert.crt"
+      mode: "644"
+    - name: "cert.key"
+      mode: "600"
+    - name: "cert.pass"
+      mode: "744"
+
+# essa task deve ser feita aqui pois precisamos do usuário root para alterar o owner dos arquivos
+- name: "Correção de permissão de {{ certs_directory}}"
+  ansible.builtin.file:
+    path: "{{ certs_directory}}"
+    owner: "{{ linux_korp.user }}"
+  when: certs.custom.certificate

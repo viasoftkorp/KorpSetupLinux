@@ -1,24 +1,3 @@
-- name: Criação do diretório em que as os arquivos de certificado ficarão
-  ansible.builtin.file:
-    path: "{{ certs_directory }}/"
-    state: directory
-    mode: '0755'
-
-- name: Correção de permissão de arquivos
-  ansible.builtin.file:
-    path: "{{ certs_directory }}/{{ item.name }}"
-    owner: korp
-    group: root
-    mode: "{{ item.mode }}"
-  when: item.name != "cert.pass" or certs.custom.has_pass_file
-  loop:
-    - name: "cert.crt"
-      mode: "644"
-    - name: "cert.key"
-      mode: "600"
-    - name: "cert.pass"
-      mode: "744"
-
 - name: Geração de PFX do certificado auto-assinado com key sem passphrase
   community.crypto.openssl_pkcs12:
     action: export
