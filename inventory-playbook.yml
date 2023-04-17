@@ -295,7 +295,7 @@
       block:
         - name: Definição de valores de DNS padrão
           ansible.builtin.set_fact:
-            resolved_dns:
+            custom_dns:
               api: "korp-api.local"
               cdn: "korp-cdn.local"
               frontend: "korp.local"
@@ -304,7 +304,7 @@
         - name: Verificação de DNS customizado
           ansible.builtin.fail:
             msg: "Nem todos os DNSs customizados foram definidos"
-          when: "[resolved_dns.api == '', resolved_dns.cdn == '', resolved_dns.frontend == ''] | select() | list | length > 0"
+          when: "[custom_dns.api == '', custom_dns.cdn == '', custom_dns.frontend == ''] | select() | list | length > 0"
 
       when: shrink_inventory.dns is undefined
 
@@ -377,9 +377,9 @@
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             },
             'dns': {
-              'api': shrink_inventory.dns.api | default (resolved_dns.api),
-              'cdn': shrink_inventory.dns.cdn | default (resolved_dns.cdn),
-              'frontend': shrink_inventory.dns.frontend | default (resolved_dns.frontend)
+              'api': shrink_inventory.dns.api | default (custom_dns.api),
+              'cdn': shrink_inventory.dns.cdn | default (custom_dns.cdn),
+              'frontend': shrink_inventory.dns.frontend | default (custom_dns.frontend)
             }
           }, recursive=True) }}"
 
