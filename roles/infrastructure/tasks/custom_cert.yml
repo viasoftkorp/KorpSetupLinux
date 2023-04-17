@@ -6,7 +6,7 @@
 
 - name: Correção de permissão de arquivos
   ansible.builtin.file:
-    path: "{{ certs_directory }}/{{ itme.name }}"
+    path: "{{ certs_directory }}/{{ item.name }}"
     owner: korp
     group: root
     mode: "{{ item.mode }}"
