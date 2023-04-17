@@ -47,12 +47,7 @@ postgres_container_name: postgres
 apprise_container_name: apprise
 
 frontend:
-  # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
-  dns:
-    api: ""
-    frontend: ""
-    cdn: ""
-  # configurado com base nos valores de 'frontend.dns'
+  # configurado com base nos valores de 'dns', vindo do inventário
   endpoints:
     gateway_url: ""
     cdn_url: ""
@@ -62,8 +57,3 @@ frontend:
 customs:
   docker_account: ""
   docker_image_suffix: ""
-  frontend:
-    dns:
-      api: ""
-      frontend: ""
-      cdn: ""
