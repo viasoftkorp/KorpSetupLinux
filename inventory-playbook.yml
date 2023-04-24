@@ -11,6 +11,9 @@
     mssql_user: "korp.services"
     cert_directory: "/etc/korp/certs"
 
+    custom_cert_has_pass_file: false
+    certbot_automated_email: ""
+
     # valores padrões, podem ser alterados durante o playbook ou durante sua chama
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     custom_setup_info:
@@ -226,16 +229,16 @@
                     - name: Coleta de informações de arquivo de senha
                       ansible.builtin.pause:
                         prompt: "Informe o email que será utilizado para criar o certificado."
-                      register: chk_certbot_automated
+                      register: chk_certbot_automated_email
 
                     - name: Verificação de resposta
                       ansible.builtin.fail:
                         msg: "Valor informado está vazio"
-                      when: chk_certbot_automated.user_input == ""
+                      when: chk_certbot_automated_email.user_input == ""
                       
                     - name: Definição de certbot_automated
                       ansible.builtin.set_fact:
-                        certbot_automated: "{{ chk_certbot_automated.user_input }}"
+                        certbot_automated_email: "{{ chk_certbot_automated_email.user_input }}"
 
                   when: chk_cert.user_input == "3"
 
@@ -430,8 +433,8 @@
               },
               'certbot_automated': {
                 'certificate': shrink_inventory.certs.certbot_automated.certificate | default(certbot_automated_certificate),
-                'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated)
-              }
+                'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated_email)
+              },
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             },
             'dns': {

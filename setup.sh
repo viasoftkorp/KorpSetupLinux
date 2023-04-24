@@ -180,10 +180,10 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
     "db_suffix": "'$db_suffix'",
     "custom_setup_info": {
       "cert": {
-        "cert_type": "'cert_type'",
-        "custom_cert_has_pass": "'custom_cert_has_pass'",
-        "custom_cert_path": "'custom_cert_path'",
-        "automated_cert_email": "'automated_cert_email'"
+        "cert_type": "'$cert_type'",
+        "custom_cert_has_pass": "'$custom_cert_has_pass'",
+        "custom_cert_path": "'$custom_cert_path'",
+        "automated_cert_email": "'$automated_cert_email'"
       },
       "dns": {
         "api": "'$dns_api'",
