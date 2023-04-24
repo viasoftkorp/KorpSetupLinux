@@ -59,6 +59,16 @@
 
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:
+        dest: "{{ config_dir_path }}/nginx/{{ item[:-3] | basename }}"
+        src: "configs/nginx/{{ item | basename }}"
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0644'
+      loop:
+        "{{ lookup('fileglob', 'templates/configs/nginx/*', wantlist=True) | select('search', '.j2') }}"
+
+    - name: Configuração e transferência de arquivos de nginx
+      ansible.builtin.template:
         dest: "{{ config_dir_path }}/nginx/conf.d/{{ item[:-3] | basename }}"
         src: "configs/nginx/conf.d/{{ item | basename }}"
         owner: "{{ linux_korp.user }}"

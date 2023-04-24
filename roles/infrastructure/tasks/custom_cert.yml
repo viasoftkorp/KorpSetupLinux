@@ -1,0 +1,32 @@
+- name: Geração de PFX do certificado auto-assinado com key sem passphrase
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ cert_pfx_path }}"
+    passphrase: "{{ certs.pfx_passphrase }}"
+
+    certificate_path: "{{ cert_crt_path }}"
+    privatekey_path: "{{ cert_privatekey_path }}"
+
+    friendly_name: korp.com.br
+    backup: true
+  register: pfx_status
+  when: not certs.custom.has_pass_file
+
+- name: Geração de PFX do certificado auto-assinado com key com passphrase
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: "{{ cert_pfx_path }}"
+    passphrase: "{{ certs.pfx_passphrase }}"
+
+    certificate_path: "{{ cert_crt_path }}"
+    privatekey_path: "{{ cert_privatekey_path }}"
+    privatekey_passphrase: "{{ lookup('ansible.builtin.file', cert_pass_path) }}"
+
+    friendly_name: korp.com.br
+    backup: true
+  register: pfx_status
+  when: certs.custom.has_pass_file
+
+- name: Reinício do container nginx
+  ansible.builtin.import_tasks: nginx_restart.yml  
+  when: pfx_status.changed

@@ -1,6 +1,6 @@
-- name: Criação do diretório em que as os arquivos de certificado ficarão
+- name: Criação do diretório em que os arquivos de certificado ficarão
   ansible.builtin.file:
-    path: "{{ self_signed_certs_directory }}/"
+    path: "{{ certs_directory }}/"
     state: directory
     mode: '0755'
 
@@ -9,15 +9,15 @@
     size: 4096
     type: RSA
     path: "{{ self_signed_ca_cert_privatekey_path }}"    
-    passphrase: "{{ self_signed_cert.passphrase }}"
+    passphrase: "{{ certs.self_signed.passphrase }}"
     cipher: auto
     backup: true
 
 - name: Geração de CSR (certificate signing request) para geração a CA
   community.crypto.openssl_csr:
-    path: "{{ self_signed_certs_directory }}/ca-cert.csr"
+    path: "{{ certs_directory }}/ca-cert.csr"
     privatekey_path: "{{ self_signed_ca_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
+    privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
     country_name: BR
     state_or_province_name: Parana
     locality_name: Curitiba
@@ -43,8 +43,8 @@
   community.crypto.x509_certificate:
     path: "{{ self_signed_ca_cert_path }}"
     privatekey_path: "{{ self_signed_ca_cert_privatekey_path }}"
-    privatekey_passphrase: "{{ self_signed_cert.passphrase }}"
-    csr_path: "{{ self_signed_certs_directory }}/ca-cert.csr"
+    privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
+    csr_path: "{{ certs_directory }}/ca-cert.csr"
     provider: selfsigned
     selfsigned_not_after: +10950d
     backup: true

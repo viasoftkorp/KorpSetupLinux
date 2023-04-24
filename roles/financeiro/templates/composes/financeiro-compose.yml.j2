@@ -5,9 +5,9 @@ x-extra_hosts:
   - "db_mssql:$DB_MSSQL"
   - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
-  - "{{ frontend.dns.api }}:$API_GATEWAY"
-  - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
-  - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
 
 networks:
   servicos:
@@ -24,11 +24,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-financialaccounting-installment:
     image: "{{ docker_account }}/viasoft.financialaccounting.installment:2.2.x{{ docker_image_suffix }}"
@@ -39,11 +39,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-financialaccounting-accountsreceivable:
     image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.1.x{{ docker_image_suffix }}"
@@ -54,11 +54,11 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-legacy-financeiro:
     image: "{{ docker_account }}/korp.legacy.financeiro:1.0.x{{ docker_image_suffix }}"
@@ -69,8 +69,22 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  viasoft-financialaccounting-accountsreceivable:
+    image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.FinancialAccounting.AccountsReceivable"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

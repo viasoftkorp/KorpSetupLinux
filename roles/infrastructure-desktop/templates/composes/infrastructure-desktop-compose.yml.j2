@@ -5,9 +5,9 @@ x-extra_hosts:
   - "db_mssql:$DB_MSSQL"
   - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
-  - "{{ frontend.dns.api }}:$API_GATEWAY"
-  - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
-  - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
 
 networks:
   servicos:
@@ -24,9 +24,9 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
       # Caso seja alterado o caminho dentro do container, deve-se atualizar o código do serviço
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/:/app/data/"
     networks:
@@ -41,9 +41,9 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
       # Caso seja alterado o caminho dentro do container, deve-se atualizar as props 'DatabasePath' e 'ErrorPath' no KV do consul
       - "{{ dados_docker_dir_path }}/viasoft-email/data/:/app/data"
       - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/app/errors"
@@ -59,9 +59,9 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
 
@@ -74,12 +74,12 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
       - HTTP_PORT=1505
     ports:
       - "1505:1505"
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
 
@@ -92,9 +92,9 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
 
@@ -107,9 +107,9 @@ services:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
       - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos
