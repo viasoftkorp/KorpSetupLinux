@@ -5,9 +5,9 @@ x-extra_hosts:
   - "db_mssql:$DB_MSSQL"
   - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
-  - "{{ frontend.dns.api }}:$API_GATEWAY"
-  - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
-  - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
 
 networks:
   servicos:
@@ -46,7 +46,7 @@ services:
     volumes:
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ self_signed_certs_directory }}/:/etc/nginx/certs/
+      - {{ certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos
     labels:

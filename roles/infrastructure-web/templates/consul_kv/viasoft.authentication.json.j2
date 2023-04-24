@@ -14,8 +14,8 @@
     "EnableSchemaProvisioning": "false"
   },
   "EnableEnvironmentDependentConnectionString": "false",
-  "CertificatePath": "{{ self_signed_cert_pfx_path }}",
-  "CertificatePass": "{{ self_signed_cert.passphrase }}",
+  "CertificatePath": "{{ cert_pfx_path }}",
+  "CertificatePass": "{{ certs.pfx_passphrase }}",
   "AuthenticationProxy": {
     "ClientId": "{{ services_secrets['Viasoft.Legacy.Authentication'].ClientId }}",
     "ClientSecret": "{{ services_secrets['Viasoft.Legacy.Authentication'].ClientSecret }}",

@@ -32,12 +32,14 @@ config_dir_path: "{{ korp_dir_path }}/configs"
 versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
 docker_env_file_path: "{{ compose_dir_path }}/.env"
 
-self_signed_certs_directory: "{{ korp_dir_path }}/certs"
-self_signed_cert_privatekey_path: "{{ self_signed_certs_directory }}/cert.key" 
-self_signed_cert_path: "{{ self_signed_certs_directory }}/cert.crt"
-self_signed_cert_pfx_path: "{{ self_signed_certs_directory }}/cert.pfx"
-self_signed_ca_cert_privatekey_path: "{{ self_signed_certs_directory }}/ca-cert.key"
-self_signed_ca_cert_path: "{{ self_signed_certs_directory }}/ca-cert.crt"
+certs_directory: "{{ korp_dir_path }}/certs"
+cert_privatekey_path: "{{ certs_directory }}/cert.key" 
+cert_crt_path: "{{ certs_directory }}/cert.crt"
+cert_pfx_path: "{{ certs_directory }}/cert.pfx"
+cert_pass_path: "{{ certs_directory }}/cert.pass"
+self_signed_ca_cert_privatekey_path: "{{ certs_directory }}/ca-cert.key"
+self_signed_ca_cert_path: "{{ certs_directory }}/ca-cert.crt"
+containers_cert_path: ""
 
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq
@@ -47,12 +49,7 @@ db_suffix: ""
 db_suffix_divider: "_"
 
 frontend:
-  # pegos durante a chamada de "TenantManagement/server-deploy/token/" na role "infrastructure", ou passados durante a chamada do setup por 'customs.frontend.dns'
-  dns:
-    api: ""
-    frontend: ""
-    cdn: ""
-  # configurado com base nos valores de 'frontend.dns'
+  # configurado com base nos valores de 'dns', vindo do inventário
   endpoints:
     gateway_url: ""
     cdn_url: ""
@@ -62,8 +59,3 @@ frontend:
 customs:
   docker_account: ""
   docker_image_suffix: ""
-  frontend:
-    dns:
-      api: ""
-      frontend: ""
-      cdn: ""

@@ -45,7 +45,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
       networks:
         - servicos
       volumes:
-        - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+        - "{{ certs_directory }}/:{{ certs_directory }}/"
     ```
 
     **Caso seu serviço tenha `volumes` adicionais, siga o passo *4***
@@ -121,7 +121,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
       - ``` yml
         volumes:
-          - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+          - "{{ certs_directory }}/:{{ certs_directory }}/"
           - "{{ dados_docker_dir_path }}/MOB02/data/:/app/data"
           - "{{ dados_docker_dir_path }}/financeiro/errors/:/app/errors" 
         ```
@@ -167,7 +167,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
         networks:
           - servicos
         volumes:
-          - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+          - "{{ certs_directory }}/:{{ certs_directory }}/"
     ```
 
 2. Adicionar variáveis do serviço
@@ -230,9 +230,9 @@ Chamaremos AppId/Domínio de `ID`
       &default-extra_hosts
       - "db_mssql:$DB_MSSQL"
       - "app_server:$APP_SERVER"
-      - "{{ frontend.dns.api }}:$API_GATEWAY"
-      - "{{ frontend.dns.frontend }}:$PORTAL_GATEWAY"
-      - "{{ frontend.dns.cdn }}:$CDN_GATEWAY"
+      - "{{ dns.api }}:$API_GATEWAY"
+      - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+      - "{{ dns.cdn }}:$CDN_GATEWAY"
 
     networks:
       servicos:
