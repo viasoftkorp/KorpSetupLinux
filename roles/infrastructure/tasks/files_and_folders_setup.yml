@@ -43,11 +43,6 @@
 
 - name: Setup de configuração de nginx
   block:
-    - name: Verificação de diretório de configuração de nginx
-      ansible.builtin.stat:
-        path: "{{ config_dir_path }}/nginx/conf.d"
-      register: korp_nginx_conf_folder
-
     - name: Criação de diretório de configuração de nginx
       ansible.builtin.file:
         path: "{{ config_dir_path }}/nginx/conf.d"
@@ -55,7 +50,6 @@
         mode: '0755'
         owner: "{{ linux_korp.user }}"
         group: root
-      when: not korp_nginx_conf_folder.stat.exists
 
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:

@@ -31,7 +31,6 @@
     env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-compose.yml
-      - nginx-compose.yml
 
 # Configuração de certificado vem depois de configuração do compose pois é necessário nginx para configurá-lo
 - name: Configuração de certificado automatizado
