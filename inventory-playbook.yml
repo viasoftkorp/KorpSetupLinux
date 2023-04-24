@@ -210,6 +210,15 @@
                       ansible.builtin.set_fact:
                         custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
 
+                    - name: Leitura de pasta de certificados
+                      ansible.builtin.pause:
+                        prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
+                      register: custom_certs_folder_return
+
+                    - name: Definição de caminho de pasta de certificados
+                      ansible.builtin.set_fact:
+                        custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
+
                   when: chk_cert.user_input == "2"
 
                 - name: Setup de 'Certificado Automático com LestEncrypt'
@@ -217,16 +226,16 @@
                     - name: Coleta de informações de arquivo de senha
                       ansible.builtin.pause:
                         prompt: "Informe o email que será utilizado para criar o certificado."
-                      register: chk_certbot_automated_email
+                      register: chk_certbot_automated
 
                     - name: Verificação de resposta
                       ansible.builtin.fail:
                         msg: "Valor informado está vazio"
-                      when: chk_certbot_automated_email.user_input == ""
+                      when: chk_certbot_automated.user_input == ""
                       
-                    - name: Definição de certbot_automated_email
+                    - name: Definição de certbot_automated
                       ansible.builtin.set_fact:
-                        certbot_automated_email: "{{ chk_certbot_automated_email.user_input }}"
+                        certbot_automated: "{{ chk_certbot_automated.user_input }}"
 
                   when: chk_cert.user_input == "3"
 
@@ -250,7 +259,7 @@
                     - name: Garantia de definição de flags
                       ansible.builtin.fail:
                         msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
-                      when: setupinfo_custom_cert_has_pass == "" or setupinfo_custom_cert_path == ""
+                      when: custom_setup_info.cert.custom_cert_has_pass == "" or custom_setup_info.cert.custom_cert_path == ""
 
                   when: custom_setup_info.cert.cert_type == "custom"
 
@@ -265,73 +274,66 @@
 
                 - name: Definição de variáveis
                   ansible.builtin.set_fact:
-                    custom_certificate: true
-                    custom_cert_has_pass_file: "{{ setupinfo_custom_cert_has_pass | bool }}"
-                    self_signed_certificate: false
-                    custom_certs_folder: "{{ setupinfo_custom_cert_path }}"
+                    custom_certificate: "{{ custom_setup_info.cert.cert_type == "custom" | bool }}"
+                    self_signed_certificate: "{{ custom_setup_info.cert.cert_type == "selfsigned" | bool }}"
+                    certbot_automated_certificate: "{{ custom_setup_info.cert.cert_type == "certbot" | bool }}"
+                    custom_cert_has_pass_file: "{{ custom_setup_info.cert.custom_cert_has_pass | bool }}"
+                    custom_certs_folder: "{{ custom_setup_info.cert.custom_cert_path }}"
+                    certbot_automated_email: "{{ custom_setup_info.cert.automated_cert_email }}"
 
               when: custom_setup_info.cert.cert_type != ""
 
-            - name: Certificado customizado
+            - name: Setup de certificados
               block:
-                - name: Leitura de pasta de certificados
-                  ansible.builtin.pause:
-                    prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
-                  when: setupinfo_custom_cert == ""
-                  register: custom_certs_folder_return
+                - name: Setup padrão de certificado customizado
+                  block:
+                    - name: Garantia de "/" no caminho da pasta de certificados
+                      ansible.builtin.set_fact:
+                        custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
+                      when: custom_certs_folder | last == "/"            
 
-                - name: Definição de caminho de pasta de certificados
-                  ansible.builtin.set_fact:
-                    custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
-                  when: setupinfo_custom_cert == ""
+                    - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.crt"
+                      register: cert_crt_file_status
 
-                - name: Garantia de "/" no caminho da pasta de certificados
-                  ansible.builtin.set_fact:
-                    custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
-                  when: custom_certs_folder | last == "/"            
+                    - name: "Leitura de {{ custom_certs_folder }}/cert.key"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.key"
+                      register: cert_key_file_status
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.crt"
-                  register: cert_crt_file_status
+                    - name: "Leitura de {{ custom_certs_folder }}/cert.pass"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.pass"
+                      register: cert_pass_file_status
+                      when: custom_cert_has_pass_file
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.key"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.key"
-                  register: cert_key_file_status
+                    - name: Garantia de existência de arquivos de certificado
+                      ansible.builtin.fail:
+                        msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
+                      when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.stat.exists)
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.pass"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.pass"
-                  register: cert_pass_file_status
-                  when: custom_cert_has_pass_file
+                    - name: Criação do diretório em que as os arquivos de certificado ficarão
+                      ansible.builtin.file:
+                        path: "{{ cert_directory }}/"
+                        state: directory
+                        mode: '0755'
 
-                - name: Garantia de existência de arquivos de certificado
-                  ansible.builtin.fail:
-                    msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
-                  when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.stat.exists)
+                    - name: Copia de arquivos de certificado
+                      ansible.builtin.copy:
+                        dest: "{{ cert_directory }}/{{ item }}"
+                        src: "{{ custom_certs_folder }}/{{ item }}"
+                        # owner e permissões dos arquivos serão alteradas depois
+                        owner: root
+                        group: root
+                        mode: '0777'
+                      when: item != "cert.pass" or custom_cert_has_pass_file
+                      loop:
+                        - "cert.crt"
+                        - "cert.key"
+                        - "cert.pass"
 
-                - name: Criação do diretório em que as os arquivos de certificado ficarão
-                  ansible.builtin.file:
-                    path: "{{ cert_directory }}/"
-                    state: directory
-                    mode: '0755'
-
-                - name: Copia de arquivos de certificado
-                  ansible.builtin.copy:
-                    dest: "{{ cert_directory }}/{{ item }}"
-                    src: "{{ custom_certs_folder }}/{{ item }}"
-                    # owner e permissões dos arquivos serão alteradas depois
-                    owner: root
-                    group: root
-                    mode: '0777'
-                  when: item != "cert.pass" or custom_cert_has_pass_file
-                  loop:
-                    - "cert.crt"
-                    - "cert.key"
-                    - "cert.pass"
-
-              when: custom_certificate
+                  when: custom_setup_info.cert.cert_type == "certbot"
 
           when: not cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
@@ -428,7 +430,7 @@
               },
               'certbot_automated': {
                 'certificate': shrink_inventory.certs.certbot_automated.certificate | default(certbot_automated_certificate),
-                'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated_email)
+                'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated)
               }
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             },
