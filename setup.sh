@@ -22,15 +22,21 @@ create_random_string() {
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 ## Certificados
-#   custom_cert=false - OPCIONAL, caso passado tona obrigatório a variável 'custom_cert_path'
-#   custom_cert_has_pass=false - OBRIGATÓRIO caso custom_cert==true - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
-#   custom_cert_path="<certs_path>" - OBRIGATÓRIO caso custom_cert==true - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
+#   cert_type="<cert_type>"                         - OPCIONAL - pode ter os valores: [selfsigned, custom, certbot]
+#   custom_cert_has_pass=false                      - OBRIGATÓRIO caso cert_type==custom - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
+#   custom_cert_path="<certs_path>"                 - OBRIGATÓRIO caso cert_type==custom - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
+#   automated_cert_email="<automated_cert_email>"   - OBRIGATÓRIO caso cert_type==_ - Email em que o LetsEncrypt irá enviar notificações
 ## DNSs
-#   dns_api="<dns.domain>" - OPCIONAL
+#   dns_api="<dns.domain>"      - OPCIONAL
+#   dns_cdn="<dns.domain>"      - OPCIONAL
 #   dns_frontend="<dns.domain>" - OPCIONAL
-#   dns_cdn="<dns.domain>" - OPCIONAL
 
-install_apps=""; docker_account=""; ansible_tags=""; dns_api=""; dns_frontend=""; dns_cdn=""; db_suffix=""; branch_name=""; docker_image_suffix=""; custom_cert=""; custom_cert_has_pass=""; custom_cert_path="";
+install_apps=""; docker_account=""; ansible_tags="";
+branch_name=""; docker_image_suffix="";
+db_suffix="";
+dns_api=""; dns_frontend=""; dns_cdn="";
+cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; automated_cert_email="";
+
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
@@ -172,13 +178,18 @@ wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branc
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
     "db_suffix": "'$db_suffix'",
-    "setupinfo_custom_cert": "'$custom_cert'",
-    "setupinfo_custom_cert_has_pass": "'$custom_cert_has_pass'",
-    "setupinfo_custom_cert_path": "'$custom_cert_path'",
-    "custom_dns": {
-      "api": "'$dns_api'",
-      "frontend": "'$dns_frontend'",
-      "cdn": "'$dns_cdn'"
+    "custom_setup_info": {
+      "cert": {
+        "cert_type": "'cert_type'",
+        "custom_cert_has_pass": "'custom_cert_has_pass'",
+        "custom_cert_path": "'custom_cert_path'",
+        "automated_cert_email": "'automated_cert_email'"
+      },
+      "dns": {
+        "api": "'$dns_api'",
+        "frontend": "'$dns_frontend'",
+        "cdn": "'$dns_cdn'"
+      }
     }
   }'
 

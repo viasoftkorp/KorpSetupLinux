@@ -1,0 +1,53 @@
+# Certbot armazena logs em: /var/log/letsencrypt/letsencrypt.log
+# Documentação do Certbot: https://eff-certbot.readthedocs.io/en/stable/using.html
+
+# Documentação do certbot recomenda instalação de certbot com snap
+- name: Instalação de certbot com snap 
+  community.general.snap:
+    classic: true
+    name:
+      - certbot
+
+- name: Cria de symlink para certbot
+  ansible.builtin.file:
+    src: /snap/bin/certbot
+    dest: /usr/bin/certbot
+    state: link
+
+- name: Criação de certificado pelo Certbot 
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly 
+      --webroot
+      --webroot-path /etc/korp/configs/nginx/letsencrypt 
+      --email {{ certs.certbot_automated.email }}
+      --deploy-hook /etc/korp/scripts/nginx_reload.sh
+      --cert-name portal-local.korp.com.br 
+      -d {{ dns.api }} -d {{ dns.dns }} -d {{ dns.frontend }}
+      --agree-tos 
+      --noninteractive
+      --staging
+    # TODO remover --staging
+
+# TODO verificar que cronjob padrão do certbot está funcionando
+
+# TODO testar envio de email
+
+- name: Configuração e transferência de arquivos de nginx
+  ansible.builtin.template:
+    dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+    src: "configs/nginx/conf.d/{{ item }}.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    - "korp.conf"
+    - "korp-api.conf"
+    - "korp-cdn.conf"
+  register: nginx_files_status
+
+- name: Reload de nginx
+  community.docker.docker_container_exec:
+    container: nginx
+    command: bash -c "/usr/sbin/nginx -s reload"
+  when: nginx_files_status.changed

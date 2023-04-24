@@ -59,23 +59,55 @@
 
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:
-        dest: "{{ config_dir_path }}/nginx/{{ item[:-3] | basename }}"
-        src: "configs/nginx/{{ item | basename }}"
+        dest: "{{ config_dir_path }}/nginx/{{ item }}"
+        src: "configs/nginx/{{ item }}.j2"
         owner: "{{ linux_korp.user }}"
         group: root
         mode: '0644'
       loop:
-        "{{ lookup('fileglob', 'templates/configs/nginx/*', wantlist=True) | select('search', '.j2') }}"
+        - "ssl_conf"
 
     - name: Configuração e transferência de arquivos de nginx
       ansible.builtin.template:
-        dest: "{{ config_dir_path }}/nginx/conf.d/{{ item[:-3] | basename }}"
-        src: "configs/nginx/conf.d/{{ item | basename }}"
+        dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+        src: "configs/nginx/conf.d/{{ item }}.j2"
         owner: "{{ linux_korp.user }}"
         group: root
         mode: '0644'
       loop:
-        "{{ lookup('fileglob', 'templates/configs/nginx/conf.d/*', wantlist=True) | select('search', '.j2') }}"
+        - "korp.conf"
+        - "korp-api.conf"
+        - "korp-cdn.conf"
+      # arquivos devem ser copiados posteriormente caso o certificado seja provisionado pelo certbot
+      when: not certs.certbot_automated.certificate
+
+    - name: Configuração para certbot
+      block:
+        - name: Verificação de diretório de certbot
+          ansible.builtin.stat:
+            path: "{{ certbot_dir_path }}/live"
+          register: certbot_folder
+
+        - name: Criação de diretório de certbot
+          ansible.builtin.file:
+            path: "{{ certbot_dir_path }}/live"
+            state: directory
+            mode: '0755'
+            owner: root
+            group: root
+          when: not certbot_folder
+
+        - name: Configuração e transferência de arquivo 'acme-challenge'
+          ansible.builtin.template:
+            dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+            src: "configs/nginx/conf.d/{{ item }}.j2"
+            owner: "{{ linux_korp.user }}"
+            group: root
+            mode: '0644'
+          loop:
+            - "acme-challenge.conf"
+
+      when: certs.certbot_automated.certificate
 
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.

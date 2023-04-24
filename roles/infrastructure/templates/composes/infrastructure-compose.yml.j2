@@ -35,23 +35,6 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: false
 
-  nginx:
-    image: "nginx:latest"
-    container_name: "nginx"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
-      - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ certs_directory }}/:/etc/nginx/certs/
-    networks:
-      - servicos
-    labels:
-      com.centurylinklabs.watchtower.enable: false
-
   fabio:
     image: "fabiolb/fabio:latest"
     container_name: "fabio"
