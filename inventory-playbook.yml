@@ -274,9 +274,9 @@
 
                 - name: Definição de variáveis
                   ansible.builtin.set_fact:
-                    custom_certificate: "{{ custom_setup_info.cert.cert_type == "custom" | bool }}"
-                    self_signed_certificate: "{{ custom_setup_info.cert.cert_type == "selfsigned" | bool }}"
-                    certbot_automated_certificate: "{{ custom_setup_info.cert.cert_type == "certbot" | bool }}"
+                    custom_certificate: "{{ custom_setup_info.cert.cert_type == 'custom' | bool }}"
+                    self_signed_certificate: "{{ custom_setup_info.cert.cert_type == 'selfsigned' | bool }}"
+                    certbot_automated_certificate: "{{ custom_setup_info.cert.cert_type == 'certbot' | bool }}"
                     custom_cert_has_pass_file: "{{ custom_setup_info.cert.custom_cert_has_pass | bool }}"
                     custom_certs_folder: "{{ custom_setup_info.cert.custom_cert_path }}"
                     certbot_automated_email: "{{ custom_setup_info.cert.automated_cert_email }}"
