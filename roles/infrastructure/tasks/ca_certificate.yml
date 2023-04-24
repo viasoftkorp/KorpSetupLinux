@@ -1,9 +1,3 @@
-- name: Criação do diretório em que os arquivos de certificado ficarão
-  ansible.builtin.file:
-    path: "{{ certs_directory }}/"
-    state: directory
-    mode: '0755'
-
 - name: Geração de chave privada para o certificado da CA (RSA, 4096)
   community.crypto.openssl_privatekey:
     size: 4096

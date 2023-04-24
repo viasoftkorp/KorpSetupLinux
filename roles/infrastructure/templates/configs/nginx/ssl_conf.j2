@@ -1,12 +1,12 @@
 listen 443 ssl;
 
 {% if certs.certbot_automated.certificate %}
-    ssl_certificate {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/fullchain.pem;
-    ssl_certificate_key {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/privkey.pem;
+ssl_certificate {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/fullchain.pem;
+ssl_certificate_key {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/privkey.pem;
 {% else %}
-    ssl_certificate     /etc/nginx/certs/cert.crt;
-    ssl_certificate_key /etc/nginx/certs/cert.key;
-    {% if certs.self_signed.certificate and certs.custom.has_pass_file %}
-        ssl_password_file   /etc/nginx/certs/cert.pass;
-    {% endif %}
+ssl_certificate     /etc/nginx/certs/cert.crt;
+ssl_certificate_key /etc/nginx/certs/cert.key;
+  {% if certs.self_signed.certificate or certs.custom.has_pass_file %}
+ssl_password_file   /etc/nginx/certs/cert.pass;
+  {% endif %}
 {% endif %}

@@ -102,11 +102,14 @@
 
 - name: Garantia de existência de diretório de configurações
   ansible.builtin.file:
-    path: "{{ config_dir_path }}/"
+    path: "{{ item }}/"
     state: directory
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
+  loop:
+    - "{{ config_dir_path }}"
+    - "{{ certs_directory }}"
 
 # essa task deve ser feita aqui pois precisamos do usuário root para alterar o owner dos arquivos
 - name: Correção de permissão de arquivos de certificado

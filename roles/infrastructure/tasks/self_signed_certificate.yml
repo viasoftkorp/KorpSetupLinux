@@ -1,8 +1,4 @@
-- name: Criação do diretório em que as os arquivos de certificado ficarão
-  ansible.builtin.file:
-    path: "{{ certs_directory }}/"
-    state: directory
-    mode: '0755'
+
 
 - name: Criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
   ansible.builtin.copy:
@@ -13,6 +9,7 @@
 
 - name: Geração de chave privada para o certificado assinado pela CA (RSA, 2048)
   community.crypto.openssl_privatekey:
+    owner: "{{ linux_korp.user }}"
     size: 2048
     type: RSA
     path: "{{ cert_privatekey_path }}"    
