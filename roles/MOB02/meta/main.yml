@@ -3,3 +3,4 @@ dependencies:
   - role: vendas
   - role: logistica
   - role: ERP
+  - role: MOB01
