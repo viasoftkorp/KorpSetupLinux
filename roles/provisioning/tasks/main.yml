@@ -133,3 +133,28 @@
     path: "{{ certs_directory}}"
     owner: "{{ linux_korp.user }}"
   when: certs.custom.certificate
+
+# Documentação do certbot recomenda instalação de certbot com snap
+- name: Instalação de certbot
+  block:
+    - name: Instalação de certbot com snap 
+      community.general.snap:
+        classic: true
+        name:
+          - certbot
+
+    - name: Cria de symlink para certbot
+      ansible.builtin.file:
+        src: /snap/bin/certbot
+        dest: /usr/bin/certbot
+        state: link
+
+    - name: Correção de permissões de /var/log/letsencrypt/
+      ansible.builtin.file:
+        path: /var/log/letsencrypt/
+        state: directory
+        mode: '0775'
+        owner: root
+        group: root
+
+  when: certs.certbot_automated.certificate

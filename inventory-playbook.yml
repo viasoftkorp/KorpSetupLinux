@@ -295,17 +295,17 @@
                         custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
                       when: custom_certs_folder | last == "/"            
 
-                    - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
+                    - name: "Leitura de diretório informado"
                       ansible.builtin.stat:
                         path: "{{ custom_certs_folder }}/cert.crt"
                       register: cert_crt_file_status
 
-                    - name: "Leitura de {{ custom_certs_folder }}/cert.key"
+                    - name: "Leitura de diretório informado"
                       ansible.builtin.stat:
                         path: "{{ custom_certs_folder }}/cert.key"
                       register: cert_key_file_status
 
-                    - name: "Leitura de {{ custom_certs_folder }}/cert.pass"
+                    - name: "Leitura de diretório informado"
                       ansible.builtin.stat:
                         path: "{{ custom_certs_folder }}/cert.pass"
                       register: cert_pass_file_status

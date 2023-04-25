@@ -77,19 +77,19 @@
 
     - name: Configuração para certbot
       block:
-        - name: Verificação de diretório de certbot
-          ansible.builtin.stat:
-            path: "{{ certbot_dir_path }}/live"
-          register: certbot_folder
+        # - name: Verificação de diretório de certbot
+        #   ansible.builtin.stat:
+        #     path: "{{ certbot_dir_path }}/live"
+        #   register: certbot_folder
 
-        - name: Criação de diretório de certbot
-          ansible.builtin.file:
-            path: "{{ certbot_dir_path }}/live"
-            state: directory
-            mode: '0755'
-            owner: root
-            group: root
-          when: not certbot_folder
+        # - name: Criação de diretório de certbot
+        #   ansible.builtin.file:
+        #     path: "{{ certbot_dir_path }}/live"
+        #     state: directory
+        #     mode: '0755'
+        #     owner: root
+        #     group: root
+        #   when: not certbot_folder
 
         - name: Configuração e transferência de arquivo 'acme-challenge'
           ansible.builtin.template:

@@ -11,6 +11,9 @@ server {
     }
 
     location / {
-        try_files $uri $uri/ = 404;
+        root /usr/share/nginx/html;
+
+        error_page 404 /404.html;
+        return 404;
     }
 }

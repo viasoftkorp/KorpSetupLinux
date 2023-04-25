@@ -28,7 +28,9 @@ services:
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
       - {{ certs_directory }}/:/etc/nginx/certs/
     {% if certs.certbot_automated.certificate %}
-      - {{ certbot_dir_path }}/:{{ certbot_dir_path }}/
+
+      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
+
     {% endif %}
 
     networks:

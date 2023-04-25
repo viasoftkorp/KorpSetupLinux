@@ -1,8 +1,8 @@
 listen 443 ssl;
 
 {% if certs.certbot_automated.certificate %}
-ssl_certificate {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/fullchain.pem;
-ssl_certificate_key {{ certbot_dir_path }}/live/{{ certbot_cert_name }}/privkey.pem;
+ssl_certificate /etc/nginx/certs/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem;
+ssl_certificate_key /etc/nginx/certs/letsencrypt/live/{{ certbot_cert_name }}/privkey.pem;
 {% else %}
 ssl_certificate     /etc/nginx/certs/cert.crt;
 ssl_certificate_key /etc/nginx/certs/cert.key;
