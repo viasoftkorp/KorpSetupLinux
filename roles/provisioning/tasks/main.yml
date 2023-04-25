@@ -134,9 +134,10 @@
     owner: "{{ linux_korp.user }}"
   when: certs.custom.certificate
 
-# Documentação do certbot recomenda instalação de certbot com snap
+# essas task precisam ser feitas nessa role pois precisamos estar logados com root
 - name: Instalação de certbot
   block:
+    # Documentação do certbot recomenda instalação de certbot com snap
     - name: Instalação de certbot com snap 
       community.general.snap:
         classic: true
@@ -149,12 +150,16 @@
         dest: /usr/bin/certbot
         state: link
 
-    - name: Correção de permissões de /var/log/letsencrypt/
+    - name: Criação de diretórios de letsencrypt
       ansible.builtin.file:
-        path: /var/log/letsencrypt/
+        path: "{{ item }}"
         state: directory
-        mode: '0775'
-        owner: root
+        mode: '0755'
+        owner: "{{ linux_korp.user }}"
         group: root
+      loop:
+        - "{{ certs_directory }}/letsencrypt/logs"
+        - "{{ certs_directory }}/letsencrypt/lib"
+        - "{{ config_dir_path }}/nginx/letsencrypt"
 
   when: certs.certbot_automated.certificate
