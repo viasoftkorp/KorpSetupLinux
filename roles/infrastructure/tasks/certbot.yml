@@ -1,7 +1,6 @@
 # Certbot armazena logs em: /var/log/letsencrypt/letsencrypt.log
 # Documentação do Certbot: https://eff-certbot.readthedocs.io/en/stable/using.html
 
-
 - name: Criação de diretório de letsencrypt
   ansible.builtin.file:
     path: "{{ item }}"
@@ -29,12 +28,9 @@
       -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }}
       --agree-tos 
       --noninteractive
-      --staging
+    # --staging
     # TODO remover --staging
 
-- name:
-  ansible.builtin.pause:
-    msg: aaaaaaaaaaaa
 # TODO verificar que cronjob padrão do certbot está funcionando
 
 # TODO testar envio de email
