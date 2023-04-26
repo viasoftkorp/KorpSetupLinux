@@ -28,7 +28,7 @@
   when: certs.custom.has_pass_file
 
 - name: Reinício do container nginx
-  ansible.builtin.import_tasks: nginx_restart.yml  
+  ansible.builtin.import_tasks: nginx_restart.yml
   # TODO quando pfx é alterado, reiniciar authentication
   when: pfx_status.changed
 
