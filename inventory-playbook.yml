@@ -235,8 +235,8 @@
                       ansible.builtin.fail:
                         msg: "Valor informado está vazio"
                       when: chk_certbot_automated_email.user_input == ""
-                      
-                    - name: Definição de certbot_automated
+
+                    - name: Definição de certbot_automated_email
                       ansible.builtin.set_fact:
                         certbot_automated_email: "{{ chk_certbot_automated_email.user_input }}"
 
