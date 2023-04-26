@@ -16,7 +16,7 @@
   - name: Provisão do certificado assinado pela CA
     ansible.builtin.import_tasks: self_signed_certificate.yml
 
-  when: not certs.custom.certificate
+  when: certs.self_signed.certificate
 
 - name: Configuração de certificado customizado
   ansible.builtin.import_tasks: custom_cert.yml
