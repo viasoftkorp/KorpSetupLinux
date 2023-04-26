@@ -14,14 +14,14 @@
     custom_cert_has_pass_file: false
     certbot_automated_email: ""
 
-    # valores padrões, podem ser alterados durante o playbook ou durante sua chama
+    # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     custom_setup_info:
       cert:
         cert_type: ""
         custom_cert_has_pass: false
         custom_cert_path: ""
-        automated_cert_email: ""
+        certbot_email: ""
       dns:
         api: ""
         cdn: ""
@@ -226,7 +226,7 @@
 
                 - name: Setup de 'Certificado Automático com LestEncrypt'
                   block:
-                    - name: Coleta de informações de arquivo de senha
+                    - name: Coleta de email
                       ansible.builtin.pause:
                         prompt: "Informe o email que será utilizado para criar o certificado."
                       register: chk_certbot_automated_email
@@ -271,7 +271,7 @@
                     - name: Garantia de definição de flags
                       ansible.builtin.fail:
                         msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
-                      when: custom_setup_info.cert.automated_cert_email == ""
+                      when: custom_setup_info.cert.certbot_email == ""
 
                   when: custom_setup_info.cert.cert_type == "certbot"
 
@@ -282,7 +282,7 @@
                     certbot_automated_certificate: "{{ custom_setup_info.cert.cert_type == 'certbot' | bool }}"
                     custom_cert_has_pass_file: "{{ custom_setup_info.cert.custom_cert_has_pass | bool }}"
                     custom_certs_folder: "{{ custom_setup_info.cert.custom_cert_path }}"
-                    certbot_automated_email: "{{ custom_setup_info.cert.automated_cert_email }}"
+                    certbot_automated_email: "{{ custom_setup_info.cert.certbot_email }}"
 
               when: custom_setup_info.cert.cert_type != ""
 

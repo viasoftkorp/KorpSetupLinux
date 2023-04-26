@@ -24,9 +24,7 @@
       --agree-tos 
       --noninteractive
 
-# TODO verificar que cronjob padrão do certbot está funcionando
-
-# TODO testar envio de email
+# TODO - Cria cronjob com horário customizável
 
 - name: Configuração e transferência de arquivos de nginx
   ansible.builtin.template:

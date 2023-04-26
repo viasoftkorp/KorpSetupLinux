@@ -100,7 +100,7 @@
     owner: www-data
     group: www-data
 
-- name: Garantia de existência de diretório de configurações
+- name: Garantia de existência de diretórios
   ansible.builtin.file:
     path: "{{ item }}/"
     state: directory

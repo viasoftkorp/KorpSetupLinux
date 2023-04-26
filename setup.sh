@@ -25,7 +25,7 @@ create_random_string() {
 #   cert_type="<cert_type>"                         - OPCIONAL - pode ter os valores: [selfsigned, custom, certbot]
 #   custom_cert_has_pass=false                      - OBRIGATÓRIO caso cert_type==custom - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
 #   custom_cert_path="<certs_path>"                 - OBRIGATÓRIO caso cert_type==custom - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
-#   automated_cert_email="<automated_cert_email>"   - OBRIGATÓRIO caso cert_type==_ - Email em que o LetsEncrypt irá enviar notificações
+#   certbot_email="<certbot_email>"   - OBRIGATÓRIO caso cert_type==certbot - Email em que o LetsEncrypt irá enviar notificações
 ## DNSs
 #   dns_api="<dns.domain>"      - OPCIONAL
 #   dns_cdn="<dns.domain>"      - OPCIONAL
@@ -35,7 +35,7 @@ install_apps=""; docker_account=""; ansible_tags="";
 branch_name=""; docker_image_suffix="";
 db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
-cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; automated_cert_email="";
+cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
@@ -183,7 +183,7 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "cert_type": "'$cert_type'",
         "custom_cert_has_pass": "'$custom_cert_has_pass'",
         "custom_cert_path": "'$custom_cert_path'",
-        "automated_cert_email": "'$automated_cert_email'"
+        "certbot_email": "'$certbot_email'"
       },
       "dns": {
         "api": "'$dns_api'",

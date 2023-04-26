@@ -25,7 +25,7 @@
 - name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
-- name: Criação e inicialização de composes
+- name: Criação e inicialização de infrastructure-compose
   community.docker.docker_compose:
     project_src: "{{ compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
