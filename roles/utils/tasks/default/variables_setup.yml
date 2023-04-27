@@ -36,6 +36,15 @@
         containers_cert_path: "{{ self_signed_ca_cert_path }}"
       when: certs.self_signed.certificate
 
+    - name: Definição de containers_cert_path para certbot_automated
+      ansible.builtin.set_fact:
+        containers_cert_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
+        cert_privatekey_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/privkey.pem"
+        cert_crt_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
+      when: certs.certbot_automated.certificate
+
+# /etc/nginx/certs/letsencrypt/live/portal-local.korp.com.br/fullchain.pem
+
     - name: Configuração de variáveis personalizadas
       block:
         - name: Definição de variáveis
