@@ -28,19 +28,29 @@
       --agree-tos
       --noninteractive
       --key-type rsa
+      --staging
 
+# TODO testar essa task
+# - name: Remoção de cronjob padrão de certbot
+#   ansible.builtin.cron:
+#     name: "certbot custom"
+#     state: absent
 
 # TODO - Cria cronjob com horário customizável
+- name: Criação de cronjob customizado para certbot
+  ansible.builtin.cron:
+    name: "certbot custom"
+    hour: "1"
+    job: "/etc/korp/scripts/nginx_reload.sh"
+ # TODO - script 'certbot renew'
 
 - name: Geração de PFX do certificado
   community.crypto.openssl_pkcs12:
     action: export
     path: "{{ cert_pfx_path }}"
     passphrase: "{{ certs.pfx_passphrase }}"
-
     certificate_path: "{{ cert_crt_path }}"
     privatekey_path: "{{ cert_privatekey_path }}"
-
     friendly_name: portal-local.korp.com.br
     backup: true
   register: pfx_status

@@ -40,7 +40,8 @@
       ansible.builtin.set_fact:
         containers_cert_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
         cert_privatekey_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/privkey.pem"
-        cert_crt_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
+        cert_crt_path: "{{ certs_directory }}/ca-lets.crt"
+        # cert_crt_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
       when: certs.certbot_automated.certificate
 
 # /etc/nginx/certs/letsencrypt/live/portal-local.korp.com.br/fullchain.pem
