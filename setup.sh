@@ -190,7 +190,7 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "frontend": "'$dns_frontend'",
         "cdn": "'$dns_cdn'"
       }
-    }
+    }'
 
 if [ $? != 0 ]
 then
