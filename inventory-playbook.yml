@@ -12,6 +12,7 @@
     cert_directory: "/etc/korp/certs"
 
     custom_cert_has_pass_file: false
+    custom_certs_folder: ""
     certbot_automated_email: ""
 
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
@@ -356,10 +357,14 @@
 
         - name: Definição de valores de DNS padrão
           ansible.builtin.set_fact:
-            custom_setup_info.dns:
-              api: "korp-api.local"
-              cdn: "korp-cdn.local"
-              frontend: "korp.local"
+            custom_setup_info: "{{ custom_setup_info | combine(
+              {
+                'dns': {
+                  'api': 'korp-api.local',
+                  'cdn': 'korp-cdn.local',
+                  'frontend': 'korp.local'
+                }
+              }, recursive=True) }}"
           when: undefined_dns_num == "3"
 
         - name: Verificação de DNS customizado

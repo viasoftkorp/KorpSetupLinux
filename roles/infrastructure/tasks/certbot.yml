@@ -51,7 +51,6 @@
     friendly_name: portal-local.korp.com.br
     backup: true
   register: pfx_status
-  when: not certs.custom.has_pass_file
 
 - name: Configuração e transferência de arquivos de nginx
   ansible.builtin.template:

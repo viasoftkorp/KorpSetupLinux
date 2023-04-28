@@ -39,8 +39,6 @@
     - name: Definição de containers_cert_path para certbot_automated
       ansible.builtin.set_fact:
         containers_cert_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
-        # TODO - remover linha de baixo
-        # containers_cert_path: "{{ certs_directory }}/ca-lets.crt"
         cert_privatekey_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/privkey.pem"
         cert_crt_path: "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
       when: certs.certbot_automated.certificate
