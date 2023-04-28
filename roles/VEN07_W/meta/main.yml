@@ -1,4 +1,5 @@
 dependencies:
+  - role: CDP01
   - role: contabil
   - role: compras
   - role: engenharia

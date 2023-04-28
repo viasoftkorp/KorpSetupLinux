@@ -100,6 +100,17 @@
     owner: www-data
     group: www-data
 
+- name: Garantia de existência de diretórios
+  ansible.builtin.file:
+    path: "{{ item }}/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ config_dir_path }}"
+    - "{{ certs_directory }}"
+
 # essa task deve ser feita aqui pois precisamos do usuário root para alterar o owner dos arquivos
 - name: Correção de permissão de arquivos de certificado
   ansible.builtin.file:
@@ -122,3 +133,33 @@
     path: "{{ certs_directory}}"
     owner: "{{ linux_korp.user }}"
   when: certs.custom.certificate
+
+# essas task precisam ser feitas nessa role pois precisamos estar logados com root
+- name: Instalação de certbot
+  block:
+    # Documentação do certbot recomenda instalação de certbot com snap
+    - name: Instalação de certbot com snap 
+      community.general.snap:
+        classic: true
+        name:
+          - certbot
+
+    - name: Cria de symlink para certbot
+      ansible.builtin.file:
+        src: /snap/bin/certbot
+        dest: /usr/bin/certbot
+        state: link
+
+    - name: Criação de diretórios de letsencrypt
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ linux_korp.user }}"
+        group: root
+      loop:
+        - "{{ certs_directory }}/letsencrypt/logs"
+        - "{{ certs_directory }}/letsencrypt/lib"
+        - "{{ config_dir_path }}/nginx/letsencrypt"
+
+  when: certs.certbot_automated.certificate

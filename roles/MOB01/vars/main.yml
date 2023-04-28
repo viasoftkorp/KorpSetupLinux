@@ -1,0 +1,5 @@
+services:
+  Viasoft.Vendas.Mobile.Configuracao:
+    db: 
+      name: Viasoft_Vendas_Mobile_Configuracao
+      type: postgres

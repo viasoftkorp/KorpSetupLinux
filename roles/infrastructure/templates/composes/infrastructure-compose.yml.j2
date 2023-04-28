@@ -15,6 +15,29 @@ networks:
       name: servicos
 
 services:
+  nginx:
+    image: "nginx:latest"
+    container_name: "nginx"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
+      - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
+      - {{ certs_directory }}/:/etc/nginx/certs/
+    {% if certs.certbot_automated.certificate %}
+
+      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
+
+    {% endif %}
+
+    networks:
+      - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
   consul-server:
     image: "consul:1.12"
     container_name: "consul-server"
@@ -30,23 +53,6 @@ services:
     volumes:
       - "{{ config_dir_path }}/consul-server.json:/consul/config/server.json"
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
-    networks:
-      - servicos
-    labels:
-      com.centurylinklabs.watchtower.enable: false
-
-  nginx:
-    image: "nginx:latest"
-    container_name: "nginx"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
-      - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ certs_directory }}/:/etc/nginx/certs/
     networks:
       - servicos
     labels:
@@ -186,6 +192,3 @@ services:
     networks:
       servicos:  
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.2"
-
-
-      

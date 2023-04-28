@@ -41,6 +41,8 @@ self_signed_ca_cert_privatekey_path: "{{ certs_directory }}/ca-cert.key"
 self_signed_ca_cert_path: "{{ certs_directory }}/ca-cert.crt"
 containers_cert_path: ""
 
+certbot_cert_name: "portal-local.korp.com.br"
+
 redis_container_name: redis
 rabbitmq_container_name: rabbitmq
 postgres_container_name: postgres

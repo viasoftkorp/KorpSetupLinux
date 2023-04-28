@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  korp-mobile:
-    image: "{{ docker_account }}/korp.mobile:4.2.x{{ docker_image_suffix }}"
-    container_name: "Korp.Mobile"
+  viasoft-vendas-mobile-configuracao:
+    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao:1.2.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Mobile.Configuracao"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -25,8 +25,8 @@ services:
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-      - "{{ dados_docker_dir_path }}/MOB02/reports/:/app/reports/"
     networks:
       - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    

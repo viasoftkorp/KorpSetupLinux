@@ -1,4 +1,4 @@
-- name: Geração de PFX do certificado auto-assinado com key sem passphrase
+- name: Geração de PFX do certificado customizado com key sem passphrase
   community.crypto.openssl_pkcs12:
     action: export
     path: "{{ cert_pfx_path }}"
@@ -12,7 +12,7 @@
   register: pfx_status
   when: not certs.custom.has_pass_file
 
-- name: Geração de PFX do certificado auto-assinado com key com passphrase
+- name: Geração de PFX do certificado customizado com key com passphrase
   community.crypto.openssl_pkcs12:
     action: export
     path: "{{ cert_pfx_path }}"
@@ -28,5 +28,9 @@
   when: certs.custom.has_pass_file
 
 - name: Reinício do container nginx
-  ansible.builtin.import_tasks: nginx_restart.yml  
+  ansible.builtin.import_tasks: nginx_restart.yml
+  # TODO - quando pfx é alterado, reiniciar authentication
   when: pfx_status.changed
+
+
+# TODO - quando cert for alterado, reiniciar nginx
