@@ -4,11 +4,7 @@ Configurando o Ambiente
 Configurando as entradas de DNS
 ###############################
 
-Configurar os seguintes DNSs para resolverem os endereços indicados:
-
-  - korp.local deve resolver para o servidor LINUX
-  - korp-api.local deve resolver para o servidor LINUX
-  - korp-cdn.local deve resolver para o servidor LINUX
+Configurar os :doc:`3 DNSs utilizados pelo portal </files/visao_geral/dns>` para resolverem para o IP do servidor Linux
 
 ----
 
@@ -36,7 +32,7 @@ Configurando o envio de e-mail de falha
 
 Essa configuração serve para avisar o usuário caso haja um problema com o envio do seu email. Para configurar:
 
-#. Acessar o endereço http://korp.local:8500/ui/dc1/kv/Viasoft.Email/edit
+#. Acessar o endereço ``http://<dns_frontend>:8500/ui/dc1/kv/Viasoft.Email/edit``
 #. Preencher as seguintes propriedades conforme o seu provedor de email
 
     :FromAddress: endereço de remetente do email de falha

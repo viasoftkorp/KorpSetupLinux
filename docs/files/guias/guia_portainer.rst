@@ -1,9 +1,9 @@
 Gerenciando serviços no Servidor Linux
 --------------------------------------
 
-O gerenciamento dos serviços Korp que rodam no servidor Linux pode ser feito por meio da ferramente `portainer`.
+O gerenciamento dos serviços Korp que rodam no servidor Linux pode ser feito por meio da ferramente **Portainer**.
 
-Seu acesso pode ser feito por meio do endereço ``http://korp.local:9011``
+Seu acesso pode ser feito por meio do endereço ``http://<dns_frontend>:9011``
 
 As credenciais de acesso são:
 
@@ -16,7 +16,7 @@ As credenciais de acesso são:
 Visualizando logs
 =================
 
-#. Acessar o `Portainer <http://korp.local:9011>`_
+#. Acessar o Portainer
 #. Preencher as credenciais
 #. Acessar o ambiente "local"
 #. Acessar o tópico "Containers"
@@ -39,7 +39,7 @@ Visualizando logs
 Reiniciando um serviço
 ======================
 
-#. Acessar o `Portainer <http://korp.local:9011>`_
+#. Acessar o Portainer
 #. Preencher as credenciais
 #. Acessar o ambiente "local"
 #. Acessar o tópico "Containers"
