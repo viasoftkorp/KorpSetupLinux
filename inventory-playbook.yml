@@ -11,14 +11,22 @@
     mssql_user: "korp.services"
     cert_directory: "/etc/korp/certs"
 
-    # valores padrões, podem ser alterados durante o playbook
-    custom_certificate: false
     custom_cert_has_pass_file: false
-    self_signed_certificate: true
-    custom_dns:
-      api: ""
-      cdn: ""
-      frontend: ""
+    custom_certs_folder: ""
+    certbot_automated_email: ""
+
+    # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
+    alowerd_cert_types: ["selfsigned", "custom", "certbot"]
+    custom_setup_info:
+      cert:
+        cert_type: ""
+        custom_cert_has_pass: false
+        custom_cert_path: ""
+        certbot_email: ""
+      dns:
+        api: ""
+        cdn: ""
+        frontend: ""
 
   tasks:
 
@@ -182,10 +190,20 @@
               block:
                 - name: Coleta de informações
                   ansible.builtin.pause:
-                    prompt: "Há certificado customizado? (S = sim ou N = não)"
+                    prompt: "
+                      Selecione a modalidade de certificado:\n
+                        1) Certificado Auto Assinado                - padrão\n
+                        2) Certificado Customizado                  - necessário domínio próprio e arquivos de certificado\n
+                        3) Certificado Automático com LestEncrypt   - necessário domínio próprio
+                      "
                   register: chk_cert
 
-                - name: Setup de arquivo de senha
+                - name: Verificação de resposta
+                  ansible.builtin.fail:
+                    msg: "Valor informado não reconhecido"
+                  when: chk_cert.user_input not in ["1","2","3"]
+
+                - name: Setup de 'Certificado Customizado'
                   block:
                     - name: Coleta de informações de arquivo de senha
                       ansible.builtin.pause:
@@ -196,115 +214,163 @@
                       ansible.builtin.set_fact:
                         custom_cert_has_pass_file: "{{ chk_cert_pass.user_input | upper == 'S' }}"
 
-                  when: chk_cert.user_input | upper == "S"
+                    - name: Leitura de pasta de certificados
+                      ansible.builtin.pause:
+                        prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
+                      register: custom_certs_folder_return
 
-                - name: Definição de variáveis de arquivo de senha
+                    - name: Definição de caminho de pasta de certificados
+                      ansible.builtin.set_fact:
+                        custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
+
+                  when: chk_cert.user_input == "2"
+
+                - name: Setup de 'Certificado Automático com LestEncrypt'
+                  block:
+                    - name: Coleta de email
+                      ansible.builtin.pause:
+                        prompt: "Informe o email que será utilizado para criar o certificado."
+                      register: chk_certbot_automated_email
+
+                    - name: Verificação de resposta
+                      ansible.builtin.fail:
+                        msg: "Valor informado está vazio"
+                      when: chk_certbot_automated_email.user_input == ""
+
+                    - name: Definição de certbot_automated_email
+                      ansible.builtin.set_fact:
+                        certbot_automated_email: "{{ chk_certbot_automated_email.user_input }}"
+
+                  when: chk_cert.user_input == "3"
+
+                - name: Definição de tipo de certificado
                   ansible.builtin.set_fact:
-                    custom_certificate: "{{ chk_cert.user_input | upper == 'S' }}"
-                    self_signed_certificate: "{{ chk_cert.user_input | upper == 'N' }}"
+                    self_signed_certificate: "{{ chk_cert.user_input == '1' }}"
+                    custom_certificate: "{{ chk_cert.user_input == '2' }}"
+                    certbot_automated_certificate: "{{ chk_cert.user_input == '3' }}"
 
-              when: setupinfo_custom_cert == ""
+              when: custom_setup_info.cert.cert_type == ""
 
             - name: Setup de certificados por linha de comando
               block:
-                - name: Garantia de definição de flags
+                - name: Verificação de cert_type
                   ansible.builtin.fail:
-                    msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
-                  when: setupinfo_custom_cert_has_pass == "" or setupinfo_custom_cert_path == ""
+                    msg: "O valor de 'cert_type' não é válido."
+                  when: not custom_setup_info.cert.cert_type in alowerd_cert_types
+
+                - name: Setup de 'Certificado Customizado'
+                  block:
+                    - name: Garantia de definição de flags
+                      ansible.builtin.fail:
+                        msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
+                      when: custom_setup_info.cert.custom_cert_has_pass == "" or custom_setup_info.cert.custom_cert_path == ""
+
+                  when: custom_setup_info.cert.cert_type == "custom"
+
+                - name: Setup de 'Certificado Automático com LestEncrypt'
+                  block:
+                    - name: Garantia de definição de flags
+                      ansible.builtin.fail:
+                        msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
+                      when: custom_setup_info.cert.certbot_email == ""
+
+                  when: custom_setup_info.cert.cert_type == "certbot"
 
                 - name: Definição de variáveis
                   ansible.builtin.set_fact:
-                    custom_certificate: true
-                    custom_cert_has_pass_file: "{{ setupinfo_custom_cert_has_pass | bool }}"
-                    self_signed_certificate: false
-                    custom_certs_folder: "{{ setupinfo_custom_cert_path }}"
+                    custom_certificate: "{{ custom_setup_info.cert.cert_type == 'custom' | bool }}"
+                    self_signed_certificate: "{{ custom_setup_info.cert.cert_type == 'selfsigned' | bool }}"
+                    certbot_automated_certificate: "{{ custom_setup_info.cert.cert_type == 'certbot' | bool }}"
+                    custom_cert_has_pass_file: "{{ custom_setup_info.cert.custom_cert_has_pass | bool }}"
+                    custom_certs_folder: "{{ custom_setup_info.cert.custom_cert_path }}"
+                    certbot_automated_email: "{{ custom_setup_info.cert.certbot_email }}"
 
-              when: setupinfo_custom_cert | bool
+              when: custom_setup_info.cert.cert_type != ""
 
-            - name: Certificado customizado
+            - name: Setup de certificados
               block:
-                - name: Leitura de pasta de certificados
-                  ansible.builtin.pause:
-                    prompt: "Digite o camiho absoluto da pasta com os arquivos de certifiaco. O nome dos aquivos de certificado na pasta devem ser exatamente: cert.crt, cert.key, cert.pass(caso exista)"
-                  when: setupinfo_custom_cert == ""
-                  register: custom_certs_folder_return
+                - name: Setup padrão de certificado customizado
+                  block:
+                    - name: Garantia de "/" no caminho da pasta de certificados
+                      ansible.builtin.set_fact:
+                        custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
+                      when: custom_certs_folder | last == "/"            
 
-                - name: Definição de caminho de pasta de certificados
-                  ansible.builtin.set_fact:
-                    custom_certs_folder: "{{ custom_certs_folder_return.user_input }}"
-                  when: setupinfo_custom_cert == ""
+                    - name: "Leitura de diretório informado"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.crt"
+                      register: cert_crt_file_status
 
-                - name: Garantia de "/" no caminho da pasta de certificados
-                  ansible.builtin.set_fact:
-                    custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
-                  when: custom_certs_folder | last == "/"            
+                    - name: "Leitura de diretório informado"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.key"
+                      register: cert_key_file_status
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.crt"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.crt"
-                  register: cert_crt_file_status
+                    - name: "Leitura de diretório informado"
+                      ansible.builtin.stat:
+                        path: "{{ custom_certs_folder }}/cert.pass"
+                      register: cert_pass_file_status
+                      when: custom_cert_has_pass_file
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.key"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.key"
-                  register: cert_key_file_status
+                    - name: Garantia de existência de arquivos de certificado
+                      ansible.builtin.fail:
+                        msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
+                      when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.stat.exists)
 
-                - name: "Leitura de {{ custom_certs_folder }}/cert.pass"
-                  ansible.builtin.stat:
-                    path: "{{ custom_certs_folder }}/cert.pass"
-                  register: cert_pass_file_status
-                  when: custom_cert_has_pass_file
+                    - name: Criação do diretório em que as os arquivos de certificado ficarão
+                      ansible.builtin.file:
+                        path: "{{ cert_directory }}/"
+                        state: directory
+                        mode: '0755'
 
-                - name: Garantia de existência de arquivos de certificado
-                  ansible.builtin.fail:
-                    msg: "Um ou mais arquivos de certificado não foram encontrados no caminho passado ({{ custom_certs_folder }})."
-                  when: not (cert_crt_file_status.stat.exists and cert_key_file_status.stat.exists) or (custom_cert_has_pass_file and not cert_pass_file_status.stat.exists)
+                    - name: Copia de arquivos de certificado
+                      ansible.builtin.copy:
+                        dest: "{{ cert_directory }}/{{ item }}"
+                        src: "{{ custom_certs_folder }}/{{ item }}"
+                        # owner e permissões dos arquivos serão alteradas depois
+                        owner: root
+                        group: root
+                        mode: '0777'
+                      when: item != "cert.pass" or custom_cert_has_pass_file
+                      loop:
+                        - "cert.crt"
+                        - "cert.key"
+                        - "cert.pass"
 
-                - name: Criação do diretório em que as os arquivos de certificado ficarão
-                  ansible.builtin.file:
-                    path: "{{ cert_directory }}/"
-                    state: directory
-                    mode: '0755'
-
-                - name: Copia de arquivos de certificado
-                  ansible.builtin.copy:
-                    dest: "{{ cert_directory }}/{{ item }}"
-                    src: "{{ custom_certs_folder }}/{{ item }}"
-                    # owner e permissões dos arquivos serão alteradas depois
-                    owner: root
-                    group: root
-                    mode: '0777'
-                  when: item != "cert.pass" or custom_cert_has_pass_file
-                  loop:
-                    - "cert.crt"
-                    - "cert.key"
-                    - "cert.pass"
-
-              when: custom_certificate
+                  when: custom_setup_info.cert.cert_type == "certbot"
 
           when: not cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
         - name: Definição de variáveis de certificado
           ansible.builtin.set_fact:
             custom_certificate: false
-            custom_cert_has_pass_file: false
             self_signed_certificate: true
-          when: cert_file_status.stat.exists and (shrink_inventory.certs.custom.certificate is not defined)
+            certbot_automated_certificate: false
+            custom_cert_has_pass_file: false
+          when: cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
     - name: Setup de DNS
       block:
+        - name: Verificação de número de DNSs definidos
+          ansible.builtin.set_fact:
+            undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
+
         - name: Definição de valores de DNS padrão
           ansible.builtin.set_fact:
-            custom_dns:
-              api: "korp-api.local"
-              cdn: "korp-cdn.local"
-              frontend: "korp.local"
-          when: "[custom_dns.api == '', custom_dns.cdn == '', custom_dns.frontend == ''] | select() | list | length == 3"
+            custom_setup_info: "{{ custom_setup_info | combine(
+              {
+                'dns': {
+                  'api': 'korp-api.local',
+                  'cdn': 'korp-cdn.local',
+                  'frontend': 'korp.local'
+                }
+              }, recursive=True) }}"
+          when: undefined_dns_num == "3"
 
         - name: Verificação de DNS customizado
           ansible.builtin.fail:
             msg: "Nem todos os DNSs customizados foram definidos"
-          when: "[custom_dns.api == '', custom_dns.cdn == '', custom_dns.frontend == ''] | select() | list | length > 0"
+          when: undefined_dns_num != "0" and undefined_dns_num != "3"
 
       when: shrink_inventory.dns is undefined
 
@@ -374,12 +440,16 @@
                 'certificate': shrink_inventory.certs.self_signed.certificate | default(self_signed_certificate),
                 'passphrase':  shrink_inventory.certs.self_signed.passphrase | default ('korp')
               },
+              'certbot_automated': {
+                'certificate': shrink_inventory.certs.certbot_automated.certificate | default(certbot_automated_certificate),
+                'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated_email)
+              },
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             },
             'dns': {
-              'api': shrink_inventory.dns.api | default (custom_dns.api),
-              'cdn': shrink_inventory.dns.cdn | default (custom_dns.cdn),
-              'frontend': shrink_inventory.dns.frontend | default (custom_dns.frontend)
+              'api': shrink_inventory.dns.api | default (custom_setup_info.dns.api),
+              'cdn': shrink_inventory.dns.cdn | default (custom_setup_info.dns.cdn),
+              'frontend': shrink_inventory.dns.frontend | default (custom_setup_info.dns.frontend)
             }
           }, recursive=True) }}"
 
