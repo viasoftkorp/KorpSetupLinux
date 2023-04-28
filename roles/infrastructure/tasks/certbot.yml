@@ -10,6 +10,7 @@
 # chave privada (private key) deve ser do tipo 'rsa' por causa do Viasoft.Authentication
 # diretórios usados pelo certbot são customizados devido á permissões (logs-dir, config-dir, work-dir)
 # 'cert-name' é o nome que o certbot irá utilizar para se resolver, não tem nenhum efeito no certificado em sí
+# o challenge utilizado para validar o certificado é o 'http-01'
 - name: Criação de certificado pelo Certbot 
   ansible.builtin.command:
     cmd: >
@@ -21,7 +22,7 @@
       --work-dir {{ certs_directory }}/letsencrypt/lib
       --email {{ certs.certbot_automated.email }}
       --deploy-hook /etc/korp/scripts/certs_reload.sh
-      --cert-name portal-local.korp.com.br
+      --cert-name {{ certbot_cert_name }}
       -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }}
       --agree-tos
       --noninteractive
