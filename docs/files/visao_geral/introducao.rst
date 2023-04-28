@@ -7,12 +7,6 @@ O objetivo é que esse servidor passe a ser o novo servidor de aplicação.
 
 Além dos serviços migrados do servidor de aplicações Windows, o servidor Linux roda uma versão simplificada do Portal da Korp junto com os aplicativos licenciados da empresa.
 
-O ambiente do portal web é acionado por três DNSs e estão em cima de um certificado gerado por uma CA (Autoridade de certificação) criada no próprio servidor.
-
-    Por padrão, esses DNSs são korp.local, korp-api.local, korp-cdn.local, mas isso pode ser alterado se necessário.
-
-Portanto, para acesso do portal web, é necessária a disponibilização desse certificado às estações de trabalho.
-
 
 Infraestrutura interna
 ======================

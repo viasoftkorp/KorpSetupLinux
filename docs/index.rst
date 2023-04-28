@@ -6,6 +6,8 @@ Documentação
    :caption: Visão Geral
    
    files/visao_geral/introducao
+   files/visao_geral/dns
+   files/visao_geral/certificados
    files/visao_geral/especificacoes_servidor
    files/visao_geral/backups
 
