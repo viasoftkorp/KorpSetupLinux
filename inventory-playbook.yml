@@ -15,6 +15,10 @@
     custom_certs_folder: ""
     certbot_automated_email: ""
 
+    dns_api: ""
+    dns_cdn: ""
+    dns_frontend: ""
+
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     custom_setup_info:
@@ -351,26 +355,29 @@
 
     - name: Setup de DNS
       block:
+
         - name: Verificação de número de DNSs definidos
           ansible.builtin.set_fact:
             undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
 
         - name: Definição de valores de DNS padrão
           ansible.builtin.set_fact:
-            custom_setup_info: "{{ custom_setup_info | combine(
-              {
-                'dns': {
-                  'api': 'korp-api.local',
-                  'cdn': 'korp-cdn.local',
-                  'frontend': 'korp.local'
-                }
-              }, recursive=True) }}"
+            dns_api: "korp-api.local"
+            dns_cdn: "korp-cdn.local"
+            dns_frontend: "korp.local"
           when: undefined_dns_num == "3"
 
         - name: Verificação de DNS customizado
           ansible.builtin.fail:
             msg: "Nem todos os DNSs customizados foram definidos"
           when: undefined_dns_num != "0" and undefined_dns_num != "3"
+
+        - name: Definição de valores de DNS padrão
+          ansible.builtin.set_fact:
+            dns_api: "{{ custom_setup_info.dns.api }}"
+            dns_cdn: "{{ custom_setup_info.dns.cdn }}"
+            dns_frontend: "{{ custom_setup_info.dns.frontend }}"
+          when: undefined_dns_num == "0"
 
       when: shrink_inventory.dns is undefined
 
@@ -447,9 +454,9 @@
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')
             },
             'dns': {
-              'api': shrink_inventory.dns.api | default (custom_setup_info.dns.api),
-              'cdn': shrink_inventory.dns.cdn | default (custom_setup_info.dns.cdn),
-              'frontend': shrink_inventory.dns.frontend | default (custom_setup_info.dns.frontend)
+              'api': shrink_inventory.dns.api | default (dns_api),
+              'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
+              'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
             }
           }, recursive=True) }}"
 
