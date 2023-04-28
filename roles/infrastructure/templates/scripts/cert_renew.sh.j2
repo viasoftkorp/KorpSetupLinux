@@ -1,0 +1,11 @@
+{% if certs.certbot_automated.certificate %}
+
+/usr/bin/certbot renew --config-dir {{ certs_directory }}/letsencrypt/ --logs-dir {{ certs_directory }}/letsencrypt/logs --work-dir {{ certs_directory }}/letsencrypt/lib
+
+{% elif certs.self_signed.certificate %}
+
+# TODO - adiciar renovação de certificado auto assinado
+
+{% elif certs.custom.certificate %}
+
+{% endif %}

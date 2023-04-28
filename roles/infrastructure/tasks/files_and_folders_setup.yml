@@ -21,7 +21,7 @@
 
 - name: Transferência de scripts
   ansible.builtin.template:
-    dest: "{{ korp_dir_path }}/scripts/{{ item | basename }}"
+    dest: "{{ korp_dir_path }}/scripts/{{ item[:-3] | basename }}"
     src: "scripts/{{ item | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root

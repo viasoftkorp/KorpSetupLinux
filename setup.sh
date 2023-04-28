@@ -191,7 +191,6 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "cdn": "'$dns_cdn'"
       }
     }
-  }'
 
 if [ $? != 0 ]
 then

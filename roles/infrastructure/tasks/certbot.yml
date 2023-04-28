@@ -1,13 +1,11 @@
 # Certbot armazena logs em: /var/log/letsencrypt/letsencrypt.log
 # Documentação do Certbot: https://eff-certbot.readthedocs.io/en/stable/using.html
 
-
 # Logs:         /etc/korp/certs/letsencrypt/logs/letsencrypt.log
 # Certificados: /etc/korp/certs/letsencrypt/live/portal-local.korp.com.br/
 
 # Informações sobre o certificado: sudo certbot certificates --config-dir /etc/korp/certs/letsencrypt/
 # Revocar certificado: sudo certbot revoke --cert-name portal-local.korp.com.br --config-dir /etc/korp/certs/letsencrypt/
-
 
 # chave privada (private key) deve ser do tipo 'rsa' por causa do Viasoft.Authentication
 # diretórios usados pelo certbot são customizados devido á permissões (logs-dir, config-dir, work-dir)
@@ -22,27 +20,26 @@
       --config-dir  {{ certs_directory }}/letsencrypt
       --work-dir {{ certs_directory }}/letsencrypt/lib
       --email {{ certs.certbot_automated.email }}
-      --deploy-hook /etc/korp/scripts/nginx_reload.sh
+      --deploy-hook /etc/korp/scripts/certs_reload.sh
       --cert-name portal-local.korp.com.br
       -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }}
       --agree-tos
       --noninteractive
       --key-type rsa
-      --staging
 
-# TODO testar essa task
-# - name: Remoção de cronjob padrão de certbot
-#   ansible.builtin.cron:
-#     name: "certbot custom"
-#     state: absent
+- name: Remoção de cronjob padrão de certbot
+  ansible.builtin.file:
+    path: /etc/cron.d/certbot
+    state: absent
 
-# TODO - Cria cronjob com horário customizável
+# TODO - Cronjob deve ter horário customizável
+
+# cronjob é criado em '/var/spool/cron/crontabs/korp'
 - name: Criação de cronjob customizado para certbot
   ansible.builtin.cron:
     name: "certbot custom"
     hour: "1"
-    job: "/etc/korp/scripts/nginx_reload.sh"
- # TODO - script 'certbot renew'
+    job: "/etc/korp/scripts/cert_renew.sh"
 
 - name: Geração de PFX do certificado
   community.crypto.openssl_pkcs12:

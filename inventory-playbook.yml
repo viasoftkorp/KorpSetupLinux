@@ -350,18 +350,22 @@
 
     - name: Setup de DNS
       block:
+        - name: Verificação de número de DNSs definidos
+          ansible.builtin.set_fact:
+            undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
+
         - name: Definição de valores de DNS padrão
           ansible.builtin.set_fact:
             custom_setup_info.dns:
               api: "korp-api.local"
               cdn: "korp-cdn.local"
               frontend: "korp.local"
-          when: "[custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length == 3"
+          when: undefined_dns_num == "3"
 
         - name: Verificação de DNS customizado
           ansible.builtin.fail:
             msg: "Nem todos os DNSs customizados foram definidos"
-          when: "[custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length > 0"
+          when: undefined_dns_num != "0" and undefined_dns_num != "3"
 
       when: shrink_inventory.dns is undefined
 
