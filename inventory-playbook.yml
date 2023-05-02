@@ -196,7 +196,7 @@
                   ansible.builtin.pause:
                     prompt: "
                       Selecione a modalidade de certificado:\n
-                        1) Certificado Auto Assinado                - padrão\n
+                        1) Certificado AutoAssinado                - padrão\n
                         2) Certificado Customizado                  - necessário domínio próprio e arquivos de certificado\n
                         3) Certificado Automático com LestEncrypt   - necessário domínio próprio
                       "
