@@ -3,7 +3,7 @@ Certificados
 
 O portal local suporta 3 modalidades de certificados:
 
-    - Auto assinado
+    - AutoAssinado
 
     - Customizado
 
@@ -11,7 +11,7 @@ O portal local suporta 3 modalidades de certificados:
 
 O certificado será utilizado para certificar os :doc:`3 DNSs utilizados pelo portal <./dns>`
 
-Por padrão o certificado auto assinado é utilizado, mas isso pode ser customizado durante a instalação do ambiente
+Por padrão o certificado AutoAssinado é utilizado, mas isso pode ser customizado durante a instalação do ambiente
 
 ----
 
@@ -20,7 +20,7 @@ Por padrão o certificado auto assinado é utilizado, mas isso pode ser customiz
 +--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
 | Tipo                           | Requisitos           | Características                                                                                             | Contras                                                                         |
 +================================+======================+=============================================================================================================+=================================================================================+
-| Auto Assinado                  | - Nenhum             | - Certificadora raiz está no próprio servidor Linux.                                                        | - Certificado raiz deve ser importada manualmente em todas as estações, ou em AD|
+| AutoAssinado                   | - Nenhum             | - Certificadora raiz está no próprio servidor Linux.                                                        | - Certificado raiz deve ser importada manualmente em todas as estações, ou em AD|
 |                                |                      |                                                                                                             |                                                                                 |
 |                                |                      | - Certificado renovado automaticamente a cada 12 meses                                                      |                                                                                 |
 +--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
@@ -38,10 +38,10 @@ Por padrão o certificado auto assinado é utilizado, mas isso pode ser customiz
 ----
 
 
-Certificado Auto Assinado
-=========================
+Certificado AutoAssinado
+========================
 
-O certificado Auto Assinado é o utilizado por padrão.
+O certificado AutoAssinado é o utilizado por padrão.
 
 Nessa modalidade, é criada uma entidade certificadora no próprio servidor linux, que irá provisionar os certificados para os DNSs do portal.
 
@@ -49,8 +49,8 @@ Esse certificado tem validade de 12 meses, e será renovado automaticamente.
 
 Como a entidade certificadora raiz está no próprio servidor linux o seu certificado (ca-cert.crt) deve ser identificado como um certificado válido por todas as estações de trabalho que irão utilizar o Korp, ou o portal local.
 
-Importando o certificado Auto Assinado
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Importando o certificado AutoAssinado
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Após a instalação do ambiente, o certificado da CA pode ser obtido copiando o arquivo ``ca-cert.crt`` que está disponível na ``home`` do usuário que foi disponibilizado para instalação no servidor Linux.
 
