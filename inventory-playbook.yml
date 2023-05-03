@@ -15,6 +15,10 @@
     custom_certs_folder: ""
     certbot_automated_email: ""
 
+    custom_certificate: false
+    self_signed_certificate: false
+    certbot_automated_certificate: false
+
     dns_api: ""
     dns_cdn: ""
     dns_frontend: ""
@@ -196,7 +200,7 @@
                   ansible.builtin.pause:
                     prompt: "
                       Selecione a modalidade de certificado:\n
-                        1) Certificado AutoAssinado                - padrão\n
+                        1) Certificado AutoAssinado                 - padrão\n
                         2) Certificado Customizado                  - necessário domínio próprio e arquivos de certificado\n
                         3) Certificado Automático com LestEncrypt   - necessário domínio próprio
                       "
