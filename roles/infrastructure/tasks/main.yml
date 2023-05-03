@@ -1,12 +1,12 @@
-- name: Instalação de dependências padrões
-  ansible.builtin.pip:
-    name: "{{ item }}"
-  loop:
-    # Bibliotecas usadas pelo Ansible para usar o Consul
-    - python-consul
-    - requests
-    # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
-    - pymssql
+# - name: Instalação de dependências padrões
+#   ansible.builtin.pip:
+#     name: "{{ item }}"
+#   loop:
+#     # Bibliotecas usadas pelo Ansible para usar o Consul
+#     - python-consul
+#     - requests
+#     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
+#     - pymssql
 
 - name: Configuração de certificado padrão
   block:
@@ -18,70 +18,70 @@
 
   when: certs.self_signed.certificate
 
-- name: Configuração de certificado customizado
-  ansible.builtin.import_tasks: custom_cert.yml
-  when: certs.custom.certificate
+# - name: Configuração de certificado customizado
+#   ansible.builtin.import_tasks: custom_cert.yml
+#   when: certs.custom.certificate
 
-- name: Configuração de arquivos e pastas
-  ansible.builtin.import_tasks: files_and_folders_setup.yml
+# - name: Configuração de arquivos e pastas
+#   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
-- name: Criação e inicialização de infrastructure-compose
-  community.docker.docker_compose:
-    project_src: "{{ compose_dir_path }}/"
-    env_file: "{{ docker_env_file_path }}"
-    files:
-      - infrastructure-compose.yml
+# - name: Criação e inicialização de infrastructure-compose
+#   community.docker.docker_compose:
+#     project_src: "{{ compose_dir_path }}/"
+#     env_file: "{{ docker_env_file_path }}"
+#     files:
+#       - infrastructure-compose.yml
 
-# Configuração de certificado vem depois de configuração do compose pois é necessário nginx para configurá-lo
-- name: Configuração de certificado automatizado
-  ansible.builtin.import_tasks: certbot.yml
-  when: certs.certbot_automated.certificate
+# # Configuração de certificado vem depois de configuração do compose pois é necessário nginx para configurá-lo
+# - name: Configuração de certificado automatizado
+#   ansible.builtin.import_tasks: certbot.yml
+#   when: certs.certbot_automated.certificate
 
-- name: Criação de usuário de uso da korp no SQL Server - Produção
-  community.general.mssql_script:
-    login_user: "{{ mssql.default_user }}"
-    login_password: "{{ mssql.default_password }}"
-    login_host: "{{ mssql.address }}"
-    name: master
-    script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
-  vars:
-    mssql_user: "{{ mssql.korp_user }}"
-    mssql_pass: "{{ mssql.korp_password }}"
+# - name: Criação de usuário de uso da korp no SQL Server - Produção
+#   community.general.mssql_script:
+#     login_user: "{{ mssql.default_user }}"
+#     login_password: "{{ mssql.default_password }}"
+#     login_host: "{{ mssql.address }}"
+#     name: master
+#     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
+#   vars:
+#     mssql_user: "{{ mssql.korp_user }}"
+#     mssql_pass: "{{ mssql.korp_password }}"
 
-- name: Criação de usuário de uso da korp no SQL Server - Testing
-  community.general.mssql_script:
-    login_user: "{{ testing_mssql.default_user }}"
-    login_password: "{{ testing_mssql.default_password }}"
-    login_host: "{{ testing_mssql.address }}"
-    name: master
-    script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
-  vars:
-    mssql_user: "{{ testing_mssql.korp_user }}"
-    mssql_pass: "{{ testing_mssql.korp_password }}"
+# - name: Criação de usuário de uso da korp no SQL Server - Testing
+#   community.general.mssql_script:
+#     login_user: "{{ testing_mssql.default_user }}"
+#     login_password: "{{ testing_mssql.default_password }}"
+#     login_host: "{{ testing_mssql.address }}"
+#     name: master
+#     script: "{{ lookup('template', 'sql/create_user.j2') | string }}"
+#   vars:
+#     mssql_user: "{{ testing_mssql.korp_user }}"
+#     mssql_pass: "{{ testing_mssql.korp_password }}"
 
-- name: Criação e configuração de usuário no rabbitmq
-  ansible.builtin.import_tasks: rabbitmq_user.yml
+# - name: Criação e configuração de usuário no rabbitmq
+#   ansible.builtin.import_tasks: rabbitmq_user.yml
 
-- name: Criação de usuário de uso da korp no Postgres
-  community.postgresql.postgresql_user:
-    db: postgres
-    login_host: "{{ postgres.address }}"
-    name: "{{ postgres.korp_user }}"
-    password: "{{ postgres.korp_password }}"
-    login_user: "{{ postgres.default_user }}"
-    login_password: "{{ postgres.default_password }}"
-    role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
+# - name: Criação de usuário de uso da korp no Postgres
+#   community.postgresql.postgresql_user:
+#     db: postgres
+#     login_host: "{{ postgres.address }}"
+#     name: "{{ postgres.korp_user }}"
+#     password: "{{ postgres.korp_password }}"
+#     login_user: "{{ postgres.default_user }}"
+#     login_password: "{{ postgres.default_password }}"
+#     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
-# TODO
-# - name: Configuração de minio da nuvem
-#   ansible.builtin.import_tasks: minio_config.yml
+# # TODO
+# # - name: Configuração de minio da nuvem
+# #   ansible.builtin.import_tasks: minio_config.yml
 
-- name: "Garantia de kv no consul para Global"
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: 'consul_kv/ensure_kv'
-  vars:
-    service_name: Global
+# - name: "Garantia de kv no consul para Global"
+#   ansible.builtin.include_role:
+#     name: utils
+#     tasks_from: 'consul_kv/ensure_kv'
+#   vars:
+#     service_name: Global
 
-- name: Configuração de fabio pelo consul
-  ansible.builtin.import_tasks: fabio_config.yml
+# - name: Configuração de fabio pelo consul
+#   ansible.builtin.import_tasks: fabio_config.yml

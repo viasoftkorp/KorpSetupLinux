@@ -4,7 +4,14 @@
 
 {% elif certs.self_signed.certificate %}
 
-# TODO - adiciar renovação de certificado AutoAssinado
+/usr/bin/ansible-playbook ./roles/infrastructure/files/configs/playbooks/self_signed_renew-playbook.yml \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key
+
+# /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git roles/infrastructure/playbooks/self_signed_renew-playbook.yml \
+#   -C master \
+#   --limit localhost \
+#   --vault-id /etc/korp/ansible/.vault_key
 
 {% elif certs.custom.certificate %}
 

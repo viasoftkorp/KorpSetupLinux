@@ -1,5 +1,3 @@
-
-
 - name: Criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
   ansible.builtin.copy:
     dest: "{{ certs_directory }}/cert.pass"
@@ -53,7 +51,7 @@
     ownca_path: "{{ self_signed_ca_cert_path }}"
     ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
     ownca_privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
-    ownca_not_after: +365d
+    ownca_not_after: +10d
     ownca_not_before: "-1d"
     backup: true
 
@@ -72,3 +70,10 @@
 - name: Reinício do container nginx
   ansible.builtin.import_tasks: nginx_restart.yml  
   when: status.changed
+
+# cronjob é criado em '/var/spool/cron/crontabs/korp'
+- name: Criação de cronjob customizado para certbot
+  ansible.builtin.cron:
+    name: "certbot custom"
+    hour: "1"
+    job: "/etc/korp/scripts/cert_renew.sh"
