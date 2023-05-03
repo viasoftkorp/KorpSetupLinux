@@ -17,23 +17,25 @@ Por padrão o certificado AutoAssinado é utilizado, mas isso pode ser customiza
 
     Características dos certificado:
 
-+--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
-| Tipo                           | Requisitos           | Características                                                                                             | Contras                                                                         |
-+================================+======================+=============================================================================================================+=================================================================================+
-| AutoAssinado                   | - Nenhum             | - Certificadora raiz está no próprio servidor Linux.                                                        | - Certificado raiz deve ser importada manualmente em todas as estações, ou em AD|
-|                                |                      |                                                                                                             |                                                                                 |
-|                                |                      | - Certificado renovado automaticamente a cada 12 meses                                                      |                                                                                 |
-+--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
-| Customizado                    | - Domínio próprio    | - Cliente deve prover os arquivos de certificado (certificado, chave e senha)                               | - O Certificado deve ser comprado                                               |
-|                                |                      |                                                                                                             |                                                                                 |
-|                                | - IP externo fixo    | - Renovação do certificado é de responsabilidade do cliente                                                 | - Certificado deve ser manualmente atualizado quando expirar                    |
-|                                |                      |                                                                                                             |                                                                                 |
-|                                | - Certificado próprio|                                                                                                             |                                                                                 |
-+--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
-| Automatizado com Let's Encrypt | - Domínio próprio    | - Certificado gerado com a certificadora Let's Encrypt                                                      | - Nenhum                                                                        |
-|                                |                      |                                                                                                             |                                                                                 |
-|                                | - IP externo fixo    | - Certificado renovado automaticamente a cada 3 meses                                                       |                                                                                 |
-+--------------------------------+----------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
++--------------------------------+------------------------------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
+| Tipo                           | Requisitos                               | Características                                                                                             | Contras                                                                         |
++================================+==========================================+=============================================================================================================+=================================================================================+
+| AutoAssinado                   | - Nenhum                                 | - Certificadora raiz está no próprio servidor Linux.                                                        | - Certificado raiz deve ser importada manualmente em todas as estações, ou em AD|
+|                                |                                          |                                                                                                             |                                                                                 |
+|                                |                                          | - Certificado renovado automaticamente a cada 12 meses                                                      |                                                                                 |
++--------------------------------+------------------------------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
+| Customizado                    | - Domínio próprio                        | - Cliente deve prover os arquivos de certificado (certificado, chave e senha)                               | - O Certificado deve ser comprado                                               |
+|                                |                                          |                                                                                                             |                                                                                 |
+|                                | - IP externo fixo                        | - Renovação do certificado é de responsabilidade do cliente                                                 | - Certificado deve ser manualmente atualizado quando expirar                    |
+|                                |                                          |                                                                                                             |                                                                                 |
+|                                | - Certificado próprio                    |                                                                                                             |                                                                                 |
++--------------------------------+------------------------------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
+| Automatizado com Let's Encrypt | - Domínio próprio                        | - Certificado gerado com a certificadora Let's Encrypt                                                      | - Nenhum                                                                        |
+|                                |                                          |                                                                                                             |                                                                                 |
+|                                | - IP externo fixo                        | - Certificado renovado automaticamente a cada 3 meses                                                       |                                                                                 |
+|                                |                                          |                                                                                                             |                                                                                 |
+|                                | - Email para cadastro no Let's Encrypt   |                                                                                                             |                                                                                 |
++--------------------------------+------------------------------------------+-------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+
 
 ----
 
@@ -108,6 +110,8 @@ Certificado Automatizado com Let's Encrypt
 Nessa modalidade, o certificado é gerando utilizando a certificadora `Let's Encrypt`_, por meio da ferramenta `Certbot`_.
 
 O certificado gerado é validado pelo desafio ``http-01``, e tem validade de 3 meses.
+
+É necessário um email para gerar o certificado por meio do Let's Encrypt, esse email será utilizado para enviar notificações sobre o certificado.
 
 O renovação do certificado é feita automaticamente quando necessário.
 
