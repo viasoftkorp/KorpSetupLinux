@@ -158,7 +158,7 @@
         owner: "{{ linux_korp.user }}"
         group: root
       loop:
-        - "{{ certs_directory }}/letsencrypt/logs"
+        - "{{ certs_directory }}/logs"
         - "{{ certs_directory }}/letsencrypt/lib"
         - "{{ config_dir_path }}/nginx/letsencrypt"
 

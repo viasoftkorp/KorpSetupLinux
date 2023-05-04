@@ -37,6 +37,23 @@
 #   ansible.builtin.import_tasks: certbot.yml
 #   when: certs.certbot_automated.certificate
 
+# TODO - Cronjob deve ter horário customizável
+
+# cronjob é criado em '/var/spool/cron/crontabs/korp'
+- name: Criação de cronjob customizado para certbot
+  ansible.builtin.cron:
+    name: "certbot custom"
+    hour: "1"
+    job: "/etc/korp/scripts/cert_renew.sh"
+
+- name: Adição de rotação de logs
+  ansible.builtin.template:
+    dest: "/etc/logrotate.d/{{ item }}"
+    src: "configs/logrotate/korp_cert_renew.j2"
+    # owner: "{{ linux_korp.user }}" TODO
+    group: root
+    mode: '0644'
+
 # - name: Criação de usuário de uso da korp no SQL Server - Produção
 #   community.general.mssql_script:
 #     login_user: "{{ mssql.default_user }}"

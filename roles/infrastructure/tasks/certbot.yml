@@ -1,7 +1,7 @@
 # Certbot armazena logs em: /var/log/letsencrypt/letsencrypt.log
 # Documentação do Certbot: https://eff-certbot.readthedocs.io/en/stable/using.html
 
-# Logs:         /etc/korp/certs/letsencrypt/logs/letsencrypt.log
+# Logs:         /etc/korp/certs/logs/letsencrypt.log
 # Certificados: /etc/korp/certs/letsencrypt/live/portal-local.korp.com.br/
 
 # Informações sobre o certificado: sudo certbot certificates --config-dir /etc/korp/certs/letsencrypt/
@@ -17,7 +17,7 @@
       certbot certonly 
       --webroot
       --webroot-path {{ config_dir_path }}/nginx/letsencrypt
-      --logs-dir {{ certs_directory }}/letsencrypt/logs
+      --logs-dir {{ certs_directory }}/logs
       --config-dir  {{ certs_directory }}/letsencrypt
       --work-dir {{ certs_directory }}/letsencrypt/lib
       --email {{ certs.certbot_automated.email }}
@@ -32,15 +32,6 @@
   ansible.builtin.file:
     path: /etc/cron.d/certbot
     state: absent
-
-# TODO - Cronjob deve ter horário customizável
-
-# cronjob é criado em '/var/spool/cron/crontabs/korp'
-- name: Criação de cronjob customizado para certbot
-  ansible.builtin.cron:
-    name: "certbot custom"
-    hour: "1"
-    job: "/etc/korp/scripts/cert_renew.sh"
 
 - name: Geração de PFX do certificado
   community.crypto.openssl_pkcs12:

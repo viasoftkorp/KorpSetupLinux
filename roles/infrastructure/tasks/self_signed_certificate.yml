@@ -70,10 +70,3 @@
 - name: Reinício do container nginx
   ansible.builtin.import_tasks: nginx_restart.yml  
   when: status.changed
-
-# cronjob é criado em '/var/spool/cron/crontabs/korp'
-- name: Criação de cronjob customizado para certbot
-  ansible.builtin.cron:
-    name: "certbot custom"
-    hour: "1"
-    job: "/etc/korp/scripts/cert_renew.sh"
