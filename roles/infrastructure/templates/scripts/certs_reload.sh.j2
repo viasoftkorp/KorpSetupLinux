@@ -1,2 +1,2 @@
-echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >>  {{ certs_directory }}/letsencrypt/logs/certs_reload.log
-docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/letsencrypt/logs/certs_reload.log 2>&1
+echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >>  {{ certs_directory }}/logs/certs_reload.log
+docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
