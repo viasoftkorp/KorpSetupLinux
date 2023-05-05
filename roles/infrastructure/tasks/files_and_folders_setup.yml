@@ -128,9 +128,9 @@
       DB_MSSQL={{ mssql.address }}
       APP_SERVER={{ app_server.address }}
       AUTO_UPDATE_CRON=0 0 3 * * *
-      API_GATEWAY=172.17.0.1
-      PORTAL_GATEWAY=172.17.0.1
-      CDN_GATEWAY=172.17.0.1
+      API_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
+      PORTAL_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
+      CDN_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
       USE_SERVERGC={{ use_servergc }}
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
