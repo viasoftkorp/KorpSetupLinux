@@ -8,15 +8,19 @@
 
 ## self_signed
 
-/usr/bin/ansible-playbook ./roles/infrastructure/files/configs/playbooks/self_signed_renew-playbook.yml \
-  --limit localhost \
-  --vault-id /etc/korp/ansible/.vault_key
-
-# TODO - remover comentário
-# /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git roles/infrastructure/playbooks/self_signed_renew-playbook.yml \
-#   -C master \
+# sudo touch {{ certs_directory }}/logs/self_signed_renew.log;
+# ANSIBLE_LOG_PATH={{ certs_directory }}/logs/self_signed_renew.log; /usr/bin/ansible-playbook /home/ansible-dev/roles/infrastructure/files/configs/playbooks/self_signed_renew-playbook.yml \
 #   --limit localhost \
 #   --vault-id /etc/korp/ansible/.vault_key
+
+# TODO - remover comentário / branch
+
+sudo touch {{ certs_directory }}/logs/self_signed_renew.log;
+ANSIBLE_LOG_PATH={{ certs_directory }}/logs/self_signed_renew.log; /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git self_signed_renew-playbook.yml \
+  -C DEVOPS-444 \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key \
+  >> {{ certs_directory }}/logs/self_signed_renew.log 2>&1
 
 {% elif certs.custom.certificate %}
 

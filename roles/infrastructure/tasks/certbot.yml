@@ -21,7 +21,7 @@
       --config-dir  {{ certs_directory }}/letsencrypt
       --work-dir {{ certs_directory }}/letsencrypt/lib
       --email {{ certs.certbot_automated.email }}
-      --deploy-hook /etc/korp/scripts/certs_reload.sh
+      --deploy-hook {{ korp_dir_path }}/scripts/certs_reload.sh
       --cert-name {{ certbot_cert_name }}
       -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }}
       --agree-tos
