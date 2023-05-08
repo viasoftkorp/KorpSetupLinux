@@ -8,7 +8,7 @@
   dateformat -%d-%m-%Y
   rotate 2
   notifempty
-  create 0664 korp root
+  create 0664 {{ linux_korp.user }} root
 }
 
 {% if certs.certbot_automated.certificate %}
@@ -28,7 +28,7 @@
   dateformat -%d-%m-%Y
   rotate 2
   notifempty
-  create 0664 korp root
+  create 0664 {{ linux_korp.user }} root
 }
 
 {% elif certs.custom.certificate %}

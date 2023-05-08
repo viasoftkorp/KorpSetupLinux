@@ -44,6 +44,7 @@
   ansible.builtin.cron:
     name: "certbot custom"
     hour: "1"
+    minute: "0"
     user: "{{ linux_korp.user }}"
     job: "{{ korp_dir_path }}/scripts/cert_renew.sh"
 
@@ -51,9 +52,12 @@
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/logrotate.d/korp_cert_renew"
     src: "logrotate/korp_cert_renew.j2"
-    owner: "{{ linux_korp.user }}"
+    owner: root
     group: root
-    mode: '0664'
+    # Arquivo não pode ser escrito pelo grupo ou por outros por causa das politicas de 'logrotate'
+    mode: '0644'
+  become: true
+  become_user: root
 
 - name: Criação de usuário de uso da korp no SQL Server - Produção
   community.general.mssql_script:

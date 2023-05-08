@@ -1,3 +1,5 @@
+## Script é executado com o usuário 'korp' pelo cronjob
+
 {% if certs.certbot_automated.certificate %}
 
 ## certbot_automated
@@ -8,15 +10,10 @@
 
 ## self_signed
 
-# sudo touch {{ certs_directory }}/logs/self_signed_renew.log;
-# ANSIBLE_LOG_PATH={{ certs_directory }}/logs/self_signed_renew.log; /usr/bin/ansible-playbook /home/ansible-dev/roles/infrastructure/files/configs/playbooks/self_signed_renew-playbook.yml \
-#   --limit localhost \
-#   --vault-id /etc/korp/ansible/.vault_key
-
 # TODO - remover comentário / branch
 
-sudo touch {{ certs_directory }}/logs/self_signed_renew.log;
-ANSIBLE_LOG_PATH={{ certs_directory }}/logs/self_signed_renew.log; /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git self_signed_renew-playbook.yml \
+touch {{ certs_directory }}/logs/self_signed_renew.log;
+/usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git self_signed_renew-playbook.yml \
   -C DEVOPS-444 \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
