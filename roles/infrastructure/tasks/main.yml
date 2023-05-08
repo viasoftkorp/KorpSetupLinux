@@ -42,13 +42,13 @@
 # cronjob é criado em '/var/spool/cron/crontabs/korp'
 - name: Criação de cronjob para renovação de certificados
   ansible.builtin.cron:
-    name: "certbot custom"
+    name: "korp cert renew"
     hour: "1"
     minute: "0"
     user: "{{ linux_korp.user }}"
     job: "{{ korp_dir_path }}/scripts/cert_renew.sh"
 
-- name: Adição de rotação de logs de renovação de certificados
+- name: Adição de rotação de logs para renovação de certificados
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/logrotate.d/korp_cert_renew"
     src: "logrotate/korp_cert_renew.j2"

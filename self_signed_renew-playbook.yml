@@ -45,6 +45,6 @@
         backup: true
       register: cert_updated
 
-    - name:
+    - name: Reinicio de serviços devido à atualização de certificados
       ansible.builtin.shell: /etc/korp/scripts/certs_reload.sh
       when: cert_updated.changed
