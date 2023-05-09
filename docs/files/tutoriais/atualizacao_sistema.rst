@@ -3,7 +3,26 @@ Disponibilizando atualização do Korp no servidor Linux
 
 Esse tutorial também pode ser visualizado pelo vídeo `Disponibilizando atualização do Korp no servidor Linux`_,
 
-#. Edite os arquivos conforme o necessário(o mesmo procedimento que já é feito hoje no servidor Windows).
+#. Edite os arquivos conforme o necessário (o mesmo procedimento que já é feito hoje no servidor Windows).
+
+    - Exemplo do arquivo Octopus.inf
+
+        .. code-block:: ini
+
+            [update]
+            newversion=2023.1.0.0
+            localversion=Octopus.exe
+
+            [files]
+            count=1
+
+            [file1]
+            url=OctopusUpdate.exe
+            targetdir={app}
+            
+            [action] 
+            msg=Existe uma nova atualização para o Sistema. O sistema irá fechar para atualização.
+            runafter={app}\OctopusUpdate.exe
 
 #. Copiar os arquivos editados para o servidor Linux.
 
