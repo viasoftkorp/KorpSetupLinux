@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Compras_PlanilhasPreco
       type: postgres
+
+  Korp.Compras.NotaFiscal:
