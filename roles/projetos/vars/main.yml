@@ -1,11 +1,6 @@
 services:
 
-  Viasoft.Sales.CommercialProposal.Core:
+  Viasoft.Projetos.Core:
     db:
-      name: Viasoft_Sales_CommercialProposal_Core
+      name: Viasoft_Projetos_Core
       type: postgres
-
-  Viasoft.Sales.CommercialProposal.Sync:
-    db:
-      name: Viasoft_Sales_CommercialProposal_Sync
-      type: postgres 
