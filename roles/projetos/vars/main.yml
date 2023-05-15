@@ -1,0 +1,6 @@
+services:
+
+  Viasoft.Projetos.Core:
+    db:
+      name: Viasoft_Projetos_Core
+      type: postgres

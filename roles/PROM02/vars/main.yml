@@ -1,0 +1,6 @@
+services:
+
+  Korp.Projetos.Gantt.Gateway:
+    db:
+      name: Korp_Projetos_Gantt_Gateway
+      type: postgres 
