@@ -1,5 +1,7 @@
 # Korp Setup Linux
 
+[![Documentation Status](https://readthedocs.org/projects/korpsetuplinux/badge/?version=latest)](https://korpsetuplinux.readthedocs.io/en/latest/?badge=latest)
+
 Setup destinado para a configuração e manutenção de servidores linux, feito utilizando a ferramenta [Ansible](https://docs.ansible.com/ansible/latest/index.html#).
 
 ---
