@@ -16,7 +16,7 @@ networks:
 
 services:
   VEN27:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.3.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.2.x{{ docker_image_suffix }}"
     container_name: "VEN27"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+
   viasoft-commercialproposal-sync:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
