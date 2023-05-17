@@ -1,0 +1,31 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  viasoft-projetos-core:
+    image: "{{ docker_account }}/viasoft.projetos.core:1.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Projetos.Core"
+    restart: on-failure:10
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

@@ -1,0 +1,6 @@
+services:
+
+  Korp.Projetos.BPMN.Gateway:
+    db:
+      name: Korp_Projetos_BPMN_Gateway
+      type: postgres 
