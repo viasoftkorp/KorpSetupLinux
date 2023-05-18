@@ -1,5 +1,5 @@
 ---
-- name: Setup main
+- name: Renovação de certificado autoassinado
   hosts: 127.0.0.1
   connection: local
   vars:
@@ -27,7 +27,7 @@
         ownca_path: "{{ self_signed_ca_cert_path }}"
         ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
         ownca_privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
-        ownca_not_after: +30d
+        ownca_not_after: +365d
         ownca_not_before: "-1d"
         backup: true
         force: true

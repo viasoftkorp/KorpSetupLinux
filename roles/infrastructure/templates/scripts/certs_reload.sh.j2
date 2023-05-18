@@ -1,4 +1,4 @@
-echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >>  {{ certs_directory }}/logs/certs_reload.log
+echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >> {{ certs_directory }}/logs/certs_reload.log
 docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
 docker restart Viasoft.Authentication >> {{ certs_directory }}/logs/certs_reload.log 2>&1
-echo "Reload de serviços finalizada"
+echo "Reload de serviços finalizada" >> {{ certs_directory }}/logs/certs_reload.log

@@ -1,12 +1,10 @@
-# TODO - alterar 'rotate 2'
-
 # Arquivo de logs do script certs_reload.sh
 {{ certs_directory }}/logs/certs_reload.log {
   daily
   notifempty
   dateext
   dateformat -%d-%m-%Y
-  rotate 2
+  rotate 30
   notifempty
   create 0664 {{ linux_korp.user }} root
 }
@@ -26,7 +24,7 @@
   notifempty
   dateext
   dateformat -%d-%m-%Y
-  rotate 2
+  rotate 30
   notifempty
   create 0664 {{ linux_korp.user }} root
 }

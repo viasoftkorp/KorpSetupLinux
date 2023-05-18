@@ -110,7 +110,6 @@
   loop:
     - "{{ config_dir_path }}"
     - "{{ certs_directory }}"
-    - "{{ korp_dir_path }}/logrotate.d"
 
 - name: Configurações referentes a certificado
   block:
@@ -166,8 +165,3 @@
             - "{{ config_dir_path }}/nginx/letsencrypt"
 
       when: certs.certbot_automated.certificate
-
-    - name: Adição de configuração em '/etc/logrotate.conf'
-      ansible.builtin.lineinfile:
-        path: /etc/logrotate.conf
-        line: "include {{ korp_dir_path }}/logrotate.d"
