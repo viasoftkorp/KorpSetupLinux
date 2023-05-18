@@ -27,7 +27,7 @@
         ownca_path: "{{ self_signed_ca_cert_path }}"
         ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
         ownca_privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
-        ownca_not_after: +10d
+        ownca_not_after: +30d
         ownca_not_before: "-1d"
         backup: true
         force: true

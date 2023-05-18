@@ -2,24 +2,28 @@
 
 {% if certs.certbot_automated.certificate %}
 
+
 ## certbot_automated
 
 /usr/bin/certbot renew --config-dir {{ certs_directory }}/letsencrypt/ --logs-dir {{ certs_directory }}/logs --work-dir {{ certs_directory }}/letsencrypt/lib
 
 {% elif certs.self_signed.certificate %}
 
+
 ## self_signed
 
-# TODO - remover comentário / branch
+/usr/sbin/logrotate  {{ korp_dir_path }}/logrotate.d/korp_cert_renew  -s {{ korp_dir_path }}/certs/logs/logrotate.status
+
 
 touch {{ certs_directory }}/logs/self_signed_renew.log;
 /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git self_signed_renew-playbook.yml \
-  -C DEVOPS-444 \
+  -C master \
   --limit localhost \
-  --vault-id /etc/korp/ansible/.vault_key \
+  --vault-id {{ korp_dir_path }}/ansible/.vault_key \
   >> {{ certs_directory }}/logs/self_signed_renew.log 2>&1
 
 {% elif certs.custom.certificate %}
+
 
 ## custom
 #  não há script de atualização de certificado nessa modalidade
