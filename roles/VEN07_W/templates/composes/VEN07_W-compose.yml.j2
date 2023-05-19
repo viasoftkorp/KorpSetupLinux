@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-vendas-orcamento-gateway:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:1.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Vendas.Orcamento.Gateway"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
