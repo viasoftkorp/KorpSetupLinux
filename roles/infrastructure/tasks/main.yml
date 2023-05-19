@@ -72,9 +72,15 @@
     login_password: "{{ postgres.default_password }}"
     role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
 
-# TODO
-# - name: Configuração de minio da nuvem
-#   ansible.builtin.import_tasks: minio_config.yml
+- name: Leitura de configuração de minio da nuvem
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/vault/manager/server-deploy/minio-gateway-config/{{ token }}"
+    return_content: true
+  register: response
+
+- name: Definição de minio_gateway_config
+  ansible.builtin.set_fact:
+    minio_gateway_config: "{{ response.json }}"
 
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
