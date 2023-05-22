@@ -1,0 +1,50 @@
+---
+- name: Renovação de certificado autoassinado
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+    ansible_become_password: "{{ linux_korp.password }}"
+  become_user: "{{ linux_korp.user }}"
+  become: true
+
+  tasks:
+    - name: Coleta de informações sobre o certificado atual
+      community.crypto.x509_certificate_info:
+        path: /etc/korp/certs/cert.crt
+      register: current_cert_info
+
+    - name: Definição de variáveis
+      set_fact:
+        days_cert_is_valid: "{{ (cert_valid_til | to_datetime('%Y-%m-%d') - (ansible_date_time.date | to_datetime('%Y-%m-%d'))).days | int }}"
+      vars: 
+        cert_valid_til: "{{ current_cert_info.not_after[0:4] }}-{{ current_cert_info.not_after[4:6] }}-{{ current_cert_info.not_after[6:8] }}"
+
+    - name: Geração do certificado assinado pela CA
+      community.crypto.x509_certificate:
+        path: "{{ cert_crt_path }}"
+        csr_path: "{{ certs_directory }}/cert.csr"
+        provider: ownca
+        ownca_path: "{{ self_signed_ca_cert_path }}"
+        ownca_privatekey_path:  "{{ self_signed_ca_cert_privatekey_path }}"
+        ownca_privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
+        ownca_not_after: +365d
+        ownca_not_before: "-1d"
+        backup: true
+        force: true
+      when: (days_cert_is_valid | int) < 30
+
+    - name: Geração de PFX do certificado auto-assinado
+      community.crypto.openssl_pkcs12:
+        action: export
+        path: "{{ cert_pfx_path }}"
+        passphrase: "{{ certs.pfx_passphrase  }}"
+        certificate_path: "{{ cert_crt_path }}"
+        privatekey_path: "{{ cert_privatekey_path }}"
+        privatekey_passphrase: "{{ certs.self_signed.passphrase }}"
+        friendly_name: korp.com.br
+        backup: true
+      register: cert_updated
+
+    - name: Reinicio de serviços devido à atualização de certificados
+      ansible.builtin.shell: /etc/korp/scripts/certs_reload.sh
+      when: cert_updated.changed

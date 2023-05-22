@@ -1,0 +1,37 @@
+# Arquivo de logs do script certs_reload.sh
+{{ certs_directory }}/logs/certs_reload.log {
+  daily
+  notifempty
+  dateext
+  dateformat -%d-%m-%Y
+  rotate 30
+  notifempty
+  create 0664 {{ linux_korp.user }} root
+}
+
+{% if certs.certbot_automated.certificate %}
+
+## certbot_automated
+# Não é necessário pois certbot já faz rotação de log automática
+
+{% elif certs.self_signed.certificate %}
+
+## self_signed
+# arquivos de logs do arquivo cert_renew.sh para certificado AutoAssinado
+
+{{ certs_directory }}/logs/self_signed_renew.log {
+  daily
+  notifempty
+  dateext
+  dateformat -%d-%m-%Y
+  rotate 30
+  notifempty
+  create 0664 {{ linux_korp.user }} root
+}
+
+{% elif certs.custom.certificate %}
+
+## custom
+# Não há rotação de logs aqui pos não há script de atualização de certificado
+
+{% endif %}

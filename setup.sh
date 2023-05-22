@@ -204,17 +204,8 @@ sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 rm /tmp/inventory-playbook.yml
 
-
-# Verificação caso não deseja que rode o bootstrap-playbook.yml
-playbook_name=""
-if [ ${run_bootstrap^^} == "FALSE" ];
-then
-    playbook_name="main.yml" 
-else
-    playbook_name="bootstrap-playbook.yml"  
-fi
-
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git $playbook_name \
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \

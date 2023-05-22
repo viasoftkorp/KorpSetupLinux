@@ -5,19 +5,17 @@
     group: root
     mode: '0644'
 
-- name: Verificação de diretório de scripts
-  ansible.builtin.stat:
-    path: "{{ korp_dir_path }}/scripts/"
-  register: korp_scripts_folder
-
-- name: Criação de diretório de scripts
+- name: Criação de diretórios
   ansible.builtin.file:
-    path: "{{ korp_dir_path }}/scripts/"
+    path: "{{ item }}"
     state: directory
     mode: '0755'
     owner: "{{ linux_korp.user }}"
     group: root
-  when: not korp_scripts_folder.stat.exists
+  loop:
+    - "{{ certs_directory }}/logs"
+    - "{{ korp_dir_path }}/logrotate.d/"
+    - "{{ korp_dir_path }}/scripts/"
 
 - name: Transferência de scripts
   ansible.builtin.template:

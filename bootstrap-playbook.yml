@@ -1,28 +1,8 @@
----
-- name: Coleta de usuário
-  hosts: 127.0.0.1
-  connection: local
-  become: false
-  gather_facts: false
-  vars_prompt:
-    - name: "user_pass"
-      prompt: "Senha do usuário administrativo"
-      private: true
-
-  tasks:
-    - name: Definição de senha
-      ansible.builtin.set_fact:
-        user_pass: "{{ user_pass }}"
-      tags:
-        - always
-
 - name: Setup de provisioning
   hosts: 127.0.0.1
   connection: local
   become: true
   become_user: root
-  vars:
-    ansible_become_password: "{{ user_pass }}"
 
   tasks:
     - name: Provisioning
