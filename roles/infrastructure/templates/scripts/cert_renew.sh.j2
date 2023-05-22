@@ -17,7 +17,7 @@
 touch {{ certs_directory }}/logs/self_signed_renew.log;
 
 /usr/bin/ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git self_signed_renew-playbook.yml \
-  -C develop \
+  -C master \
   --limit localhost \
   --vault-id {{ korp_dir_path }}/ansible/.vault_key \
   >> {{ certs_directory }}/logs/self_signed_renew.log 2>&1
