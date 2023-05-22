@@ -1,5 +1,3 @@
-
-
 - name: Criação de arquivo de senha para o certificado, que será utilizado pelo NGINX
   ansible.builtin.copy:
     dest: "{{ certs_directory }}/cert.pass"
