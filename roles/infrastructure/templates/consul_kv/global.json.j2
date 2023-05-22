@@ -55,7 +55,7 @@
     "useSSL": false
   },
   "MinioConfigGateway": {
-    "EndPoint": {{ minio_gateway_config.EndPoint }},
+    "EndPoint": "{{ minio_gateway_config.EndPoint }}",
     "AccessKeyID": "{{ minio_gateway_config.AccessKey }}",
     "SecretAccessKey": "{{ minio_gateway_config.SecretKey }}",
     "useSSL": {{ minio_gateway_config.useSSL }}
