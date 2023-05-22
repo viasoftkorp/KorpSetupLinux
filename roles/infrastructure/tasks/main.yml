@@ -39,6 +39,20 @@
 
 # TODO - Cronjob deve ter horário customizável
 
+# RENOVAÇÃO DE CERTIFICADO
+#
+# A renovação de certificado, e rotação de logs funcionam da seguinte forma:
+#
+# É criado cronjob que executa o script 'cert_renew.sh'
+# script primeiramente faz a rotação de logs com logrotate, usando o arquivo 'korp_cert_renew' como base
+#   rotação de logs rotaciona o arquivo 'certs_reload.log'(atualizado quando o certificado é alterado)
+#   rotação de logs rotaciona o arquivo 'self_signed_renew.log' quando a modalidade do certificado é autoassinado
+#   não há rotação de log para o certbot(pois certbot já faz isso automaticamente) e para certificado customizado
+# após a rotação de logs, é executando o comando de renovação de certificado
+#   execução de certbot no caso de certificado provisionado por ele
+#   execução do playbook 'self_signed_renew-playbook.yml' no caso de autoassinado
+#   não há renovação de certificado customizado, pois ele deve ser feito manualmente
+
 # cronjob é criado em '/var/spool/cron/crontabs/korp'
 - name: Criação de cronjob para renovação de certificados
   ansible.builtin.cron:
@@ -58,6 +72,8 @@
     mode: '0644'
   become: true
   become_user: root
+
+################################################################
 
 - name: Criação de usuário de uso da korp no SQL Server - Produção
   community.general.mssql_script:

@@ -1,7 +1,7 @@
 ## Script é executado com o usuário 'korp' pelo cronjob
 
 # chamda de 'logrotate' para rotação de logs
-/usr/sbin/logrotate  {{ korp_dir_path }}/logrotate.d/korp_cert_renew  -s {{ korp_dir_path }}/certs/logs/logrotate.status
+/usr/sbin/logrotate {{ korp_dir_path }}/logrotate.d/korp_cert_renew -s {{ korp_dir_path }}/certs/logs/logrotate.status
 
 {% if certs.certbot_automated.certificate %}
 
