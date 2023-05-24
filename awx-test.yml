@@ -15,3 +15,13 @@
   tasks:
     - set_fact:
         var_2: "var_2 value"
+
+    - name: Launch a job
+      job_launch:
+        name: "awx-test_2"
+        # organization : 
+        extra_vars:
+          var_2: "var_2 value fron ansible 1"
+
+    - debug:
+        msg: "after lauch job"
