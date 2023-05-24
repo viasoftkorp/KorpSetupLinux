@@ -4,6 +4,12 @@
 
   tasks:
 
+    - name: show all the hosts matching the pattern
+      debug:
+        msg: "{{ item }}"
+      with_inventory_hostnames:
+        - all
+        
     - name: AAAAAAAAAAAAAAAAAA
       ansible.builtin.copy:
         dest: "/etc/korp/test.txt"
