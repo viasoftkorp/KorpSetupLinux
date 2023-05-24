@@ -1,5 +1,5 @@
 ---
-- hosts: 192.168.1.35
+- hosts: *
   become: true
 
   tasks:
