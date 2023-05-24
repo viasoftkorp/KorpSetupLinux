@@ -9,3 +9,9 @@
         dest: "/etc/korp/test.txt"
         mode: '0644'
         content: "test 1"
+
+    - name: BBBBBBBBBBBBBBBBB
+      ansible.builtin.copy:
+        dest: "/etc/korp/test1.txt"
+        mode: '0644'
+        content: "{{ test_var }}"
