@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: AAAAAAAAAAAAAAAAAA
+      ansible.builtin.copy:
+        dest: "/etc/korp/test.txt"
+        mode: '0644'
+        content: "test 1"
