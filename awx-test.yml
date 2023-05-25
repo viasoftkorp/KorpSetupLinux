@@ -17,7 +17,7 @@
         var_2: "var_2 value"
 
     - name: Launch a job
-      job_launch:
+      awx.awx.job_launch:
         name: "awx-test_2"
         # organization : 
         extra_vars:
