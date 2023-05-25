@@ -13,16 +13,27 @@
   #   https://www.looklinux.com/how-to-remove-volume-group-and-physical-volume-on-lvm/
 
   tasks:
-    - set_fact:
-        var_2: "var_2 value"
-
-    - name: Launch a job
-      awx.awx.job_launch:
-        name: "awx-test_2"
+    - name: List running jobs for the testing.yml playbook
+      job_list:
+        # controller_host: http://192.168.1.193:31753
+        status: successful
         validate_certs: false
-        # organization : 
-        extra_vars:
-          var_2: "var_2 value fron ansible 1"
+        # controller_oauthtoken:
+      register: testing_jobs
 
     - debug:
-        msg: "after lauch job"
+        msg: "{{ testing_jobs }}"
+
+    # - set_fact:
+    #     var_2: "var_2 value"
+
+    # - name: Launch a job
+    #   awx.awx.job_launch:
+    #     name: "awx-test_2"
+    #     validate_certs: false
+    #     # organization : 
+    #     extra_vars:
+    #       var_2: "var_2 value fron ansible 1"
+
+    # - debug:
+    #     msg: "after lauch job"
