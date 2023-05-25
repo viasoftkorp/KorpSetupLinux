@@ -13,16 +13,24 @@
   #   https://www.looklinux.com/how-to-remove-volume-group-and-physical-volume-on-lvm/
 
   tasks:
-    - name: List running jobs for the testing.yml playbook
-      awx.awx.job_list:
-        controller_host: http://192.168.1.193:31753
-        status: successful
-        validate_certs: false
-        controller_oauthtoken: KZ2eB7qyhgMk0RcE7fk7gIESETvWGG
-      register: testing_jobs
+    - name: 
+      debug:
+        msg: "playbook 1"
+      
+    - ansible.builtin.set_stats:
+        data:
+          var_2: "var_2 value"
 
-    - debug:
-        msg: "{{ testing_jobs }}"
+    # - name: List running jobs for the testing.yml playbook
+    #   awx.awx.job_list:
+    #     controller_host: http://192.168.1.193:31753
+    #     validate_certs: false
+    #     controller_oauthtoken: KZ2eB7qyhgMk0RcE7fk7gIESETvWGG
+    #     status: successful
+    #   register: testing_jobs
+
+    # - debug:
+    #     msg: "{{ testing_jobs }}"
 
     # - set_fact:
     #     var_2: "var_2 value"
@@ -30,10 +38,18 @@
     # - name: Launch a job
     #   awx.awx.job_launch:
     #     name: "awx-test_2"
+    #     controller_host: http://192.168.1.193:31753
     #     validate_certs: false
+    #     controller_oauthtoken: KZ2eB7qyhgMk0RcE7fk7gIESETvWGG
+    #     wait: true
     #     # organization : 
     #     extra_vars:
     #       var_2: "var_2 value fron ansible 1"
+    #   register: resp
+
+    # - debug:
+    #     msg: "{{ resp }}"
+
 
     # - debug:
     #     msg: "after lauch job"
