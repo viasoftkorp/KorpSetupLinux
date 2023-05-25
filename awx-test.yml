@@ -15,10 +15,10 @@
   tasks:
     - name: List running jobs for the testing.yml playbook
       awx.awx.job_list:
-        # controller_host: http://192.168.1.193:31753
+        controller_host: http://192.168.1.193:31753
         status: successful
         validate_certs: false
-        # controller_oauthtoken:
+        controller_oauthtoken: KZ2eB7qyhgMk0RcE7fk7gIESETvWGG
       register: testing_jobs
 
     - debug:
