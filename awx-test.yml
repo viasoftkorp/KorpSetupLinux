@@ -19,6 +19,7 @@
     - name: Launch a job
       awx.awx.job_launch:
         name: "awx-test_2"
+        validate_certs: false
         # organization : 
         extra_vars:
           var_2: "var_2 value fron ansible 1"
