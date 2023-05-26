@@ -1,0 +1,4 @@
+all:
+  hosts:
+    192.168.1.35:
+      var_2: "var 2 inventory git"
