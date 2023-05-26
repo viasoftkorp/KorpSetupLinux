@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-vendas-mobile-configuracao:
-    image: "{{ docker_account }}/viasoft.vendas..configuracao:1.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Vendas.Mobile.Configuracao"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   MOB01:
-    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao-frontend:1.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao-frontend:1.2.x{{ docker_image_suffix }}"
     container_name: "MOB01"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
