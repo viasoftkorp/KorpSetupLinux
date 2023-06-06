@@ -79,7 +79,7 @@
                   'frontend_url': frontend.endpoints.frontend_url + ':' + https_port 
                 }
               }, recursive=True) }}"
-          when: https_port != 443
+          when: https_port != "443"
 
         - name: Definição de variável docker_account
           ansible.builtin.set_fact:
