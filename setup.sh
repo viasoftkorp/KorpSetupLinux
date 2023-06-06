@@ -30,11 +30,14 @@ create_random_string() {
 #   dns_api="<dns.domain>"      - OPCIONAL
 #   dns_cdn="<dns.domain>"      - OPCIONAL
 #   dns_frontend="<dns.domain>" - OPCIONAL
+## HTTPS
+#   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
 
 install_apps=""; docker_account=""; ansible_tags="";
 branch_name=""; docker_image_suffix="";
 db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
+https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 
 run_bootstrap="True"
@@ -189,7 +192,8 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "api": "'$dns_api'",
         "frontend": "'$dns_frontend'",
         "cdn": "'$dns_cdn'"
-      }
+      },
+      "https_port": "'https_port'"
     }
   }'
 

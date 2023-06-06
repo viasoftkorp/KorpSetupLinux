@@ -63,9 +63,9 @@
             frontend: "{{ frontend | combine(
               {
                 'endpoints': {
-                  'gateway_url': 'https://' + dns.api,
-                  'cdn_url': 'https://' + dns.cdn,
-                  'frontend_url': 'https://' + dns.frontend
+                  'gateway_url': 'https://' + authority.api,
+                  'cdn_url': 'https://' + authority.cdn,
+                  'frontend_url': 'https://' + authority.frontend
                 }
               }, recursive=True) }}"
 

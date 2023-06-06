@@ -23,6 +23,13 @@
     dns_cdn: ""
     dns_frontend: ""
 
+    # authority é composto de dns + ':' + https_port, quando https_port não é 443
+    authority_api: ""
+    authority_cdn: ""
+    authority_frontend: ""
+
+    https_port: "443"
+
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     custom_setup_info:
@@ -35,6 +42,7 @@
         api: ""
         cdn: ""
         frontend: ""
+      https_port: ""
 
   tasks:
 
@@ -385,6 +393,17 @@
 
       when: shrink_inventory.dns is undefined
 
+    - name: Definição de porta HTTPS
+      ansible.builtin.set_fact:
+        https_port: "{{ custom_setup_info.https_port }}"
+      when: custom_setup_info.https_port != ''
+
+    - name: Definição authority
+      ansible.builtin.set_fact:
+        authority_api: "{{ dns_api }}:{{ https_port }}"
+        authority_cdn: "{{ dns_cdn }}:{{ https_port }}"
+        authority_frontend: "{{ dns_frontend }}:{{ https_port }}"
+      when: https_port != "443"
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -461,6 +480,12 @@
               'api': shrink_inventory.dns.api | default (dns_api),
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
+            },
+            'https_port': shrink_inventory.https_port | default (https_port),
+            'authority': {
+              'api': shrink_inventory.authority.api | default (authority_api),
+              'cdn': shrink_inventory.authority.cdn | default (authority_cdn),
+              'frontend': shrink_inventory.authority.frontend | default (authority_frontend)
             }
           }, recursive=True) }}"
 
