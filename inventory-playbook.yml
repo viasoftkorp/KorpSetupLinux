@@ -399,7 +399,13 @@
         https_port: "{{ custom_setup_info.https_port }}"
       when: custom_setup_info.https_port != ''
 
-    - name: Definição authority
+    - name: Definição authority padrão
+      ansible.builtin.set_fact:
+        authority_api: "{{ dns_api }}"
+        authority_cdn: "{{ dns_cdn }}"
+        authority_frontend: "{{ dns_frontend }}"
+
+    - name: Definição authority customizado
       ansible.builtin.set_fact:
         authority_api: "{{ dns_api }}:{{ https_port }}"
         authority_cdn: "{{ dns_cdn }}:{{ https_port }}"
