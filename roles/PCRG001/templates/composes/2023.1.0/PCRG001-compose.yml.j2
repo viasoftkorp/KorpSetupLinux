@@ -5,9 +5,9 @@ x-extra_hosts:
   - "db_mssql:$DB_MSSQL"
   - "testing_db_mssql:$TESTING_DB_MSSQL" 
   - "app_server:$APP_SERVER"
-  - "{{ authority.api }}:$API_GATEWAY"
-  - "{{ authority.frontend }}:$PORTAL_GATEWAY"
-  - "{{ authority.cdn }}:$CDN_GATEWAY"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
 
 networks:
   servicos:
