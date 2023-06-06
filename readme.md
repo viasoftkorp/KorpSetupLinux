@@ -230,9 +230,9 @@ Chamaremos AppId/Domínio de `ID`
       &default-extra_hosts
       - "db_mssql:$DB_MSSQL"
       - "app_server:$APP_SERVER"
-      - "{{ authority.api }}:$API_GATEWAY"
-      - "{{ authority.frontend }}:$PORTAL_GATEWAY"
-      - "{{ authority.cdn }}:$CDN_GATEWAY"
+      - "{{ dns.api }}:$API_GATEWAY"
+      - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+      - "{{ dns.cdn }}:$CDN_GATEWAY"
 
     networks:
       servicos:

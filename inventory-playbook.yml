@@ -23,15 +23,16 @@
     dns_cdn: ""
     dns_frontend: ""
 
-    # authority é composto de dns + ':' + https_port, quando https_port não é 443
+    # authority é composto de '<dns>:<https_port>', quando https_port não é 443
     authority_api: ""
     authority_cdn: ""
     authority_frontend: ""
 
-    https_port: "443"
-
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
+    https_port: "443"
+
+    # possíveis variaveis que podem ser enviadas para o playbook 
     custom_setup_info:
       cert:
         cert_type: ""
