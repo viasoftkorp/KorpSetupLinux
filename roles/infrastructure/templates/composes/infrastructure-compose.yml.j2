@@ -22,7 +22,7 @@ services:
     extra_hosts: *default-extra_hosts
     ports:
       - "80:80"
-      - "443:443"
+      - "{{ https_port }}:443"
     volumes:
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/

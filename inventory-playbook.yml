@@ -25,6 +25,9 @@
 
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
+    https_port: "443"
+
+    # possíveis variaveis que podem ser enviadas para o playbook 
     custom_setup_info:
       cert:
         cert_type: ""
@@ -35,6 +38,7 @@
         api: ""
         cdn: ""
         frontend: ""
+      https_port: ""
 
   tasks:
 
@@ -385,6 +389,10 @@
 
       when: shrink_inventory.dns is undefined
 
+    - name: Definição de porta HTTPS
+      ansible.builtin.set_fact:
+        https_port: "{{ custom_setup_info.https_port }}"
+      when: custom_setup_info.https_port != ''
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -461,7 +469,8 @@
               'api': shrink_inventory.dns.api | default (dns_api),
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
-            }
+            },
+            'https_port': shrink_inventory.https_port | default (https_port)
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
