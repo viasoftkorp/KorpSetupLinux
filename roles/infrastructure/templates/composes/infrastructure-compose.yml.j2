@@ -21,7 +21,7 @@ services:
     restart: always
     extra_hosts: *default-extra_hosts
     ports:
-      - "80:80"
+      - "{{ certs.certbot_automated.http_01_port }}:80"
       - "{{ https_port }}:443"
     volumes:
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf

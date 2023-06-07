@@ -23,6 +23,7 @@
       --email {{ certs.certbot_automated.email }}
       --deploy-hook {{ korp_dir_path }}/scripts/certs_reload.sh
       --cert-name {{ certbot_cert_name }}
+      --http-01-port {{ certs.certbot_automated.http_01_port }}
       -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }}
       --agree-tos
       --noninteractive

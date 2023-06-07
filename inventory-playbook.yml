@@ -18,6 +18,7 @@
     custom_certificate: false
     self_signed_certificate: false
     certbot_automated_certificate: false
+    certbot_http_01_port: "80"
 
     dns_api: ""
     dns_cdn: ""
@@ -34,6 +35,7 @@
         custom_cert_has_pass: false
         custom_cert_path: ""
         certbot_email: ""
+        certbot_http_01_port: ""
       dns:
         api: ""
         cdn: ""
@@ -286,6 +288,11 @@
                         msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
                       when: custom_setup_info.cert.certbot_email == ""
 
+                    - name: Definição de certbot_http_01_port customizada
+                      ansible.builtin.set_fact:
+                        certbot_http_01_port: "{{ custom_setup_info.cert.certbot_http_01_port }}"
+                      when: custom_setup_info.cert.certbot_http_01_port != ""
+
                   when: custom_setup_info.cert.cert_type == "certbot"
 
                 - name: Definição de variáveis
@@ -461,6 +468,7 @@
               },
               'certbot_automated': {
                 'certificate': shrink_inventory.certs.certbot_automated.certificate | default(certbot_automated_certificate),
+                'http_01_port': shrink_inventory.certs.certbot_automated.http_01_port | default(certbot_http_01_port),          
                 'email': shrink_inventory.certs.certbot_automated.email | default(certbot_automated_email)
               },
               'pfx_passphrase': shrink_inventory.certs.pfx_passphrase | default ('korp')

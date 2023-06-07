@@ -22,10 +22,11 @@ create_random_string() {
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
 ## Certificados
-#   cert_type="<cert_type>"                         - OPCIONAL - pode ter os valores: [selfsigned, custom, certbot]
-#   custom_cert_has_pass=false                      - OBRIGATÓRIO caso cert_type==custom - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
-#   custom_cert_path="<certs_path>"                 - OBRIGATÓRIO caso cert_type==custom - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
-#   certbot_email="<certbot_email>"   - OBRIGATÓRIO caso cert_type==certbot - Email em que o LetsEncrypt irá enviar notificações
+#   cert_type="<cert_type>"               - OPCIONAL - pode ter os valores: [selfsigned, custom, certbot]
+#   custom_cert_has_pass=false            - OBRIGATÓRIO caso cert_type==custom - caso true, o diretório 'custom_cert_path' deve conter o arquivo cert.pass
+#   custom_cert_path="<certs_path>"       - OBRIGATÓRIO caso cert_type==custom - Diretório contendo os arquivos cert.crt, cert.key, cert.pass
+#   certbot_email="<certbot_email>"       - OBRIGATÓRIO caso cert_type==certbot - Email em que o LetsEncrypt irá enviar notificações
+#   certbot_http_01_port="<http_01_port>" - OPCIONAL - Porta utilizada pelo LetsEncrypt para fazer o http 01 chalange, padrão 80
 ## DNSs
 #   dns_api="<dns.domain>"      - OPCIONAL
 #   dns_cdn="<dns.domain>"      - OPCIONAL
@@ -186,7 +187,8 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "cert_type": "'$cert_type'",
         "custom_cert_has_pass": "'$custom_cert_has_pass'",
         "custom_cert_path": "'$custom_cert_path'",
-        "certbot_email": "'$certbot_email'"
+        "certbot_email": "'$certbot_email'",
+        "certbot_http_01_port": "'$certbot_http_01_port'"
       },
       "dns": {
         "api": "'$dns_api'",
