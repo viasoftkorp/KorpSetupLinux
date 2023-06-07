@@ -39,7 +39,7 @@ branch_name=""; docker_image_suffix="";
 db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
 https_port="";
-cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
+cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email=""; certbot_http_01_port="";
 
 run_bootstrap="True"
 ini_file_path="./setup_config.ini"
