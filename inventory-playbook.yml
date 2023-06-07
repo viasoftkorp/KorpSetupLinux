@@ -288,11 +288,6 @@
                         msg: "Uma ou mais flag de configuração de certificado não foram passadass, ou estão vazias."
                       when: custom_setup_info.cert.certbot_email == ""
 
-                    - name: Definição de certbot_http_01_port customizada
-                      ansible.builtin.set_fact:
-                        certbot_http_01_port: "{{ custom_setup_info.cert.certbot_http_01_port }}"
-                      when: custom_setup_info.cert.certbot_http_01_port != ""
-
                   when: custom_setup_info.cert.cert_type == "certbot"
 
                 - name: Definição de variáveis
@@ -368,38 +363,44 @@
             custom_cert_has_pass_file: false
           when: cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
-    - name: Setup de DNS
+    - name: Definição de variáveis únicas de linha de comando
       block:
+        - name: Setup de DNS
+          block:
+            - name: Verificação de número de DNSs definidos
+              ansible.builtin.set_fact:
+                undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
 
-        - name: Verificação de número de DNSs definidos
+            - name: Definição de valores de DNS padrão
+              ansible.builtin.set_fact:
+                dns_api: "korp-api.local"
+                dns_cdn: "korp-cdn.local"
+                dns_frontend: "korp.local"
+              when: undefined_dns_num == "3"
+
+            - name: Verificação de DNS customizado
+              ansible.builtin.fail:
+                msg: "Nem todos os DNSs customizados foram definidos"
+              when: undefined_dns_num != "0" and undefined_dns_num != "3"
+
+            - name: Definição de valores de DNS padrão
+              ansible.builtin.set_fact:
+                dns_api: "{{ custom_setup_info.dns.api }}"
+                dns_cdn: "{{ custom_setup_info.dns.cdn }}"
+                dns_frontend: "{{ custom_setup_info.dns.frontend }}"
+              when: undefined_dns_num == "0"
+
+          when: shrink_inventory.dns is undefined
+
+        - name: Definição de porta HTTPS
           ansible.builtin.set_fact:
-            undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
+            https_port: "{{ custom_setup_info.https_port }}"
+          when: custom_setup_info.https_port != ''
 
-        - name: Definição de valores de DNS padrão
+        - name: Definição de certbot_http_01_port customizada
           ansible.builtin.set_fact:
-            dns_api: "korp-api.local"
-            dns_cdn: "korp-cdn.local"
-            dns_frontend: "korp.local"
-          when: undefined_dns_num == "3"
-
-        - name: Verificação de DNS customizado
-          ansible.builtin.fail:
-            msg: "Nem todos os DNSs customizados foram definidos"
-          when: undefined_dns_num != "0" and undefined_dns_num != "3"
-
-        - name: Definição de valores de DNS padrão
-          ansible.builtin.set_fact:
-            dns_api: "{{ custom_setup_info.dns.api }}"
-            dns_cdn: "{{ custom_setup_info.dns.cdn }}"
-            dns_frontend: "{{ custom_setup_info.dns.frontend }}"
-          when: undefined_dns_num == "0"
-
-      when: shrink_inventory.dns is undefined
-
-    - name: Definição de porta HTTPS
-      ansible.builtin.set_fact:
-        https_port: "{{ custom_setup_info.https_port }}"
-      when: custom_setup_info.https_port != ''
+            certbot_http_01_port: "{{ custom_setup_info.cert.certbot_http_01_port }}"
+          when: custom_setup_info.cert.certbot_http_01_port != ""
 
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
