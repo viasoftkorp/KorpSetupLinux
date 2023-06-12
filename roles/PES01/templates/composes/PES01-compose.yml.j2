@@ -18,7 +18,7 @@ services:
   PES01:
     image: "{{ docker_account }}/viasoft.erp.person.preregistration-frontend:3.2.x{{ docker_image_suffix }}"
     container_name: "PES01"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -35,7 +35,7 @@ services:
   viasoft-erp-person-preregistration:
     image: "{{ docker_account }}/viasoft.erp.person.preregistration:3.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Person.PreRegistration"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

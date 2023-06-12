@@ -18,7 +18,7 @@ services:
   VEN27:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.3.x{{ docker_image_suffix }}"
     container_name: "VEN27"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -35,7 +35,7 @@ services:
   viasoft-commercialproposal-sync:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Sync"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -50,7 +50,7 @@ services:
   viasoft-commercialproposal-core:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.6.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

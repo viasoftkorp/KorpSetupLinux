@@ -18,7 +18,7 @@ services:
   viasoft-sales-core:
     image: "{{ docker_account }}/viasoft.sales.core:3.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   viasoft-sales-customerportfolio:
     image: "{{ docker_account }}/viasoft.sales.customerportfolio:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CustomerPortfolio"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -48,7 +48,7 @@ services:
   viasoft-sales-discount:
     image: "{{ docker_account }}/viasoft.sales.discount:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Discount"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -63,7 +63,7 @@ services:
   viasoft-sales-pricelist:
     image: "{{ docker_account }}/viasoft.sales.pricelist:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.PriceList"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -78,7 +78,7 @@ services:
   viasoft-sales-customers:
     image: "{{ docker_account }}/viasoft.sales.customers:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.Customers"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -93,7 +93,7 @@ services:
   viasoft.commercialproposal-gateway:
     image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CommercialProposal.Gateway"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -108,7 +108,7 @@ services:
   viasoft.vendas-core:
     image: "{{ docker_account }}/viasoft.vendas.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Vendas.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -123,7 +123,7 @@ services:
   viasoft.vendas-core:
     image: "{{ docker_account }}/viasoft.vendas.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Vendas.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
