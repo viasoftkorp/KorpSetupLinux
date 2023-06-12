@@ -18,7 +18,7 @@ services:
   korp-logistica-estoque-inventario-2022-4-0:
     image: "{{ docker_account }}/korp.logistica.estoque.inventario:2022.4.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Estoque.Inventario-2022.4.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   LOG05_W-2022-4-0:
     image: "{{ docker_account }}/korp.logistica.estoque.inventario-frontend:2022.4.0.x{{ docker_image_suffix }}"
     container_name: "LOG05_W-2022.4.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

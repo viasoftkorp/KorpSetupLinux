@@ -18,7 +18,7 @@ services:
   korp-logistica-picking-2023-2-0:
     image: "{{ docker_account }}/korp.logistica.picking:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   korp-logistic-picking-analisedeestoque-2023.2.0:
     image: "{{ docker_account }}/korp.logistica.picking.analisedeestoque:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.AnaliseDeEstoque-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -48,7 +48,7 @@ services:
   korp-logistica-picking-controlepedidos-2023-2-0:
     image: "{{ docker_account }}/korp.logistica.picking.controlepedidos:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.ControlePedidos-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -63,7 +63,7 @@ services:
   korp-logistica-picking-faturamento-2023-2-0:
     image: "{{ docker_account }}/korp.logistica.picking.faturamento:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.Faturamento-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -78,7 +78,7 @@ services:
   korp-logistica-picking-ordemproducao-2023-2-0:
     image: "{{ docker_account }}/korp.logistica.picking.ordemproducao:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.OrdemProducao-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -93,7 +93,7 @@ services:
   korp-faturamento-solicitacaodefaturamento-2023-2-0:
     image: "{{ docker_account }}/korp.faturamento.solicitacaodefaturamento:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Faturamento.SolicitacaoDeFaturamento-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -108,7 +108,7 @@ services:
   LOG102-2023-2-0:
     image: "{{ docker_account }}/korp.logistica.picking-frontend:2023.2.0.x{{ docker_image_suffix }}"
     container_name: "LOG102-2023.2.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
