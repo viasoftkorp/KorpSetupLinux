@@ -18,7 +18,7 @@ services:
   viasoft-erp-core:
     image: "{{ docker_account }}/viasoft.erp.core:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   viasoft-erp-sync:
     image: "{{ docker_account }}/viasoft.erp.sync:2.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Sync"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -48,7 +48,7 @@ services:
   viasoft-legacy-parametros:
     image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Legacy.Parametros"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -63,7 +63,7 @@ services:
   viasoft-erp-activities:
     image: "{{ docker_account }}/viasoft.erp.activities:3.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Activities"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -78,7 +78,7 @@ services:
   SYNC01:
     image: "{{ docker_account }}/viasoft.erp.sync-frontend:1.0.x{{ docker_image_suffix }}"
     container_name: "SYNC01"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -95,7 +95,7 @@ services:
   viasoft-organizationalstructuremanagement:
     image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.OrganizationalStructureManagement"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -110,7 +110,7 @@ services:
   viasoft-messagebird:
     image: "{{ docker_account }}/viasoft.messagebird:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.MessageBird"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

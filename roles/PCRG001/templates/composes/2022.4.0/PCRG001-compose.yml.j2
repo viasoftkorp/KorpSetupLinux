@@ -18,7 +18,7 @@ services:
   korp-logistica-carga-2022-4-0:
     image: "{{ docker_account }}/korp.logistica.carga:2022.4.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Carga-2022.4.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   PCRG001-2022-4-0:
     image: "{{ docker_account }}/korp.logistica.carga-frontend:2022.4.0.x{{ docker_image_suffix }}"
     container_name: "PCRG001-2022.4.0"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

@@ -38,7 +38,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
     <service_name_lowercase>-<version>:
       image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
       container_name: "<service_name>-<version>"
-      restart: on-failure:10
+      restart: unless-stopped
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
@@ -160,7 +160,7 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
     korp-logistica-picking-2022-2-0: # aqui usamos '-' ao invés de '.'
         image: "{{ docker_account }}/korp.logistica.picking:2022.2.0.x" # nome deve se com letras minúsculas
         container_name: "Korp.Logistica.Picking-2022.2.0" # nome deve ser conforme o bitbucket, com letras maiúsculas
-        restart: on-failure:10
+        restart: unless-stopped
         extra_hosts: *default-extra_hosts
         environment:
           - ON_PREMISE_MODE=true

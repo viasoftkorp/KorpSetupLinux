@@ -18,7 +18,7 @@ services:
   PROM02:
     image: "{{ docker_account }}/korp.projetos.gantt-frontend:1.0.x{{ docker_image_suffix }}"
     container_name: "PROM02"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -35,7 +35,7 @@ services:
   korp-projetos-gantt-gateway:
     image: "{{ docker_account }}/korp.projetos.gantt.gateway:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Projetos.Gantt.Gateway"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true

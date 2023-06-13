@@ -18,7 +18,7 @@ services:
   viasoft-financeiro-core:
     image: "{{ docker_account }}/viasoft.financeiro.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Financeiro.Core"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -33,7 +33,7 @@ services:
   viasoft-financialaccounting-installment:
     image: "{{ docker_account }}/viasoft.financialaccounting.installment:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.Installment"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -48,7 +48,7 @@ services:
   viasoft-financialaccounting-accountsreceivable:
     image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.AccountsReceivable"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -63,7 +63,7 @@ services:
   korp-legacy-financeiro:
     image: "{{ docker_account }}/korp.legacy.financeiro:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Financeiro"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
@@ -78,7 +78,7 @@ services:
   viasoft-financialaccounting-accountsreceivable:
     image: "{{ docker_account }}/viasoft.financialaccounting.accountsreceivable:2.1.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.AccountsReceivable"
-    restart: on-failure:10
+    restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
