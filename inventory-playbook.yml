@@ -349,7 +349,7 @@
                         - "cert.key"
                         - "cert.pass"
 
-                  when: custom_setup_info.cert.cert_type == "certbot"
+                  when: custom_setup_info.cert.cert_type == "custom"
 
           when: not cert_file_status.stat.exists and (shrink_inventory.certs is undefined)
 
