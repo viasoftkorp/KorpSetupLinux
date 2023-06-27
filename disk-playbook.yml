@@ -52,7 +52,7 @@
                  # selecionamos o dispositivo que está montado em '/' (root), e # pegamos o tamanho desse dispositivo
                  # o tamanho retornado está em bites, por isso fazemos 3 divisões de 1024, transformando o valor para GB
                  # após isso é feito um comparativo de 90% do minímo necessario com a variavel root_disk_minimum_size
-              when : ((ansible_mounts|json_query('[?mount == `/`].size_total'))[0] /1024/1024/1024 | int ) < (0.9 * root_disk_minimum_size | int )
+              when : ((ansible_mounts|json_query('[?mount == `/`].size_total'))[0] /1024/1024/1024 | int ) < (0.85 * root_disk_minimum_size | int )
 
             - name: Checagem de espaço total no dispositivo de dados
               ansible.builtin.fail:
