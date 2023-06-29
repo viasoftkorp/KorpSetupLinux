@@ -134,7 +134,6 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  
   korp-legacy-vendas:
     image: "{{ docker_account }}/korp.legacy.vendas:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Vendas"
