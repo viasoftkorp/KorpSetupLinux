@@ -43,3 +43,6 @@ services:
       type: postgres
   
   Korp.Legacy.Vendas:
+    db:
+      name: Korp_Legacy_Vendas
+      type: mssql
