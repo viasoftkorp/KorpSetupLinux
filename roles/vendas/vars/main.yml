@@ -41,3 +41,9 @@ services:
     db:
       name: Viasoft_Vendas_Core
       type: postgres
+  
+  Korp.Legacy.Vendas:
+    db:
+      name: Korp_Legacy_Vendas
+      type: mssql
+
