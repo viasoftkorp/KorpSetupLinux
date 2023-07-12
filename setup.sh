@@ -17,8 +17,8 @@ create_random_string() {
 #   apps="<apps1,apps2>"        - OPCIONAL
 #     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
 #     caso 'custom_tags' seja ['remove-app'], será utilizado para definir os aplicativos que serão desinstalados
-#   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app']
-#   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app']
+#   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app'] - padrão, false
+#   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app', 'uninstall-version']
 #
 ##### variaveis salvas no inventário:
@@ -227,9 +227,9 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
       "docker_image_suffix": "'$docker_image_suffix'"
     },
     "apps":['$apps'],
-    "remove_versioned": "'$remove_versioned'",
+    "remove_versioned": '$remove_versioned',
     "remove_unversioned": '$remove_unversioned',
-    "removed_version": '$removed_version'
+    "removed_version": "'$removed_version'"
   }'
 
 if [ $? != 0 ]
