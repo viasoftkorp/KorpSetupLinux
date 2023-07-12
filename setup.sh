@@ -1,7 +1,5 @@
 #!/bin/bash
 
-gateway_url="https://gateway.korp.com.br"
-
 create_random_string() {
   local l=15
   [ -n "$1" ] && l=$1
@@ -11,13 +9,17 @@ create_random_string() {
 
 # Leitura de parâmetros passados para o script
 # parametros esperados:
-#   token="<token>" - OBRIGATÓRIO
-#   disk="<sdx>" - OBRIGATÓRIO caso haja mais de um disco livre
+#   token="<token>"             - OBRIGATÓRIO
+#   disk="<sdx>"                - OBRIGATÓRIO durante instalação caso haja mais de um disco livre
 #   branch_name="<branch_name>" - OPCIONAL, caso não sejá passado, receberá 'master'
-#   gateway_url="<gateway_url>"
-#   install_apps="<apps1,apps2>"
-#   run_bootstrap=false - ira rodar o main.yml e não bootstrap-playbook.yml   (padrão true)
-#   custom_tags="<tag1,tag2>" - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   gateway_url="<gateway_url>" - OPCIONAL, caso não sejá passado, receberá "https://gateway.korp.com.br"
+#   custom_tags="<tag1,tag2>"   - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#   apps="<apps1,apps2>"        - OPCIONAL
+#     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
+#     caso 'custom_tags' seja ['remove-app'], será utilizado para definir os aplicativos que serão desinstalados
+#   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app']
+#   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app']
+#   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app', 'uninstall-version']
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -33,20 +35,22 @@ create_random_string() {
 ## HTTPS
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
 
-install_apps=""; docker_account=""; ansible_tags="";
-branch_name=""; docker_image_suffix="";
+apps=""; docker_account=""; ansible_tags="";
+gateway_url="https://gateway.korp.com.br"
+branch_name="master";
+remove_versioned=false; remove_unversioned=false; removed_version="";
+docker_image_suffix="";
 db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
 https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 
-run_bootstrap="True"
 ini_file_path="./setup_config.ini"
 
 
 if test -f $ini_file_path;
 then
-    install_apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^install_apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    apps=$(sed -nr "/^\[OPTIONS\]/ { :l /^apps[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     docker_account=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_account[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
     docker_image_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^docker_image_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)  
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -59,7 +63,7 @@ then
     custom_cert_path=$(sed -nr "/^\[OPTIONS\]/ { :l /^custom_cert_path[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     echo "$(tput setaf 3)Os seguintes apps foram encontrados no aquivo de configuração:$(tput setaf 7)"
-    echo "$install_apps"
+    echo "$apps"
 
 else
     echo "$(tput setaf 3)Arquivo de configuração não encontrado($ini_file_path), isso quer dizer que o setup irá instalar apenas os apps padrões.$(tput setaf 7)"
@@ -222,7 +226,10 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
       "docker_account": "'$docker_account'",
       "docker_image_suffix": "'$docker_image_suffix'"
     },
-    "apps":['$install_apps']
+    "apps":['$apps'],
+    "remove_versioned": "'$remove_versioned'",
+    "remove_unversioned": '$remove_unversioned',
+    "removed_version": '$removed_version'
   }'
 
 if [ $? != 0 ]

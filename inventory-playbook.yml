@@ -306,7 +306,7 @@
                     - name: Garantia de "/" no caminho da pasta de certificados
                       ansible.builtin.set_fact:
                         custom_certs_folder: "{{ custom_certs_folder[:-1] }}"
-                      when: custom_certs_folder | last == "/"            
+                      when: custom_certs_folder | last == "/"
 
                     - name: "Leitura de diretório informado"
                       ansible.builtin.stat:
