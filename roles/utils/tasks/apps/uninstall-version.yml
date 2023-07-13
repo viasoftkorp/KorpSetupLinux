@@ -8,10 +8,11 @@
     - name: Definição de variáveis
       ansible.builtin.set_fact:
         apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
-        remove_versioned: true
-        remove_unversioned: false
 
     - name: Remoção de apps
+      vars:
+        remove_versioned: true
+        remove_unversioned: false
       ansible.builtin.include_role:
         name: utils
         tasks_from: apps/remove.yml
