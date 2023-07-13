@@ -225,10 +225,10 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
     "customs": {
       "docker_account": "'$docker_account'",
       "docker_image_suffix": "'$docker_image_suffix'"
+      "remove_versioned": '$remove_versioned',
+      "remove_unversioned": '$remove_unversioned'
     },
     "apps":['$apps'],
-    "remove_versioned": '$remove_versioned',
-    "remove_unversioned": '$remove_unversioned',
     "removed_version": "'$removed_version'"
   }'
 
