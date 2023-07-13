@@ -1,5 +1,16 @@
 - name: Remoção de app
   block:
+    - name: Definição de variáveis customizadas
+      ansible.builtin.set_fact:
+        remove_versioned: "{{ customs.remove_versioned }}"
+        remove_unversioned: "{{ customs.remove_unversioned }}"
+      when: remove_versioned is undefined and remove_unversioned is undefined
+
+    - name: Validação de variáveis
+      ansible.builtin.fail:
+        msg: Uma ou mais variáveis obrigatórias não foram definidas
+      when: (remove_versioned == "" or remove_unversioned == "" or removed_version == "") or (remove_versioned is undefined and remove_unversioned is undefined)
+
     - name: Checagem de compose - versionado
       ansible.builtin.stat:
         path: "{{ compose_dir_path }}/{{ removed_version }}/{{ app_name }}-compose.yml"
