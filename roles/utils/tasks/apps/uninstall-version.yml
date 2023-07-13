@@ -1,17 +1,22 @@
-- name: Validação de variáveis
-  ansible.builtin.fail:
-    msg: Uma ou mais variáveis obrigatórias não foram definidas
-  when: removed_version == ""
+- name: Desinstalação de versão
+  block: 
+    - name: Validação de variáveis
+      ansible.builtin.fail:
+        msg: Uma ou mais variáveis obrigatórias não foram definidas
+      when: removed_version == ""
 
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
-    remove_versioned: true
-    remove_unversioned: false
+    - name: Definição de variáveis
+      ansible.builtin.set_fact:
+        apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+        remove_versioned: true
+        remove_unversioned: false
 
-- name: Remoção de apps
-  ansible.builtin.include_tasks:
-    file: remove.yml
-  loop: "{{ apps_map.versioned[removed_version }}"
-  loop_control:
-    loop_var: app_name
+    - name: Remoção de apps
+      ansible.builtin.include_tasks:
+        file: remove.yml
+      loop: "{{ apps_map.versioned[removed_version }}"
+      loop_control:
+        loop_var: app_name
+
+  # tags 'always' é necessário aqui pois usamos 'include_role'
+  tags: always
