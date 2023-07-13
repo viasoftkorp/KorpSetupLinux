@@ -16,10 +16,10 @@ create_random_string() {
 #   custom_tags="<tag1,tag2>"   - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 #   apps="<apps1,apps2>"        - OPCIONAL
 #     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
-#     caso 'custom_tags' seja ['remove-app'], será utilizado para definir os aplicativos que serão desinstalados
-#   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app'] - padrão, false
-#   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app'] - padrão, false
-#   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-app', 'uninstall-version']
+#     caso 'custom_tags' seja ['remove-apps'], será utilizado para definir os aplicativos que serão desinstalados
+#   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
+#   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
+#   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV

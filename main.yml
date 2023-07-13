@@ -78,8 +78,8 @@
             - update-only
 
         # Variáveis esperadas:
-        #   remove_versioned: bool
-        #   remove_unversioned: bool
+        #   customs.remove_versioned: bool
+        #   customs.remove_unversioned: bool
         #   removed_version: string '2022.1.0'
         #   apps: []
         - name: Remoção de apps

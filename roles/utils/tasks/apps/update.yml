@@ -4,18 +4,27 @@
       ansible.builtin.set_fact:
         apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
         latest_installed_version: "0.0.0"
+        services_list: "{{ apps_map.unversioned }}"
 
-    - name: Verificação de ultima versão instalada
-      ansible.builtin.set_fact:
-        latest_installed_version: "{{ item.key }}"
-      with_dict: "{{ apps_map.versioned }}"
-      when: latest_installed_version is version(item.key, '<')
+    - name: Definição de serviços versionados
+      block: 
+        - name: Verificação de ultima versão instalada
+          ansible.builtin.set_fact:
+            latest_installed_version: "{{ item.key }}"
+          with_dict: "{{ apps_map.versioned }}"
+          when: latest_installed_version is version(item.key, '<')
+
+        - name: Definição de lista de serviços
+          ansible.builtin.set_fact:
+            services_list: "{{ apps_map.unversioned + apps_map.versioned[latest_installed_version] }}"
+
+      when: apps_map.versioned != None
 
     - name: Instalação de apps
       ansible.builtin.include_role:
         name: utils
         tasks_from: apps/install.yml
-      loop: "{{ (apps_map.versioned[latest_installed_version] + apps_map.unversioned) | unique }}"
+      loop: "{{ services_list | unique }}"
       loop_control:
         loop_var: app_name
 
