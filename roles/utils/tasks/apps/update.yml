@@ -1,27 +1,40 @@
 - name: Update de apps
   block:
-    - name: Definição de variáveis
+    - name: Definição de variáveis 1
       ansible.builtin.set_fact:
-        apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+        temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
         latest_installed_version: "0.0.0"
 
-    - name: Definição de 'services_list'
+    - name: Definição de variáveis 2
       ansible.builtin.set_fact:
-        services_list: "{{ apps_map.unversioned }}"
+        has_versioned_apps: "{{ temp_apps_map.versioned != None }}"
+        services_list: "{{ temp_apps_map.unversioned }}"
 
+    # As tratativas feitas nesse bloco são necessárias pois há cliente sem aplicativos versionandos
     - name: Definição de serviços versionados
-      block: 
+      block:
+        - name: Definição te mapeamento temporário para temp_apps_map
+          ansible.builtin.set_fact:
+            temp_apps_map: "{{ temp_apps_map | combine(
+              {
+                'versioned': {
+                  1: 'temp_value'
+                }
+              },
+              recursive=True, list_merge='append_rp') }}"
+          when: not has_versioned_apps
+
         - name: Verificação de ultima versão instalada
           ansible.builtin.set_fact:
             latest_installed_version: "{{ item.key }}"
-          with_dict: "{{ apps_map.versioned }}"
-          when: latest_installed_version is version(item.key, '<')
+          when: latest_installed_version is version(item.key, '<') and item.value != 'temp_value'
+          with_dict: "{{ temp_apps_map.versioned }}"
+          when: has_versioned_apps
 
         - name: Definição de lista de serviços
           ansible.builtin.set_fact:
-            services_list: "{{ apps_map.unversioned + apps_map.versioned[latest_installed_version] }}"
-
-      when: apps_map.versioned != None
+            services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] }}"
+          when: has_versioned_apps
 
     - name: Instalação de apps
       ansible.builtin.include_role:
