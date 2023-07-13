@@ -14,7 +14,7 @@
     - name: Remoção de apps
       ansible.builtin.include_tasks:
         file: remove.yml
-      loop: "{{ apps_map.versioned[removed_version }}"
+      loop: "{{ apps_map.versioned[removed_version] }}"
       loop_control:
         loop_var: app_name
 
