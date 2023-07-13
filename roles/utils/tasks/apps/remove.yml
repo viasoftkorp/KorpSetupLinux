@@ -22,6 +22,14 @@
         has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
         apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
+    - debug:
+        msg:
+          - "remove_versioned - {{ remove_versioned }}"
+          - "remove_unversioned - {{ remove_unversioned }}"
+          - "removed_version - {{ removed_version }}"
+          - "has_versioned_services - {{ has_versioned_services }}"
+          - "has_unversioned_services - {{ has_unversioned_services }}"
+
     - name: Remoção de aplicativos do compose - versionado
       community.docker.docker_compose:
         state: absent
