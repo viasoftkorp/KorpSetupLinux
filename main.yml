@@ -78,20 +78,30 @@
             - update-only
 
         # Variáveis esperadas:
-        #   remove_versioned: bool
-        #   remove_unversioned: bool
+        #   customs.remove_versioned: bool
+        #   customs.remove_unversioned: bool
         #   removed_version: string '2022.1.0'
-        #   apps_to_remove: []
+        #   apps: []
         - name: Remoção de apps
           ansible.builtin.include_role:
             name: utils
             tasks_from: apps/remove.yml
-          loop: "{{ apps_to_remove }}"
+          loop: "{{ apps }}"
           loop_control:
             loop_var: app_name
           tags:
             - never
-            - remove
+            - remove-apps
+
+        # Variáveis esperadas:
+        #   removed_version: string '2022.1.0'
+        - name: Desinstalação de versão
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/uninstall-version.yml
+          tags:
+            - never
+            - uninstall-version
 
         # essa deve ser a ultima task
         - name: Finishing
