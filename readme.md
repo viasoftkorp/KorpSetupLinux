@@ -1,5 +1,7 @@
 # Korp Setup Linux
 
+[![Documentation Status](https://readthedocs.org/projects/korpsetuplinux/badge/?version=latest)](https://korpsetuplinux.readthedocs.io/en/latest/?badge=latest)
+
 Setup destinado para a configuração e manutenção de servidores linux, feito utilizando a ferramenta [Ansible](https://docs.ansible.com/ansible/latest/index.html#).
 
 ---
@@ -298,21 +300,28 @@ ansible-lint <PlayBook_Name.yml>
 
 ---
 
-Idealmente, o setup será chamado executando o seguinte comando
+## Execução do setup
+
+Instalação:
 
   ``` bash
-  curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/master/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh token=<token>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name token=<token> apps=<app1>,<app2>
   ```
 
-Porém para testes, os seguintes comandos podem ser usados:
+Atualização:
 
   ``` bash
-  # remoção #
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "remove_versioned": true, "remove_unversioned": true, "removed_version":"2022.1.0", "apps_to_remove":[]}' --tags=remove
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=update token=<token>
+  ```
 
-  # instalação #
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br", "apps":[]}' --tags=install
+Desinstalação de Versão:
 
-  # update #
-  ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml --limit localhost --vault-id /etc/korp/ansible/.vault_key --extra-vars='{"token": "", "gateway_url":"https://gateway-interno.korp.com.br"}' --tags=update
+  ``` bash
+  branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=uninstall-version token=<token> removed_version=<version_to_uninstall>
+  ```
+
+Desinstalação de Aplicativo:
+
+  ``` bash
+  branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=remove-apps token=<token> remove_unversioned=<bool> remove_versioned=<bool> removed_version=<version_to_uninstall> apps=<app1>,<app2>
   ```
