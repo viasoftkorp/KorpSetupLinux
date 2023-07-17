@@ -13,3 +13,8 @@ services:
     db:
       name: Viasoft_Logistica_AjusteEstoque_Background
       type: postgres
+
+  Servico.Exclusivo.1:
+    version:
+      unversioned: true
+

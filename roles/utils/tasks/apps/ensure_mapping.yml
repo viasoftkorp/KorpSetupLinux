@@ -1,3 +1,52 @@
+## passados para a task
+# has_versioned_services
+# has_unversioned_services
+# has_exclusive_services
+## processados durante
+# has_old_non_exclusives_services
+
+- name: Definição de 'has_old_non_exclusives_services'
+  block:
+    - name: Definição de variáveis 1
+      ansible.builtin.set_fact:
+        temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+        latest_installed_version: "{{ version_without_build }}"
+        has_old_non_exclusives_services: false
+
+    - name: Definição de variáveis 2
+      ansible.builtin.set_fact:
+        has_versioned_apps: "{{ temp_apps_map.versioned != None }}"
+        services_list: "{{ temp_apps_map.unversioned }}"
+
+    - name: Definição de mapeamento temporário para temp_apps_map
+      ansible.builtin.set_fact:
+        temp_apps_map: "{{ temp_apps_map | combine(
+          {
+            'versioned': {
+              1: 'temp_value'
+            }
+          },
+          recursive=True, list_merge='append_rp') }}"
+      when: not has_versioned_apps
+
+    - name: Definição de ultima versão instalada
+      ansible.builtin.set_fact:
+        latest_installed_version: "{{ item.key }}"
+      when: latest_installed_version is version(item.key, '<') and (version_without_build is version(item.key, '>')) and item.value != 'temp_value'
+      with_dict: "{{ temp_apps_map.versioned }}"
+      when: has_versioned_apps
+
+    - name: Checagem de compose versionado da versão anterior
+      ansible.builtin.stat:
+        path: "{{ compose_dir_path }}/{{ latest_installed_version }}/{{ compose_name[:-3] | basename }}" 
+      register: latest_installed_version_compose_register
+      when: has_versioned_apps
+
+    - name: Definição de 'has_old_non_exclusives_services' como 'true'
+      ansible.builtin.set_fact:
+        has_old_non_exclusives_services: true
+      when: latest_installed_version_compose_register.status.exist
+
 - name: Definição de variável apps_map
   ansible.builtin.set_fact:
     apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
@@ -20,7 +69,18 @@
         }
       },
       recursive=True, list_merge='append_rp') }}"
-  when: has_versioned_services
+  when: has_versioned_services or has_exclusive_services
+
+- name: "Remoção de {{ id }} do registro de apps"
+  ansible.builtin.set_fact:
+    apps_map: "{{ apps_map | combine(
+      {
+        'versioned': {
+          latest_installed_version: apps_map.versioned[latest_installed_version] | reject('equalto', id)
+        }
+      },
+      recursive=True, list_merge='replace') }}"
+  when: not has_old_non_exclusives_services
 
 - name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
   ansible.builtin.copy:
