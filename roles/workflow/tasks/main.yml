@@ -12,3 +12,11 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+# Task necessária pois cliente do Workflow é inserido pelo prório Viasoft.Authentication
+# Isso é uma gambiarra, e deve ser corrigida quando possível
+- name: Reinício do container Viasoft.Authentication 
+  community.docker.docker_container:
+    name: Viasoft.Authentication
+    state: started
+    restart: true
