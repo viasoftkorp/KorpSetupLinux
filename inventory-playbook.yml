@@ -472,12 +472,12 @@
             },
             'https_port': shrink_inventory.https_port | default (https_port),
             'reverse_proxy': {
-              'external': false,
-              'use_local_for_containers': true,
+              'external': reverse_proxy.external | default (false),
+              'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),
               'http_ports': {
-                'api': '9875',
-                'cdn': '9876',
-                'frontend': '9877'
+                'api': reverse_proxy.http_ports.api | default ('9875'),
+                'cdn': reverse_proxy.http_ports.cdn | default ('9876'),
+                'frontend': reverse_proxy.http_ports.frontend | default ('9877')
               }
             }
           }, recursive=True) }}"

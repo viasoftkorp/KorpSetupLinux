@@ -2,7 +2,7 @@
 server {
     listen {{ reverse_proxy.http_ports.cdn }};
 
-    include /etc/nginx/conf.d/korp-cnd.locations;
+    include /etc/nginx/conf.d/korp-cdn.locations;
 }
 {% endif %}
 
@@ -11,5 +11,5 @@ server {
 
     include /etc/nginx/ssl_conf;
 
-    include /etc/nginx/conf.d/korp-cnd.locations;
+    include /etc/nginx/conf.d/korp-cdn.locations;
 }
