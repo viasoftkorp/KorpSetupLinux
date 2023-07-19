@@ -1,13 +1,15 @@
+{% if reverse_proxy.external %}
 server {
-    listen {{ reverse_proxy.http_ports.frontend }}:
+    listen {{ reverse_proxy.http_ports.frontend }};
 
-    include /etc/nginx/conf.d/korp.locations
+    include /etc/nginx/conf.d/korp.locations;
 }
+{% endif %}
 
 server {
     server_name {{ dns.frontend }};
 
     include /etc/nginx/ssl_conf;
 
-    include /etc/nginx/conf.d/korp.locations
+    include /etc/nginx/conf.d/korp.locations;
 }

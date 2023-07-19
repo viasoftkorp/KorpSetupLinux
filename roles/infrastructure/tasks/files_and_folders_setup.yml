@@ -70,6 +70,9 @@
         - "korp.conf"
         - "korp-api.conf"
         - "korp-cdn.conf"
+        - "korp.locations"
+        - "korp-api.locations"
+        - "korp-cdn.locations"
       # arquivos devem ser copiados posteriormente caso o certificado seja provisionado pelo certbot
       when: not certs.certbot_automated.certificate
 
