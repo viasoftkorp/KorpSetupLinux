@@ -1,48 +1,13 @@
 server {
+    listen {{ reverse_proxy.http_ports.api }}:
 
-    server_name {{ dns.api }};
+    include /etc/nginx/conf.d/korp-api.locations
+}
+
+server {
+    server_name {{ dns.frontend }};
 
     include /etc/nginx/ssl_conf;
 
-    location ~ notification {
-        proxy_http_version 1.1;
-
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Server-Name $server_name;
-        proxy_set_header Host $host;
-
-        proxy_pass http://fabio:9999;
-    }
-
-    location ~ (FileProvider|/Sales/CRM/Leads/|/Sales/CRM/Accounts/|/Sales/CRM/Opportunities/|/reporting/reports/|/producao/apontamento/relatorios/) {
-        client_max_body_size 0M;
-
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Proto https;
-
-        proxy_send_timeout 7200s;
-        proxy_read_timeout 7200s;
-        fastcgi_send_timeout 7200s;
-        fastcgi_read_timeout 7200s;
-
-        proxy_pass http://fabio:9999;
-    }
-
-    location / {
-        proxy_buffer_size           128k;
-        proxy_buffers               4 256k;
-        proxy_busy_buffers_size     256k;
-
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Proto https;
-        
-        proxy_pass http://fabio:9999;
-    }
+    include /etc/nginx/conf.d/korp-api.locations
 }

@@ -470,7 +470,16 @@
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
             },
-            'https_port': shrink_inventory.https_port | default (https_port)
+            'https_port': shrink_inventory.https_port | default (https_port),
+            'reverse_proxy': {
+              'external': false,
+              'use_local_for_containers': true,
+              'http_ports': {
+                'api': '9875',
+                'cdn': '9876',
+                'frontend': '9877'
+              }
+            }
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
