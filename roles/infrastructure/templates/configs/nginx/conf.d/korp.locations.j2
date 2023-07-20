@@ -6,14 +6,14 @@ location ~ /reporting/stimulsoft/* {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-Proto https;
-    
+
     proxy_pass http://fabio:9999;
 }
 
 location / {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header Host $host;        
+    proxy_set_header Host $host;   
+
     proxy_pass http://Viasoft.Loader;
 }
