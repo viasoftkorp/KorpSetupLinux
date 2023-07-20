@@ -58,6 +58,7 @@
         mode: '0644'
       loop:
         - "ssl_conf"
+        - "default_conf"
 
     - name: Configuração e transferência de arquivos de nginx
       ansible.builtin.template:
