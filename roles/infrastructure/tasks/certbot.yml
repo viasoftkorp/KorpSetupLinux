@@ -55,6 +55,9 @@
     - "korp.conf"
     - "korp-api.conf"
     - "korp-cdn.conf"
+    - "korp.locations"
+    - "korp-api.locations"
+    - "korp-cdn.locations"
   register: nginx_files_status
 
 - name: Reload de nginx
