@@ -34,6 +34,8 @@ create_random_string() {
 #   dns_frontend="<dns.domain>" - OPCIONAL
 ## HTTPS
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
+## Proxy reverso
+#   external_reverse_proxy=<bool> - OPCIONAL - Habilita o proxy reverso para ser feito fora do servidor de Linux
 
 apps=""; docker_account=""; ansible_tags="";
 gateway_url="https://gateway.korp.com.br"
@@ -196,7 +198,8 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "frontend": "'$dns_frontend'",
         "cdn": "'$dns_cdn'"
       },
-      "https_port": "'$https_port'"
+      "https_port": "'$https_port'",
+      "external_reverse_proxy": "'$external_reverse_proxy'"
     }
   }'
 

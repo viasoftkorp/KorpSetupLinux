@@ -39,6 +39,7 @@
         cdn: ""
         frontend: ""
       https_port: ""
+      external_reverse_proxy: false
 
   tasks:
 
@@ -472,7 +473,7 @@
             },
             'https_port': shrink_inventory.https_port | default (https_port),
             'reverse_proxy': {
-              'external': reverse_proxy.external | default (false),
+              'external': reverse_proxy.external | default (custom_setup_info.external_reverse_proxy),
               'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),
               'http_ports': {
                 'api': reverse_proxy.http_ports.api | default ('9875'),
