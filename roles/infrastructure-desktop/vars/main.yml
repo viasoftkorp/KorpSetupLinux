@@ -3,12 +3,16 @@ services:
     db:
       name: Auth_Legacy_Integration
       type: mssql
+    version:
+      unversioned: true
 
   Viasoft.AuditTrail.Client:
     oauth_client:
       skip: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"
+    version:
+      unversioned: true
 
   Viasoft.Email:
     oauth_client:
@@ -16,15 +20,23 @@ services:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-email/data"
       - "{{ dados_docker_dir_path }}/viasoft-email/errors"
+    version:
+      unversioned: true
 
   Viasoft.SystemUpdate:
     oauth_client:
       skip: true
+    version:
+      unversioned: true
 
   Viasoft.Legacy.HTTPProxy:
     oauth_client:
       skip: true
+    version:
+      unversioned: true
 
   Viasoft.WelcomePage.Dashboard:
     oauth_client:
       skip: true
+    version:
+      unversioned: true

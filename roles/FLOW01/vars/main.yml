@@ -3,3 +3,5 @@ services:
     db:
       name: Korp_Flow
       type: postgres
+    version:
+      unversioned: true

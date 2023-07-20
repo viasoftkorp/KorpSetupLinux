@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Logistics_Products
       type: mssql
+    version:
+      unversioned: true

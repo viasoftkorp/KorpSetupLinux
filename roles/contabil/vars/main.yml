@@ -2,4 +2,6 @@ services:
   Viasoft.Accounting:
     db:
       name: Viasoft_Accounting
-      type: mssql
+      type: mssqlpostgres
+    version:
+      unversioned: true

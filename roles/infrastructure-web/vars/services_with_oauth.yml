@@ -3,6 +3,8 @@ services:
     db:
       name: Viasoft_QuickFilter
       type: mssql
+    version:
+      unversioned: true
 
   Viasoft.FileProvider:
     db:
@@ -10,17 +12,27 @@ services:
       type: mssql
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
+    version:
+      unversioned: true
 
   Viasoft.Reporting:
     db:
       name: Viasoft_Reporting
       type: mssql
+    version:
+      unversioned: true
 
   Viasoft.Emailing:
     db:
       name: Viasoft_Emailing
       type: postgres
+    version:
+      unversioned: true
 
   Korp.Legacy.Administration:
+    version:
+      unversioned: true
 
   Korp.Legacy.Authorization:
+    version:
+      unversioned: true
