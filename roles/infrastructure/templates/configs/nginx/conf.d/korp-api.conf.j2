@@ -7,7 +7,7 @@ server {
 {% endif %}
 
 server {
-    server_name {{ dns.frontend }};
+    server_name {{ dns.api }};
 
     include /etc/nginx/ssl_conf;
 

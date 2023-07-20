@@ -23,10 +23,20 @@ services:
     ports:
       - "80:80"
       - "{{ https_port }}:443"
+
+    {% if reverse_proxy.external %}
+
+      - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
+      - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
+      - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
+
+    {% endif %}
+
     volumes:
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
       - {{ certs_directory }}/:/etc/nginx/certs/
+
     {% if certs.certbot_automated.certificate %}
 
       - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
