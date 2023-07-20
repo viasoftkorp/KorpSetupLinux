@@ -1,12 +1,12 @@
 - name: "Configuração e transferência de arquivos de compose de {{ id }} - versionado"
   ansible.builtin.template:
     dest: "{{ versioned_compose_dir_path }}/{{ compose_name[:-3] | basename }}"
-    src: "composes/{{ version_without_build }}/{{ compose_name | basename }}"
+    src: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ compose_name | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/composes/{{ version_without_build }}/*', wantlist=True) | select('search', '.yml.j2') }}"
+    "{{ lookup('fileglob', playbook_dir +'/roles/' + id +'/templates/composes/' + version_without_build +'/*', wantlist=True) | select('search', '.yml.j2') }}"
   loop_control:
     loop_var: compose_name
   when: has_versioned_services
@@ -14,12 +14,12 @@
 - name: "Configuração e transferência de arquivos de compose de {{ id }} - não versionado"
   ansible.builtin.template:
     dest: "{{ compose_dir_path }}/{{ compose_name[:-3] | basename }}"
-    src: "composes/{{ compose_name | basename }}"
+    src: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ compose_name | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
+    "{{ lookup('fileglob', playbook_dir +'/roles/' + id +'/templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
   loop_control:
     loop_var: compose_name
   when: has_unversioned_services or has_exclusive_services
