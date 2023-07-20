@@ -33,6 +33,7 @@ services:
     {% endif %}
 
     volumes:
+      - {{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
       - {{ certs_directory }}/:/etc/nginx/certs/
