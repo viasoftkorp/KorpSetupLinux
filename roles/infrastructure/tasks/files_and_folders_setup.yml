@@ -58,6 +58,7 @@
         mode: '0644'
       loop:
         - "ssl_conf"
+        - "default_conf"
 
     - name: Configuração e transferência de arquivos de nginx
       ansible.builtin.template:
@@ -70,6 +71,9 @@
         - "korp.conf"
         - "korp-api.conf"
         - "korp-cdn.conf"
+        - "korp.locations"
+        - "korp-api.locations"
+        - "korp-cdn.locations"
       # arquivos devem ser copiados posteriormente caso o certificado seja provisionado pelo certbot
       when: not certs.certbot_automated.certificate
 
