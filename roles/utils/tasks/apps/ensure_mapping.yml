@@ -13,6 +13,42 @@
   ansible.builtin.set_fact:
     apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
+- name: Remoção de mapeamento de serviço versionado exclusivos antigos
+  block:
+    - name: Definição de variáveis 1
+      ansible.builtin.set_fact:
+        temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+
+    - name: Definição de mapeamento temporário para temp_apps_map
+      ansible.builtin.set_fact:
+        temp_apps_map: "{{ temp_apps_map | combine(
+          {
+            'versioned': {
+              1: 'temp_value'
+            }
+          },
+          recursive=True, list_merge='append_rp') }}"
+      when: not (temp_apps_map.versioned != None)
+
+    - name: Definição de versões instaladas
+      ansible.builtin.set_fact:
+        installed_version_list: "{{ [item.key] + installed_version_list | default([]) }}"
+      when: item.value != 'temp_value'
+      with_dict: "{{ temp_apps_map.versioned }}"
+
+    - name: "Remoção de serviço versionado exclusivo antigos"
+      ansible.builtin.set_fact:
+        apps_map: "{{ apps_map | combine(
+          {
+            'versioned': {
+              item: apps_map.versioned[item] | reject('equalto', id)
+            }
+          },
+          recursive=True, list_merge='replace') }}"
+      loop: "{{ installed_version_list }}"
+
+  when: not has_versioned_services and has_exclusive_services
+
 - name: Definição de serviços não versionados
   ansible.builtin.set_fact:
     apps_map: "{{ apps_map | combine(
@@ -32,42 +68,6 @@
       },
       recursive=True, list_merge='append_rp') }}"
   when: has_versioned_services or has_exclusive_services
-
-- name: Remoção de mapeamento de serviço versionado exclusivos antigos
-  block:
-    - name: Definição de variáveis 1
-      ansible.builtin.set_fact:
-        temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
-
-    - name: Definição de mapeamento temporário para temp_apps_map
-      ansible.builtin.set_fact:
-        temp_apps_map: "{{ temp_apps_map | combine(
-          {
-            'versioned': {
-              1: 'temp_value'
-            }
-          },
-          recursive=True, list_merge='append_rp') }}"
-      when: not (temp_apps_map.versioned != None)
-
-    - name: Definição de ultima versão instalada
-      ansible.builtin.set_fact:
-        installed_version_list: "{{ [item.key] + installed_version_list | default([]) }}"
-      when: item.value != 'temp_value'
-      with_dict: "{{ temp_apps_map.versioned }}"
-
-    - name: "Remoção de serviço versionado antigo"
-      ansible.builtin.set_fact:
-        apps_map: "{{ apps_map | combine(
-          {
-            'versioned': {
-              item: apps_map.versioned[item] | reject('equalto', id)
-            }
-          },
-          recursive=True, list_merge='replace') }}"
-      loop: installed_version_list
-
-  when: not has_versioned_services and has_exclusive_services
 
 - name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
   ansible.builtin.copy:
