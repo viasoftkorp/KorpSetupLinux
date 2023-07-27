@@ -1,0 +1,33 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  VEN07_W-2022-4-0:
+    image: "{{ docker_account }}/viasoft.vendas.orcamento-frontend:2022.4.0.x{{ docker_image_suffix }}"
+    container_name: "VEN07_W-2022.4.0"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
