@@ -3,12 +3,6 @@
 # has_versioned_services
 # has_exclusive_services
 
-- debug:
-    msg:
-      - "has_unversioned_services: {{ has_unversioned_services }}"
-      - "has_versioned_services: {{ has_versioned_services }}"
-      - "has_exclusive_services: {{ has_exclusive_services }}"
-
 - name: Definição de variável apps_map
   ansible.builtin.set_fact:
     apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
@@ -28,7 +22,7 @@
             }
           },
           recursive=True, list_merge='append_rp') }}"
-      when: not (temp_apps_map.versioned != None)
+      when: temp_apps_map.versioned == None
 
     - name: Definição de versões instaladas
       ansible.builtin.set_fact:
