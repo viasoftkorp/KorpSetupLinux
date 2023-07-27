@@ -14,7 +14,5 @@ server {
     include /etc/nginx/ssl_conf;
     include /etc/nginx/default_conf;
 
-    proxy_set_header X-Forwarded-Proto https;
-
-    include /etc/nginx/conf.d/korp-api.locations;
+    include /etc/nginx/conf.d/korp-api.ssl-locations;
 }
