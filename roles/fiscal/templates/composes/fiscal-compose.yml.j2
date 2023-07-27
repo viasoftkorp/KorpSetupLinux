@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-fiscal-core:
-    image: "{{ docker_account }}/viasoft.fiscal.core:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Fiscal.Core"
+    image: "{{ docker_account }}/viasoft.fiscal.core:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Fiscal.Core-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
