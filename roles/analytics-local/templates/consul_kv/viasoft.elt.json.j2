@@ -1,0 +1,26 @@
+{    
+    "Tags": "",
+    "AppRise": {
+        "EndPointNotification": "http://172.40.0.10:8000/notify",
+    "TeamsWebHookUrl": "https://korpinformatica.webhook.office.com/webhookb2/8e8dcb23-020d-49d8-94aa-b94c34b649b9@e24d5dd3-8827-42f9-887b-143fb07a74ac/IncomingWebhook/9a28de99f866457e836d4020e513c4ad/464603d9-96a7-49a4-832e-3e59ddbca2be",
+        "oldTeamsWebHookUrl": "msteams://korpinformatica/8e8dcb23-020d-49d8-94aa-b94c34b649b9@e24d5dd3-8827-42f9-887b-143fb07a74ac/8bdebea178ce4075aeec34ad3258bbb8/464603d9-96a7-49a4-832e-3e59ddbca2be/",
+        "DefaultMessageTitleOnNotification": "Notificação de Status PowerBI Sincronismo."
+    },
+    "Authorization": {
+        "Secret": "{{ secret }}"
+    },
+    "ServiceBus": {
+        "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"        
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"        
+    },
+    "Provisioning": {
+        "EnableSchemaProvisioning": "true"
+    },
+    "DisableTenantDependentConnectionString": "true",
+    "EnableEnvironmentDependentConnectionString": "false",
+    "DataCorte": "31/01/2020",
+    "PaginacaoEstoqueProdutosCarga": 10000,
+    "PaginacaoEstoqueCarga": 10000
+}
