@@ -33,8 +33,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-vendas-custeioproduto:
-    image: "{{ docker_account }}/viasoft.vendas.custeioproduto:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.CusteioProduto"
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.CusteioProduto-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -48,8 +48,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-vendas-custeioproduto-gateway:
-    image: "{{ docker_account }}/viasoft.vendas.custeioproduto.gateway:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.CusteioProduto.Gateway"
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto.gateway:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.CusteioProduto.Gateway-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

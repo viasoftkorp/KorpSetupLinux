@@ -33,8 +33,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-logistics-products:
-    image: "{{ docker_account }}/viasoft.logistics.products:3.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Logistics.Products"
+    image: "{{ docker_account }}/viasoft.logistics.products:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistics.Products-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

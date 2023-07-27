@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-vendas-orcamento-core:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento.core:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.Orcamento.Core"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.core:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Orcamento.Core-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-vendas-orcamento-gateway:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.Orcamento.Gateway"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:2023.2.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Orcamento.Gateway-2023.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
