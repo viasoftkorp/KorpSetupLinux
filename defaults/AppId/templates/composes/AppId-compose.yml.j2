@@ -15,6 +15,7 @@ networks:
       name: servicos
 
 services:
+  # serviço versionado:
   <service_name_lowercase>-<version>:
     image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
     container_name: "<service_name>-<version>"
@@ -29,3 +30,36 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  # serviço versionado exclusivo:
+  <service_name_lowercase>:
+    image: "{{ docker_account }}/<service_name_lowercase>:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "<service_name>-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  # serviço não versiona:
+  <service_name_lowercase>:
+    image: "{{ docker_account }}/<service_name_lowercase>:<version>.x{{ docker_image_suffix }}"
+    container_name: "<service_name>"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+

@@ -3,3 +3,5 @@ services:
     db: 
       name: Viasoft_Vendas_Mobile_Configuracao
       type: postgres
+    version:
+      unversioned: true

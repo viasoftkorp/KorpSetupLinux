@@ -8,8 +8,13 @@ services:
     db:
       name: Viasoft_Logistica_Inventario_Background
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Logistica.AjusteEstoque.Background:
     db:
       name: Viasoft_Logistica_AjusteEstoque_Background
       type: postgres
+    version:
+      unversioned: true
+

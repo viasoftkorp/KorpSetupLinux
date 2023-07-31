@@ -3,13 +3,19 @@ services:
     db:
       name: Viasoft_Relatorios
       type: mssql
+    version:
+      unversioned: true
 
   Viasoft.Relatorios.Agendador:
     db:
       name: Viasoft_Relatorios_Agendador
       type: mssql
+    version:
+      unversioned: true
 
   Viasoft.Reporting.PivotTable:
     db:
       name: Viasoft_Reporting_PivotTable
       type: mssql
+    version:
+      unversioned: true

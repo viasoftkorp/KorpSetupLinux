@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Qualidade_Inspecao_Background
       type: postgres
+    version:
+      unversioned: true

@@ -3,8 +3,12 @@ services:
     db:
       name: Viasoft_Faturamento_Core
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Billing.NFE:
     db:
       name: Viasoft_Billing_NFE
       type: mssql
+    version:
+      unversioned: true
