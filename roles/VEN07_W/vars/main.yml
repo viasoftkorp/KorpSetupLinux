@@ -3,15 +3,11 @@ services:
     db:
       name: Viasoft_Vendas_Orcamento_Core
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Vendas.Orcamento.Gateway:
     db:
       name: Viasoft_Vendas_Orcamento_Gateway
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Legacy.Logistica:
     db:

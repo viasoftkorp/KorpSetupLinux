@@ -3,5 +3,3 @@ services:
     db:
       name: Viasoft_Logistics_PreRegistration
       type: mssql
-    version:
-      unversioned: true
