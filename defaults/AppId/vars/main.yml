@@ -10,3 +10,6 @@ services:
     # OPCIONAL, lista contendo o caminho absoluto para os diretórios dos volumes.
     volumes_directories:
       - "{{ dados_docker_dir_path }}/<appId>/<path>" # sempre utilize esse template
+    # OPCIONAL
+    version:
+      unversioned: true # valor padrão - false

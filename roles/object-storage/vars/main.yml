@@ -1,2 +1,4 @@
 services:
   Viasoft.ObjectStorage.Client:
+    version:
+      unversioned: true

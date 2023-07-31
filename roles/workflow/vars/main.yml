@@ -3,4 +3,5 @@ services:
     db:
       name: Viasoft_Workflow_Orchestrator
       type: postgres
-  
+    version:
+      unversioned: true

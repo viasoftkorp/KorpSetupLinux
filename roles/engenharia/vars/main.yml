@@ -3,15 +3,21 @@ services:
     db:
       name: Viasoft_Engenharia_Core
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Engenharia.CustoOrcamento:
     db:
       name: Viasoft_Engenharia_CustoOrcamento
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Engenharia.Gateway:
     db:
       name: Viasoft_Engenharia_Gateway
       type: postgres
+    version:
+      unversioned: true
 
   Korp.Engenharia.Processo:

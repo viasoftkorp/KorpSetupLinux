@@ -1,5 +1,38 @@
 - name: Remoção de app
   block:
+    - name: Definição de ultima versão instalada
+      block:
+        - name: Definição de variáveis 1
+          ansible.builtin.set_fact:
+            temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+            latest_installed_version: "0.0.0"
+
+        - name: Definição de variáveis 2
+          ansible.builtin.set_fact:
+            has_versioned_apps: "{{ temp_apps_map.versioned != None }}"
+
+        - name: Definição te mapeamento temporário para temp_apps_map
+          ansible.builtin.set_fact:
+            temp_apps_map: "{{ temp_apps_map | combine(
+              {
+                'versioned': {
+                  1: 'temp_value'
+                }
+              },
+              recursive=True, list_merge='append_rp') }}"
+          when: not has_versioned_apps
+
+        - name: Verificação de ultima versão instalada
+          ansible.builtin.set_fact:
+            latest_installed_version: "{{ item.key }}"
+          when: has_versioned_apps and (latest_installed_version is version(item.key, '<') and item.value != 'temp_value')
+          with_dict: "{{ temp_apps_map.versioned }}"
+
+    - name: Definição de variáveis
+      ansible.builtin.set_fact:
+        exclusive_services_list: []
+        unversioned_services_list: []
+
     - name: Definição de variáveis customizadas
       ansible.builtin.set_fact:
         remove_versioned: "{{ customs.remove_versioned }}"
@@ -11,6 +44,11 @@
         msg: Uma ou mais variáveis obrigatórias não foram definidas
       when: (remove_versioned == "" or remove_unversioned == "" or removed_version == "") or (remove_versioned is undefined and remove_unversioned is undefined)
 
+    - name: Definição de 'remove_versioned'
+      ansible.builtin.set_fact:
+        remove_versioned: true
+      when: remove_unversioned
+
     - name: Checagem de compose - versionado
       ansible.builtin.stat:
         path: "{{ compose_dir_path }}/{{ removed_version }}/{{ app_name }}-compose.yml"
@@ -21,47 +59,90 @@
         path: "{{ compose_dir_path }}/{{ app_name }}-compose.yml"
       register: unversioned_compose_result
 
+    - name: Definição de serviços exclusivos
+      vars:
+        compose_content: "{{  lookup('ansible.builtin.template', unversioned_compose_result.stat.path) | from_yaml }}"
+      ansible.builtin.set_fact:
+        exclusive_services_list: "{{ [item.value.container_name ] + exclusive_services_list }}"
+      with_dict: "{{ compose_content.services }}"
+      when: (unversioned_compose_result.stat.exists) and ((((item.value.image | split(':'))[1]) | split('.')) | length > 3)
+
+    - name: Definição de serviços não versionados
+      vars:
+        compose_content: "{{  lookup('ansible.builtin.template', unversioned_compose_result.stat.path) | from_yaml }}"
+      ansible.builtin.set_fact:
+        unversioned_services_list: "{{ [item.value.container_name ] + unversioned_services_list }}"
+      with_dict: "{{ compose_content.services }}"
+      when: (unversioned_compose_result.stat.exists) and ((((item.value.image | split(':'))[1]) | split('.')) | length == 3)
+
     - name: Definição de variáveis
       ansible.builtin.set_fact:
         has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
-        has_unversioned_services: "{{ unversioned_compose_result.stat.exists }}"
+        has_unversioned_services: "{{ unversioned_services_list | length > 0 }}"
+        has_exclusive_services: "{{ exclusive_services_list | length > 0 }}"
         apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
-    - name: Remoção de aplicativos do compose - versionado
-      community.docker.docker_compose:
-        state: absent
-        project_src: "{{ compose_dir_path }}/{{ removed_version }}"
-        files:
-          - "{{ app_name }}-compose.yml"
+    - name: Remoção para compose versionado
+      block:
+        - name: Remoção de aplicativos do compose - versionado
+          community.docker.docker_compose:
+            state: absent
+            project_src: "{{ compose_dir_path }}/{{ removed_version }}"
+            files:
+              - "{{ app_name }}-compose.yml"
+
+        - name: "Remoção de {{ app_name }} do registro de apps - versionado"
+          ansible.builtin.set_fact:
+            apps_map: "{{ apps_map | combine(
+              {
+                'versioned': {
+                  removed_version: apps_map.versioned[removed_version] | reject('equalto', app_name)
+                }
+              },
+              recursive=True, list_merge='replace') }}"
+          when: not has_exclusive_services or (has_exclusive_services and latest_installed_version != removed_version)
+
+        - name: "Remoção de arquivo de compose de {{ app_name }} - versionado"
+          ansible.builtin.file:
+            path: "{{ compose_dir_path }}/{{ removed_version }}/{{ app_name }}-compose.yml"
+            state: absent
+
       when: remove_versioned and has_versioned_services
 
-    - name: "Remoção de {{ app_name }} do registro de apps"
-      ansible.builtin.set_fact:
-        apps_map: "{{ apps_map | combine(
-          {
-            'versioned': {
-              removed_version: apps_map.versioned[removed_version] | reject('equalto', app_name)
-            }
-          },
-          recursive=True, list_merge='replace') }}"
-      when: remove_versioned and has_versioned_services
+    - name: Remoção para compose não versionado
+      block:
+        - name: Remoção de aplicativos do compose - não versionado
+          community.docker.docker_compose:
+            state: absent
+            project_src: "{{ compose_dir_path }}/"
+            files:
+              - "{{ app_name }}-compose.yml"
 
-    - name: Remoção de aplicativos do compose - não versionado
-      community.docker.docker_compose:
-        state: absent
-        project_src: "{{ compose_dir_path }}/"
-        files:
-          - "{{ app_name }}-compose.yml"
-      when: remove_unversioned and has_unversioned_services
+        - name: "Remoção de {{ app_name }} do registro de apps"
+          ansible.builtin.set_fact:
+            apps_map: "{{ apps_map | combine(
+              {
+                'unversioned': apps_map.unversioned | reject('equalto', app_name)
+              },
+              recursive=True, list_merge='replace') }}"
 
-    - name: "Remoção de {{ app_name }} do registro de apps"
-      ansible.builtin.set_fact:
-        apps_map: "{{ apps_map | combine(
-          {
-            'unversioned': apps_map.unversioned | reject('equalto', app_name)
-          },
-          recursive=True, list_merge='replace') }}"
-      when: remove_unversioned and has_unversioned_services
+        - name: "Remoção de arquivo de compose de {{ app_name }}"
+          ansible.builtin.file:
+            path: "{{ compose_dir_path }}/{{ app_name }}-compose.yml"
+            state: absent
+
+        - name: "Remoção de {{ app_name }} do registro de apps para versionado exclusivo"
+          ansible.builtin.set_fact:
+            apps_map: "{{ apps_map | combine(
+              {
+                'versioned': {
+                  removed_version: apps_map.versioned[removed_version] | reject('equalto', app_name)
+                }
+              },
+              recursive=True, list_merge='replace') }}"
+          when: has_exclusive_services
+
+      when: remove_unversioned and (has_unversioned_services or has_exclusive_services)
 
     - name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
       ansible.builtin.copy:

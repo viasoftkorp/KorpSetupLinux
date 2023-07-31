@@ -27,9 +27,8 @@
         - name: Verificação de ultima versão instalada
           ansible.builtin.set_fact:
             latest_installed_version: "{{ item.key }}"
-          when: latest_installed_version is version(item.key, '<') and item.value != 'temp_value'
+          when: has_versioned_apps and (latest_installed_version is version(item.key, '<') and item.value != 'temp_value')
           with_dict: "{{ temp_apps_map.versioned }}"
-          when: has_versioned_apps
 
         - name: Definição de lista de serviços
           ansible.builtin.set_fact:

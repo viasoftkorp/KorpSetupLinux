@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Geolocation
       type: mssql
+    version:
+      unversioned: true

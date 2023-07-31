@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Accounting
       type: mssql
+    version:
+      unversioned: true
