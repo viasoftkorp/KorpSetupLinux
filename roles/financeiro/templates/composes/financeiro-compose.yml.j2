@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-financeiro-core:
-    image: "{{ docker_account }}/viasoft.financeiro.core:2023.2.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Financeiro.Core-2023.2.0"
+    image: "{{ docker_account }}/viasoft.financeiro.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Financeiro.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

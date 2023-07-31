@@ -33,8 +33,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   viasoft-erp-person-preregistration:
-    image: "{{ docker_account }}/viasoft.erp.person.preregistration:2023.2.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Person.PreRegistration-2023.2.0"
+    image: "{{ docker_account }}/viasoft.erp.person.preregistration:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Person.PreRegistration-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
