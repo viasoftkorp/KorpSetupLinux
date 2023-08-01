@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-faturamento-core:
-    image: "{{ docker_account }}/viasoft.faturamento.core:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.faturamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Faturamento.Core"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts

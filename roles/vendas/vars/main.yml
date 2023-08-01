@@ -47,8 +47,6 @@ services:
     db:
       name: Viasoft_Vendas_Core
       type: postgres
-    version:
-      unversioned: true
   
   Korp.Legacy.Vendas:
     db:

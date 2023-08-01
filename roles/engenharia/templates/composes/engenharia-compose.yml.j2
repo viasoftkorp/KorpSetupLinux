@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-engenharia-core:
-    image: "{{ docker_account }}/viasoft.engenharia.core:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Engenharia.Core"
+    image: "{{ docker_account }}/viasoft.engenharia.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Engenharia.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-engenharia-custoorcamento:
-    image: "{{ docker_account }}/viasoft.engenharia.custoorcamento:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Engenharia.CustoOrcamento"
+    image: "{{ docker_account }}/viasoft.engenharia.custoorcamento:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Engenharia.CustoOrcamento-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,8 +46,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-engenharia-gateway:
-    image: "{{ docker_account }}/viasoft.engenharia.gateway:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Engenharia.Gateway"
+    image: "{{ docker_account }}/viasoft.engenharia.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Engenharia.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

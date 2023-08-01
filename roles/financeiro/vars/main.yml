@@ -3,8 +3,6 @@ services:
     db:
       name: Viasoft_Financeiro_Core
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.FinancialAccounting.Installment:
     db:

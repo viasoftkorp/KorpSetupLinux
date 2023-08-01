@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  PES00:
-    image: "{{ docker_account }}/viasoft.erp.person-frontend:3.2.x{{ docker_image_suffix }}"
-    container_name: "PES00"
+  VEN07_W-2022-4-0:
+    image: "{{ docker_account }}/viasoft.vendas.orcamento-frontend:2022.4.0.x{{ docker_image_suffix }}"
+    container_name: "VEN07_W-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -26,21 +26,6 @@ services:
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
-  viasoft-erp-person:
-    image: "{{ docker_account }}/viasoft.erp.person:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Person-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos

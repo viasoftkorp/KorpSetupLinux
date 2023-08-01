@@ -3,5 +3,3 @@ services:
     db:
       name: Viasoft_ERP_Person
       type: mssql
-    version:
-      unversioned: true
