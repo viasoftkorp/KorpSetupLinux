@@ -11,8 +11,6 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"
 
   Viasoft.Email:
-    oauth_client:
-      skip: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-email/data"
       - "{{ dados_docker_dir_path }}/viasoft-email/errors"
