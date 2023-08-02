@@ -14,4 +14,4 @@
   when: # condições são unidas com 'and'
     - has_exclusive_services
     - version_without_build is version(latest_installed_version, '<')
-    - temp_apps_map.versioned[latest_installed_version][id] is defined
+    - id in temp_apps_map.versioned[latest_installed_version]
