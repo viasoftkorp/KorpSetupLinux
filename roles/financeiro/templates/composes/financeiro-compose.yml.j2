@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-financialaccounting-installment:
-    image: "{{ docker_account }}/viasoft.financialaccounting.installment:2.2.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.financialaccounting.installment:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.FinancialAccounting.Installment"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
