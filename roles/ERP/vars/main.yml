@@ -8,8 +8,6 @@ services:
     db:
       name: Viasoft_ERP_Core
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.ERP.Sync:
     db:
