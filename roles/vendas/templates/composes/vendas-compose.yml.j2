@@ -61,8 +61,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-pricelist:
-    image: "{{ docker_account }}/viasoft.sales.pricelist:2.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.PriceList"
+    image: "{{ docker_account }}/viasoft.sales.pricelist:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.PriceList-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

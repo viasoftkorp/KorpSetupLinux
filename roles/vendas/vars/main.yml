@@ -22,8 +22,6 @@ services:
     db:
       name: Viasoft_Sales_PriceList
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.Customers:
     db:
