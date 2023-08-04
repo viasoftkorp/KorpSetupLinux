@@ -22,8 +22,6 @@ services:
     db:
       name: Viasoft_Legacy_Parametros
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.ERP.Activities:
     db:

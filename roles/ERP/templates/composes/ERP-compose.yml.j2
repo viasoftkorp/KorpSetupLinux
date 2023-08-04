@@ -46,8 +46,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-parametros:
-    image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Parametros"
+    image: "{{ docker_account }}/viasoft.legacy.parametros:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Parametros-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
