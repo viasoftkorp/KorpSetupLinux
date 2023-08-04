@@ -3,8 +3,6 @@ services:
     db:
       name: Viasoft_Sales_Core
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.CustomerPortfolio:
     db:
