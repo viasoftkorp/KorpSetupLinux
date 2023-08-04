@@ -15,8 +15,6 @@ services:
     db:
       name: Viasoft_Sales_Discount
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.PriceList:
     db:
