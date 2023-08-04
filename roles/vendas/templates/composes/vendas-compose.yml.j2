@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-customerportfolio:
-    image: "{{ docker_account }}/viasoft.sales.customerportfolio:2.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CustomerPortfolio"
+    image: "{{ docker_account }}/viasoft.sales.customerportfolio:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CustomerPortfolio-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

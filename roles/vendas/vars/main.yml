@@ -10,8 +10,6 @@ services:
     db:
       name: Viasoft_Sales_CustomerPortfolio
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.Discount:
     db:
