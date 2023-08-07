@@ -13,8 +13,6 @@ services:
     db:
       name: Viasoft_FinancialAccounting_AccountsReceivable
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Legacy.Financeiro:
     db:
