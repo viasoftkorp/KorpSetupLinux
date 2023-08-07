@@ -23,8 +23,6 @@ services:
     db:
       name: Viasoft_Sales_Customers
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Vendas.AutomatizacaoDeFrete:
 
