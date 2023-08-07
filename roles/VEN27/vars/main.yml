@@ -12,5 +12,3 @@ services:
     db:
       name: Viasoft_Sales_CommercialProposal_Sync
       type: postgres
-    version:
-      unversioned: true

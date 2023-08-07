@@ -48,8 +48,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-commercialproposal-core:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.6.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CommercialProposal.Core"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CommercialProposal.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
