@@ -13,5 +13,3 @@ services:
     db:
       name: Viasoft_Legacy_Logistica
       type: mssql
-    version:
-      unversioned: true
