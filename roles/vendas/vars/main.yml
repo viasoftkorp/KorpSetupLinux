@@ -42,8 +42,6 @@ services:
     db:
       name: Korp_Legacy_Vendas
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Vendas.CustoProduto:
 

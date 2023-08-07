@@ -120,8 +120,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-legacy-vendas:
-    image: "{{ docker_account }}/korp.legacy.vendas:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Vendas"
+    image: "{{ docker_account }}/korp.legacy.vendas:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Vendas-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
