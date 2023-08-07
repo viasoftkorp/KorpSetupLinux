@@ -61,8 +61,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-legacy-financeiro:
-    image: "{{ docker_account }}/korp.legacy.financeiro:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Financeiro"
+    image: "{{ docker_account }}/korp.legacy.financeiro:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Financeiro-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
