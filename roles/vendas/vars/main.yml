@@ -32,8 +32,6 @@ services:
     db:
       name: Viasoft_Sales_CommercialProposal_Gateway
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Vendas.Core:
     db:
