@@ -4,8 +4,6 @@ services:
     db:
       name: Viasoft_Sales_CommercialProposal_Core
       type: postgres
-    version:
-      unversioned: true
 
 
   Viasoft.Sales.CommercialProposal.Sync:
