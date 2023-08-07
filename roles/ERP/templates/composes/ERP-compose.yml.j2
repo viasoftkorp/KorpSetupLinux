@@ -93,8 +93,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-organizationalstructuremanagement:
-    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.OrganizationalStructureManagement"
+    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.OrganizationalStructureManagement-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
