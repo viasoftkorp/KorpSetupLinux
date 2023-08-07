@@ -61,8 +61,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-activities:
-    image: "{{ docker_account }}/viasoft.erp.activities:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Activities"
+    image: "{{ docker_account }}/viasoft.erp.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Activities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
