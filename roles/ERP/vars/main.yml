@@ -13,8 +13,6 @@ services:
     db:
       name: Viasoft_ERP_Sync
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Legacy.Parametros:
     db:

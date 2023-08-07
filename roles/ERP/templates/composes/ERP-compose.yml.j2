@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-sync:
-    image: "{{ docker_account }}/viasoft.erp.sync:2.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Sync"
+    image: "{{ docker_account }}/viasoft.erp.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
