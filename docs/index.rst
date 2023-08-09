@@ -27,6 +27,7 @@ Documentação
 
    files/guias/guia_portainer
    files/guias/disponibilizacao_externa
+   files/guias/atualizacao_servicos_web
 
 .. toctree::
    :maxdepth: 2
@@ -34,4 +35,5 @@ Documentação
 
    files/referencias_tecnicas/portas_utilizadas
    files/referencias_tecnicas/enderecos_utilizados
+   
 
