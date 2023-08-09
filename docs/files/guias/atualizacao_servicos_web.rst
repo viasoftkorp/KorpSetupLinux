@@ -1,51 +1,66 @@
-Atualizando versão  do Korp
----------------------------
+Atualizando versão do Korp
+--------------------------
 
-Os servidores do korp trabalham com uma ou mais versões instaladas simultaneamente, 
-dessa maneira quando uma nova versão estiver em Homologação não tera impacto em Produção.  
+Para atualizar a versão do Korp, é necessário atualizar a versão dos serviços no servidor de aplicações Linux, Windows, e a versão da base.
 
-Servidor Linux
-==============
+Esse tópico irá abordar a atualização desses 3 componentes.
+
+.. note:: 
+
+    Assim como no servidor de aplicações Windows, no servidor Linux os serviços poder estar instalados em mais de uma versão ao mesmo tempo, dessa maneira, pode-se homologar uma nova versão, sem afetar o funcionamento do ambiente de produção.
+
+
+Atualizando o Servidor Linux
+============================
 
 #. Acessar o `Portal da Korp`_ com o email administrador.
 
-#. Aplicativo Monitor de Licenças, opção `Configurações`.
+#. Entrar no aplicativo 'Monitor de Licenças'.
 
-    - Configuração do servidor de aplicação Linux.
+#. No menu da lateral esquerda, clicar em 'Configurações'.
 
-    - Selecione a versão e clique no botão `Gerar comando para atualização de versão`.
+#. Em 'Configuração do servidor de aplicação Linux':
+
+    - Selecionar a versão desejada, e clicar no botão ``Gerar comando para atualização de versão``.
     
-    - O comando de instalação será copiar para a área de transferência do Windows.  
+    - O comando de instalação será copiado para a área de transferência.
+
+#. Conectar no servidor Linux(pelo virtualizador, ou ssh).
+
+#. Colar e executar o comando de atualização gerado no passo '4'.
+
+#. O Comando deve finalizar sua execução sem nenhum erro.
 
 
-#. Conectar no servidor Linux, executar o comando de atualização.
-
-
-Servidor Windows
-================
-
+Atualizando o Servidor Windows
+==============================
 
 #. Acessar o `Portal da Korp`_ com o email administrador.
 
-#. Aplicativo Área do Cliente.
+#. Entrar no aplicativo 'Área do Cliente'.
 
-    - Baixar os instaladores: ``KorpSetup_Installer_****.*.exe`` e ``KorpRelease-****.*.exe``.
+#. Fazer o download instaladores:
 
-#. Servidor de Aplicação Windows 
+    - ``KorpSetup_Installer_<versão>.exe``
+    
+    - ``KorpRelease-<versão>.exe``.
 
-    -  Instalar: ``KorpSetup_Installer_****.*.exe``.
+#. No servidor de Aplicação Windows, executar os instaladores baixados no passo anterior.
 
-    -  Instalar: ``KorpRelease-****.*.exe``
+    -  Serviços: ``KorpSetup_Installer_<versão>.exe``.
 
-        -  Copiar o instalador ``KorpRelease-****.*.exe`` para a pasta de homologaçào e executar. 
-        -  Apos finalizar a instalação, conectar no Korp com um usuário administrador para atualização da base.
+    -  Korp: ``KorpRelease-<versão>.exe``
 
-#. Após a atualização da base, reiniciar os seguintes serviços nessa ordem, separadamente:
+        .. -  Copiar o instalador ``KorpRelease-<versão>.exe`` para a pasta de homologaçào e executar. 
+        .. -  Apos finalizar a instalação, conectar no Korp com um usuário administrador para atualização da base.
 
-        -  Viasoft.Tenantmanagement
+#. Acessar o Korp da nova versão com um usuário administrador, e realizar a atualização da base.
 
-        -  Viasoft.Administration
+#. Após a atualização da base, :doc:`reiniciar os serviços no servidor Linux <./guia_portainer>` , nessa ordem, separadamente:
 
+    -  Viasoft.Tenantmanagement
+
+    -  Viasoft.Administration
 
 
 .. _Portal da Korp: https://portal.korp.com.br
