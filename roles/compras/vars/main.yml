@@ -3,7 +3,5 @@ services:
     db:
       name: Viasoft_Compras_PlanilhasPreco
       type: postgres
-    version:
-      unversioned: true
 
   Korp.Compras.NotaFiscal:

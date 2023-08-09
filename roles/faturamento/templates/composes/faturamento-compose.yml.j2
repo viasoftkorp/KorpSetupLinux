@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-billing-nfe:
-    image: "{{ docker_account }}/viasoft.billing.nfe:2.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.NFE"
+    image: "{{ docker_account }}/viasoft.billing.nfe:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Billing.NFE-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

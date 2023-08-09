@@ -15,24 +15,9 @@ networks:
       name: servicos
 
 services:
-  korp-engenharia-processo-2022-4-0:
-    image: "{{ docker_account }}/korp.engenharia.processo:2022.4.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Engenharia.Processo-2022.4.0"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  ENG50_W-2022-4-0:
-    image: "{{ docker_account }}/viasoft.engenharia.core-frontend:2022.4.0.x{{ docker_image_suffix }}"
-    container_name: "ENG50_W-2022.4.0"
+  CDP01-2023-1-0:
+    image: "{{ docker_account }}/viasoft.vendas.custeioproduto-frontend:2023.1.0.x{{ docker_image_suffix }}"
+    container_name: "CDP01-2023.1.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,3 +31,4 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

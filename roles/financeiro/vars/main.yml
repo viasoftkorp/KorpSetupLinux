@@ -8,21 +8,15 @@ services:
     db:
       name: Viasoft_FinancialAccounting_Installment
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.FinancialAccounting.AccountsReceivable:
     db:
       name: Viasoft_FinancialAccounting_AccountsReceivable
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Legacy.Financeiro:
     db:
       name: Viasoft_Legacy_Financeiro
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Financial.Situation:

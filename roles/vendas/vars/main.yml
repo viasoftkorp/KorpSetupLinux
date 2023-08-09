@@ -3,36 +3,26 @@ services:
     db:
       name: Viasoft_Sales_Core
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.CustomerPortfolio:
     db:
       name: Viasoft_Sales_CustomerPortfolio
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.Discount:
     db:
       name: Viasoft_Sales_Discount
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.PriceList:
     db:
       name: Viasoft_Sales_PriceList
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.Sales.Customers:
     db:
       name: Viasoft_Sales_Customers
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Vendas.AutomatizacaoDeFrete:
 
@@ -40,8 +30,6 @@ services:
     db:
       name: Viasoft_Sales_CommercialProposal_Gateway
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Vendas.Core:
     db:
@@ -52,8 +40,6 @@ services:
     db:
       name: Korp_Legacy_Vendas
       type: mssql
-    version:
-      unversioned: true
 
   Korp.Vendas.CustoProduto:
 

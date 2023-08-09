@@ -8,29 +8,21 @@ services:
     db:
       name: Viasoft_ERP_Core
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.ERP.Sync:
     db:
       name: Viasoft_ERP_Sync
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Legacy.Parametros:
     db:
       name: Viasoft_Legacy_Parametros
       type: mssql
-    version:
-      unversioned: true
 
   Viasoft.ERP.Activities:
     db:
       name: Viasoft_ERP_Activities
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.OrganizationalStructureManagement:
     db:

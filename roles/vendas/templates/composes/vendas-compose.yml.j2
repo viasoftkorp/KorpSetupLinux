@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-sales-core:
-    image: "{{ docker_account }}/viasoft.sales.core:3.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.Core"
+    image: "{{ docker_account }}/viasoft.sales.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-customerportfolio:
-    image: "{{ docker_account }}/viasoft.sales.customerportfolio:2.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CustomerPortfolio"
+    image: "{{ docker_account }}/viasoft.sales.customerportfolio:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CustomerPortfolio-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,8 +46,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-discount:
-    image: "{{ docker_account }}/viasoft.sales.discount:2.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.Discount"
+    image: "{{ docker_account }}/viasoft.sales.discount:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.Discount-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -61,8 +61,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-pricelist:
-    image: "{{ docker_account }}/viasoft.sales.pricelist:2.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.PriceList"
+    image: "{{ docker_account }}/viasoft.sales.pricelist:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.PriceList-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -76,8 +76,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/" 
 
   viasoft-sales-customers:
-    image: "{{ docker_account }}/viasoft.sales.customers:2.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.Customers"
+    image: "{{ docker_account }}/viasoft.sales.customers:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.Customers-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -91,8 +91,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   viasoft.commercialproposal-gateway:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CommercialProposal.Gateway"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CommercialProposal.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -120,8 +120,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-legacy-vendas:
-    image: "{{ docker_account }}/korp.legacy.vendas:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Vendas"
+    image: "{{ docker_account }}/korp.legacy.vendas:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Vendas-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

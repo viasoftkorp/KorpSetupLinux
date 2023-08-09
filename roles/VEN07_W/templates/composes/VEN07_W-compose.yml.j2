@@ -46,8 +46,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-logistica:
-    image: "{{ docker_account }}/viasoft.legacy.logistica:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Logistica"
+    image: "{{ docker_account }}/viasoft.legacy.logistica:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Logistica-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

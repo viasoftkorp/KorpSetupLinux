@@ -38,8 +38,6 @@ services:
     db:
       name: Viasoft_Sales_CRM_Opportunities
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Sales.CRM.Qualification:
     db:
