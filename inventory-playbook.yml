@@ -159,7 +159,7 @@
 
         - name: Geração de senha aleatória para SQL Server
           ansible.builtin.set_fact:
-            mssql_korp_passRandom: "{{ lookup('community.general.random_string', special=False) }}"
+            mssql_korp_passRandom: "{{ lookup('community.general.random_string', length=16, special=False) }}"
           when: chk_sql.skipped is not defined
 
         - name: Definição de usuário do SQL Server
@@ -407,7 +407,7 @@
             },
             'linux_korp': {
               'user': shrink_inventory.linux_korp.user | default ('korp'),
-              'password': shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', special=False))
+              'password': shrink_inventory.linux_korp.password | default (lookup('community.general.random_string', length=16, special=False))
             },
             'mssql': {
               'address': shrink_inventory.mssql.address | default (sql_ips),
@@ -425,25 +425,25 @@
             },
             'rabbitmq': {
               'korp_user': shrink_inventory.rabbitmq.korp_user | default ('korp.services'),
-              'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', special=False))
+              'korp_password': shrink_inventory.rabbitmq.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
             'redis': {
-              'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', special=False))
+              'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', length=16, special=False))
             },
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', special=False)),
+              'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)),
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
-              'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', special=False))
+              'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
             'minio': {
-              'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', special=False)),
-              'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', special=False))
+              'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', length=16, special=False)),
+              'secret_key': shrink_inventory.minio.secret_key| default (lookup('community.general.random_string', length=16, special=False))
             },
             'minio_new': {
-              'access_key': shrink_inventory.minio_new.access_key | default (lookup('community.general.random_string', special=False)),
-              'secret_key': shrink_inventory.minio_new.secret_key | default (lookup('community.general.random_string', special=False))
+              'access_key': shrink_inventory.minio_new.access_key | default (lookup('community.general.random_string', length=16, special=False)),
+              'secret_key': shrink_inventory.minio_new.secret_key | default (lookup('community.general.random_string', length=16, special=False))
             },
             'general': {
               'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
