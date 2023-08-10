@@ -1,0 +1,8 @@
+services:
+
+  Viasoft.Assinatura.Digital:
+    db:
+      name: Viasoft_Assinatura_Digital
+      type: postgres
+    version:
+      unversioned: true
