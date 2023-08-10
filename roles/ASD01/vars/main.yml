@@ -4,5 +4,3 @@ services:
     db:
       name: Viasoft_Assinatura_Digital
       type: postgres
-    version:
-      unversioned: true
