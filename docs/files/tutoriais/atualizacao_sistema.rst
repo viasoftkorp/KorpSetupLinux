@@ -9,7 +9,7 @@ Esse tutorial também pode ser visualizado pelo vídeo `Disponibilizando atualiz
 
     - Utilize uma ferramenta de cópia de arquivos por SSH qualquer, nós recomendamos o uso de `Filezila`_, mas qualquer ferramenta pode ser utilizada.
 
-    .. 
+    ..
         Explicar como conectar no servidor com filezila.
 
     - Copiar os arquivos ``Octopus.inf`` e ``OctopusUpdate.exe`` para a home do usuário.
