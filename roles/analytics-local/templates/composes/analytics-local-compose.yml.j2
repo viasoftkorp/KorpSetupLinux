@@ -27,4 +27,4 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
