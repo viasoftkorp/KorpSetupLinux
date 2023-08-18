@@ -95,9 +95,9 @@ jsonRequestTokenLegacyELT=$(curl --silent --request POST \
   --data grant_type=client_credentials \
   --data client_id=$LegacyEltServiceName  \
   --data client_secret=$LegacyEltSecret)
-LegacyEltAcessToken=$(echo "$jsonRequestTokenLegacyELT" | tr -d '\r\n' | jq -r '.access_token' | tr -d '[:space:]')
-if [ -z "$LegacyEltAcessToken" ]; then
-  echo "$(tput setaf 1)ERRO: LegacyEltAcessToken está vazio$(tput setaf 7)"
+LegacyEltAccessToken=$(echo "$jsonRequestTokenLegacyELT" | tr -d '\r\n' | jq -r '.access_token' | tr -d '[:space:]')
+if [ -z "$LegacyEltAccessToken" ]; then
+  echo "$(tput setaf 1)ERRO: LegacyEltAccessToken está vazio$(tput setaf 7)"
   exit 5
 fi
 #################
@@ -140,7 +140,7 @@ status_code=$(curl -X POST -o /dev/null --silent  --write-out '%{http_code}\n' \
   --header "TenantId: $TenantId" \
   --header "DatabaseName: $DatabaseName" \
   --header "EnvironmentId: $environmentId" \
-  --header "Authorization: Bearer $LegacyEltAcessToken" )
+  --header "Authorization: Bearer $LegacyEltAccessToken" )
 
 if [ "$status_code" != "200" ];
 then
