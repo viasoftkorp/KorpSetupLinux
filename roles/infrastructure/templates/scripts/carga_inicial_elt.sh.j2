@@ -104,7 +104,7 @@ fi
 
 echo "Leitura de environments"
 returnJsonRequestTenantManagement=$(curl --silent --location --request GET \
-  --url "$gatewayUrl/TenantManagement/environments?TenantIds=$TenantId" \
+  --url "$gatewayUrl/TenantManagement/environments?TenantIds=$TenantId&MaxResultCount=50" \
   --header "Authorization: Bearer  $TenantManagementAccessToken" )
 
 if [ -z "$returnJsonRequestTenantManagement" ]; then
