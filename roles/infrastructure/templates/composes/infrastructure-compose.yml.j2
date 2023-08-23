@@ -94,6 +94,7 @@ services:
     container_name: "{{ postgres_container_name }}"
     restart: always
     environment:
+      - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
     ports:
       - "5432:5432"
@@ -117,9 +118,9 @@ services:
     environment:
       - TCP_PORTS=15672,5672
       - RABBITMQ_NODENAME=rabbitmq
-    ports:
-      - "15672:15672"
-      - "5672:5672"
+    # ports:
+    #   - "15672:15672"
+    #   - "5672:5672"
     volumes:
       - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/:/var/lib/rabbitmq"
     networks:
@@ -137,8 +138,8 @@ services:
       net.core.somaxconn: 1024
     networks:
       - servicos
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
     volumes:
       - "{{ config_dir_path }}/redis.conf:/usr/local/etc/redis/redis.conf"
     labels:
