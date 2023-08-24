@@ -1,0 +1,20 @@
+{    
+    "Tags": "",
+    "Authorization": {
+        "Secret": "{{ secret }}"
+    },
+    "ServiceBus": {
+        "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"        
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"        
+    },
+    "Provisioning": {
+        "EnableSchemaProvisioning": "true"
+    },
+    "DisableTenantDependentConnectionString": "true",
+    "EnableEnvironmentDependentConnectionString": "false",
+    "DataCorte": "31/01/2020",
+    "PaginacaoEstoqueProdutosCarga": 10000,
+    "PaginacaoEstoqueCarga": 10000
+}

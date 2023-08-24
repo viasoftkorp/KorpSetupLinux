@@ -1,0 +1,5 @@
+services:
+  Viasoft.ELT:
+    db:
+      name: Viasoft_ELT
+      type: postgres
