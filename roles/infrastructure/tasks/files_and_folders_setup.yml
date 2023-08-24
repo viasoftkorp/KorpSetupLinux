@@ -17,15 +17,23 @@
     - "{{ korp_dir_path }}/logrotate.d/"
     - "{{ korp_dir_path }}/scripts/"
 
-- name: Transferência de scripts
+- name: Transferência de scripts de template
   ansible.builtin.template:
     dest: "{{ korp_dir_path }}/scripts/{{ item[:-3] | basename }}"
     src: "scripts/{{ item | basename }}"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0755'
-  loop:
-    "{{ lookup('fileglob', 'templates/scripts/*', wantlist=True) }}"
+  loop: "{{ lookup('fileglob', 'templates/scripts/*', wantlist=True) }}"
+
+- name: Transferência de scripts de files
+  ansible.builtin.copy:
+    dest: "{{ korp_dir_path }}/scripts/{{ item | basename }}"
+    src: "scripts/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0755'
+  loop: "{{ lookup('fileglob', 'files/scripts/*', wantlist=True) }}"
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/configs', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
