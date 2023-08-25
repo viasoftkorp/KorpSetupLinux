@@ -1,0 +1,16 @@
+- name: Definição de viráveis
+  ansible.builtin.set_fact:
+    viasoft_elt_service_name: "Viasoft.ELT"
+
+- name: Leitura de kv atual
+  community.general.consul_kv:
+    key: "{{ viasoft_elt_service_name }}"
+  register: retrieved_kv
+
+- name: Remoção de KV atual
+  vars:
+    current_kv: "{{ retrieved_kv.data.Value | from_json }}"
+  community.general.consul_kv:
+    key: "{{ viasoft_elt_service_name }}"
+    state: absent
+  when: current_kv.ConnectionStrings is undefined
