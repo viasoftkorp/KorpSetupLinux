@@ -4,9 +4,12 @@ services:
     db:
       name: Viasoft_Vendas_CusteioProduto_Gateway
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Vendas.CusteioProduto:
     db:
       name: Viasoft_Vendas_CusteioProduto
       type: postgres
- 
+    version:
+      unversioned: true

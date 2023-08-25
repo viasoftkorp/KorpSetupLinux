@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-erp-core:
-    image: "{{ docker_account }}/viasoft.erp.core:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Core"
+    image: "{{ docker_account }}/viasoft.erp.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-sync:
-    image: "{{ docker_account }}/viasoft.erp.sync:2.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Sync"
+    image: "{{ docker_account }}/viasoft.erp.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,8 +46,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-parametros:
-    image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Parametros"
+    image: "{{ docker_account }}/viasoft.legacy.parametros:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Parametros-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -61,8 +61,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-activities:
-    image: "{{ docker_account }}/viasoft.erp.activities:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Activities"
+    image: "{{ docker_account }}/viasoft.erp.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Activities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -75,26 +75,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  SYNC01:
-    image: "{{ docker_account }}/viasoft.erp.sync-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "SYNC01"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
   viasoft-organizationalstructuremanagement:
-    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.OrganizationalStructureManagement"
+    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.OrganizationalStructureManagement-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

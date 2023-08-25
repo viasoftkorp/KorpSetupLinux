@@ -19,12 +19,6 @@ services:
       name: Viasoft_Sales_PriceList
       type: mssql
 
-  Korp.Vendas.CustoProduto:
-
-  Korp.Sales.PriceControl:
-
-  Korp.Vendas.ListaPreco:
-
   Viasoft.Sales.Customers:
     db:
       name: Viasoft_Sales_Customers
@@ -46,3 +40,9 @@ services:
     db:
       name: Korp_Legacy_Vendas
       type: mssql
+
+  Korp.Vendas.CustoProduto:
+
+  Korp.Sales.PriceControl:
+
+  Korp.Vendas.ListaPreco:

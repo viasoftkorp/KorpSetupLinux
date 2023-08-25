@@ -14,27 +14,10 @@ networks:
     external:
       name: servicos
 
-services:
-  VEN27:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2.2.x{{ docker_image_suffix }}"
-    container_name: "VEN27"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
+services: 
   viasoft-commercialproposal-sync:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:3.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CommercialProposal.Sync"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CommercialProposal.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -48,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-commercialproposal-core:
-    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:3.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CommercialProposal.Core"
+    image: "{{ docker_account }}/viasoft.sales.commercialproposal.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CommercialProposal.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

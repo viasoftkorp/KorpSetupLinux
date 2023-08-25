@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-vendas-orcamento-core:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento.core:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.Orcamento.Core"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Orcamento.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-vendas-orcamento-gateway:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.Orcamento.Gateway"
+    image: "{{ docker_account }}/viasoft.vendas.orcamento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Orcamento.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,31 +46,14 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-logistica:
-    image: "{{ docker_account }}/viasoft.legacy.logistica:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Logistica"
+    image: "{{ docker_account }}/viasoft.legacy.logistica:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Logistica-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  VEN07_W:
-    image: "{{ docker_account }}/viasoft.vendas.orcamento-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "VEN07_W"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos

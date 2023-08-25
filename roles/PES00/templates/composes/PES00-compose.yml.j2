@@ -33,8 +33,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-person:
-    image: "{{ docker_account }}/viasoft.erp.person:3.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Person"
+    image: "{{ docker_account }}/viasoft.erp.person:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ERP.Person-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

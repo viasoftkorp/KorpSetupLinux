@@ -3,3 +3,5 @@ services:
     db:
       name: Viasoft_Approval
       type: postgres
+    version:
+      unversioned: true

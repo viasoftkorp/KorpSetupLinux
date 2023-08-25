@@ -33,8 +33,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-logistics-preregistration:
-    image: "{{ docker_account }}/viasoft.logistics.preregistration:3.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Logistics.PreRegistration"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistics.PreRegistration-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

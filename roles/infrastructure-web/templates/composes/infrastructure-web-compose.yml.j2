@@ -360,6 +360,7 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/" 
+
   REL01:
     image: "{{ docker_account }}/viasoft.relatorios-frontend:2.1.x{{ docker_image_suffix }}"
     container_name: "REL01"

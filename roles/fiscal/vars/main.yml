@@ -8,3 +8,5 @@ services:
     db:
       name: Viasoft_TaxManagement
       type: mssql
+    version:
+      unversioned: true

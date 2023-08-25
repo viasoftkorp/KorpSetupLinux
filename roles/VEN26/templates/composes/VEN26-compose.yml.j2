@@ -92,8 +92,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
         
   viasoft-sales-crm-opportunities:
-    image: "{{ docker_account }}/viasoft.sales.crm.opportunities:4.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Opportunities"
+    image: "{{ docker_account }}/viasoft.sales.crm.opportunities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.Opportunities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

@@ -2,3 +2,5 @@ services:
   Korp.Mobile:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/MOB02/reports"
+    version:
+      unversioned: true

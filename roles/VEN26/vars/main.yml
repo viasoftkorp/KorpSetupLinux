@@ -3,26 +3,36 @@ services:
     db:
       name: Viasoft_Sales_CRM_Core
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Accounts:
     db:
       name: Viasoft_Sales_CRM_Accounts
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Activities:
     db:
       name: Viasoft_Sales_CRM_Activities
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Goals:
     db:
       name: Viasoft_Sales_CRM_Goals
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Leads:
     db:
       name: Viasoft_Sales_CRM_Leads
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Opportunities:
     db:
@@ -33,13 +43,19 @@ services:
     db:
       name: Viasoft_Sales_CRM_Qualification
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Reporting:
     db:
       name: Viasoft_Sales_CRM_Reporting
       type: postgres
+    version:
+      unversioned: true
 
   Viasoft.Sales.CRM.Sync:
     db:
       name: Viasoft_Sales_CRM_Sync
       type: postgres
+    version:
+      unversioned: true

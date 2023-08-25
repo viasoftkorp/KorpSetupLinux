@@ -4,3 +4,5 @@ services:
     db:
       name: Korp_Projetos_BPMN_Gateway
       type: postgres 
+    version:
+      unversioned: true
