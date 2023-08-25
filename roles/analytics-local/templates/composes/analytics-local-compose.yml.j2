@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-elt:
-    image: "{{ docker_account }}/Viasoft.ELT:2.2.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.elt:2.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ELT"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
@@ -27,4 +27,4 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ self_signed_certs_directory }}/:{{ self_signed_certs_directory }}/"
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

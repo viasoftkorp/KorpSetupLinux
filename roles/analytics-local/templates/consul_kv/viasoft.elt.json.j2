@@ -1,5 +1,10 @@
 {    
     "Tags": "",
+    "AppRise": {
+        "TeamsWebHookUrl": "{{ services_secrets['Viasoft.ELT'].AppRise.TeamsWebHookUrl }}",
+        "EndPointNotification": "http://{{ apprise_container_name }}:8000/notify",
+        "DefaultMessageTitleOnNotification": "Notificação de Status PowerBI Sincronismo."
+    },
     "Authorization": {
         "Secret": "{{ secret }}"
     },
