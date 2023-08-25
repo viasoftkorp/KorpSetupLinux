@@ -132,17 +132,3 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-legacy-vendas:
-    image: "{{ docker_account }}/korp.legacy.vendas:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Vendas"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
