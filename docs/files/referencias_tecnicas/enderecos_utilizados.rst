@@ -1,12 +1,19 @@
 Endereços utilizados pelo servidor Linux
 ----------------------------------------
 
+Endereços de saída utilizados pelo servidor Linux na porta 443
+==============================================================
 
-Endereços de saída utilizados pelo servidor Linux na porta 443:
-===============================================================
-
-    - ``*.korp.com.br``
-    - ``*.docker.io``
+    - ``api-erp.korp.com.br``
+    - ``api-web.korp.com.br``
+    - ``gateway.korp.com.br``
+    - ``minio-api.korp.com.br``
+    - ``production.cloudflare.docker.com``
+    - ``registry-1.docker.io``
+    - ``hub.docker.com``
+    - ``login.docker.com``
+    - ``cdn.auth0.com``
+    - ``auth.docker.io``
 
 
 Endereços de entrada
