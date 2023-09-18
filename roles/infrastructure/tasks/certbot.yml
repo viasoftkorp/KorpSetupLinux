@@ -58,6 +58,9 @@
     - "korp.locations"
     - "korp-api.locations"
     - "korp-cdn.locations"
+    - "korp.ssl-locations"
+    - "korp-api.ssl-locations"
+    - "korp-cdn.ssl-locations"
   register: nginx_files_status
 
 - name: Reload de nginx
