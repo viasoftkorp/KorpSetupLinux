@@ -8,7 +8,7 @@
     tasks_from: services/add_service
   vars:
     service_name: "{{ item.key }}"
-    id: PROM01
+    id: QUA06_W
   with_dict: "{{ services }}"
   loop_control:
     extended: true

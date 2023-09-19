@@ -15,23 +15,23 @@ networks:
       name: servicos
 
 services:
-QUA06_W:
-    image: "{{ docker_account }}/viasoft.qualidade.rnc-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "QUA06_W"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+  QUA06_W:
+      image: "{{ docker_account }}/viasoft.qualidade.rnc-frontend:1.0.x{{ docker_image_suffix }}"
+      container_name: "QUA06_W"
+      restart: unless-stopped
+      extra_hosts: *default-extra_hosts
+      environment:
+        - ON_PREMISE_MODE=true
+        - USE_SERVERGC={{ use_servergc }}
+        - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+        - CDN_URL={{ frontend.endpoints.cdn_url }}
+        - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+        - CERT_FILE_PATH={{ containers_cert_path }}
+      networks:
+        - servicos
+      volumes:
+        - "{{ certs_directory }}/:{{ certs_directory }}/"
+    
   viasoft-qualidade-rnc-core:
     image: "{{ docker_account }}/viasoft.qualidade.rnc.core:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Qualidade.RNC.Core"
@@ -46,7 +46,7 @@ QUA06_W:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+    
   viasoft-qualidade-rnc-gateway:
     image: "{{ docker_account }}/viasoft.qualidade.rnc.gateway:1.0.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Qualidade.RNC.Gateway"
