@@ -15,12 +15,7 @@
 
 # Task necessária pois cliente do Workflow é inserido pelo prório Viasoft.Authentication
 # Isso é uma gambiarra, e deve ser corrigida quando possível
-# - name: Reinício do container Viasoft.Authentication 
-#   community.docker.docker_container:
-#     name: Viasoft.Authentication
-#     state: started
-#     restart: true
-- name: Criação e inicialização do componente Viasoft.Authentication
+- name: Reinício do container Viasoft.Authentication 
   community.docker.docker_compose:
     project_src: "{{ compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
