@@ -14,6 +14,8 @@ Endereços de saída utilizados pelo servidor Linux na porta 443
     - ``login.docker.com``
     - ``cdn.auth0.com``
     - ``auth.docker.io``
+    - ``github.com``
+    - ``raw.githubusercontent.com``
 
 ..
     lista do docker pega de https://docs.docker.com/desktop/allow-list/
