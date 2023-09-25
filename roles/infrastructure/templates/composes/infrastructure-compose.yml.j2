@@ -118,9 +118,9 @@ services:
     environment:
       - TCP_PORTS=15672,5672
       - RABBITMQ_NODENAME=rabbitmq
-    # ports:
-    #   - "15672:15672"
-    #   - "5672:5672"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
     volumes:
       - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/:/var/lib/rabbitmq"
     networks:
