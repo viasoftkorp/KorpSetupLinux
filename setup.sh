@@ -101,6 +101,16 @@ else
    gateway_url=${gateway_url%/}
 fi
 
+# # Obter o Tenant_Id
+# obterTenantId(){
+#   json=$(curl -X GET --silent "$gateway_url/TenantManagement/server-deploy/token/$token");
+#   tenant_id=$(echo "$json" | grep -o '"tenantId":"[^"]*' | awk -F ':"' '{print $2}');
+# }
+
+# validarToken(){
+
+# }
+
 # Validação de token
 
 if [ "$token" == "" ];
@@ -186,6 +196,8 @@ wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branc
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
+    "token": "'$token'",
+    "gateway_url": "'$gateway_url'"
     "db_suffix": "'$db_suffix'",
     "custom_setup_info": {
       "cert": {
