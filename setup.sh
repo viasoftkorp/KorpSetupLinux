@@ -101,16 +101,6 @@ else
    gateway_url=${gateway_url%/}
 fi
 
-# # Obter o Tenant_Id
-# obterTenantId(){
-#   json=$(curl -X GET --silent "$gateway_url/TenantManagement/server-deploy/token/$token");
-#   tenant_id=$(echo "$json" | grep -o '"tenantId":"[^"]*' | awk -F ':"' '{print $2}');
-# }
-
-# validarToken(){
-
-# }
-
 # Validação de token
 
 if [ "$token" == "" ];
@@ -222,11 +212,34 @@ then
     exit 14
 fi
 
+
+
+# Caminho para o inventário
+inventory_file="/etc/korp/ansible/inventory.yml"
+
+# Verifica se o arquivo existe e extrai o valor de tenant_id
+if [ -f "$inventory_file" ]; then
+  inventory_tenant_id=$(grep "tenant_id:" "$inventory_file" | awk '{print $2}')
+  echo "O valor de tenant_id é: $tenant_id"
+  exit 09 
+else
+  echo "$(tput setaf 1)Arquivo inventário não encontrado: $inventory_file.$(tput setaf 7)"
+  exit 09 
+fi
+
 # Encripta 'inventory.yml' com ansible-vault visto que essa operação não pode ser feita no playbook
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 rm /tmp/inventory-playbook.yml
+
+# Obter o Tenant_Id do token
+# obterTenantId(){
+#   json=$(curl -X GET --silent "$gateway_url/TenantManagement/server-deploy/token/$token");
+#   token_tenant_id=$(echo "$json" | grep -o '"tenantId":"[^"]*' | awk -F ':"' '{print $2}');
+# }
+
+
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
