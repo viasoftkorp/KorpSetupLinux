@@ -65,33 +65,31 @@
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
     - name: Verificação do tenant_id
-
       block:
-
-      - name: Verificar se token foi passado ao chamar o inventário
-        ansible.builtin.fail:
-          msg: "Mensagem de erro: Token indefinido."
-        when: token is not defined
-
-      - name: Obter tenant_id do token
-        ansible.builtin.uri:
-          url: "{{ gateway_url }}//TenantManagement/server-deploy/token/{{ token }}"
-          method: GET
-        register: response
-
-      - name: Extrair o valor do tenant_id
-        set_fact:
-          tenant_id: "{{ response | json_query('tenantId') }}"
-
-      - name: Definição do tenant_id no inventário, caso não haja.
-        ansible.builtin.set_fact:
-          shrink_inventory.tenant_id: "{{ tenant_id }}"
-        when: shrink_inventory.tenant_id is not defined and tenant_id is defined;
-
-      - name: Validar se tenant_id vinculado ao token é válido
-        ansible.builtin.fail:
-          msg: "Mensagem de erro: Token fornecido é incompatível com o tenant_id."
-        when: not shrink_inventory.tenant_id == tenant_id
+        - name: Verificar se token foi passado ao chamar o inventário
+          ansible.builtin.fail:
+            msg: "Mensagem de erro: Token indefinido."
+          when: token is not defined
+  
+        - name: Obter tenant_id do token
+          ansible.builtin.uri:
+            url: "{{ gateway_url }}//TenantManagement/server-deploy/token/{{ token }}"
+            method: GET
+          register: response
+  
+        - name: Extrair o valor do tenant_id
+          set_fact:
+            tenant_id: "{{ response | json_query('tenantId') }}"
+  
+        - name: Definição do tenant_id no inventário, caso não haja.
+          ansible.builtin.set_fact:
+            shrink_inventory.tenant_id: "{{ tenant_id }}"
+          when: shrink_inventory.tenant_id is not defined and tenant_id is defined;
+  
+        - name: Validar se tenant_id vinculado ao token é válido
+          ansible.builtin.fail:
+            msg: "Mensagem de erro: Token fornecido é incompatível com o tenant_id."
+          when: not shrink_inventory.tenant_id == tenant_id
 
     - name: Setup SQL Server
       block:
