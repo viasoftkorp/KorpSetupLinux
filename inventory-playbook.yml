@@ -70,7 +70,7 @@
           ansible.builtin.fail:
             msg: "Mensagem de erro: Token indefinido."
           when: token is not defined
-  
+
           # - name: Validação de token
           #   ansible.builtin.uri:
           #     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
@@ -85,7 +85,7 @@
         - name: Obter tenant_id do token
           ansible.builtin.uri:
             url: "{{ gateway_url }}//TenantManagement/server-deploy/token/{{ token }}"
-             return_content: true
+            return_content: true
           register: response
   
         - name: Extrair o valor do tenant_id
