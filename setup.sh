@@ -215,17 +215,7 @@ fi
 
 
 # Caminho para o inventário
-inventory_file="/etc/korp/ansible/inventory.yml"
-
-# Verifica se o arquivo existe e extrai o valor de tenant_id
-if [ -f "$inventory_file" ]; then
-  inventory_tenant_id=$(grep "tenant_id:" "$inventory_file" | awk '{print $2}')
-  echo "O valor de tenant_id é: $tenant_id"
-  exit 09 
-else
-  echo "$(tput setaf 1)Arquivo inventário não encontrado: $inventory_file.$(tput setaf 7)"
-  exit 09 
-fi
+inventory_file=$(cat /etc/korp/ansible/inventory.yml)
 
 # Encripta 'inventory.yml' com ansible-vault visto que essa operação não pode ser feita no playbook
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key

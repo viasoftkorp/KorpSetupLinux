@@ -11,10 +11,15 @@
         return_content: true
       register: response
 
+    - name: Debug de tenant_id
+      ansible.builtin.debug:
+        msg: "{{ hostvars[inventory_hostname].tenant_id }}"
+      when: not (hostvars[inventory_hostname].tenant_id == response.json['tenantId'])
+
     - name: Validação de tenant_id
       ansible.builtin.fail:
         msg: "mensagem de erro: TenantId incompatível com o token passado."
-      when: not (shrink_inventory.tenant_id | default('') == response.json['tenantId'])
+      when: not (hostvars[inventory_hostname].tenant_id == response.json['tenantId'])
     
     - name: Configuração de tenant_id
       ansible.builtin.set_fact:
