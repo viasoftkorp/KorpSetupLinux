@@ -64,27 +64,27 @@
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
-    - name: Verificação do tenant_id
+    - name: Validação do tenant_id
       block:
-        - name: Verificar se token foi passado ao chamar o inventário
+        - name: Verificação do token
           ansible.builtin.fail:
             msg: "Mensagem de erro: Token indefinido."
           when: token is not defined
 
-        - name: Obter tenant_id do token
+        - name: Coleta do objeto na url gateway
           ansible.builtin.uri:
-            url: "{{ gateway_url }}//TenantManagement/server-deploy/token/{{ token }}"
+            url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
             return_content: true
           register: response
   
-        - name: Extrair o valor do tenant_id
+        - name: Coleta do tenant_id
           ansible.builtin.set_fact:
             response_tenant_id: "{{ response.json['tenantId'] }}"
   
-        - name: Validar se tenant vinculado ao token é válido
+        - name: Validação de igualdade do tenant_id obtido com o tenant_id registrado no inventário
           ansible.builtin.fail:
             msg: "Mensagem de erro: Token fornecido é incompatível com o tenant_id."
-          when: not (shrink_inventory.tenant_id | default('') == response_tenant_id) and shrink_inventory.tenant_id is defined
+          when: shrink_inventory.tenant_id is defined and not shrink_inventory.tenant_id == response_tenant_id
 
     - name: Setup SQL Server
       block:
