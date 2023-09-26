@@ -81,10 +81,10 @@
           set_fact:
             response_tenant_id: "{{ response.json['tenantId'] }}"
   
-        - name: Validar se tenant_id vinculado ao token é válido
+        - name: Validar se tenant vinculado ao token é válido
           ansible.builtin.fail:
             msg: "Mensagem de erro: Token fornecido é incompatível com o tenant_id."
-          when: not shrink_inventory.tenant_id == response_tenant_id and shrink_inventory.tenant_id is defined
+          when: not (shrink_inventory.tenant_id | default('') == response_tenant_id) and shrink_inventory.tenant_id is defined
 
     - name: Setup SQL Server
       block:
