@@ -71,25 +71,31 @@
             msg: "Mensagem de erro: Token indefinido."
           when: token is not defined
   
+          # - name: Validação de token
+          #   ansible.builtin.uri:
+          #     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+          #     return_content: true
+          #   register: response
+
+          # - name: Configuração de tenant_id
+          #   ansible.builtin.set_fact:
+          #     tenant_id: "{{ response.json.tenantId }}"
+          #     version_without_build: "{{ response.json.version }}"
+
         - name: Obter tenant_id do token
           ansible.builtin.uri:
             url: "{{ gateway_url }}//TenantManagement/server-deploy/token/{{ token }}"
-            method: GET
+             return_content: true
           register: response
   
         - name: Extrair o valor do tenant_id
           set_fact:
-            tenant_id: "{{ response | json_query('tenantId') }}"
-  
-        - name: Definição do tenant_id no inventário, caso não haja.
-          ansible.builtin.set_fact:
-            shrink_inventory.tenant_id: "{{ tenant_id }}"
-          when: shrink_inventory.tenant_id is not defined and tenant_id is defined;
+            response_tenant_id: "{{ response.json.tenantId }}"
   
         - name: Validar se tenant_id vinculado ao token é válido
           ansible.builtin.fail:
             msg: "Mensagem de erro: Token fornecido é incompatível com o tenant_id."
-          when: not shrink_inventory.tenant_id == tenant_id
+          when: not shrink_inventory.tenant_id == response_tenant_id and shrink_inventory.tenant_id is defined
 
     - name: Setup SQL Server
       block:
@@ -507,7 +513,8 @@
                 'cdn': reverse_proxy.http_ports.cdn | default ('9876'),
                 'frontend': reverse_proxy.http_ports.frontend | default ('9877')
               }
-            }
+            },
+            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id) 
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
