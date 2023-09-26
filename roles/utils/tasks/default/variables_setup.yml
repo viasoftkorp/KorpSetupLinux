@@ -11,10 +11,16 @@
         return_content: true
       register: response
 
+    - name: Validação de tenant_id
+      ansible.builtin.fail:
+        msg: "mensagem de erro: TenantId incompatível com o token passado."
+      when: not (shrink_inventory.tenant_id | default('') == response.json['tenantId'])
+    
     - name: Configuração de tenant_id
       ansible.builtin.set_fact:
         tenant_id: "{{ response.json.tenantId }}"
         version_without_build: "{{ response.json.version }}"
+
 
     - name: Coleta de secrets
       ansible.builtin.uri:
