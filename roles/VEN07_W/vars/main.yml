@@ -8,8 +8,3 @@ services:
     db:
       name: Viasoft_Vendas_Orcamento_Gateway
       type: postgres
-
-  Viasoft.Legacy.Logistica:
-    db:
-      name: Viasoft_Legacy_Logistica
-      type: mssql
