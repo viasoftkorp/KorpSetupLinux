@@ -117,7 +117,6 @@ else
     fi
 fi
 
-
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
 echo Instalando Ansible
@@ -212,24 +211,11 @@ then
     exit 14
 fi
 
-
-
-# Caminho para o inventário
-inventory_file=$(cat /etc/korp/ansible/inventory.yml)
-
 # Encripta 'inventory.yml' com ansible-vault visto que essa operação não pode ser feita no playbook
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 rm /tmp/inventory-playbook.yml
-
-# Obter o Tenant_Id do token
-# obterTenantId(){
-#   json=$(curl -X GET --silent "$gateway_url/TenantManagement/server-deploy/token/$token");
-#   token_tenant_id=$(echo "$json" | grep -o '"tenantId":"[^"]*' | awk -F ':"' '{print $2}');
-# }
-
-
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \

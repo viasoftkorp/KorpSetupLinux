@@ -11,10 +11,6 @@
         return_content: true
       register: response
 
-    - name: Debug de tenant_id
-      ansible.builtin.debug:
-        msg: "{{ hostvars[inventory_hostname].tenant_id }}"
-
     - name: Validação de tenant_id
       ansible.builtin.fail:
         msg: "mensagem de erro: TenantId incompatível com o token passado."
@@ -24,7 +20,6 @@
       ansible.builtin.set_fact:
         tenant_id: "{{ response.json.tenantId }}"
         version_without_build: "{{ response.json.version }}"
-
 
     - name: Coleta de secrets
       ansible.builtin.uri:
