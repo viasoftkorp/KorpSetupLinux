@@ -78,7 +78,7 @@
           register: response
   
         - name: Extrair o valor do tenant_id
-          set_fact:
+          ansible.builtin.set_fact:
             response_tenant_id: "{{ response.json['tenantId'] }}"
   
         - name: Validar se tenant vinculado ao token é válido
