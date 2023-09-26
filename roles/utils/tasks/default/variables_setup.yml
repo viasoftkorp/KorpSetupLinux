@@ -11,6 +11,11 @@
         return_content: true
       register: response
 
+    - name: Validação de tenant_id
+      ansible.builtin.fail:
+        msg: "mensagem de erro: O Tenant Utilizado é diferente do Tenant salvo no ambiente."
+      when: not (hostvars[inventory_hostname].tenant_id == response.json['tenantId'])
+    
     - name: Configuração de tenant_id
       ansible.builtin.set_fact:
         tenant_id: "{{ response.json.tenantId }}"

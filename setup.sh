@@ -117,7 +117,6 @@ else
     fi
 fi
 
-
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
 echo Instalando Ansible
@@ -186,6 +185,8 @@ wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branc
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
+    "token": "'$token'",
+    "gateway_url": "'$gateway_url'",
     "db_suffix": "'$db_suffix'",
     "custom_setup_info": {
       "cert": {
