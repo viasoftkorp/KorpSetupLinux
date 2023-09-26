@@ -14,7 +14,6 @@
     - name: Debug de tenant_id
       ansible.builtin.debug:
         msg: "{{ hostvars[inventory_hostname].tenant_id }}"
-      when: not (hostvars[inventory_hostname].tenant_id == response.json['tenantId'])
 
     - name: Validação de tenant_id
       ansible.builtin.fail:
