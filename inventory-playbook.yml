@@ -64,7 +64,7 @@
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
-    # - name: Verificação do tenant_id
+    - name: Verificação do tenant_id
       block:
         - name: Verificar se token foi passado ao chamar o inventário
           ansible.builtin.fail:
