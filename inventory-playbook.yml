@@ -433,11 +433,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': lookup('community.general.random_string', length=16, special=False) 
-                if (shrink_inventory.postgres.default_password is not defined) 
-                else lookup('community.general.random_string', length=16, special=False) 
-                  if (shrink_inventory.postgres.default_password == 'postgres') 
-                  else shrink_inventory.postgres.default_password,
+              'default_password': 'postgres'
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
@@ -503,3 +499,9 @@
         dest: /etc/korp/ansible/inventory.yml
         mode: '0644'
       delegate_to: localhost
+
+# lookup('community.general.random_string', length=16, special=False) 
+#                 if (shrink_inventory.postgres.default_password is not defined) 
+#                 else lookup('community.general.random_string', length=16, special=False) 
+#                   if (shrink_inventory.postgres.default_password == 'postgres') 
+#                   else shrink_inventory.postgres.default_password,
