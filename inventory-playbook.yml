@@ -399,36 +399,23 @@
     - name: Gerar nova senha aleatória para o postgres
       ansible.builtin.set_fact:
         new_postgres_random_password: "{{ lookup('community.general.random_string', length=16, special=False) }}"
-    - name: Definição de senha do postgres
-      block:
-        # - name: Verificar se o banco de dados PostgreSQL está em execução
-        #   community.general.wait_for:
-        #     host: "{{ shrink_inventory.postgres.address }}"
-        #     port: 5432 
-        #     timeout: 300 
-        #     state: started
-        #   register: db_rodando
-        #   ignore_errors: yes
 
-        # - name: Lançar erro caso database não esteja em execução
-        #   ansible.builtin.fail:
-        #     msg: "Database não está em execução para realizar substituição da senha."
-
-        - name: Atualizar senha na database, caso esteja com a senha padrão 'postgres'
-          community.postgresql.postgresql_user:
-            db: postgres
-            login_host: "{{ shrink_inventory.postgres.address }}"
-            login_user: "{{ shrink_inventory.postgres.default_user }}"
-            login_password: "{{ shrink_inventory.postgres.default_password }}"
-            name: "{{ shrink_inventory.postgres.default_user }}"
-            password: "{{ new_postgres_random_password }}"
-
-        - name: Excluir senha atual para posterior substituição
-          ansible.builtin.set_fact:
-            shrink_inventory.postgres: "{{ shrink_inventory.postgres | combine({'default_password': omit}) }}"
-
+    - name: Atualizar senha na database, caso esteja com a senha padrão 'postgres'
+      community.postgresql.postgresql_user:
+        db: postgres
+        login_host: "{{ shrink_inventory.postgres.address }}"
+        login_user: "{{ shrink_inventory.postgres.default_user }}"
+        login_password: "{{ shrink_inventory.postgres.default_password }}"
+        name: "{{ shrink_inventory.postgres.default_user }}"
+        password: "{{ new_postgres_random_password }}"
       when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'ORTfqLlpEJa4qREb'
     
+    - name: Definir senha postgres:
+      ansible.builtin.set_fact:
+        postgres_new_pass: new_postgres_random_password
+      register: postgres_password_was_updated
+      when: (new_postgres_random_password is defined and (shrink_inventory.postgres.default_password is not defined or shrink_inventory.postgres.default_password == 'ORTfqLlpEJa4qREb'))
+
     - name: Debug 
       ansible.builtin.debug:
         msg: "{{ shrink_inventory.postgres  }}"
@@ -471,7 +458,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': shrink_inventory.postgres.default_password | default(new_postgres_random_password),
+              'default_password': postgres_new_pass if(postgres_password_was_updated) else shrink_inventory.postgres.default_password ,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
