@@ -1,18 +1,17 @@
-# dependencies:
-  # TODO
-  # - role: CDP01
-  # - role: contabil
-  # - role: compras
-  # - role: engenharia
-  # - role: vendas
-  # - role: faturamento
-  # - role: financeiro
-  # - role: fiscal
-  # - role: logistica
-  # - role: ERP
-  # - role: PES01
-  # - role: PES00
-  # - role: LOG00
-  # - role: LOG01_W
-  # - role: workflow 
+dependencies:
+  - role: CDP01
+  - role: contabil
+  - role: compras
+  - role: engenharia
+  - role: vendas
+  - role: faturamento
+  - role: financeiro
+  - role: fiscal
+  - role: logistica
+  - role: ERP
+  - role: PES01
+  - role: PES00
+  - role: LOG00
+  - role: LOG01_W
+  - role: workflow 
  
