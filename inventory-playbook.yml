@@ -410,9 +410,9 @@
         #   register: db_rodando
         #   ignore_errors: yes
 
-        - name: Lançar erro caso database não esteja em execução
-          ansible.builtin.fail:
-            msg: "Database não está em execução para realizar substituição da senha."
+        # - name: Lançar erro caso database não esteja em execução
+        #   ansible.builtin.fail:
+        #     msg: "Database não está em execução para realizar substituição da senha."
 
         - name: Atualizar senha na database, caso esteja com a senha padrão 'postgres'
           community.postgresql.postgresql_user:
