@@ -87,6 +87,7 @@
 - name: Alteração da senha do usuario postgres
   community.postgresql.postgresql_user:
     db: postgres
+    login_host: "{{ postgres.address }}"
     name: "{{ hostvars[inventory_hostname].postgres.default_user }}"
     password: "{{ hostvars[inventory_hostname].postgres.default_password }}"
 
