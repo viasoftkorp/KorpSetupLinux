@@ -85,8 +85,6 @@
   ansible.builtin.import_tasks: rabbitmq_user.yml
 
 - name: Alteração da senha do usuario postgres
-  become_method: sudo
-  become_user: postgres
   community.postgresql.postgresql_user:
     db: postgres
     name: "{{ hostvars[inventory_hostname].postgres.default_user }}"
