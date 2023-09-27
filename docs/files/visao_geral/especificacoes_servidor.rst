@@ -18,7 +18,7 @@ Abaixo estão os requisitos mínimos do servidor, sendo que estes poderá ser ne
 
 * 2 cores de processamento.
 
-Para garantir quais as especificações recomendas em cada caso, é necessário consultar a equipe de implantação.
+Estes requisitos são mínimos, sendo que poderá ser necessário maior capacidade da máquina dependendo do volume de dados de cada empresa.
 
 .. warning::
 
