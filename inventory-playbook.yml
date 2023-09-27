@@ -395,7 +395,6 @@
         https_port: "{{ custom_setup_info.https_port }}"
       when: custom_setup_info.https_port != ''
 
-
     - name: Gerar nova senha aleatória para o postgres
       ansible.builtin.set_fact:
         new_postgres_random_password: "{{ lookup('community.general.random_string', length=16, special=False) }}"
@@ -410,7 +409,7 @@
         password: "{{ new_postgres_random_password }}"
       when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'ORTfqLlpEJa4qREb'
     
-    - name: Definir senha postgres:
+    - name: Definir senha postgres
       ansible.builtin.set_fact:
         postgres_new_pass: new_postgres_random_password
       register: postgres_password_was_updated
@@ -418,7 +417,7 @@
 
     - name: Debug 
       ansible.builtin.debug:
-        msg: "{{ shrink_inventory.postgres  }}"
+        msg: "{{ shrink_inventory.postgres }}"
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
