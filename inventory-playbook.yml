@@ -410,12 +410,14 @@
             login_password: "{{ shrink_inventory.postgres.default_password }}"
             name: "{{ shrink_inventory.postgres.default_user }}"
             password: "{{ postgres_new_pass }}"
+          register: db_password
 
         - name: Definição da variável para permitir atualização
           ansible.builtin.set_fact:
             postgres_password_was_updated: true
+          when: db_password.changed
 
-      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
+      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'ACJ5WqVlDGSGZbJS'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
