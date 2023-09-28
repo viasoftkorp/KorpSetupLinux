@@ -417,7 +417,7 @@
             postgres_password_was_updated: true
           when: db_password.changed
 
-      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'ACJ5WqVlDGSGZbJS'
+      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
