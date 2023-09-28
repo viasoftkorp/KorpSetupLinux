@@ -400,8 +400,7 @@
         postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
         postgres_password_was_updated: false
 
-    # A condicional em shrink_inventory.postgres.default_password, na task "Definição dos valores de inventário" 
-    # verifica se a senha registrada no inventário foi alterada por essa task.
+  # Esta task verifica se a senha padrão 'postgres' no inventário será sobrescrita pela variável 'postgres_new_pass' criada anteriormente.
     - name: Substituição da senha do postgres, caso esteja com a senha padrão 'postgres'
       block:
         - name: Alteração da senha na database
@@ -416,6 +415,8 @@
 
         - name: Definição da variável para permitir atualização
           ansible.builtin.set_fact:
+            # Após o sucesso da alteração na database, alteramos o valor de 'postgres_password_was_updated'
+            # para que 'shrink_inventory.postgres.default_password' possa ser sobrescrita na task "Definição dos valores de inventário".
             postgres_password_was_updated: true
           when: db_password.changed
       when: 
