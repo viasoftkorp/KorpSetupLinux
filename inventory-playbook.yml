@@ -410,7 +410,7 @@
             login_password: "{{ shrink_inventory.postgres.default_password }}"
             name: "{{ shrink_inventory.postgres.default_user }}"
             password: "{{ postgres_new_pass }}"
-      when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'VxaBbnolNw0ZBh6o'
+      when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -450,7 +450,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': shrink_inventory.postgres.default_password | default(lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
+              'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
@@ -508,10 +508,6 @@
               nodes:
                 hosts:
                   localhost: "{{ shrink_inventory }}"
-
-    - name: Debug 
-      ansible.builtin.debug:
-        msg: "{{ shrink_inventory.postgres  }}"
 
       #Funcao de inserir a variavel no arquivo.
     - name: Escrita do arquivo de inventário
