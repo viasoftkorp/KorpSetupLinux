@@ -400,6 +400,8 @@
         postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
         postgres_password_was_updated: false
 
+    # A condicional em shrink_inventory.postgres.default_password, na task "Definição dos valores de inventário" 
+    # verifica se a senha registrada no inventário foi alterada por essa task.
     - name: Substituição da senha do postgres, caso esteja com a senha padrão 'postgres'
       block:
         - name: Alteração da senha na database
@@ -423,6 +425,7 @@
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
     # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
+
     - name: Definição dos valores de inventário
       ansible.builtin.set_fact:
         shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
@@ -458,7 +461,6 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              # O if será ativado caso a senha padrão 'postgres' tenha sido alterada.
               'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
