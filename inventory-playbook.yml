@@ -400,7 +400,6 @@
         postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
         postgres_password_was_updated: false
 
-
     - name: Substituição da senha do postgres, caso esteja com a senha padrão 'postgres'
       block:
         - name: Alteração da senha na database
@@ -416,7 +415,7 @@
           ansible.builtin.set_fact:
             postgres_password_was_updated: true
 
-      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'mGmHLBvr4HWvXfBV'
+      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
