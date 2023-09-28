@@ -395,29 +395,22 @@
         https_port: "{{ custom_setup_info.https_port }}"
       when: custom_setup_info.https_port != ''
 
-    - name: Gerar nova senha aleatória para o postgres
-      ansible.builtin.set_fact:
-        new_postgres_random_password: "{{ lookup('community.general.random_string', length=16, special=False) }}"
-
-    - name: Atualizar senha na database, caso esteja com a senha padrão 'postgres'
-      community.postgresql.postgresql_user:
-        db: postgres
-        login_host: "{{ shrink_inventory.postgres.address }}"
-        login_user: "{{ shrink_inventory.postgres.default_user }}"
-        login_password: "{{ shrink_inventory.postgres.default_password }}"
-        name: "{{ shrink_inventory.postgres.default_user }}"
-        password: "{{ new_postgres_random_password }}"
-      when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
+    - name: Substituição da senha do postgres, caso esteja com a senha padrão 'postgres'
+      block:
+        - name: Definição de nova senha aleatória
+          ansible.builtin.set_fact:
+            postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
+          register: postgres_password_was_updated
     
-    - name: Definir senha postgres
-      ansible.builtin.set_fact:
-        postgres_new_pass: "{{ new_postgres_random_password }}"
-      register: postgres_password_was_updated
-      when: (new_postgres_random_password is defined and (shrink_inventory.postgres.default_password is not defined or shrink_inventory.postgres.default_password == 'postgres'))
-
-    - name: Debug 
-      ansible.builtin.debug:
-        msg: "{{ shrink_inventory.postgres }}"
+        - name: Atualização da senha na database
+          community.postgresql.postgresql_user:
+            db: postgres
+            login_host: "{{ shrink_inventory.postgres.address }}"
+            login_user: "{{ shrink_inventory.postgres.default_user }}"
+            login_password: "{{ shrink_inventory.postgres.default_password }}"
+            name: "{{ shrink_inventory.postgres.default_user }}"
+            password: "{{ postgres_new_pass }}"
+      when: shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'VxaBbnolNw0ZBh6o'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -457,7 +450,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': postgres_new_pass if(postgres_password_was_updated) else shrink_inventory.postgres.default_password ,
+              'default_password': shrink_inventory.postgres.default_password | default(lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
