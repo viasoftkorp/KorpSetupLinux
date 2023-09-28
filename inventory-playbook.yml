@@ -416,8 +416,9 @@
           ansible.builtin.set_fact:
             postgres_password_was_updated: true
           when: db_password.changed
-
-      when: postgres_new_pass is defined and shrink_inventory.postgres.address is defined and shrink_inventory.postgres.default_password is defined and shrink_inventory.postgres.default_user is defined and shrink_inventory.postgres.default_password == 'postgres'
+      when: 
+        - shrink_inventory.postgres.default_password is defined 
+        - shrink_inventory.postgres.default_password == 'postgres'
         
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
@@ -457,6 +458,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
+              {# O if será ativado caso a senha padrão 'postgres' tenha sido alterada.  #}
               'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
