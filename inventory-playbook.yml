@@ -417,9 +417,38 @@
         https_port: "{{ custom_setup_info.https_port }}"
       when: custom_setup_info.https_port != ''
 
+    - name: Definição de nova senha aleatória para postgres
+      ansible.builtin.set_fact:
+        postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
+        postgres_password_was_updated: false
+
+  # Esta task verifica se a senha padrão 'postgres' no inventário será sobrescrita pela variável 'postgres_new_pass' criada anteriormente.
+    - name: Substituição da senha do postgres, caso esteja com a senha padrão 'postgres'
+      block:
+        - name: Alteração da senha na database
+          community.postgresql.postgresql_user:
+            db: postgres
+            login_host: "{{ shrink_inventory.postgres.address }}"
+            login_user: "{{ shrink_inventory.postgres.default_user }}"
+            login_password: "{{ shrink_inventory.postgres.default_password }}"
+            name: "{{ shrink_inventory.postgres.default_user }}"
+            password: "{{ postgres_new_pass }}"
+          register: db_password
+
+        - name: Definição da variável para permitir atualização
+          ansible.builtin.set_fact:
+            # Após o sucesso da alteração na database, alteramos o valor de 'postgres_password_was_updated'
+            # para que 'shrink_inventory.postgres.default_password' possa ser sobrescrita na task "Definição dos valores de inventário".
+            postgres_password_was_updated: true
+          when: db_password.changed
+      when: 
+        - shrink_inventory.postgres.default_password is defined 
+        - shrink_inventory.postgres.default_password == 'postgres'
+        
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
     # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
+
     - name: Definição dos valores de inventário
       ansible.builtin.set_fact:
         shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost | combine(
@@ -455,7 +484,7 @@
             'postgres': {
               'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
-              'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)),
+              'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False))
             },
