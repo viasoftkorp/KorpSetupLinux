@@ -4,4 +4,9 @@ services:
       name: Viasoft_Compras_PlanilhasPreco
       type: postgres
 
+  Korp.Legacy.Compras:
+    db:
+      name: Korp_Legacy_Compras
+      type: mssql
+
   Korp.Compras.NotaFiscal:
