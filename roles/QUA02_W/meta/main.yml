@@ -1,2 +1,4 @@
 dependencies:
   - role: qualidade
+  - role: QUA06_W
+
