@@ -8,3 +8,8 @@ services:
     db:
       name: Viasoft_Billing_NFE
       type: mssql
+
+  Korp.Legacy.Faturamento:
+    db:
+      name: Korp_Legacy_Faturamento
+      type: mssql
