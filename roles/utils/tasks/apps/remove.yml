@@ -1,32 +1,9 @@
 - name: Remoção de app
   block:
-    - name: Definição de ultima versão instalada
-      block:
-        - name: Definição de variáveis 1
-          ansible.builtin.set_fact:
-            temp_apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
-            latest_installed_version: "0.0.0"
-
-        - name: Definição de variáveis 2
-          ansible.builtin.set_fact:
-            has_versioned_apps: "{{ temp_apps_map.versioned != None }}"
-
-        - name: Definição te mapeamento temporário para temp_apps_map
-          ansible.builtin.set_fact:
-            temp_apps_map: "{{ temp_apps_map | combine(
-              {
-                'versioned': {
-                  1: 'temp_value'
-                }
-              },
-              recursive=True, list_merge='append_rp') }}"
-          when: not has_versioned_apps
-
-        - name: Verificação de ultima versão instalada
-          ansible.builtin.set_fact:
-            latest_installed_version: "{{ item.key }}"
-          when: has_versioned_apps and (latest_installed_version is version(item.key, '<') and item.value != 'temp_value')
-          with_dict: "{{ temp_apps_map.versioned }}"
+    - name: "Definição de ultima versão instalada"
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: default/get_latest_installed_version
 
     - name: Definição de variáveis
       ansible.builtin.set_fact:

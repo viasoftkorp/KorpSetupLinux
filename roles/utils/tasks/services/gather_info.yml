@@ -1,0 +1,40 @@
+- name: Checagem de compose - versionado
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
+  register: versioned_compose_result
+  # por algum motivo, o ansible dá erro executando essa task como super user
+  become: false
+
+- name: Checagem de compose - não versionado
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
+  register: unversioned_compose_result
+  # por algum motivo, o ansible dá erro executando essa task como super user
+  become: false
+
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
+    exclusive_services_list: []
+    unversioned_services_list: []
+
+- name: Definição de serviços exclusivos
+  vars:
+    compose_content: "{{  lookup('ansible.builtin.template', unversioned_compose_result.stat.path) | from_yaml }}"
+  ansible.builtin.set_fact:
+    exclusive_services_list: "{{ [item.value.container_name ] + exclusive_services_list }}"
+  with_dict: "{{ compose_content.services }}"
+  when: (unversioned_compose_result.stat.exists) and ((((item.value.image | split(':'))[1]) | split('.')) | length > 3)
+
+- name: Definição de serviços não versionados
+  vars:
+    services: "{{ (lookup('ansible.builtin.template', '~/roles/{{ id }}/vars/main.yml') | from_yaml)['services'] }}"
+  ansible.builtin.set_fact:
+    unversioned_services_list: "{{ [item.key] + unversioned_services_list }}"
+  with_dict: "{{ services }}"
+  when: item.value.version.unversioned is defined and item.value.version.unversioned
+
+- name: Definição de versões do aplicativo
+  ansible.builtin.set_fact:
+    has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
+    has_unversioned_services: "{{ unversioned_services_list | length > 0 }}"
+    has_exclusive_services: "{{ exclusive_services_list | length > 0 }}"
