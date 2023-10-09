@@ -16,6 +16,7 @@ Endereços de saída utilizados pelo servidor Linux na porta 443
     - ``auth.docker.io``
     - ``github.com``
     - ``raw.githubusercontent.com``
+    - ``www4.bcb.gov.br``
 
 ..
     lista do docker pega de https://docs.docker.com/desktop/allow-list/
