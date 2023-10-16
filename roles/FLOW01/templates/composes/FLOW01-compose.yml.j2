@@ -46,7 +46,7 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+
   SDK-FLOW:
     image: "{{ docker_account }}/sdk.flow-parcel:1.1.x{{ docker_image_suffix }}"
     container_name: "SDK.FLOW"
