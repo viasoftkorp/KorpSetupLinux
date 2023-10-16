@@ -15,6 +15,13 @@
 #   service_name - (string) OBRIGATÓRIO
 #   id: - (string) OBRIGATÓRIO
 
+# Esta task só acontece na primeira interação do loop
+- name: "Startup de setup de role {{ id }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/startup
+  when: ansible_loop.first
+
 - name: "Validação de variáveis de {{ service_name }}"
   ansible.builtin.include_role:
     name: utils
@@ -54,8 +61,7 @@
     loop_var: volume_dir
   when: service_vars.volumes_directories is defined
 
-
-# essa task só acontece na ultima iteração do loop
+# essa task só acontece na ultima interação do loop
 # isso é necessário pois a configuração de composes e o registro em installed_apps.yml, só deve acontecer uma vez, quando todos os serviços já estão configurados
 - name: "Setup de composes e registro de {{ id }}"
   ansible.builtin.include_role:

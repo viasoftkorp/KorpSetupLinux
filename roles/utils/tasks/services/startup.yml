@@ -1,0 +1,17 @@
+- name: "Leitura de informações gerais de {{ id }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/gather_info
+
+- name: "Definição de ultima versão instalada"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: default/get_latest_installed_version
+
+- name: Verificação de versão que será instalada
+  ansible.builtin.fail:
+    msg: "Não é possível fazer downgrade de um aplicativo com versionamento exclusivo '{{ id }}"
+  when: # condições são unidas com 'and'
+    - has_exclusive_services
+    - version_without_build is version(latest_installed_version, '<')
+    - id in temp_apps_map.versioned[latest_installed_version]
