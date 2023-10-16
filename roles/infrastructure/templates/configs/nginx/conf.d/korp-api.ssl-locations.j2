@@ -30,7 +30,7 @@ location ~ (FileProvider|/Sales/CRM/Leads/|/Sales/CRM/Accounts/|/Sales/CRM/Oppor
     proxy_pass http://fabio:9999;
 }
 
-location ~* (/assinatura-digital/file-provider/) {
+location ~* (/assinatura-digital/file-provider/|/flow/workflow/webhook/) {
     client_max_body_size 100M;
 
     proxy_buffer_size          128k;
