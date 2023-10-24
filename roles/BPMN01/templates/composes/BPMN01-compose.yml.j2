@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  PROM01:
+  BPMN01:
     image: "{{ docker_account }}/korp.projetos.bpmn-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "PROM01"
+    container_name: "BPMN01"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
