@@ -8,3 +8,8 @@ services:
     db:
       name: Viasoft_Billing_NFE
       type: mssql
+
+  Viasoft.Faturamento.NotaFiscal.Core:
+    db:
+      name: Viasoft_Faturamento_NotaFiscal_Core
+      type: mssql
