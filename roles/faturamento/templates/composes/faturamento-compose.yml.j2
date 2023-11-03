@@ -44,3 +44,17 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-legacy-faturamento:
+    image: "{{ docker_account }}/korp.legacy.faturamento:1.0.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Faturamento"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
