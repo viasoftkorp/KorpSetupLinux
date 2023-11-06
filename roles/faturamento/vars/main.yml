@@ -10,3 +10,6 @@ services:
       type: mssql
 
   Korp.Legacy.Faturamento:
+    db:
+      name: Korp_Legacy_Faturamento
+      type: mssql
