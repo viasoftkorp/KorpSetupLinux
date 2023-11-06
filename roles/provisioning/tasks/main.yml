@@ -24,6 +24,8 @@
     - acl
     # necessário para o funcionamento de postgresql
     - libpq-dev
+    # necessário para alguns scripts .sh utilizados fora do setup
+    - jq
 
 - name: Instalação de dependências padrões usando pip
   ansible.builtin.pip:
