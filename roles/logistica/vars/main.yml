@@ -24,6 +24,9 @@ services:
       type: mssql
 
   Viasoft.Logistica.SolicitacaoFaturamento.Gateway:
+    db:
+      name: Viasoft_Logistica_SolicitacaoFaturamento_Core
+      type: mssql
 
   Viasoft.Logistica.SolicitacaoFaturamento.Core:
     db:
