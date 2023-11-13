@@ -23,17 +23,17 @@ services:
       name: Viasoft_Legacy_Logistica
       type: mssql
 
-  # Viasoft.Logistica.SolicitacaoFaturamento.Gateway:
-  #   db:
-  #     name: Viasoft_Logistica_SolicitacaoFaturamento_Core
-  #     type: mssql
+  Viasoft.Logistica.SolicitacaoFaturamento.Gateway:
+    db:
+      name: Viasoft_Logistica_SolicitacaoFaturamento_Core
+      type: mssql
 
-  # Viasoft.Logistica.SolicitacaoFaturamento.Core:
-  #   db:
-  #     name: Viasoft_Logistica_SolicitacaoFaturamento_Core
-  #     type: mssql
+  Viasoft.Logistica.SolicitacaoFaturamento.Core:
+    db:
+      name: Viasoft_Logistica_SolicitacaoFaturamento_Core
+      type: mssql
 
-  # Viasoft.Logistica.SolicitacaoFaturamento.ReadModel:
-  #   db:
-  #     name: Viasoft_Logistica_SolicitacaoFaturamento_ReadModel
-  #     type: mssql
+  Viasoft.Logistica.SolicitacaoFaturamento.ReadModel:
+    db:
+      name: Viasoft_Logistica_SolicitacaoFaturamento_ReadModel
+      type: mssql
