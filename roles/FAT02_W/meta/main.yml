@@ -1,0 +1,3 @@
+dependencies:
+  - role: faturamento
+  - role: LOG102
