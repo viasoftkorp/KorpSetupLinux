@@ -1,0 +1,5 @@
+services:
+  Korp.Vendas.Clientes:
+    db:
+      name: Korp_Vendas_Clientes
+      type: mssql
