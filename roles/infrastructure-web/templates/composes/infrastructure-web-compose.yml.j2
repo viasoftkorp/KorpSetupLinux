@@ -257,6 +257,7 @@ services:
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
       - FILE_LOCATION=/app/FileProviderResource
+      - FILE_QUOTA_DEFAULT_LIMIT=9223372036854775806
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
       - "{{ dados_docker_dir_path }}/viasoft-fileprovider/:/app/FileProviderResource/"
