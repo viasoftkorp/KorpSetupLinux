@@ -10,3 +10,7 @@ services:
       type: mssql
 
   Korp.Compras.NotaFiscal:
+
+  Korp.Legacy.Compras.EntradaNota:
+      version:
+      unversioned: true
