@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-legacy-cargainicial:
-    image: "{{ docker_account }}/viasoft.legacy.cargainicial:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Financeiro.Dre"
+  korp-legacy-cargainicial:
+    image: "{{ docker_account }}/korp.legacy.cargainicial:1.0.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.CargaInicial"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
