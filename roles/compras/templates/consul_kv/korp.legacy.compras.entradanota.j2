@@ -2,11 +2,7 @@
   "Authorization": {
     "Secret": "{{ secret }}"
   },
-  "ServiceBus": {
-    "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
-  },
   "ConnectionStrings": {
-    "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
-  },
-  "EnableEnvironmentDependentConnectionString": "false"
+    "DefaultConnection": "sqlserver://{{ mssql.korp_user }}:{{ mssql.korp_password }}@db_mssql?database=%s&app name=Korp.Legacy.Compras.EntradaNota"
+  }
 }
