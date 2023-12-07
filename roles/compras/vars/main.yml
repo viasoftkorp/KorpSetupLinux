@@ -5,3 +5,7 @@ services:
       type: postgres
 
   Korp.Compras.NotaFiscal:
+
+  Korp.Legacy.Compras.EntradaNota:
+      version:
+      unversioned: true
