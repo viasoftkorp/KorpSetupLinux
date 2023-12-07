@@ -1,4 +1,0 @@
-services:
-  Korp.Legacy.CargaInicial:
-    version:
-      unversioned: true
