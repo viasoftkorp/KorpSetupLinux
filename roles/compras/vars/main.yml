@@ -7,5 +7,5 @@ services:
   Korp.Compras.NotaFiscal:
 
   Korp.Legacy.Compras.EntradaNota:
-      version:
-      unversioned: true
+    version:
+    unversioned: true
