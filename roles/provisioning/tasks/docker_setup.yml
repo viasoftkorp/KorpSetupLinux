@@ -73,7 +73,7 @@
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
-    - docker
+    - docker==6.1.3
     - docker-compose
 
 - name: Criação de network 'servicos' no docker
