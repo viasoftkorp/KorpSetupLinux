@@ -29,3 +29,17 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+  viasoft-workflow-elsa:
+    image: "{{ docker_account }}/viasoft.workflow.elsa:1.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Workflow.Elsa"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos

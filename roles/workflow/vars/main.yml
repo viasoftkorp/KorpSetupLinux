@@ -5,3 +5,9 @@ services:
       type: postgres
     version:
       unversioned: true
+  Viasoft.Workflow.Elsa:
+    db:
+      name: Viasoft_Workflow_Elsa
+      type: postgres
+    version:
+      unversioned: true
