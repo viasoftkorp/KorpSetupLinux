@@ -79,9 +79,9 @@
             frontend: "{{ frontend | combine(
               {
                 'endpoints': {
-                  'gateway_url': frontend.endpoints.gateway_url + ':' + https_port, 
-                  'cdn_url': frontend.endpoints.cdn_url + ':' + https_port, 
-                  'frontend_url': frontend.endpoints.frontend_url + ':' + https_port 
+                  'gateway_url': frontend.endpoints.gateway_url + ':' + (https_port | string), 
+                  'cdn_url': frontend.endpoints.cdn_url + ':' + (https_port | string), 
+                  'frontend_url': frontend.endpoints.frontend_url + ':' (+ https_port | string)
                 }
               }, recursive=True) }}"
           when: https_port != "443"
