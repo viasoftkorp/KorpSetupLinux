@@ -501,7 +501,7 @@
             },
             'docker_servicos_network_ip_address_start': shrink_inventory.docker_servicos_network_ip_address_start | default('172.18'),
             'db_suffix_divider': shrink_inventory.db_suffix_divider | default(db_suffix_divider),
-            'db_suffix': shrink_inventory.db_suffix | default(db_suffix),
+            'db_suffix': shrink_inventory.db_suffix | default(db_suffix) | string,
             'certs': {
               'custom': {
                 'certificate': shrink_inventory.certs.custom.certificate | default(custom_certificate),
@@ -522,7 +522,7 @@
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
             },
-            'https_port': shrink_inventory.https_port | default (https_port),
+            'https_port': shrink_inventory.https_port | default (https_port) | string,
             'reverse_proxy': {
               'external': reverse_proxy.external | default (custom_setup_info.external_reverse_proxy),
               'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),

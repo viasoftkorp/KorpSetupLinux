@@ -11,11 +11,6 @@
         return_content: true
       register: response
 
-    - name: Validação de tenant_id
-      ansible.builtin.fail:
-        msg: "mensagem de erro: O Tenant Utilizado é diferente do Tenant salvo no ambiente."
-      when: not (hostvars[inventory_hostname].tenant_id == response.json['tenantId'])
-    
     - name: Configuração de tenant_id
       ansible.builtin.set_fact:
         tenant_id: "{{ response.json.tenantId }}"
@@ -79,9 +74,9 @@
             frontend: "{{ frontend | combine(
               {
                 'endpoints': {
-                  'gateway_url': frontend.endpoints.gateway_url + ':' + (https_port | string), 
-                  'cdn_url': frontend.endpoints.cdn_url + ':' + (https_port | string), 
-                  'frontend_url': frontend.endpoints.frontend_url + ':' + (https_port | string)
+                  'gateway_url': frontend.endpoints.gateway_url + ':' + https_port,
+                  'cdn_url': frontend.endpoints.cdn_url + ':' + https_port,
+                  'frontend_url': frontend.endpoints.frontend_url + ':' + https_port
                 }
               }, recursive=True) }}"
           when: https_port != "443"
