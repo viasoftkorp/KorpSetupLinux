@@ -28,7 +28,7 @@ Para adicionar um novo serviço, siga os seguintes passos:
 
       `roles/<AppId>/templates/consul_kv/<service_name_lowercase>.json.j2`
 
-**A extensão `j2` nos arquivos dentro da para `templates` é ESSENCIAL!**
+**A extensão `j2` nos arquivos dentro da pasta `templates` é ESSENCIAL!**
 
 ---
 
