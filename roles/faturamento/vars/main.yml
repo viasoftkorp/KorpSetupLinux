@@ -14,22 +14,23 @@ services:
       name: Korp_Legacy_Faturamento
       type: mssql
 
-  Viasoft.Faturamento.NotaFiscal.Core:
-    db:
-      name: Viasoft_Faturamento_NotaFiscal_Core
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_Gateway
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.Core:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_Core
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_ReadModel
-      type: mssql
+  # Entrarão apenas em futuras versões
+  #Viasoft.Faturamento.NotaFiscal.Core:
+  #  db:
+  #    name: Viasoft_Faturamento_NotaFiscal_Core
+  #    type: mssql
+#
+  #Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
+  #  db:
+  #    name: Viasoft_Faturamento_SolicitacaoFaturamento_Gateway
+  #    type: mssql
+#
+  #Viasoft.Faturamento.SolicitacaoFaturamento.Core:
+  #  db:
+  #    name: Viasoft_Faturamento_SolicitacaoFaturamento_Core
+  #    type: mssql
+#
+  #Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
+  #  db:
+  #    name: Viasoft_Faturamento_SolicitacaoFaturamento_ReadModel
+  #    type: mssql

@@ -59,62 +59,63 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-faturamento-notafiscal-core:
-    image: "{{ docker_account }}/viasoft.faturamento.notafiscal.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Faturamento.NotaFiscal.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  # Entrarão apenas em futuras versões
+  #viasoft-faturamento-notafiscal-core:
+  #  image: "{{ docker_account }}/viasoft.faturamento.notafiscal.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.Faturamento.NotaFiscal.Core-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC={{ use_servergc }}
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-faturamento-solicitacaofaturamento-gateway:
-    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Gateway-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-faturamento-solicitacaofaturamento-gateway:
+  #  image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Gateway-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC={{ use_servergc }}
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-faturamento-solicitacaofaturamento-core:
-    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-faturamento-solicitacaofaturamento-core:
+  #  image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Core-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC={{ use_servergc }}
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-faturamento-solicitacaofaturamento-readmodel:
-    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.readmodel:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-faturamento-solicitacaofaturamento-readmodel:
+  #  image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.readmodel:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC={{ use_servergc }}
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
