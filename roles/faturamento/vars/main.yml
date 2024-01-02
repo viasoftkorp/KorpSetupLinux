@@ -14,6 +14,11 @@ services:
       name: Korp_Legacy_Faturamento
       type: mssql
 
+  Viasoft.Faturamento.SolicitacaoFaturamento.Core:
+    db:
+      name: Viasoft_Faturamento_SolicitacaoFaturamento_Core
+      type: mssql
+
   # Entrarão apenas em futuras versões
   #Viasoft.Faturamento.NotaFiscal.Core:
   #  db:
@@ -25,10 +30,6 @@ services:
   #    name: Viasoft_Faturamento_SolicitacaoFaturamento_Gateway
   #    type: mssql
 #
-  #Viasoft.Faturamento.SolicitacaoFaturamento.Core:
-  #  db:
-  #    name: Viasoft_Faturamento_SolicitacaoFaturamento_Core
-  #    type: mssql
 #
   #Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
   #  db:
