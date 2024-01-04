@@ -7,6 +7,5 @@ dependencies:
   - role: LOG01_W
   - role: PES00
   - role: LOG00
-  - role: producao
   - role: financeiro
  
