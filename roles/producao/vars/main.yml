@@ -1,5 +1,0 @@
-services:
-  Korp.Legacy.Producao:
-    db:
-      name: Korp_Legacy_Producao
-      type: mssql
