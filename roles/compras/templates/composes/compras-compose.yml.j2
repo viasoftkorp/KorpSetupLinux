@@ -30,6 +30,21 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
+  korp-legacy-compras:
+    image: "{{ docker_account }}/korp.legacy.compras:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Compras-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
   korp.legacy.compras.entradanota:
     image: "{{ docker_account }}/korp.legacy.compras.entradanota:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Compras.EntradaNota"

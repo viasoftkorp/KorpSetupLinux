@@ -64,6 +64,28 @@
           ansible.builtin.set_fact:
             shrink_inventory: "{{ inventory.all.children.nodes.hosts.localhost }}"
 
+    - name: Validação de tenant_id
+      block:
+        - name: Verificação do token
+          ansible.builtin.fail:
+            msg: "Mensagem de erro: Token indefinido."
+          when: token is not defined
+
+        - name: Coleta do objeto na url gateway
+          ansible.builtin.uri:
+            url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"
+            return_content: true
+          register: response
+  
+        - name: Coleta do tenant_id
+          ansible.builtin.set_fact:
+            response_tenant_id: "{{ response.json['tenantId'] }}"
+  
+        - name: Validação de igualdade do tenant_id obtido com o tenant_id registrado no inventário
+          ansible.builtin.fail:
+            msg: "Mensagem de erro: O Tenant Utilizado é diferente do Tenant salvo no ambiente."
+          when: shrink_inventory.tenant_id is defined and not shrink_inventory.tenant_id == response_tenant_id
+
     - name: Setup SQL Server
       block:
         - name: Coleta de informações
@@ -509,7 +531,8 @@
                 'cdn': reverse_proxy.http_ports.cdn | default ('9876'),
                 'frontend': reverse_proxy.http_ports.frontend | default ('9877')
               }
-            }
+            },
+            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id) 
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
