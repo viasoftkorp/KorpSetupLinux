@@ -167,3 +167,20 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+
+
+  viasoft-sales-crm-nps:
+    image: "{{ docker_account }}/viasoft.sales.crm.nps:3.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.NPS"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC={{ use_servergc }}
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
