@@ -10,12 +10,16 @@
         services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] }}"
       when: has_versioned_apps
 
-    - name: Instalação de apps
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: apps/install.yml
-      loop: "{{ (services_list | default(temp_apps_map.unversioned)) | unique }}"
-      loop_control:
-        loop_var: app_name
+    - name: Lista de servicos
+      ansible.builtin.debug:
+        var: services_list
+
+    # - name: Instalação de apps
+    #   ansible.builtin.include_role:
+    #     name: utils
+    #     tasks_from: apps/install.yml
+    #   loop: "{{ (services_list | default(temp_apps_map.unversioned)) | unique }}"
+    #   loop_control:
+    #     loop_var: app_name
 
   tags: always
