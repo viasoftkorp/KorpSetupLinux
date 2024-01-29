@@ -14,7 +14,7 @@
       - name: Adição de serviços versionados à lista
         ansible.builtin.set_fact:
            services_list: "{{ services_list + item.value }}"
-        with_dict: temp_apps_map.versioned
+        with_dict: "{{ temp_apps_map.versioned }}"
       when: has_versioned_apps
 
     - name: Lista de servicos
