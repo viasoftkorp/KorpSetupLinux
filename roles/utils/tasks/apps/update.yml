@@ -6,8 +6,15 @@
         tasks_from: default/get_latest_installed_version
 
     - name: Definição de lista de serviços
-      ansible.builtin.set_fact:
-        services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] }}"
+      block: 
+      - name: Adição de serviços não versionados à lista
+        ansible.builtin.set_fact:
+          services_list: "{{ temp_apps_map.unversioned }}"
+
+      - name: Adição de serviços versionados à lista
+        ansible.builtin.set_fact:
+           services_list: "{{ services_list + item.value }}"
+        with_dict: temp_apps_map.versioned
       when: has_versioned_apps
 
     - name: Lista de servicos
