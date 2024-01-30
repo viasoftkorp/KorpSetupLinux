@@ -16,6 +16,7 @@
            services_list: "{{ services_list + item.value }}"
         with_dict: "{{ temp_apps_map.versioned }}"
       when: has_versioned_apps
+      
     - name: Instalação de apps
       ansible.builtin.include_role:
         name: utils
