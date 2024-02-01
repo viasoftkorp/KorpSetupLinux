@@ -38,3 +38,13 @@
     has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
     has_unversioned_services: "{{ unversioned_services_list | length > 0 }}"
     has_exclusive_services: "{{ exclusive_services_list | length > 0 }}"
+
+- name: Debug em 'gather_info'
+  ansible.builtin.debug:
+    msg: |
+      exclusive_services_list: "{{ exclusive_services_list }}"
+      unversioned_services_list: "{{ unversioned_services_list }}"
+      has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
+      has_unversioned_services: "{{ unversioned_services_list | length > 0 }}"
+      has_exclusive_services: "{{ exclusive_services_list | length > 0 }}"
+

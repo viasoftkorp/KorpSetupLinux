@@ -10,6 +10,12 @@
         services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] }}"
       when: has_versioned_apps
 
+    - name: Debug em 'update'
+      ansible.builtin.debug:  
+        msg: |
+          services_list: "{{ (services_list | default(temp_apps_map.unversioned)) | unique }}"
+          latest_installed_version: "{{ latest_installed_version }}"
+
     - name: Instalação de apps
       ansible.builtin.include_role:
         name: utils
