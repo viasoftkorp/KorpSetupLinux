@@ -93,6 +93,13 @@ else
    ansible_tags=$custom_tags
 fi
 
+if [ "$verbose" == true ];
+then   
+   verbose_flag="-v"
+else      
+   verbose_flag=""
+fi
+
 # Validação de gateway_url
 if [ "$gateway_url" == "" ];
 then
@@ -220,7 +227,7 @@ rm /tmp/inventory-playbook.yml
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
-  -v \
+  $verbose_flag \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
