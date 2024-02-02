@@ -16,7 +16,7 @@ networks:
 
 services:
   korp-legacy-elt-2022-4-0:
-    image: "{{ docker_account }}/korp.legacy.elt:2022.4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.legacy.elt:2022.4.0.18"
     container_name: "Korp.Legacy.ELT-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   viasoft-customer-portifolio-2022-4-0:
-    image: "{{ docker_account }}/viasoft.customer.portifolio:2022.4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.customer.portifolio:2022.4.0.1"
     container_name: "Viasoft.Customer.Portifolio-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -46,7 +46,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   SYNC01-2022-4-0:
-    image: "{{ docker_account }}/viasoft.erp.sync-frontend:2022.4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.erp.sync-frontend:1.0.6"
     container_name: "SYNC01-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
