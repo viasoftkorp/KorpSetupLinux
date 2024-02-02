@@ -93,7 +93,7 @@ else
    ansible_tags=$custom_tags
 fi
 
-if [ "$verbose" == true ];
+if [ "$verbose" == "true" ];
 then   
    verbose_flag="-v"
 else      
