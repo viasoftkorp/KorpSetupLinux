@@ -16,7 +16,7 @@ networks:
 
 services:
   korp-engenharia-processo-2022-4-0:
-    image: "{{ docker_account }}/korp.engenharia.processo:2022.4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.engenharia.processo:2022.4.0.x"
     container_name: "Korp.Engenharia.Processo-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   ENG50_W-2022-4-0:
-    image: "{{ docker_account }}/viasoft.engenharia.core-frontend:2022.4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.engenharia.core-frontend:1.0.x"
     container_name: "ENG50_W-2022.4.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
