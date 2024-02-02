@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-erp-core:
-    image: "{{ docker_account }}/viasoft.erp.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.erp.core:3.1.5"
     container_name: "Viasoft.ERP.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-sync:
-    image: "{{ docker_account }}/viasoft.erp.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.erp.sync:2.0.x"
     container_name: "Viasoft.ERP.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -46,7 +46,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-parametros:
-    image: "{{ docker_account }}/viasoft.legacy.parametros:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.legacy.parametros:1.1.3"
     container_name: "Viasoft.Legacy.Parametros-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -61,7 +61,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-erp-activities:
-    image: "{{ docker_account }}/viasoft.erp.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.erp.activities:3.1.1"
     container_name: "Viasoft.ERP.Activities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -76,7 +76,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-organizationalstructuremanagement:
-    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:3.0.x"
     container_name: "Viasoft.OrganizationalStructureManagement-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -91,7 +91,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-messagebird:
-    image: "{{ docker_account }}/viasoft.messagebird:2.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.messagebird:2.1.3"
     container_name: "Viasoft.MessageBird"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
