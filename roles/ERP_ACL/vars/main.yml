@@ -1,6 +1,6 @@
 services:
   Viasoft.ERP.ACL.Messaging:
     db:
-      type: postgres
+      type: mssql
     version:
       unversioned: true
