@@ -7,7 +7,7 @@ from ansible.module_utils.basic import *
 #
 #   - Adiciona valores inéditos;
 #       
-#   - Sobrescreve valores com chaves passadas ***explicitamente*** em 'keys_to_overwrite'; 
+#   - Sobrescreve valores referentes ao caminho passado ***explicitamente*** em 'keys_to_overwrite'; 
 #     O caminho é relativo ao kv atual. Exemplos:
 #       current_kv = a: {b: "Valor antigo"}}
 #       new_kv     = a: {b: {c: "Valor novo"}}
