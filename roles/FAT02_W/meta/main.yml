@@ -1,0 +1,8 @@
+dependencies:
+  - role: faturamento
+  - role: fiscal
+  - role: logistica
+  - role: vendas
+  - role: VEN01_W
+  - role: LOG102
+  - role: ERP
