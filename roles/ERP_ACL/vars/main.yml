@@ -5,4 +5,4 @@ services:
     version:
       unversioned: true
 
-custom_kv_overwrite: ["VALOR.TESTE.01"]
+custom_kv_overwrite: ["ConnectionStrings.DefaultConnection"]
