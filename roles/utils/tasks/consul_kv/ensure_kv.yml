@@ -25,7 +25,7 @@
           new_kv: "{{ new_kv }}"
           keys_to_overwrite: "{{ keys_to_overwrite }}"
 
-    - name: Validação de kv
+    - name: Sobrescrita de KV
       consul_kv.py:
         current_kv: "{{ retrieved_kv.data.Value | from_json }}"
         new_kv: "{{ new_kv }}"
