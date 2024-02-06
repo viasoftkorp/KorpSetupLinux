@@ -14,10 +14,16 @@
 # bloco só será executado caso KV já exista no consul
 - name: Validação de kv existente
   block:
+
+    - name: Definição de 'keys_to_overwrite'
+      ansible.builtin.set_fact:
+        "{{ custom_kv_overwrite | default([]) + default_kv_overwrite }}"
+
     - name: Validação de kv
       consul_kv.py:
         current_kv: "{{ retrieved_kv.data.Value | from_json }}"
         new_kv: "{{ new_kv }}"
+        keys_to_overwrite: "{{ keys_to_overwrite }}"
       register: result
 
     - name: "Edição de kv de {{ service_name }} no consul"
