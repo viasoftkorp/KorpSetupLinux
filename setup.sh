@@ -220,7 +220,6 @@ rm /tmp/inventory-playbook.yml
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
-  -v \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
