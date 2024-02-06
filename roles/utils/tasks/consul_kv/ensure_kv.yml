@@ -19,6 +19,12 @@
       ansible.builtin.set_fact:
         "{{ custom_kv_overwrite | default([]) + default_kv_overwrite }}"
 
+    - debug:
+        msg: |
+          current_kv: "{{ retrieved_kv.data.Value | from_json }}"
+          new_kv: "{{ new_kv }}"
+          keys_to_overwrite: "{{ keys_to_overwrite }}"
+
     - name: Validação de kv
       consul_kv.py:
         current_kv: "{{ retrieved_kv.data.Value | from_json }}"
