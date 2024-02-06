@@ -1,6 +1,8 @@
 # parâmetros esperados:
 #   service_name - string (OBRIGATÓRIO)
+#   default_kv_overwrite - lista (OBRIGATÓRIO)
 #   new_kv - json (OPCIONAL) - caso não passado, será pego do arquivo .json.j2 do serviço
+#   custom_kv_overwrite: - lista (OPCIONAL)
 
 - name: Leitura de kv atual
   community.general.consul_kv:
@@ -19,12 +21,6 @@
       ansible.builtin.set_fact:
         keys_to_overwrite: "{{ custom_kv_overwrite | default([]) + default_kv_overwrite }}"
 
-    - debug:
-        msg: |
-          current_kv: "{{ retrieved_kv.data.Value | from_json }}"
-          new_kv: "{{ new_kv }}"
-          keys_to_overwrite: "{{ keys_to_overwrite }}"
-
     - name: Sobrescrita de KV
       consul_kv.py:
         current_kv: "{{ retrieved_kv.data.Value | from_json }}"
@@ -37,13 +33,6 @@
         key: "{{ service_name }}"
         value: "{{ result.prop | to_nice_json(indent=2) }}"
 
-    
-    - debug:
-        var: retrieved_kv.data.Value
-
-    - debug:
-        var: result.prop
-
   when: retrieved_kv.data.Value is defined
 
 # será executado apenas caso o KV ainda não exista no consul
@@ -55,6 +44,3 @@
     value: "{{ new_kv | to_nice_json(indent=2) }}"
   when: retrieved_kv.data.Value is not defined
 
-- name: "Falha proposital"
-  ansible.builtin.fail:
-    msg: "Fim do ensure-kv"

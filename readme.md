@@ -275,6 +275,38 @@ Chamaremos AppId/Domínio de `ID`
     services:
     ```
 
+5. Definição de chaves para sobrescrita de KV no Consul
+
+    Em `roles/<ID>/vars/main.yml`, se necessário, adicione:
+
+   ``` yml
+    custom_kv_overwrite: [<chave1>, <chave2>, ...]
+      # Uma lista de strings representando os caminhos das chaves (relativos aos do kv atual) que podem ser sobrescritas no Consul.
+    ```
+
+    ##### Exemplo de uso:
+
+    ``` yml
+        current_kv = {a: {b: "Valor antigo1", d: "Valor antigo2"}}}
+        new_kv     = {a: {b: {c: "Valor novo"}}}
+    ```
+
+    | custom_kv_overwrite| RESULTADO                                                 |
+    |--------------------|----------------------------------------------             |
+    | ["a.b"]            | a: {b: {c: "Valor novo"}, d: "Valor antigo2"}}            |
+    | ["a"]              | a: {b: {c: "Valor novo"}}                                 |
+    | ["a.b.c"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}} (sem efeito) |
+    | ["a.b.d"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}} (sem efeito) |
+
+
+    Por padrão, a sobrescrita sempre ocorrerá para as chaves:
+      - ServiceBus.StorageConnectionString 
+      - ConnectionStrings.DefaultConnection 
+      - Provisioning.EnableSchemaProvisioning 
+      - EnableEnvironmentDependentConnectionString
+  
+    Isso é definido na variável `default_kv_overwrite` em `group_vars/all/main.yaml`
+
 ---
 
 ## Execução de PlayBook

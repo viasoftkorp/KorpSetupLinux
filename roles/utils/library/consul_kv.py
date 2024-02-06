@@ -19,15 +19,6 @@ from ansible.module_utils.basic import *
 #
 #   3. Retorna um novo dicionário resultante da operação.
 #
-#   Uso:
-#
-# - name: Sobrescrita de KV
-#   consul_kv.py:
-#     current_kv: "{{ retrieved_kv.data.Value | from_json }}"
-#     new_kv: "{{ new_kv }}"
-#     keys_to_overwrite: "{{ keys_to_overwrite }}"
-#   register: result
-#
 # Função recursiva para substituir valor da chave a ser atualizada;
 
 def replace_key(keys_sequence, dictionary, new_val):
