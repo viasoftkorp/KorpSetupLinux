@@ -292,7 +292,7 @@ Chamaremos AppId/Domínio de `ID`
     ```
 
     | custom_kv_overwrite| RESULTADO                                                 | OBSERVAÇÕES                                                   | 
-    |--------------------|-----------------------------------------------------------|---------------------------                                    |
+    |--------------------|-----------------------------------------------------------|---------------------------------------------------------------|
     | ["a.b"]            | a: {b: **{c: "Valor novo"}**, d: "Valor antigo2"}}        |   alterou valor da chave `a.b`                                |
     | ["a"]              | a: {b: **{c: "Valor novo"}**}                             |   alterou valor da chave `a`                                  |
     | ["a.b.c"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}}              |   sem efeito (chave `a.b.c` não existe em current_kv )        |
