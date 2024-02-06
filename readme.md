@@ -291,12 +291,12 @@ Chamaremos AppId/Domínio de `ID`
         new_kv     = {a: {b: {c: "Valor novo"}}}
     ```
 
-    | custom_kv_overwrite| RESULTADO                                                 |
-    |--------------------|----------------------------------------------             |
-    | ["a.b"]            | a: {b: {c: "Valor novo"}, d: "Valor antigo2"}}            |
-    | ["a"]              | a: {b: {c: "Valor novo"}}                                 |
-    | ["a.b.c"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}} (sem efeito) |
-    | ["a.b.d"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}} (sem efeito) |
+    | custom_kv_overwrite| RESULTADO                                                 | OBSERVAÇÕES                                                   | 
+    |--------------------|-----------------------------------------------------------|---------------------------                                    |
+    | ["a.b"]            | a: {b: **{c: "Valor novo"}**, d: "Valor antigo2"}}        |   alterou valor da chave `a.b`                                |
+    | ["a"]              | a: {b: **{c: "Valor novo"}**}                             |   alterou valor da chave `a`                                  |
+    | ["a.b.c"]          | a: {b: "Valor antigo1", d: "Valor antigo2"}}              |   sem efeito (chave `a.b.c` não existe em current_kv )        |
+    | ["b"]              | a: {b: "Valor antigo1", d: "Valor antigo2"}}              |   sem efeito (necessário fornecer caminho para chave aninhada)|
 
 
     Por padrão, a sobrescrita sempre ocorrerá para as chaves:
