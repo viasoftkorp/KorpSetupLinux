@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  TRACK01:
+  TRAC01:
     image: "{{ docker_account }}/korp.sales.tracking-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "TRACK01"
+    container_name: "TRAC01"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
