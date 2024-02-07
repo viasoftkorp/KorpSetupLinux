@@ -1,4 +1,4 @@
-- name: Definição de viráveis
+- name: Definição de variáveis
   ansible.builtin.set_fact:
     viasoft_elt_service_name: "Viasoft.ELT"
 
