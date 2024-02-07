@@ -19,7 +19,8 @@
 
     - name: Definição de 'custom_kv_overwrite'
       ansible.builtin.set_fact:
-        custom_kv_overwrite: "{{ services[service_name].custom_kv_overwrite | default([]) }}"
+        custom_kv_overwrite: "{{ services[service_name].custom_kv_overwrite }}"
+      when: services[service_name].db is defined
 
     - name: Definição de 'keys_to_overwrite'
       ansible.builtin.set_fact:
