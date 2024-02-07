@@ -14,7 +14,7 @@ services:
     version:
       unversioned: true # valor padrão - false
 
-custom_kv_overwrite: []
 # OPCIONAL, Uma lista de strings representando os caminhos das chaves (relativos aos do kv atual) que podem ser sobrescritas no Consul.
-# custom_kv_overwrite: [<chave1>, <chave2>, ...]
-# Explicação mais detalhada em `readme.md`
+# Explicação mais detalhada em `readme.md`.
+custom_kv_overwrite: [<chave1>, <chave2>, ...]
+
