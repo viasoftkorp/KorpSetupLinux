@@ -5,7 +5,7 @@
 - name: Obtenção de informações sobre bases
   ansible.builtin.include_role:
     name: utils
-    tasks_from: local_requests/licensing_management/organization_environments_requests.yaml
+    tasks_from: local_requests/tenant_management/main.yaml
 
 # - name: Adição de serviços de ERP_ACL
 #   ansible.builtin.include_role:
