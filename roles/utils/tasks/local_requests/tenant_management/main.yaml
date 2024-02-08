@@ -22,7 +22,7 @@
 
 - name: Definição de 'organization_environments'
   ansible.builtin.set_fact:
-    organization_environments: result['json']['items']
+    organization_environments: "{{ result['json']['items'] }}"
 
 
     
