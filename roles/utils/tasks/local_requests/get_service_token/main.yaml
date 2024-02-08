@@ -10,10 +10,12 @@
       register: retrieved_kv
 
     - name: Definição de 'raw_kv'
-      raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
+      ansible.builtin.set_fact:
+        raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
 
     - name: Definição de 'authorization_secret'
-      authorization_secret: "{{ raw_kv.Authorization.Secret }}"
+      ansible.builtin.set_fact:
+        authorization_secret: "{{ raw_kv.Authorization.Secret }}"
 
     - name: Leitura de token do Portal
       ansible.builtin.uri:
