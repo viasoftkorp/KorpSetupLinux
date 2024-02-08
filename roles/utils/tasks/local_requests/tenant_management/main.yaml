@@ -28,7 +28,7 @@
 - name: Validação de número de ambientes
   ansible.builtin.fail:
     msg: "Número de ambientes diferente do esperado;"
-  when: env_count != 1 or env_count != 2
+  when: env_count != "1" and env_count != "2"
 
 
     
