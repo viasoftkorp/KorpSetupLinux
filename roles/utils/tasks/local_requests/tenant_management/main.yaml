@@ -21,4 +21,5 @@
   register: result
 
 - debug:
-    var: result.json.items
+    var: result | from_json
+    
