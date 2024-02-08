@@ -1,7 +1,7 @@
 - name: Obter token de LicensingManagement
   ansible.builtin.include_role:
     name: utils 
-    tasks_from: get_service_token/main.yaml
+    tasks_from: local_requests/get_service_token/main.yaml
   vars: 
     service: Viasoft.Licensing.LicensingManagement
     varname: licencing_management_token
@@ -9,14 +9,14 @@
 - name: Definição de 'api_request_headers'
   ansible.builtin.include_role:
     name: utils
-    tasks_from: portal_requests/set_header.yaml
+    tasks_from: local_requests/get_service_token/set_header.yaml
   vars:
     token: "{{ licencing_management_token }}"
 
 - name: Obter informações da organização
   ansible.builtin.include_role: 
     name: utils
-    tasks_from: 'portal_requests/licensing_management/get_organization.yaml' 
+    tasks_from: 'local_requests/licensing_management/get_organization.yaml' 
 
 - name: Definição de 'client_organization_id' 
   ansible.builtin.set_fact:
@@ -25,7 +25,7 @@
 - name: Obter informações das unidades organizacionais
   ansible.builtin.include_role: 
     name: utils
-    tasks_from: 'portal_requests/licensing_management/get_organization_units.yaml' 
+    tasks_from: 'local_requests/licensing_management/get_organization_units.yaml' 
 
 - name: Definição de 'client_organization_units_id'
   ansible.builtin.set_fact:
@@ -35,7 +35,7 @@
 - name: Obter informações dos ambientes
   ansible.builtin.include_role: 
     name: utils
-    tasks_from: 'portal_requests/licensing_management/get_organization_environments.yaml'
+    tasks_from: 'local_requests/licensing_management/get_organization_environments.yaml'
   loop: "{{ client_organization_units_id }}"
   loop_control:
     loop_var: unit_id
