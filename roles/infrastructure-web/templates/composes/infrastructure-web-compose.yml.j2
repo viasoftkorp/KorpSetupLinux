@@ -38,6 +38,7 @@ services:
     command: server /data --console-address ":9001"
     restart: always
     environment:
+      - MINIO_COMPRESSION_ENABLE=on
       - MINIO_ROOT_USER={{ minio_new.access_key }}
       - MINIO_ROOT_PASSWORD={{ minio_new.secret_key }}
     volumes:
