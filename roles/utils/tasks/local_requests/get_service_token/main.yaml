@@ -19,7 +19,7 @@
 
     - name: Leitura de token do Portal
       ansible.builtin.uri:
-        url: "{{ gateway_url }}/oauth/connect/token"
+        url: "{{ frontend.endpoints.gateway_url }}/oauth/connect/token"
         return_content: true
         method: POST
         body_format: form-urlencoded
