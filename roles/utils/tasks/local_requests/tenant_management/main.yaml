@@ -11,7 +11,7 @@
     name: utils
     tasks_from: local_requests/get_service_token/set_header.yaml
   vars:
-    token: "{{ tenant_management_token }}"
+    request_token: "{{ tenant_management_token }}"
 
 - name: Obter informações da organização
   ansible.builtin.uri:

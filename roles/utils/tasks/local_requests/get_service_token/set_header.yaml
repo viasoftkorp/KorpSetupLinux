@@ -1,10 +1,10 @@
 # Variáveis esperadas:
-# - token
+# - request_token
 
 - name: Definição de 'api_request_headers'
   ansible.builtin.set_fact:
     api_request_headers:
       Accept: "application/json"
-      Authorization: "Bearer {{ token }}"
+      Authorization: "Bearer {{ request_token }}"
       UserId: "{{ tenant_id }}"
       TenantId: "{{ tenant_id }}"
