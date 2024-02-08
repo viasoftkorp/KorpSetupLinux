@@ -21,4 +21,4 @@
   register: result
 
 - debug:
-    var: result.items
+    var: result.json.items
