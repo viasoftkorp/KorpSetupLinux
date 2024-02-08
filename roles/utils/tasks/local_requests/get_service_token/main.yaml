@@ -6,7 +6,7 @@
   block:
     - name: Leitura de kv atual
       community.general.consul_kv:
-        key: "{{ viasoft_elt_service_name }}"
+        key: "{{ service }}"
       register: retrieved_kv
       
     - name: Leitura de token do Portal
