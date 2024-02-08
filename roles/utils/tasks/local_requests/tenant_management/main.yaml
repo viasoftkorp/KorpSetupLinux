@@ -21,7 +21,16 @@
   register: result
 
 - debug:
-    var: result.json.items
+    var: result.json
+
+- debug:
+    var: result['json']
+
+- debug:
+    var: result['json']['totalCount']
+
+- debug:
+    var: result['json']['items']
 
 - debug:
     var: result.json.items | from_json
