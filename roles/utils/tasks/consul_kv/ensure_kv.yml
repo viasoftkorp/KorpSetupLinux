@@ -49,3 +49,7 @@
     value: "{{ new_kv | to_nice_json(indent=2) }}"
   when: retrieved_kv.data.Value is not defined
 
+- name: Falha proposital
+  ansible.builtin.fail:
+    msg: falhou
+
