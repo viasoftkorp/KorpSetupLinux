@@ -2,13 +2,52 @@
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: Adição de serviços de ERP_ACL
+- name: Obtenção de informações sobre bases
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_service
+    tasks_from: local_requests/licensing_management/organization_environments_requests.yaml
+
+# - name: Adição de serviços de ERP_ACL
+#   ansible.builtin.include_role:
+#     name: utils
+#     tasks_from: services/add_service
+#   vars:
+#     service_name: "{{ item.key }}"
+#     id: ERP_ACL
+#   with_dict: "{{ services }}"
+#   loop_control:
+#     extended: true
+
+- name: Definição de 'organization_environments'
+  ansible.builtin.set_fact:
+    organization_environments: "{{ organization_environments }}"
+
+- name: Execução de update em 'IntegrarEventosSistema' - Produção
+  community.general.mssql_script:
+    login_user: "{{ mssql.default_user }}"
+    login_password: "{{ mssql.default_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
-    service_name: "{{ item.key }}"
-    id: ERP_ACL
-  with_dict: "{{ services }}"
-  loop_control:
-    extended: true
+    mssql_user: "{{ mssql.korp_user }}"
+    mssql_pass: "{{ mssql.korp_password }}"
+  when: item.is_production
+  loop: "{{ organization_environments }}"
+
+- name: Execução de update em 'IntegrarEventosSistema' - Testing
+  community.general.mssql_script:
+    login_user: "{{ testing_mssql.default_user }}"
+    login_password: "{{ testing_mssql.default_password }}"
+    login_host: "{{ testing_mssql.address }}"
+    name: master
+    script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
+  vars:
+    mssql_user: "{{ testing_mssql.korp_user }}"
+    mssql_pass: "{{ testing_mssql.korp_password }}"
+  when: not item.is_production
+  loop: "{{ organization_environments }}"
+
+- name: Falha proposital
+  ansible.builtin.fail:
+    msg: "Fim."
