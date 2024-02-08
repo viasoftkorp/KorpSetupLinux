@@ -15,7 +15,7 @@
 
 - name: Obter informações da organização
   ansible.builtin.uri:
-    url: "{{ frontend.endpoints.gateway_url }}/tenant-management/environments/view"
+    url: "{{ frontend.endpoints.gateway_url }}/tenant-management/environments/view?userId={{ tenant_id }}"
     method: GET
     headers: "{{ api_request_headers }}"       
   register: result
