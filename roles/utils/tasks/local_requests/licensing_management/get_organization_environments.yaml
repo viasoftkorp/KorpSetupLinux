@@ -1,0 +1,21 @@
+# Variáveis obrigatórias:
+# - tenant_id
+# - unit_id
+# - api_request_headers (Contém token)
+
+- name: Obter informações dos ambientes
+  ansible.builtin.uri:
+    url: "{{ frontend.endpoints.gateway_url }}/Licensing/LicensingManagement/licensed-tenant/{{ tenant_id }}/organization-units/{{ unit_id }}/organization-environments?UnitId={{ unit_id }}&ActiveOnly=false"
+    method: GET
+    headers: "{{ api_request_headers }}"    
+  register: result
+
+- name: Definição de 'organization_environments'
+  ansible.builtin.set_fact:
+    organization_environments: 
+      "{{ organization_environments | default([]) + 
+      [{'database_name': env.databaseName, 'is_production': env.isProduction, 'desktop_database_version': env.desktopDatabaseVersion, 'unit_id': env.organizationUnitId, 'id': env.id }] }}"
+  loop: "{{ result.json['items'] }}"
+  loop_control: 
+    loop_var: env
+
