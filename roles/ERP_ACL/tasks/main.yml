@@ -27,12 +27,12 @@
     login_user: "{{ mssql.default_user }}"
     login_password: "{{ mssql.default_password }}"
     login_host: "{{ mssql.address }}"
-    name: master
+    name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     mssql_user: "{{ mssql.korp_user }}"
     mssql_pass: "{{ mssql.korp_password }}"
-  when: item.is_production
+  when: item.isProduction
   loop: "{{ organization_environments }}"
 
 - name: Execução de update em 'IntegrarEventosSistema' - Testing
@@ -40,12 +40,12 @@
     login_user: "{{ testing_mssql.default_user }}"
     login_password: "{{ testing_mssql.default_password }}"
     login_host: "{{ testing_mssql.address }}"
-    name: master
+    name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     mssql_user: "{{ testing_mssql.korp_user }}"
     mssql_pass: "{{ testing_mssql.korp_password }}"
-  when: not item.is_production
+  when: not item.isProduction
   loop: "{{ organization_environments }}"
 
 - name: Falha proposital

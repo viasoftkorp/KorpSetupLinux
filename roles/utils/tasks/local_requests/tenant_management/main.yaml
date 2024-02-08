@@ -20,18 +20,9 @@
     headers: "{{ api_request_headers }}"       
   register: result
 
-- debug:
-    var: result.json
+- name: Definição de 'organization_environments'
+  ansible.builtin.set_fact:
+    organization_environments: result['json']['items']
 
-- debug:
-    var: result['json']
 
-- debug:
-    var: result['json']['totalCount']
-
-- debug:
-    var: result['json']['items']
-
-- debug:
-    var: result.json.items | from_json
     
