@@ -11,7 +11,7 @@
       
     - name: Leitura de token do Portal
       vars:
-        raw_kv: "{{ consul_read.data.Value | from_json }}"
+        raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
         authorization_secret: "{{ raw_kv.Authorization.Secret }}"
       ansible.builtin.uri:
         url: "{{ gateway_url }}/oauth/connect/token"
