@@ -8,11 +8,14 @@
       community.general.consul_kv:
         key: "{{ service }}"
       register: retrieved_kv
-      
+
+    - name: Definição de 'raw_kv'
+      raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
+
+    - name: Definição de 'authorization_secret'
+      authorization_secret: "{{ raw_kv.Authorization.Secret }}"
+
     - name: Leitura de token do Portal
-      vars:
-        raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
-        authorization_secret: "{{ raw_kv.Authorization.Secret }}"
       ansible.builtin.uri:
         url: "{{ gateway_url }}/oauth/connect/token"
         return_content: true
@@ -23,7 +26,6 @@
         - [ client_id, "{{ service }}" ]
         - [ client_secret, "{{ authorization_secret }}" ]
       register: token_register
-      delegate_to: localhost
 
     - name: Definição de token '{{ varname }}'
       ansible.builtin.set_fact:
