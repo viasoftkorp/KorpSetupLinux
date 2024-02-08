@@ -17,8 +17,4 @@ O proxy reverso deve fazer o direcionamento dos três DNSs pra os seguintes ende
 .. note::
 
     Note que o certificado e validado pelo proxy reverso do cliente tendo direcionado sem SSL para o servidor Linux
-
-.. raw::
-
-
-----
+    
