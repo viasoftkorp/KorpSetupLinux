@@ -55,10 +55,10 @@
     "useSSL": false
   },
   "MinioConfigGateway": {
-    "EndPoint": "{{ minio_gateway_config.EndPoint }}",
+    "EndPoint": "{{ services_secrets.Global.MinioConfigGateway.EndPoint }}",
     "AccessKeyID": "{{ minio_gateway_config.AccessKey }}",
     "SecretAccessKey": "{{ minio_gateway_config.SecretKey }}",
-    "useSSL": {{ minio_gateway_config.useSSL }}
+    "useSSL": {{ services_secrets.Global.MinioConfigGateway.useSSL }}
   },
   "OnPremiseLicensedTenants": "{{ tenant_id }}",
   "HostTenantId": "16a7571e-7ff6-479e-a6f5-3514414179dc",
@@ -72,7 +72,7 @@
     "RefreshRolesFrequencySeconds": "300"
   },
   "ApiWebKey": "{{ services_secrets.Global.ApiWebKey }}",
-  "GatewayFrontendUrl": "{{services_secrets.Global.GatewayFrontendUrl}}",
+  "GatewayFrontendUrl": "{{ services_secrets.Global.GatewayFrontendUrl}}",
   "GatewayUrl": "{{ gateway_url }}",
   "LegacyGateway": "{{ frontend.endpoints.gateway_url }}",
   "CORS": "{{ frontend.endpoints.frontend_url }}",
