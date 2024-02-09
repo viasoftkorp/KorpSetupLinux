@@ -30,8 +30,7 @@
     name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
-    mssql_user: "{{ mssql.korp_user }}"
-    mssql_pass: "{{ mssql.korp_password }}"
+    db_name: "{{ item.databaseName }}"
   when: item.isProduction
   loop: "{{ organization_environments }}"
 
@@ -43,8 +42,7 @@
     name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
-    mssql_user: "{{ testing_mssql.korp_user }}"
-    mssql_pass: "{{ testing_mssql.korp_password }}"
+    db_name: "{{ item.databaseName }}"
   when: not item.isProduction
   loop: "{{ organization_environments }}"
 
