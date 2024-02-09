@@ -7,16 +7,16 @@
     name: utils
     tasks_from: local_requests/tenant_management/main.yaml
 
-# - name: Adição de serviços de ERP_ACL
-#   ansible.builtin.include_role:
-#     name: utils
-#     tasks_from: services/add_service
-#   vars:
-#     service_name: "{{ item.key }}"
-#     id: ERP_ACL
-#   with_dict: "{{ services }}"
-#   loop_control:
-#     extended: true
+- name: Adição de serviços de ERP_ACL
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: ERP_ACL
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
 
 - name: Definição de 'organization_environments'
   ansible.builtin.set_fact:
@@ -45,7 +45,3 @@
     db_name: "{{ item.databaseName }}"
   when: not item.isProduction
   loop: "{{ organization_environments }}"
-
-- name: Falha proposital
-  ansible.builtin.fail:
-    msg: "Fim."
