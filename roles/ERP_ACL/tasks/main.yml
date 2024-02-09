@@ -2,11 +2,6 @@
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: Obtenção de informações sobre bases
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: local_requests/tenant_management/main.yaml
-
 - name: Adição de serviços de ERP_ACL
   ansible.builtin.include_role:
     name: utils
@@ -17,6 +12,11 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+- name: Obtenção de informações sobre bases
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: local_requests/tenant_management/main.yaml
 
 - name: Definição de 'organization_environments'
   ansible.builtin.set_fact:
