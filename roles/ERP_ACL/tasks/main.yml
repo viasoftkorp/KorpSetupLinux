@@ -29,6 +29,7 @@
     db_name: "{{ item.databaseName }}"
   when: item.isProduction
   loop: "{{ organization_environments }}"
+  ignore_errors: true
 
 - name: Execução de update em 'IntegrarEventosSistema' - Testing
   community.general.mssql_script:
