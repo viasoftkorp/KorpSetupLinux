@@ -13,14 +13,10 @@
   loop_control:
     extended: true
 
-- name: Obtenção de informações sobre bases
+- name: Obtenção de 'organization_environments'
   ansible.builtin.include_role:
     name: utils
     tasks_from: local_requests/tenant_management/main.yaml
-
-- name: Definição de 'organization_environments'
-  ansible.builtin.set_fact:
-    organization_environments: "{{ organization_environments }}"
 
 - name: Execução de update em 'IntegrarEventosSistema' - Produção
   community.general.mssql_script:
