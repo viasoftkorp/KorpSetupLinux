@@ -1,4 +1,4 @@
-- name: Obter token de LicensingManagement
+- name: Obter token de TenantManagement
   ansible.builtin.include_role:
     name: utils 
     tasks_from: local_requests/get_service_token/main.yaml
@@ -29,6 +29,3 @@
   ansible.builtin.fail:
     msg: "Número de ambientes diferente do esperado;"
   when: env_count != "1" and env_count != "2"
-
-
-    
