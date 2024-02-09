@@ -23,4 +23,3 @@
 - name: Definição de 'variáveis'
   ansible.builtin.set_fact:
     organization_environments: "{{ result['json']['items'] }}"
-    env_count: "{{ result['json']['totalCount'] }}"
