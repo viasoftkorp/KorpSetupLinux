@@ -1,5 +1,3 @@
-USE [{{ db_name }}]
-
 IF NOT EXISTS (SELECT *   FROM [dbo].[PARAMETROS]
                 WHERE CHAVE = 'IntegrarEventosSistema')
 BEGIN
