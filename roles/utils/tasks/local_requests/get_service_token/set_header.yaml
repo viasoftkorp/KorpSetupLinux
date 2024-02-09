@@ -6,5 +6,4 @@
     api_request_headers:
       Accept: "application/json"
       Authorization: "Bearer {{ request_token }}"
-      UserId: "{{ tenant_id }}"
       TenantId: "{{ tenant_id }}"

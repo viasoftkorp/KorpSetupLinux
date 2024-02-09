@@ -24,8 +24,3 @@
   ansible.builtin.set_fact:
     organization_environments: "{{ result['json']['items'] }}"
     env_count: "{{ result['json']['totalCount'] }}"
-
-- name: Validação de número de ambientes
-  ansible.builtin.fail:
-    msg: "Número de ambientes diferente do esperado;"
-  when: env_count != "1" and env_count != "2"
