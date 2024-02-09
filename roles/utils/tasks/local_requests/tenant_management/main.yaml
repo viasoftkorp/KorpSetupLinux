@@ -13,11 +13,11 @@
   vars:
     request_token: "{{ tenant_management_token }}"
 
-- name: Obter informações da organização
+- name: Obter informações dos ambientes
   ansible.builtin.uri:
     url: "{{ frontend.endpoints.gateway_url }}/TenantManagement/environments"
     method: GET
-    headers: "{{ api_request_headers }}"       
+    headers: "{{ api_request_headers }}"
   register: result
 
 - name: Definição de 'variáveis'
