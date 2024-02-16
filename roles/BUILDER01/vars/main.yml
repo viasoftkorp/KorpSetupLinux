@@ -1,7 +1,0 @@
-services:
-  Korp.AppBuilder:
-    db:
-      name: Korp_AppBuilder
-      type: postgres
-    version:
-      unversioned: true
