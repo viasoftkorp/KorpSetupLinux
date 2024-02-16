@@ -1,0 +1,15 @@
+services:
+
+  Korp.Sales.Tracking:
+    db:
+      name: Korp_Sales_Tracking
+      type: postgres 
+    version:
+      unversioned: true
+      
+  Korp.Sales.Tracking.Gateway:
+    db:
+      name: Korp_Sales_Tracking_Gateway
+      type: postgres 
+    version:
+      unversioned: true

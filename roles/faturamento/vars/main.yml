@@ -18,18 +18,5 @@ services:
     db:
       name: Viasoft_Faturamento_NotaFiscal_Core
       type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_Gateway
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.Core:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_Core
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
-    db:
-      name: Viasoft_Faturamento_SolicitacaoFaturamento_ReadModel
-      type: mssql
+    version:
+      unversioned: true
