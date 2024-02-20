@@ -27,6 +27,7 @@ Documentação
 
    files/guias/guia_portainer
    files/guias/disponibilizacao_externa
+   files/guias/atualizacoes_korp
 
 .. toctree::
    :maxdepth: 2
