@@ -18,4 +18,14 @@
       loop_control:
         loop_var: app_name
 
+    - name: Reinicio de serviços TenantManagement e Administration
+      community.docker.docker_container:
+        name: "{{ service_to_restart }}"
+        state: started
+        restart: true
+      loop: 
+        - 'Viasoft.TenantManagement'
+        - 'Viasoft.Administration'
+      loop_control:
+        loop_var: service_to_restart
   tags: always
