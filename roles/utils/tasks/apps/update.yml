@@ -19,26 +19,24 @@
         loop_var: app_name
 
     - name: Reinicio de serviços TenantManagement e Administration
-      block:
-      - name: Reinicio de 'Viasoft.TenantManagement'
-        community.docker.docker_container:
-          name: '{{ service_name }}'
-          state: started
-          restart: true
-        env:
-          ON_PREMISE_MODE: true
-          USE_SERVERGC: "{{ use_servergc }}"
-          URL_CONSUL: http://consul-server:8500
-          CERT_FILE_PATH: "{{ containers_cert_path }}"
-        volumes:
-          - "{{ certs_directory }}/:{{ certs_directory }}/"
-        networks:
-          - name: servicos
-        loop:
-          - 'Viasoft.TenantManagement'
-          - 'Viasoft.Administration'
-        loop_control:
-          loop_var: "{{ service_name }}"
+      community.docker.docker_container:
+        name: '{{ service_name }}'
+        state: started
+        restart: true
+      env:
+        ON_PREMISE_MODE: true
+        USE_SERVERGC: "{{ use_servergc }}"
+        URL_CONSUL: http://consul-server:8500
+        CERT_FILE_PATH: "{{ containers_cert_path }}"
+      volumes:
+        - "{{ certs_directory }}/:{{ certs_directory }}/"
+      networks:
+        - name: servicos
+      loop:
+        - 'Viasoft.TenantManagement'
+        - 'Viasoft.Administration'
+      loop_control:
+        loop_var: "{{ service_name }}"
 
       
 
