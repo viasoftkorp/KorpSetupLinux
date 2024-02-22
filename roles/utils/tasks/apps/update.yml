@@ -32,11 +32,11 @@
           - "{{ certs_directory }}/:{{ certs_directory }}/"
         networks:
           - name: servicos
-        loop:
-          - 'Viasoft.TenantManagement'
-          - 'Viasoft.Administration'
-        loop_control:
-          loop_var: "{{ service_name }}"
+      loop:
+        - 'Viasoft.TenantManagement'
+        - 'Viasoft.Administration'
+      loop_control:
+        loop_var: "{{ service_name }}"
 
       
 
