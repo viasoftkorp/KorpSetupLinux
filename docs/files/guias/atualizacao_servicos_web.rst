@@ -57,11 +57,4 @@
 
     #. Acessar o Korp da nova versão com um usuário administrador, e realizar a atualização da base.
 
-    #. Após a atualização da base, :doc:`reiniciar os serviços no servidor Linux <./guia_portainer>` , nessa ordem, separadamente:
-
-        -  Viasoft.Tenantmanagement
-
-        -  Viasoft.Administration
-
-
     .. _Portal da Korp: https://portal.korp.com.br
