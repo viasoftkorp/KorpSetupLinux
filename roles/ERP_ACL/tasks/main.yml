@@ -27,7 +27,7 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
-  when: item.isProduction and item != 'Ansible-Dev-1' # todo
+  when: item.isProduction and item.name != 'Ansible-Dev-1' # todo
   loop: "{{ organization_environments }}"
 
 - name: Execução de update em 'IntegrarEventosSistema' - Testing
