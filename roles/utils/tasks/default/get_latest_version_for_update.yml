@@ -16,5 +16,4 @@
       latest_installed_version: "{{ item.key }}"
     when: (latest_installed_version is version(item.key, '<') and item.value != 'temp_value' and item.key != temp_version_val)
     with_dict: "{{ temp_apps_map.versioned }}"
-
   when: temp_version_val == version_without_build
