@@ -46,7 +46,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   FIN63_W:
-    image: "{{ docker_account }}/viasoft.financeiro.core-frontend:1.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.financeiro.core-frontend:1.2.x{{ docker_image_suffix }}"
     container_name: "FIN63_W"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
