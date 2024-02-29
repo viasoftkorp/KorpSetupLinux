@@ -10,7 +10,7 @@
   ansible.builtin.set_fact:
     has_versioned_apps: "{{ temp_apps_map.versioned != None }}"
 
-- name: Definição te mapeamento temporário para temp_apps_map
+- name: Definição de mapeamento temporário para temp_apps_map
   ansible.builtin.set_fact:
     temp_apps_map: "{{ temp_apps_map | combine(
       {
@@ -27,19 +27,6 @@
   when: has_versioned_apps and (latest_installed_version is version(item.key, '<') and item.value != 'temp_value')
   with_dict: "{{ temp_apps_map.versioned }}"
 
-- name: Verificação de ultima versão instalada - caso update
-  block:
-  - name: Criação de variável temporária para mapeamento de versões
-    ansible.builtin.set_fact:
-      temp_version_val: "{{ latest_installed_version }}"
-
-  - name: Redefinição de 'latest_installed_version'
-    ansible.builtin.set_fact:
-      latest_installed_version: "0.0.0"
-
-  - name: Verificação de ultima versão instalada
-    ansible.builtin.set_fact:
-      latest_installed_version: "{{ item.key }}"
-    when: has_versioned_apps and (latest_installed_version is version(item.key, '<') and item.value != 'temp_value' and item.value != temp_version_val)
-    with_dict: "{{ temp_apps_map.versioned }}"
-  when: is_updating | default(false) and latest_installed_version == version_without_build
+- name: Verificação de ultima versão instalada para atualização
+  ansible.builtin.import_tasks: default/get_latest_version_for_update.yml
+  when: has_versioned_apps and is_updating | default(false)
