@@ -1,3 +1,6 @@
+# Caso a versão do token já tenha aplicativos instalados, ao usar a tag de update, 
+# os serviços serão mapeados através da versão anterior;
+
 - name: Criação de variável temporária para mapeamento de versões
   ansible.builtin.set_fact:
     temp_version_val: "{{ latest_installed_version }}"
