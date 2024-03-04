@@ -4,6 +4,8 @@
       ansible.builtin.include_role:
         name: utils
         tasks_from: default/get_latest_installed_version
+      vars: 
+        is_updating: true
 
     - name: Definição de lista de serviços
       ansible.builtin.set_fact:
@@ -26,6 +28,5 @@
       - 'Viasoft.Administration'
       loop_control:
         loop_var: service_to_restart
-
   tags: always
 
