@@ -144,7 +144,7 @@
       API_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
       PORTAL_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
       CDN_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
-      USE_SERVERGC={{ use_servergc }}
+      USE_SERVERGC=
 
 # itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.

@@ -22,7 +22,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -37,7 +37,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -52,7 +52,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -67,7 +67,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -82,7 +82,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -97,7 +97,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC={{ use_servergc }}
+      - USE_SERVERGC=
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
