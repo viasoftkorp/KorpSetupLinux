@@ -1,0 +1,19 @@
+# Se a versão para atualização, obtida através do token, já possui aplicativos instalados, 
+# ao usar a tag de update, os serviços serão mapeados através da versão anterior.
+
+- name: Criação de variável temporária para mapeamento de versões
+  ansible.builtin.set_fact:
+    temp_version_val: "{{ latest_installed_version }}"
+
+- name: Redefinição de 'latest_installed_version'
+  block:
+  - name: Atribuição de valor temporário
+    ansible.builtin.set_fact:
+      latest_installed_version: "0.0.0"
+
+  - name: Verificação de ultima versão instalada
+    ansible.builtin.set_fact:
+      latest_installed_version: "{{ item.key }}"
+    when: (latest_installed_version is version(item.key, '<') and item.value != 'temp_value' and item.key != temp_version_val)
+    with_dict: "{{ temp_apps_map.versioned }}"
+  when: temp_version_val == version_without_build
