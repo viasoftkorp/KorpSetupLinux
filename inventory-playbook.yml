@@ -23,8 +23,6 @@
     dns_cdn: ""
     dns_frontend: ""
 
-    use_servergc: ""
-
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     https_port: "443"
@@ -537,7 +535,7 @@
               }
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
-            'use_servergc': custom_setup_info.use_servergc | boolean
+            'use_servergc': custom_setup_info.use_servergc | bool
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
