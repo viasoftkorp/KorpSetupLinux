@@ -23,6 +23,8 @@
     dns_cdn: ""
     dns_frontend: ""
 
+    use_servergc: ""
+
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
     https_port: "443"
@@ -40,6 +42,8 @@
         frontend: ""
       https_port: ""
       external_reverse_proxy: false
+      use_servergc: false
+    
 
   tasks:
 
@@ -532,7 +536,8 @@
                 'frontend': reverse_proxy.http_ports.frontend | default ('9877')
               }
             },
-            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id) 
+            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
+            'use_servergc': custom_setup_info.use_servergc | boolean
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
