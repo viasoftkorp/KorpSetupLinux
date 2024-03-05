@@ -42,7 +42,6 @@ Para adicionar um novo serviço, siga os seguintes passos:
       extra_hosts: *default-extra_hosts
       environment:
         - ON_PREMISE_MODE=true
-        - USE_SERVERGC= # Essa ENV é apenas necessária para serviços em C#
         - URL_CONSUL=http://consul-server:8500
       networks:
         - servicos
@@ -164,7 +163,6 @@ Para exemplificar a adição de serviço, usaremos o serviço Korp.Logistica.Pic
         extra_hosts: *default-extra_hosts
         environment:
           - ON_PREMISE_MODE=true
-          - USE_SERVERGC= # Essa ENV é apenas necessária para serviços em C#
           - URL_CONSUL=http://consul-server:8500
         networks:
           - servicos

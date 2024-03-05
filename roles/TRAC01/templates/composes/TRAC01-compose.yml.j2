@@ -22,7 +22,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC=
+      
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
@@ -39,7 +39,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC=
+      
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
@@ -54,7 +54,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-      - USE_SERVERGC=
+      
       - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
