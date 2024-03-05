@@ -1,0 +1,34 @@
+# Variáveis esperadas:
+# - service ex: Viasoft.Licensing.LicensingManagement
+# - varname ex: licencing_management_token
+
+- name: Definição de token do Portal
+  block:
+    - name: Leitura de kv atual
+      community.general.consul_kv:
+        key: "{{ service }}"
+      register: retrieved_kv
+
+    - name: Definição de 'raw_kv'
+      ansible.builtin.set_fact:
+        raw_kv: "{{ retrieved_kv.data.Value | from_json }}"
+
+    - name: Definição de 'authorization_secret'
+      ansible.builtin.set_fact:
+        authorization_secret: "{{ raw_kv.Authorization.Secret }}"
+
+    - name: Leitura de token do Portal
+      ansible.builtin.uri:
+        url: "{{ frontend.endpoints.gateway_url }}/oauth/connect/token"
+        return_content: true
+        method: POST
+        body_format: form-urlencoded
+        body:
+        - [ grant_type, client_credentials ]
+        - [ client_id, "{{ service }}" ]
+        - [ client_secret, "{{ authorization_secret }}" ]
+      register: token_register
+
+    - name: Definição de token '{{ varname }}'
+      ansible.builtin.set_fact:
+        "{{ varname }}": "{{ token_register.json.access_token }}"

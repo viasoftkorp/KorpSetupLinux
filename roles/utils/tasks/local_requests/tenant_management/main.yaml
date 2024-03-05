@@ -1,0 +1,25 @@
+- name: Obter token de TenantManagement
+  ansible.builtin.include_role:
+    name: utils 
+    tasks_from: local_requests/get_service_token/main.yaml
+  vars: 
+    service: Viasoft.TenantManagement
+    varname: tenant_management_token
+
+- name: Definição de 'api_request_headers'
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: local_requests/get_service_token/set_header.yaml
+  vars:
+    request_token: "{{ tenant_management_token }}"
+
+- name: Obter informações dos ambientes
+  ansible.builtin.uri:
+    url: "{{ frontend.endpoints.gateway_url }}/TenantManagement/environments"
+    method: GET
+    headers: "{{ api_request_headers }}"
+  register: result
+
+- name: Definição de 'variáveis'
+  ansible.builtin.set_fact:
+    organization_environments: "{{ result['json']['items'] }}"

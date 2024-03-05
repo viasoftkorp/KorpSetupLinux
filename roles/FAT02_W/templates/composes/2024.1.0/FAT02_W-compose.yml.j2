@@ -15,15 +15,17 @@ networks:
       name: servicos
 
 services:
-  viasoft-ep-acl-messaging:
-    image: "{{ docker_account }}/viasoft.erp.acl.messaging:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.ACL.Messaging"
+  FAT02_W-2024-1-0:
+    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento-frontend:2024.1.0.x{{ docker_image_suffix }}"
+    container_name: "FAT02_W-2024.1.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC={{ use_servergc }}
-      - URL_CONSUL=http://consul-server:8500
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos

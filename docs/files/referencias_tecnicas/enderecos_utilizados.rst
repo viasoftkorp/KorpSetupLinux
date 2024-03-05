@@ -30,10 +30,10 @@ Quando o IP fixo do cliente tiver sido configurado para receber chamadas da nuve
 
     .. Quando o ``Endereço de entrada`` estiver configurado no licenciamento do cliente, os seguintes endereços farão requisições para a rede do cliente na porta ``9999``
 
-    - ``159.112.184.194``
+    - ``168.138.251.22``
     - ``168.138.152.22``
     - ``152.67.49.65``
     - ``152.67.48.227``
     - ``150.230.73.114``
-   
+
 As chamadas vindas desses IPs, na porta ``9999`` devem ser redirecionadas para o IP do servidor Linux, na porta ``9999``

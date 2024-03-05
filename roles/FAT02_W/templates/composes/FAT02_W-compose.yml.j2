@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  viasoft-faturamento-core:
-    image: "{{ docker_account }}/viasoft.faturamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Faturamento.Core"
+  viasoft-faturamento-solicitacaofaturamento-core:
+    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -30,9 +30,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-billing-nfe:
-    image: "{{ docker_account }}/viasoft.billing.nfe:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.NFE-{{ version_without_build }}"
+  viasoft-faturamento-solicitacaofaturamento-gateway:
+    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -45,24 +45,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  korp-legacy-faturamento:
-    image: "{{ docker_account }}/korp.legacy.faturamento:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Faturamento-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  # Por enquanto release estatica por que esta em dev ainda mas querem validar a solicitacao web 06/02/2024 Amos
-  viasoft-faturamento-notafiscal-core:
-    image: "{{ docker_account }}/viasoft.faturamento.notafiscal.core:1.0.x-hmlg"
-    container_name: "Viasoft.Faturamento.NotaFiscal.Core"
+  viasoft-faturamento-solicitacaofaturamento-readmodel:
+    image: "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento.readmodel:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
