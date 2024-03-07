@@ -201,7 +201,8 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
         "cdn": "'$dns_cdn'"
       },
       "https_port": "'$https_port'",
-      "external_reverse_proxy": "'$external_reverse_proxy'"
+      "external_reverse_proxy": "'$external_reverse_proxy'",
+      "use_servergc": "'$use_servergc'"
     }
   }'
 

@@ -40,6 +40,8 @@
         frontend: ""
       https_port: ""
       external_reverse_proxy: false
+      use_servergc: false
+    
 
   tasks:
 
@@ -532,7 +534,8 @@
                 'frontend': reverse_proxy.http_ports.frontend | default ('9877')
               }
             },
-            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id) 
+            'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
+            'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool)
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
