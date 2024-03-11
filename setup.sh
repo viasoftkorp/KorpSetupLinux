@@ -36,6 +36,8 @@ create_random_string() {
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
 ## Proxy reverso
 #   external_reverse_proxy=<bool> - OPCIONAL - Habilita o proxy reverso para ser feito fora do servidor de Linux
+## Porta Postgres
+# expose_db=<bool> - OPCIONAL - Expõe banco para fora da rede docker (5432:5432) - padrão false
 
 apps=""; docker_account=""; ansible_tags="";
 gateway_url="https://gateway.korp.com.br"
@@ -203,6 +205,9 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
       "https_port": "'$https_port'",
       "external_reverse_proxy": "'$external_reverse_proxy'",
       "use_servergc": "'$use_servergc'"
+      "data_base" {
+        "expose_db": "'$expose_db'"
+      }
     }
   }'
 
