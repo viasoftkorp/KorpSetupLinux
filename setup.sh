@@ -204,10 +204,8 @@ ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault
       },
       "https_port": "'$https_port'",
       "external_reverse_proxy": "'$external_reverse_proxy'",
-      "use_servergc": "'$use_servergc'"
-      "data_base" {
-        "expose_db": "'$expose_db'"
-      }
+      "use_servergc": "'$use_servergc'",
+      "expose_db": "'$expose_db'"
     }
   }'
 
