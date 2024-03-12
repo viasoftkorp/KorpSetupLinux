@@ -99,9 +99,6 @@ services:
     {% if postgres.expose_db -%}
     ports:
       - "5432:5432"
-    {% else -%}
-    ports:
-      - "5432"
     {% endif -%}
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
