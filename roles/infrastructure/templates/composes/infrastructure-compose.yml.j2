@@ -174,7 +174,7 @@ services:
     environment:
       - WATCHTOWER_HTTP_API_TOKEN={{ services_secrets.Others.WatchTower.ApiToken }}
       - REPO_USER={{ services_secrets.Others.Docker.Account }}
-      - REPO_PASS={{ ervices_secrets.Others.Docker.AccessToken }}
+      - REPO_PASS={{ services_secrets.Others.Docker.AccessToken }}
       - WATCHTOWER_NOTIFICATIONS_HOSTNAME={{ tenant_id }}
       - WATCHTOWER_NOTIFICATIONS_LEVEL=warn
       - WATCHTOWER_NOTIFICATIONS=msteams
