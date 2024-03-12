@@ -15,5 +15,6 @@
     name: "{{ db_name }}"
     owner: "{{ postgres.korp_user }}"
     login_host: "{{ postgres.address }}"
+    port: "5432"
     login_user: "{{ postgres.korp_user }}"
     login_password: "{{ postgres.korp_password }}"
