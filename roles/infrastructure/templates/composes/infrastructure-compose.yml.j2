@@ -97,11 +97,9 @@ services:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
     {% if postgres.expose_db %}
-
     ports:
       - "5432:5432"
     {% else %}
-    
     ports:
       - "5432"
     {% endif %}
