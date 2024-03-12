@@ -85,15 +85,10 @@
   ansible.builtin.import_tasks: rabbitmq_user.yml
 
 - name: Criação de usuário de uso da korp no Postgres
-  community.postgresql.postgresql_user:
-    db: postgres
-    login_host: "{{ postgres.address }}"
-    port: "5432"
-    name: "{{ postgres.korp_user }}"
-    password: "{{ postgres.korp_password }}"
-    login_user: "{{ postgres.default_user }}"
-    login_password: "{{ postgres.default_password }}"
-    role_attr_flags: LOGIN,SUPERUSER,CREATEDB,CREATEROLE,INHERIT,REPLICATION
+  community.docker.docker_container_exec:
+    container: "{{ postgres_container_name }}"
+    command: |
+      psql -U {{ postgres.default_user }} -c "CREATE ROLE {{ postgres.korp_user }} WITH LOGIN PASSWORD '{{ postgres.korp_password }}' SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
 
 - name: Leitura de configuração de minio da nuvem
   ansible.builtin.uri:

@@ -11,10 +11,7 @@
 #       db_name: test.database
 
 - name: "Criação de database {{ db_name }} em PostgreSql"
-  community.postgresql.postgresql_db:
-    name: "{{ db_name }}"
-    owner: "{{ postgres.korp_user }}"
-    login_host: "{{ postgres.address }}"
-    port: "5432"
-    login_user: "{{ postgres.korp_user }}"
-    login_password: "{{ postgres.korp_password }}"
+  community.docker.docker_container_exec:
+    container: "{{ postgres_container_name }}"
+    command: |
+      psql -U {{ postgres.korp_user }} -c "CREATE DATABASE {{ db_name }} OWNER {{ postgres.korp_user }};"
