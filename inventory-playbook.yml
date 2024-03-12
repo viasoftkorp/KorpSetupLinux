@@ -485,7 +485,7 @@
               'password': shrink_inventory.redis.password | default (lookup('community.general.random_string', length=16, special=False))
             },
             'postgres': {
-              'address': shrink_inventory.postgres.address | default ('127.0.0.1'),
+              'address': shrink_inventory.postgres.address | default ('postgres'),
               'default_user': shrink_inventory.postgres.default_user | default ('postgres') ,
               'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
