@@ -88,7 +88,7 @@
   community.docker.docker_container_exec:
     container: "{{ postgres_container_name }}"
     command: |
-      psql -U {{ postgres.default_user }} -c "CREATE ROLE '{{ postgres.korp_user }}' WITH LOGIN PASSWORD '{{ postgres.korp_password }}' SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
+      psql -U {{ postgres.default_user }} -c "CREATE ROLE {{ postgres.korp_user }} WITH LOGIN PASSWORD '{{ postgres.korp_password }}' SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
 
 - name: Leitura de configuração de minio da nuvem
   ansible.builtin.uri:
