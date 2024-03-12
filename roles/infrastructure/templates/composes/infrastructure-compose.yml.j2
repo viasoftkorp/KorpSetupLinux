@@ -97,11 +97,11 @@ services:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
     {% if postgres.expose_db %}
-    ports:
-      - "5432:5432"
+      ports:
+        - "5432:5432"
     {% else %}
-    ports:
-      - "5432"
+      ports:
+        - "5432"
     {% endif %}
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
