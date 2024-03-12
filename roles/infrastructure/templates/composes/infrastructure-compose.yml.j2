@@ -96,7 +96,7 @@ services:
     environment:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
-    {% if shrink_inventory.postgres.expose_db %}
+    {% if expose_db %}
     ports:
       - "5432:5432"
     {% else %}
