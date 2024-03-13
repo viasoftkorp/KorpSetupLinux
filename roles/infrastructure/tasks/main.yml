@@ -94,7 +94,6 @@
   community.postgresql.postgresql_user:
     db: postgres
     login_host: "{{ postgres.address }}"
-    port: "5432"
     name: "{{ postgres.korp_user }}"
     password: "{{ postgres.korp_password }}"
     login_user: "{{ postgres.default_user }}"
