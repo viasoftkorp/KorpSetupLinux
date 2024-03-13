@@ -14,7 +14,8 @@
   community.docker.docker_container_exec:
     container: "{{ postgres_container_name }}"
     command: |
-      psql -U {{ postgres.korp_user }} -c "CREATE DATABASE {{ db_name }} OWNER {{ postgres.korp_user }};"
+      psql -U '{{ postgres.korp_user }}' -d postgres -c "CREATE DATABASE {{ db_name }} OWNER '{{ postgres.korp_user }}';"
+
 
 # - name: "Criação de database {{ db_name }} em PostgreSql"
 #   community.postgresql.postgresql_db:
