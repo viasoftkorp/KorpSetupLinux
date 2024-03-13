@@ -89,7 +89,7 @@
     container: "{{ postgres_container_name }}"
     command: |
       psql -U {{ postgres.default_user }} -d postgres -c |
-        CREATE USER "{{ postgres.korp_user }}" WITH PASSWORD {{ postgres.korp_password }} LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION';
+        CREATE USER "{{ postgres.korp_user }}" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION';
 
 # - name: Criação de usuário de uso da korp no Postgres
 #   community.postgresql.postgresql_user:
