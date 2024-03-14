@@ -225,7 +225,6 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
   --limit localhost \
-  -v \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
   --extra-vars='{
