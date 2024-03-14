@@ -15,12 +15,3 @@
     container: "{{ postgres_container_name }}"
     command: |
       psql -U '{{ postgres.korp_user }}' -d postgres -c "CREATE DATABASE {{ db_name }} OWNER '{{ postgres.korp_user }}';"
-
-
-# - name: "Criação de database {{ db_name }} em PostgreSql"
-#   community.postgresql.postgresql_db:
-#     name: "{{ db_name }}"
-#     owner: "{{ postgres.korp_user }}"
-#     login_host: "{{ postgres.address }}"
-#     login_user: "{{ postgres.korp_user }}"
-#     login_password: "{{ postgres.korp_password }}"
