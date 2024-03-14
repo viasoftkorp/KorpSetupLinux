@@ -227,6 +227,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
+  -v \
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
