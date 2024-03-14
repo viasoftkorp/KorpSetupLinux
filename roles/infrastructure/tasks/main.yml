@@ -84,17 +84,23 @@
 - name: Criação e configuração de usuário no rabbitmq
   ansible.builtin.import_tasks: rabbitmq_user.yml
 
-# - name: Criação de usuário de uso da korp no Postgres
-#   community.docker.docker_container_exec:
-#     container: "{{ postgres_container_name }}"
-#     command: |
-#       psql -U {{ postgres.default_user }} -tc "SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}'" | grep -q 1 || psql -U {{ postgres.default_user }} -c "CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
-
 - name: Criação de usuário de uso da korp no Postgres
-  ansible.builtin.shell: |
-    docker exec -it "{{ postgres_container_name }}"
+  community.docker.docker_container_exec:
+    container: "{{ postgres_container_name }}"
+    argv:
+      - psql
+      - "-U"
+      - "{{ postgres.default_user }}"
+      - "-tc"
+      - "SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}' || CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
 
-    psql -U {{ postgres.default_user }} -tc "SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}'" | grep -q 1 || psql -U {{ postgres.default_user }} -c "CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
+# - name: Criação de usuário de uso da korp no Postgres
+#   ansible.builtin.shell: |
+#     docker exec -it "{{ postgres_container_name }}"
+
+#     psql -U {{ postgres.default_user }} -tc "SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}'" | grep -q 1 || psql -U {{ postgres.default_user }} -c "CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"
+
+#      docker exec -it "{{ postgres_container_name }}" sh -c '{ psql -U {{ postgres.default_user }} -tc "SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}'" || psql -U {{ postgres.default_user }} -c "CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD '{{ postgres.korp_password }}' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;"; }'
 
 
 # - name: Criação de usuário de uso da korp no Postgres
