@@ -13,7 +13,7 @@ location ~ notification {
     proxy_pass http://fabio:9999;
 }
 
-location ~ (FileProvider|/Sales/CRM/Leads/|/Sales/CRM/Accounts/|/Sales/CRM/Opportunities/|/reporting/reports/|/producao/apontamento/relatorios/) {
+location ~ (FileProvider|/Sales/CRM/Leads/|/Sales/CRM/Accounts/|/Sales/CRM/Opportunities/|/reporting/reports/|/producao/apontamento/relatorios/|/Sales/Discount/proposals/discounts|/carga-inicial/importacao/produto) {
     client_max_body_size 0M;
 
     proxy_set_header X-Forwarded-Proto https;
