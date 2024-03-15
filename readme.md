@@ -334,16 +334,23 @@ ansible-lint <PlayBook_Name.yml>
 
 ## Execução do setup
 
+  **Atenção** exposição do banco postgres: 
+  * A var ```expose_postgres``` por default assume ```false```.
+  
+  * Qualquer valor **passado diferente** de ```true```/```false``` será assumido ```false```.
+  
+  * Caso não seja explicitamente passada a var será assumido ```false```.
+
 Instalação:
 
   ``` bash
-  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name token=<token> apps=<app1>,<app2>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name token=<token> expose_postgres=<true/false> apps=<app1>,<app2>
   ```
 
 Atualização:
 
   ``` bash
-  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=update token=<token>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=update token=<token> expose_postgres=<true/false>
   ```
 
 Desinstalação de Versão:
