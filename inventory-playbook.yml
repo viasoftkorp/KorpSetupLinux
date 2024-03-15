@@ -41,7 +41,7 @@
       https_port: ""
       external_reverse_proxy: false
       use_servergc: false
-      expose_db: false
+      expose_postgres: false
     
 
   tasks:
@@ -490,7 +490,7 @@
               'default_password': shrink_inventory.postgres.default_password | default (lookup('community.general.random_string', length=16, special=False)) if(not postgres_password_was_updated) else postgres_new_pass,
               'korp_user': shrink_inventory.postgres.korp_user |  default ('korp.services') ,
               'korp_password': shrink_inventory.postgres.korp_password | default (lookup('community.general.random_string', length=16, special=False)),
-              'expose_db': custom_setup_info.expose_db | default (shrink_inventory.postgres.expose_db) | bool
+              'expose_postgres': custom_setup_info.expose_postgres | default (shrink_inventory.postgres.expose_postgres) | bool
             },
             'minio': {
               'access_key': shrink_inventory.minio.access_key | default (lookup('community.general.random_string', length=16, special=False)),
