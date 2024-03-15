@@ -20,8 +20,8 @@
 
 - name: Execução de update em 'IntegrarEventosSistema' - Produção
   community.general.mssql_script:
-    login_user: "{{ mssql.default_user }}"
-    login_password: "{{ mssql.default_password }}"
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
     login_host: "{{ mssql.address }}"
     name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
@@ -32,8 +32,8 @@
 
 - name: Execução de update em 'IntegrarEventosSistema' - Testing
   community.general.mssql_script:
-    login_user: "{{ testing_mssql.default_user }}"
-    login_password: "{{ testing_mssql.default_password }}"
+    login_user: "{{ testing_mssql.korp_user }}"
+    login_password: "{{ testing_mssql.korp_password }}"
     login_host: "{{ testing_mssql.address }}"
     name: "{{ item.databaseName }}"
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
