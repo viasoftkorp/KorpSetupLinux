@@ -27,7 +27,7 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
-  when: item.isProduction
+  when: item.isActive and item.isProduction
   loop: "{{ organization_environments }}"
 
 - name: Execução de update em 'IntegrarEventosSistema' - Testing
@@ -39,5 +39,5 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
-  when: not item.isProduction
+  when: item.isActive and not item.isProduction
   loop: "{{ organization_environments }}"
