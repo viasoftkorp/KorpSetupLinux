@@ -1,11 +1,11 @@
-dependencies:
-  - role: compras
-  - role: vendas
-  - role: faturamento
-  - role: logistica
-  - role: ERP
-  - role: LOG01_W
-  - role: PES00
-  - role: LOG00
-  - role: financeiro
+# dependencies:
+  # - role: compras
+  # - role: vendas
+  # - role: faturamento
+  # - role: logistica
+  # - role: ERP
+  # - role: LOG01_W
+  # - role: PES00
+  # - role: LOG00
+  # - role: financeiro
  

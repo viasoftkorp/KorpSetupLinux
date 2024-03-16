@@ -22,7 +22,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
-    - USE_SERVERGC=$USE_SERVERGC  
+      - USE_SERVERGC=$USE_SERVERGC  
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
       - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
