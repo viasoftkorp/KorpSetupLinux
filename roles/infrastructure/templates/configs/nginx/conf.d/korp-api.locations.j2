@@ -11,36 +11,9 @@ location ~ notification {
     proxy_pass http://fabio:9999;
 }
 
-location ~ (FileProvider|/Sales/CRM/Leads/|/Sales/CRM/Accounts/|/Sales/CRM/Opportunities/|/reporting/reports/|/producao/apontamento/relatorios/) {
+location / {
     client_max_body_size 0M;
 
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header Host $host;
-
-    proxy_send_timeout 7200s;
-    proxy_read_timeout 7200s;
-    fastcgi_send_timeout 7200s;
-    fastcgi_read_timeout 7200s;
-
-    proxy_pass http://fabio:9999;
-}
-
-location ~* (/assinatura-digital/file-provider/|flow|engenharia) {
-    client_max_body_size 100M;
-
-    proxy_buffer_size          128k;
-    proxy_buffers              4 256k;
-    proxy_busy_buffers_size    256k;    
-
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $remote_addr;
-    proxy_set_header Host $host;
-
-    proxy_pass http://fabio:9999;
-}
-
-location / {
     proxy_buffer_size           128k;
     proxy_buffers               4 256k;
     proxy_busy_buffers_size     256k;
@@ -48,6 +21,11 @@ location / {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header Host $host;
-    
+
+    proxy_send_timeout 600;
+    proxy_read_timeout 600;
+    fastcgi_send_timeout 600;
+    fastcgi_read_timeout 600;
+
     proxy_pass http://fabio:9999;
 }
