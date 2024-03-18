@@ -337,7 +337,7 @@ ansible-lint <PlayBook_Name.yml>
 Instalação:
 
   ``` bash
-  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name token=<token> apps=<app1>,<app2>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name token=<token> expose_postgres=<true/false> apps=<app1>,<app2>
   ```
 
 Atualização:

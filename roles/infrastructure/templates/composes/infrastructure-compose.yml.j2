@@ -96,8 +96,10 @@ services:
     environment:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
+    {% if postgres.expose_postgres -%}
     ports:
       - "5432:5432"
+    {% endif -%}
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
       - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
