@@ -1,0 +1,55 @@
+---
+- name: Setup main
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+    ansible_become_password: "{{ linux_korp.password }}"
+  become_user: "{{ linux_korp.user }}"
+  become: true
+
+  tasks:
+    - name: Execução de playbook
+      block:
+        - name: Default setup
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: default/default_setup.yml
+
+
+    - name: Obtenção de 'organization_environments'
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: local_requests/tenant_management/main.yaml
+
+    - name: "Alteração de IntegrarEventosSistema"
+      block:
+
+        - name: Execução de update em 'IntegrarEventosSistema' - Produção
+          community.general.mssql_script:
+            login_user: "{{ mssql.korp_user }}"
+            login_password: "{{ mssql.korp_password }}"
+            login_host: "{{ mssql.address }}"
+            name: "{{ item.databaseName }}"
+            script: |
+              UPDATE [dbo].[PARAMETROS] 
+              SET VALOR = 'F' 
+              WHERE SECAO = 'Sistema' AND CHAVE = 'IntegrarEventosSistema';
+          vars:
+            db_name: "{{ item.databaseName }}"
+          when: item.isActive and item.isProduction
+          loop: "{{ organization_environments }}"
+
+        - name: Execução de update em 'IntegrarEventosSistema' - Testing
+          community.general.mssql_script:
+            login_user: "{{ testing_mssql.korp_user }}"
+            login_password: "{{ testing_mssql.korp_password }}"
+            login_host: "{{ testing_mssql.address }}"
+            name: "{{ item.databaseName }}"
+            script: |
+              UPDATE [dbo].[PARAMETROS] 
+              SET VALOR = 'F' 
+              WHERE SECAO = 'Sistema' AND CHAVE = 'IntegrarEventosSistema';
+          vars:
+            db_name: "{{ item.databaseName }}"
+          when: item.isActive and not item.isProduction
+          loop: "{{ organization_environments }}"
