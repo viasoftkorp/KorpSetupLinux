@@ -32,7 +32,7 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
-    query_value: "{{ query_value | default('F') }}"
+    query_param_value: "{{ query_value | default('F') }}"
   when: item.isActive and item.isProduction
   loop: "{{ organization_environments }}"
 
@@ -45,6 +45,6 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
-    query_value: "{{ query_value | default('F') }}"
+    query_param_value: "{{ query_value | default('F') }}"
   when: item.isActive and not item.isProduction
   loop: "{{ organization_environments }}"

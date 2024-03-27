@@ -2,12 +2,12 @@ IF NOT EXISTS (SELECT *   FROM [dbo].[PARAMETROS]
                 WHERE CHAVE = 'IntegrarEventosSistema')
 BEGIN
     INSERT INTO [dbo].[PARAMETROS] (SECAO, CHAVE, VALOR)
-    VALUES ('Sistema', 'IntegrarEventosSistema', '{{ query_value }}')
+    VALUES ('Sistema', 'IntegrarEventosSistema', '{{ query_param_value }}')
 END
 ELSE
 BEGIN
    UPDATE [dbo].[PARAMETROS] 
-	SET VALOR = '{{ query_value }}' 
+	SET VALOR = '{{ query_param_value }}' 
 	WHERE SECAO = 'Sistema' AND CHAVE = 'IntegrarEventosSistema';
 END 
 
