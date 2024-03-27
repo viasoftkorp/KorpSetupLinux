@@ -8,4 +8,5 @@ dependencies:
   - role: PES00
   - role: LOG00
   - role: financeiro
+  - role: PRO09
  
