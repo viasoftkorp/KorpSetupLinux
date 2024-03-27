@@ -18,26 +18,31 @@
     name: utils
     tasks_from: local_requests/tenant_management/main.yaml
 
-- name: Execução de update em 'IntegrarEventosSistema' - Produção
-  community.general.mssql_script:
-    login_user: "{{ mssql.korp_user }}"
-    login_password: "{{ mssql.korp_password }}"
-    login_host: "{{ mssql.address }}"
-    name: "{{ item.databaseName }}"
-    script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
-  vars:
-    db_name: "{{ item.databaseName }}"
-  when: item.isActive and item.isProduction
-  loop: "{{ organization_environments }}"
+- name: "Alteração de IntegrarEventosSistema"
+  block:
 
-- name: Execução de update em 'IntegrarEventosSistema' - Testing
-  community.general.mssql_script:
-    login_user: "{{ testing_mssql.korp_user }}"
-    login_password: "{{ testing_mssql.korp_password }}"
-    login_host: "{{ testing_mssql.address }}"
-    name: "{{ item.databaseName }}"
-    script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
-  vars:
-    db_name: "{{ item.databaseName }}"
-  when: item.isActive and not item.isProduction
-  loop: "{{ organization_environments }}"
+    - name: Execução de update em 'IntegrarEventosSistema' - Produção
+      community.general.mssql_script:
+        login_user: "{{ mssql.korp_user }}"
+        login_password: "{{ mssql.korp_password }}"
+        login_host: "{{ mssql.address }}"
+        name: "{{ item.databaseName }}"
+        script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
+      vars:
+        db_name: "{{ item.databaseName }}"
+      when: item.isActive and item.isProduction
+      loop: "{{ organization_environments }}"
+
+    - name: Execução de update em 'IntegrarEventosSistema' - Testing
+      community.general.mssql_script:
+        login_user: "{{ testing_mssql.korp_user }}"
+        login_password: "{{ testing_mssql.korp_password }}"
+        login_host: "{{ testing_mssql.address }}"
+        name: "{{ item.databaseName }}"
+        script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
+      vars:
+        db_name: "{{ item.databaseName }}"
+      when: item.isActive and not item.isProduction
+      loop: "{{ organization_environments }}"
+
+  when: version_without_build is version('2024.1.0', '>=')
