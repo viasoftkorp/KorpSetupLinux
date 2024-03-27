@@ -18,6 +18,11 @@
     name: utils
     tasks_from: local_requests/tenant_management/main.yaml
 
+- name: "Definição de 'query_value'"
+  ansible.builtin.set_fact:
+    query_value: "T"
+  when: version_without_build is version('2024.1.0', '>=')
+
 - name: Execução de update em 'IntegrarEventosSistema' - Produção
   community.general.mssql_script:
     login_user: "{{ mssql.korp_user }}"
@@ -27,6 +32,7 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
+    query_value: "{{ query_value | default('F') }}"
   when: item.isActive and item.isProduction
   loop: "{{ organization_environments }}"
 
@@ -39,5 +45,6 @@
     script: "{{ lookup('template', 'sql/update_IntegrarEventosSistema.sql.j2') | string }}"
   vars:
     db_name: "{{ item.databaseName }}"
+    query_value: "{{ query_value | default('F') }}"
   when: item.isActive and not item.isProduction
   loop: "{{ organization_environments }}"
