@@ -2,7 +2,8 @@ services:
   Viasoft.Faturamento.Core:
     db:
       name: Viasoft_Faturamento_Core
-      type: postgres
+      type: mssql
+    custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
 
   Viasoft.Billing.NFE:
     db:
