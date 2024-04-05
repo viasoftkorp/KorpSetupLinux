@@ -32,9 +32,6 @@ services:
       type: postgres
 
   Viasoft.Vendas.Core:
-    db:
-      name: Viasoft_Vendas_Core
-      type: mssql
     custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
   Korp.Legacy.Vendas:
     db:

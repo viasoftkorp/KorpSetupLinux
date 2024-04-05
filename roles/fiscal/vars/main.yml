@@ -1,8 +1,5 @@
 services:
   Viasoft.Fiscal.Core:
-    db:
-      name: Viasoft_Fiscal_Core
-      type: mssql
     custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
 
   Viasoft.TaxManagement:
