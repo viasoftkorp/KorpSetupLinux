@@ -1,8 +1,6 @@
 services:
   Viasoft.Compras.PlanilhasPreco:
-    db:
-      name: Viasoft_Compras_PlanilhasPreco
-      type: postgres
+    custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
 
   Korp.Legacy.Compras:
     db:
