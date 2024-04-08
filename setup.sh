@@ -77,7 +77,7 @@ else
       exit 0
     fi
 fi
-
+    
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -111,7 +111,7 @@ then
     exit 08
 else
     status_code=$(curl -X GET -o /dev/null --silent "$gateway_url/TenantManagement/server-deploy/token/$token" --write-out '%{http_code}\n')
-
+    
     if [ "$status_code" != "200" ];
     then
         echo "$(tput setaf 1)O token passado não é válido. Status Code: $status_code.$(tput setaf 7)"

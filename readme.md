@@ -349,11 +349,11 @@ Atualização:
 Desinstalação de Versão:
 
   ``` bash
-  branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=uninstall-version token=<token> removed_version=<version_to_uninstall>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=uninstall-version token=<token> removed_version=<version_to_uninstall>
   ```
 
 Desinstalação de Aplicativo:
 
   ``` bash
-  branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=remove-apps token=<token> remove_unversioned=<bool> remove_versioned=<bool> removed_version=<version_to_uninstall> apps=<app1>,<app2>
+  export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=remove-apps token=<token> remove_unversioned=<bool> remove_versioned=<bool> removed_version=<version_to_uninstall> apps=<app1>,<app2>
   ```

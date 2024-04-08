@@ -31,7 +31,7 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+
   viasoft-erp-person:
     image: "{{ docker_account }}/viasoft.erp.person:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.ERP.Person-{{ version_without_build }}"

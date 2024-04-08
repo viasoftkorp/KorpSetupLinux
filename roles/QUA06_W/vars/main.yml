@@ -1,15 +1,14 @@
-services:
-
+services: 
   Viasoft.Qualidade.RNC.Core:
     db:
       name: Viasoft_Qualidade_RNC_Core
-      type: postgres 
+      type: postgres
     version:
       unversioned: true
-      
+
   Viasoft.Qualidade.RNC.Gateway:
     db:
       name: Viasoft_Qualidade_RNC_Gateway
-      type: postgres 
+      type: postgres
     version:
       unversioned: true
