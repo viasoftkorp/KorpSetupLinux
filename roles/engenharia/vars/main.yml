@@ -1,8 +1,8 @@
 services:
   Viasoft.Engenharia.Core:
     db:
-      name: Viasoft_Engenharia_Core
-      type: postgres
+      type: mssql
+    custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
 
   Viasoft.Engenharia.CustoOrcamento:
     db:
