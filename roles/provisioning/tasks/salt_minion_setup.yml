@@ -29,3 +29,18 @@
       notify: Reinicio de salt-minion
 
   when: not salt_folder_status.stat.exists
+
+- name: Cadastro de salt-minion
+  block:
+    - name: Cadastro de minion no salt master
+      ansible.builtin.uri:
+        # url: "{{ gateway_url }}/vault/manager/salt/register/{{ token }}"
+        url: "https://victor-pegoraro-api.com/vault/manager/salt/register/{{ token }}"
+        status_code: 200
+
+    - name: Teste de conexão com minion
+      ansible.builtin.uri:
+        # url: "{{ gateway_url }}/vault/manager/salt/test/{{ token }}"
+        url: "https://victor-pegoraro-api.com/vault/manager/salt/test/{{ token }}"
+        status_code: 200
+
