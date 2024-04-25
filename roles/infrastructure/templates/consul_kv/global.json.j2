@@ -33,6 +33,32 @@
       "FromLogContext"
     ]
   },
+  {% if enable_sentry_relay %}
+  "FrontendSentry": {
+    "DsnUrl": "https://{{ services_secrets.Others.SentryRelay.Projects.WebFrontend.PublicKey }}@{{ frontend.endpoints.gateway_url }}/{{ services_secrets.Others.SentryRelay.RouteStrip }}/{{ services_secrets.Others.SentryRelay.Projects.WebFrontend.Id }}",
+    "IsEnabled": true,
+    "Mutation": {
+      "MutationBreadcrumbLimit": 1000,
+      "MutationLimit": 15000
+    },
+    "Replay": {
+      "BlockAllMedia": false,
+      "IsEnabled": true,
+      "MaskAllInputs": false,
+      "MaskAllText": false,
+      "ReplaysOnErrorSampleRate": 1.0,
+      "ReplaysSessionSampleRate": 0
+    },
+    "ShowDialog": false,
+    "Tracing": {
+      "TracesSampleRate": 0.1
+    }
+  },
+  {% else %}
+  "FrontendSentry": {
+    "IsEnabled": false
+  },
+  {% endif %}
   "AppRiseUrl": "http://{{ apprise_container_name }}:8000",
   "Provisioning": {
     "EnableSchemaProvisioning": "true"

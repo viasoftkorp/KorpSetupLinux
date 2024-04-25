@@ -1,0 +1,29 @@
+{
+  "slug": "web-frontend",
+  "publicKeys": [
+    {
+      "publicKey": "{{ services_secrets.Others.SentryRelay.Projects.WebFrontend.PublicKey }}",
+      "isEnabled": true
+    }
+  ],
+  "config": {
+    "allowedDomains": ["*"],
+	"features": [
+		"organizations:session-replay",
+		"organizations:session-replay-recording-scrubbing",
+		"organizations:session-replay-combined-envelope-items",
+		"organizations:user-feedback-ingest",
+		"organizations:device-class-synthesis",
+		"projects:span-metrics-extraction",
+		"organizations:custom-metrics",
+		"organizations:profiling",
+		"organizations:standalone-span-ingestion",
+		"organizations:metric-meta",
+		"projects:profiling-ingest-unsampled-profiles",
+		"projects:discard-transaction",
+		"organizations:continuous-profiling",
+		"projects:extract-transaction-from-segment-span",
+		"projects:span-metrics-double-write-distributions-as-gauges"
+	]
+  }
+}

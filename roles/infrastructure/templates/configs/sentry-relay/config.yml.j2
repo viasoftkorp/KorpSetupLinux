@@ -1,0 +1,8 @@
+# Please see the relevant documentation.
+# Performance tuning: https://docs.sentry.io/product/relay/operating-guidelines/
+# All config options: https://docs.sentry.io/product/relay/options/
+relay:
+  mode: static
+  upstream: {{ services_secrets.Others.SentryRelay.SentryGateway }}
+  host: 0.0.0.0
+  port: 3000

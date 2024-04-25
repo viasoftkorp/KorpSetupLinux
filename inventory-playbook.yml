@@ -537,7 +537,8 @@
               }
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
-            'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool)
+            'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool),
+            'enable_sentry_relay': shrink_inventory.enable_sentry_relay | default (true)
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário

@@ -107,3 +107,7 @@
 
 - name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml
+
+- name: Setup de sentry-relay
+  ansible.builtin.import_tasks: sentry-relay.yml
+  when: enable_sentry_relay

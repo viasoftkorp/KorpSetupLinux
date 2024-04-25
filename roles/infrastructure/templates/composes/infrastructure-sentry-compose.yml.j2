@@ -1,0 +1,29 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  sentry-relay:
+    image: "getsentry/relay:24.4.1"
+    container_name: "sentry-relay"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    entrypoint: bash -c 'chown -R relay:relay /work/.relay'
+    volumes:
+      - {{ config_dir_path }}/sentry-relay/:/work/.relay/
+    networks:
+      - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false

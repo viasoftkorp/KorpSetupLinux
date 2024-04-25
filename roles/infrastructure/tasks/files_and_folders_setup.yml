@@ -150,13 +150,14 @@
 # o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
 - name: Configuração e transferência de arquivos de compose
   ansible.builtin.template:
-    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
-    src: "composes/{{ item | basename }}"
+    dest: "{{ compose_dir_path }}/{{ item }}"
+    src: "composes/{{ item }}.j2"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
   loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
+    - infrastructure-compose.yml
+    - pgweb-compose.yml
 
 - name: Garantia da existência dos diretórios de volume infrastructure
   ansible.builtin.include_role:
