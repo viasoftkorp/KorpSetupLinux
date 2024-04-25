@@ -20,7 +20,7 @@ services:
     container_name: "sentry-relay"
     restart: always
     extra_hosts: *default-extra_hosts
-    entrypoint: bash -c 'chown -R relay:relay /work/.relay'
+#    entrypoint: bash -c 'chown -R relay:relay /work/.relay'
     volumes:
       - {{ config_dir_path }}/sentry-relay/:/work/.relay/
     networks:
