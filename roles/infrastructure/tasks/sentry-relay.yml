@@ -1,3 +1,14 @@
+- name: Criação de diretório de configuração de sentry-relay
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ config_dir_path }}/sentry-relay"
+    - "{{ config_dir_path }}/sentry-relay/projects"
+
 - name: Configuração e transferência de arquivos de configuração de sentry-relay em templates
   ansible.builtin.template:
     dest: "{{ config_dir_path }}/sentry-relay/{{ item }}"
