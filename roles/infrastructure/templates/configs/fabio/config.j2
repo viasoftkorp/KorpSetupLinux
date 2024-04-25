@@ -2,9 +2,7 @@ route add Viasoft.LicensingServer /Licensing/LicenseServer/ http://app_server:15
 route add Viasoft.LicensingServer /licensing/license-server/ http://app_server:1504/
 route add Delphi /korp/services/ http://app_server:1504/
 route add Delphi /Korp/Services/ http://app_server:1504/
-
 {% if enable_sentry_relay %}
 route add SentryRelay /{{ services_secrets.Others.SentryRelay.RouteStrip }} http://sentry-relay:3000 opts "strip=/{{ services_secrets.Others.SentryRelay.RouteStrip }}"
 {% endif %}
-
 route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/

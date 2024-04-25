@@ -18,6 +18,9 @@
     ansible_fabio_config: "{{ lookup('template', 'configs/fabio/config.j2') | split('\r\n') }}"
     apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
 
+- debug:
+    msg: "{{ ansible_fabio_config }}"
+
 - name: Validação de configuração
   ansible.builtin.set_fact:
     consul_fabio_config: "{{ consul_fabio_config + [item] }}"
