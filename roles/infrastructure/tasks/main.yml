@@ -104,6 +104,7 @@
     tasks_from: 'consul_kv/ensure_kv'
   vars:
     service_name: Global
+    keys_to_overwrite: ["RuntimeEnvironment"]
 
 - name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml
