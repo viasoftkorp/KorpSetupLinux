@@ -36,6 +36,7 @@
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
         status_code: 200 
+      notify: Reinicio de salt-minion
 
     - name: Teste de conexão com minion
       ansible.builtin.uri:
