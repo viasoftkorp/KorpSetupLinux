@@ -36,11 +36,19 @@
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
         status_code: 200 
-      notify: Reinicio de salt-minion
+
+    - name: Reinicio de salt-minion
+      ansible.builtin.service:
+        name: salt-minion
+        state: restarted
+
+    - name: Garantia de início do minion
+      ansible.builtin.wait_for:
+        timeout: 30
 
     - name: Teste de conexão com minion
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
         status_code: 200
       retries: 6 
-      delay: 10 
+      delay: 5 
