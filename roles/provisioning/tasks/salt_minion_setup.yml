@@ -36,17 +36,15 @@
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
         status_code: 200 
+      notify: Reinicio de salt-minion
       register: result
 
     - name: Validação de resultado de registro
       ansible.builtin.fail:
-        msg: "Ocorreu um problema durante registro do minion: {{ result }}"
+        msg: "Ocorreu um problema durante registro do minion: {{ result.data.result }}"
         when: result.status != 200
 
-    # - name: Reinicio de minion
-    #   ansible.builtin.service:
-    #     name: salt-minion
-    #     state: restarted
+      
 
     - name: Garantia de início do minion
       ansible.builtin.wait_for:
@@ -63,5 +61,5 @@
 
     - name: Validação de resultado do teste
       ansible.builtin.fail:
-        msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
+        msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result.data.result }}"
         when: result.status != 200
