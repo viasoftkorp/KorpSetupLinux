@@ -37,7 +37,7 @@
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
         status_code: 200 
 
-    - name: Reinicio de salt-minion
+    - name: Reinicio de minion
       ansible.builtin.service:
         name: salt-minion
         state: restarted
