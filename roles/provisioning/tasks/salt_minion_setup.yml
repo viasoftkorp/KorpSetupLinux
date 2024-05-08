@@ -42,7 +42,7 @@
     - name: Validação de resultado de registro
       ansible.builtin.fail:
         msg: "Ocorreu um problema durante registro do minion: {{ result.data.result }}"
-        when: result.status != 200
+      when: result.stats != 200 and result.data.result is defined
 
     - name: Garantia de início do minion
       ansible.builtin.wait_for:
@@ -60,4 +60,4 @@
     - name: Validação de resultado do teste
       ansible.builtin.fail:
         msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result.data.result }}"
-        when: result.status != 200
+      when: result.stats != 200 and result.data.result is defined
