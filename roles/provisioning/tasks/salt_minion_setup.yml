@@ -43,10 +43,10 @@
         msg: "Ocorreu um problema durante registro do minion: {{ result }}"
         when: result.status != 200
 
-    - name: Reinicio de minion
-      ansible.builtin.service:
-        name: salt-minion
-        state: restarted
+    # - name: Reinicio de minion
+    #   ansible.builtin.service:
+    #     name: salt-minion
+    #     state: restarted
 
     - name: Garantia de início do minion
       ansible.builtin.wait_for:
