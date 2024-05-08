@@ -44,8 +44,6 @@
         msg: "Ocorreu um problema durante registro do minion: {{ result.data.result }}"
         when: result.status != 200
 
-      
-
     - name: Garantia de início do minion
       ansible.builtin.wait_for:
         timeout: 30
