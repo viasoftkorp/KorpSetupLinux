@@ -42,7 +42,7 @@
     - name: Validação de resultado de registro
       ansible.builtin.fail:
         msg: "Ocorreu um problema durante registro do minion: {{ result }}"
-      when: result.status != '200' or result.status != '201'
+      when: result.status != '200' and result.status != '201'
 
     - name: Teste de conexão com minion
       ansible.builtin.uri:
