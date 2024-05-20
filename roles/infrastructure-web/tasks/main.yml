@@ -71,7 +71,7 @@
   - name: Requisição para o Vault Manager
     ansible.builtin.uri:
       # url: "{{ gateway_url }}/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}/{{ visible_name }}" # todo
-      url: "https://victor-pegoraro-api.com/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}/{{ visible_name }}"
+      url: "https://victor-pegoraro-api.com/vault/manager/server-deploy/zabbix/update-visible-name/kad3f9h919f9ii98/{{ visible_name }}"
       status_code: 
         - 200
         - 201
