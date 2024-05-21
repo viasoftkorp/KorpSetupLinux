@@ -65,9 +65,6 @@
     ansible.builtin.set_fact:
       visible_name: "{{ organization_environments[0].databaseName | replace('_PRD','') | replace('_HMLG','') }}"
 
-  - debug:
-      var: visible_name
-
   - name: Requisição para o Vault Manager
     ansible.builtin.uri:
       url: "{{ gateway_url }}/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}/{{ visible_name }}" # todo
