@@ -54,22 +54,3 @@
     files:
       - infrastructure-web-compose.yml
 
-- name: Alteração de Visible Name no Zabbix
-  block:
-  - name: Obtenção de 'organization_environments'
-    ansible.builtin.include_role:
-      name: utils
-      tasks_from: local_requests/tenant_management/main.yaml
-
-  - name: Definição de visible_name
-    ansible.builtin.set_fact:
-      visible_name: "{{ organization_environments[0].databaseName | replace('_PRD','') | replace('_HMLG','') }}"
-
-  - name: Requisição para o Vault Manager
-    ansible.builtin.uri:
-      url: "{{ gateway_url }}/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}/{{ visible_name }}" # todo
-      status_code: 
-        - 200
-        - 201
-      validate_certs: false
-    
