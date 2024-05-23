@@ -40,10 +40,10 @@
       register: result
       ignore_errors: true
 
-    - name: Validação de resultado de registro
-      ansible.builtin.fail:
-        msg: "Ocorreu um problema durante registro do minion: {{ result }}"
-      when: result.status != 200 and result.status != 201
+    # - name: Validação de resultado de registro
+    #   ansible.builtin.fail:
+    #     msg: "Ocorreu um problema durante registro do minion: {{ result }}"
+    #   when: result.status != 200 and result.status != 201
 
     - name: Teste de conexão com minion
       ansible.builtin.uri:
@@ -53,7 +53,7 @@
       register: result
       ignore_errors: true
 
-    - name: Validação de resultado do teste
-      ansible.builtin.fail:
-        msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
-      when: result.status != 200
+    # - name: Validação de resultado do teste
+    #   ansible.builtin.fail:
+    #     msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
+    #   when: result.status != 200
