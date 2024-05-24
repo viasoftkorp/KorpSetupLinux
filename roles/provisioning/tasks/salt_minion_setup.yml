@@ -35,9 +35,9 @@
     - name: Garantia de cadastro de minion no salt master
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
-      status_code: 
-        - 200
-        - 201
+        status_code: 
+          - 200
+          - 201
       changed_when: response.status == 201
       notify: Reinicio de salt-minion
       register: result
@@ -51,8 +51,8 @@
     - name: Teste de conexão com minion
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
-      status_code: 
-        - 200
+        status_code: 
+          - 200
       retries: 6 
       delay: 5 
       register: result
