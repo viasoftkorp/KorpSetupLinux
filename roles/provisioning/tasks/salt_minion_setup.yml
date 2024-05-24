@@ -35,25 +35,32 @@
     - name: Garantia de cadastro de minion no salt master
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
+        status_code: 
+          - 200
+          - 201
       changed_when: response.status == 201
+      retries: 6 
+      delay: 5 
       notify: Reinicio de salt-minion
       register: result
       ignore_errors: true
 
-    # - name: Validação de resultado de registro
-    #   ansible.builtin.fail:
-    #     msg: "Ocorreu um problema durante registro do minion: {{ result }}"
-    #   when: result.status != 200 and result.status != 201
+    - name: Validação de resultado de registro
+      ansible.builtin.fail:
+        msg: "Ocorreu um problema durante registro do minion: {{ result }}"
+      when: result.status != 200 and result.status != 201
 
     - name: Teste de conexão com minion
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
+        status_code: 
+          - 200
       retries: 6 
       delay: 5 
       register: result
       ignore_errors: true
 
-    # - name: Validação de resultado do teste
-    #   ansible.builtin.fail:
-    #     msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
-    #   when: result.status != 200
+    - name: Validação de resultado do teste
+      ansible.builtin.fail:
+        msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
+      when: result.status != 200
