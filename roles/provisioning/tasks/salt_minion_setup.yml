@@ -39,6 +39,8 @@
           - 200
           - 201
       changed_when: response.status == 201
+      retries: 6 
+      delay: 5 
       notify: Reinicio de salt-minion
       register: result
       ignore_errors: true
