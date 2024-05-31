@@ -77,7 +77,7 @@
     - docker-compose
 
 - name: Criação de network 'servicos' no docker(teste)
-  ansible.builtin.command: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
+  ansible.builtin.shell: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
 
 # - name: Criação de network 'servicos' no docker
 #   community.docker.docker_network:
