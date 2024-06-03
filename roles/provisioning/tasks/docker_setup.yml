@@ -71,7 +71,7 @@
 # Bibliotecas usadas pelo Ansible para usar o docker
 - name: Instalação de docker com python
   ansible.builtin.pip:
-    state: forcereinstall
+    # state: forcereinstall
     name: "{{ item }}"
   loop:
     - docker
