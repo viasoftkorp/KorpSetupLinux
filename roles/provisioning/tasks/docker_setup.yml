@@ -75,7 +75,7 @@
     name: "{{ item }}"
   loop:
     - docker
-    - docker-compose
+    # - docker-compose
 
 # - name: Criação de network 'servicos' no docker(teste)
 #   ansible.builtin.shell: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
