@@ -11,7 +11,7 @@
   loop: "{{ apps_map.versioned | list }}"
 
 - name: "Parada de containers versionados de {{ app_name }}"
-  community.docker.docker_compose:
+  community.docker.vdocker_compose_v2:
     project_src: "{{ compose_dir_path }}/{{ item }}"
     state: absent
     files:

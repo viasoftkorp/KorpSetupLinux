@@ -76,12 +76,12 @@
     - docker==6.1.3
     - docker-compose
 
-- name: Criação de network 'servicos' no docker(teste)
-  ansible.builtin.shell: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
+# - name: Criação de network 'servicos' no docker(teste)
+#   ansible.builtin.shell: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
 
-# - name: Criação de network 'servicos' no docker
-#   community.docker.docker_network:
-#     name: servicos
-#     ipam_config:
-#       - subnet: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/16"
-#         iprange: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/17"
+- name: Criação de network 'servicos' no docker
+  community.docker.docker_network:
+    name: servicos
+    ipam_config:
+      - subnet: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/16"
+        iprange: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.0/17"
