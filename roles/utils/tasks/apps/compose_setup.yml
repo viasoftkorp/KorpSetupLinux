@@ -25,7 +25,7 @@
   when: has_unversioned_services or has_exclusive_services
 
 - name: "Criação e inicialização de {{ id }}-compose - versionado"
-  community.docker.vdocker_compose_v2:
+  community.docker.docker_compose_v2:
     project_src: "{{ versioned_compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:
@@ -33,7 +33,7 @@
   when: has_versioned_services
 
 - name: Criação e inicialização de {{ id }}-compose - não versionado"
-  community.docker.vdocker_compose_v2:
+  community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
     env_file: "{{ docker_env_file_path }}"
     files:

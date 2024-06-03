@@ -48,7 +48,7 @@
     extended: true
 
 - name: Criação e inicialização de compose de infraestrutura WEB
-  community.docker.vdocker_compose_v2:
+  community.docker.docker_compose_v2:
     project_src: "{{ korp_dir_path }}/composes/"
     env_file: "{{ docker_env_file_path }}"
     files:
