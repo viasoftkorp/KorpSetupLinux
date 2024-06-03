@@ -17,7 +17,7 @@
 - name: Criação e inicialização do componente Viasoft.Authentication
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
-    env_file: "{{ docker_env_file_path }}"
+    env_files: ["{{ docker_env_file_path }}"]
     files:
       - infrastructure-identity-compose.yml
 
