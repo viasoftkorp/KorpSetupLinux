@@ -73,11 +73,9 @@
 # Bibliotecas usadas pelo Ansible para usar o docker
 - name: Instalação de docker com python
   ansible.builtin.pip:
-    # state: forcereinstall
     name: "{{ item }}"
   loop:
     - docker
-    # - docker-compose
 
 # - name: Criação de network 'servicos' no docker(teste)
 #   ansible.builtin.shell: docker network inspect servicos >/dev/null 2>&1 || docker network create --driver bridge servicos --subnet=172.18.0.0/16 --ip-range=172.18.0.0/17
