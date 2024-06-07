@@ -4,6 +4,8 @@ services:
 
   Korp.Logistica.SaldoProdutos:
 
+  Viasoft.Logistica.Produto.Core:
+
   Viasoft.Logistica.Inventario.Background:
     db:
       name: Viasoft_Logistica_Inventario_Background
