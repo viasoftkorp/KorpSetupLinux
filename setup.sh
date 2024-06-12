@@ -49,6 +49,7 @@ db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
 https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
+skip_salt_test=false;
 
 ini_file_path="./setup_config.ini"
 
