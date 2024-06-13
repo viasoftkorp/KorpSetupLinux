@@ -501,7 +501,8 @@
               'secret_key': shrink_inventory.minio_new.secret_key | default (lookup('community.general.random_string', length=16, special=False))
             },
             'general': {
-              'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper )
+              'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper ),
+              'korp_erp_secret': shrink_inventory.korp_erp_secret | default ( 1000 | random | to_uuid | upper )
             },
             'docker_servicos_network_ip_address_start': shrink_inventory.docker_servicos_network_ip_address_start | default('172.18'),
             'db_suffix_divider': shrink_inventory.db_suffix_divider | default(db_suffix_divider),
@@ -537,7 +538,7 @@
               }
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
-            'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool)
+            'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool),
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário

@@ -98,6 +98,10 @@
   ansible.builtin.set_fact:
     minio_gateway_config: "{{ response.json }}"
 
+- name: Defomoção de korp_erp_service_name
+  ansible.builtin.set_fact:
+    korp_erp_service_name: "Korp.ERP"
+
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
     name: utils
@@ -105,6 +109,26 @@
   vars:
     service_name: Global
     keys_to_overwrite: ["RuntimeEnvironment"]
+
+- name: Criação de cliente OAuth para Korp.ERP
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_client
+  vars:
+    secret: "{{ general.korp_erp_secret }}"
+    service_name: "{{ korp_erp_service_name }}"
+
+- name: Definição de lista de escopos para Korp.ERP
+  ansible.builtin.set_fact: 
+    korp_erp_scopes: ['Viasoft.WelcomePage.Dashboard', 'Viasoft.Email', 'Viasoft.Faturamento.NotaFiscal.Core']
+
+- name: Criação de escopos para Korp.ERP
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_client
+  vars:
+    service_name: "{{ korp_erp_service_name }}"
+    scopes: "{{ korp_erp_scopes }}"
 
 - name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml
