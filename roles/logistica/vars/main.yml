@@ -4,6 +4,8 @@ services:
 
   Korp.Logistica.SaldoProdutos:
 
+  Viasoft.Logistica.Produto.Core:
+
   Viasoft.Logistica.Inventario.Background:
     db:
       name: Viasoft_Logistica_Inventario_Background
@@ -24,8 +26,5 @@ services:
       type: mssql
 
   Viasoft.Logistica.Estoque:
-    db:
-      name: Viasoft_Logistica_Estoque
-      type: mssql
     version:
       unversioned: true

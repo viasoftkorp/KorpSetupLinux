@@ -74,3 +74,18 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  viasoft-logistica-produto-core:
+    image: "{{ docker_account }}/viasoft.logistica.produto.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistica.Produto.Core-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

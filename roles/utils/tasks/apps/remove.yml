@@ -62,7 +62,7 @@
     - name: Remoção para compose versionado
       block:
         - name: Remoção de aplicativos do compose - versionado
-          community.docker.docker_compose:
+          community.docker.docker_compose_v2:
             state: absent
             project_src: "{{ compose_dir_path }}/{{ removed_version }}"
             files:
@@ -89,7 +89,7 @@
     - name: Remoção para compose não versionado
       block:
         - name: Remoção de aplicativos do compose - não versionado
-          community.docker.docker_compose:
+          community.docker.docker_compose_v2:
             state: absent
             project_src: "{{ compose_dir_path }}/"
             files:
