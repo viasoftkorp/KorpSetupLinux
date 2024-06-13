@@ -1,3 +1,7 @@
+# Variáveis requeridas
+# scope
+# service_name
+
 - name: Criação de escopos para cliente
   community.general.mssql_script:
     login_user: "{{ mssql.korp_user }}"
@@ -5,4 +9,6 @@
     login_host: "{{ mssql.address }}"
     name: "{{ authentication_db_name }}"
     script: "{{ lookup('template', 'queries/add_oauth_scope.sql.j2') | string }}"
-  loop: "{{ korp_erp_scopes }}"
+  loop: "{{ scopes }}"
+  loop_control:
+    loop_var: scope

@@ -1,0 +1,18 @@
+DECLARE @SCOPE VARCHAR(MAX)
+DECLARE @CLIENT_ID VARCHAR(MAX)
+
+SET @SCOPE = '{{ scope }}'
+
+SET @CLIENT_ID = (SELECT Id FROM [Viasoft_Authentication].[dbo].[ClientScopes] 
+WHERE [Scope] = '{{ service_name }}' AND [ClientId] = Id);
+
+IF NOT EXISTS (SELECT 1 FROM ClientScopes WHERE [Scope] = @SCOPE and [ClientId] = @CLIENT_ID)
+BEGIN
+	INSERT INTO [Viasoft_Authentication].
+				[dbo].
+				[ClientScopes] 
+				(Scope, ClientId) 
+	VALUES (@SCOPE, @CLIENT_ID)
+END
+
+SELECT 1
