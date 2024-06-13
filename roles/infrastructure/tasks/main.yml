@@ -125,7 +125,7 @@
 - name: Criação de escopos para Korp.ERP
   ansible.builtin.include_role:
     name: utils
-    tasks_from: oauth_client/add_client
+    tasks_from: oauth_client/add_scope
   vars:
     service_name: "{{ korp_erp_service_name }}"
     scopes: "{{ korp_erp_scopes }}"
