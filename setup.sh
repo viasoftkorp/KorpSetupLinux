@@ -20,6 +20,7 @@ create_random_string() {
 #   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
+#   skip_salt_test=<bool> - OPCIONAL, padrão false
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -48,6 +49,7 @@ db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
 https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
+skip_salt_test=false;
 
 ini_file_path="./setup_config.ini"
 
@@ -240,7 +242,8 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
       "remove_unversioned": '$remove_unversioned'
     },
     "apps":['$apps'],
-    "removed_version": "'$removed_version'"
+    "removed_version": "'$removed_version'",
+    "skip_salt_test": '$skip_salt_test'
   }'
 
 if [ $? != 0 ]
