@@ -8,9 +8,7 @@ WHERE [ClientId] = '{{ service_name }}');
 
 IF NOT EXISTS (SELECT 1 FROM ClientScopes WHERE [Scope] = @SCOPE and [ClientId] = @CLIENT_ID)
 BEGIN
-	INSERT INTO [Viasoft_Authentication].
-				[dbo].
-				[ClientScopes] 
+	INSERT INTO [ClientScopes] 
 				(Scope, ClientId) 
 	VALUES (@SCOPE, @CLIENT_ID)
 END
