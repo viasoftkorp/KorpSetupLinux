@@ -3,8 +3,8 @@ DECLARE @CLIENT_ID VARCHAR(MAX)
 
 SET @SCOPE = '{{ scope }}'
 
-SET @CLIENT_ID = (SELECT ClientId FROM [Viasoft_Authentication].[dbo].[ClientScopes] 
-WHERE [Scope] = '{{ service_name }}');
+SET @CLIENT_ID = (SELECT Id FROM Clients
+WHERE [ClientId] = '{{ service_name }}');
 
 IF NOT EXISTS (SELECT 1 FROM ClientScopes WHERE [Scope] = @SCOPE and [ClientId] = @CLIENT_ID)
 BEGIN
