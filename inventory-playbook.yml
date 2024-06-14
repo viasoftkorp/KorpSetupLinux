@@ -502,7 +502,7 @@
             },
             'general': {
               'introspection_secret': shrink_inventory.general.introspection_secret | default ( 1000 | random | to_uuid | upper ),
-              'korp_erp_secret': shrink_inventory.korp_erp_secret | default ( 1000 | random | to_uuid | upper )
+              'korp_erp_secret': shrink_inventory.general.korp_erp_secret | default ( 1000 | random | to_uuid | upper )
             },
             'docker_servicos_network_ip_address_start': shrink_inventory.docker_servicos_network_ip_address_start | default('172.18'),
             'db_suffix_divider': shrink_inventory.db_suffix_divider | default(db_suffix_divider),
