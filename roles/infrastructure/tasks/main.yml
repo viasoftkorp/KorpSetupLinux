@@ -98,7 +98,7 @@
   ansible.builtin.set_fact:
     minio_gateway_config: "{{ response.json }}"
 
-- name: Defomoção de korp_erp_service_name
+- name: Definição de korp_erp_service_name
   ansible.builtin.set_fact:
     korp_erp_service_name: "Korp.ERP"
 
