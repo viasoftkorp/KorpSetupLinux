@@ -53,3 +53,4 @@
     env_file: "{{ docker_env_file_path }}"
     files:
       - infrastructure-web-compose.yml
+
