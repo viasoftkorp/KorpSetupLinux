@@ -114,10 +114,6 @@
     secret: "{{ general.korp_erp_secret }}"
     service_name: "{{ korp_erp_oauth_client_name }}"
 
-- name: Definição de lista de escopos para Korp.ERP
-  ansible.builtin.set_fact: 
-    korp_erp_scopes: ['Viasoft.WelcomePage.Dashboard', 'Viasoft.Email', 'Viasoft.Faturamento.NotaFiscal.Core']
-
 - name: Criação de escopos para Korp.ERP
   ansible.builtin.include_role:
     name: utils
