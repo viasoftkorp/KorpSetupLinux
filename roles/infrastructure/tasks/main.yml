@@ -98,10 +98,6 @@
   ansible.builtin.set_fact:
     minio_gateway_config: "{{ response.json }}"
 
-- name: Definição de korp_erp_service_name
-  ansible.builtin.set_fact:
-    korp_erp_service_name: "Korp.ERP"
-
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
     name: utils
@@ -116,7 +112,7 @@
     tasks_from: oauth_client/add_client
   vars:
     secret: "{{ general.korp_erp_secret }}"
-    service_name: "{{ korp_erp_service_name }}"
+    service_name: "{{ korp_erp_oauth_client_name }}"
 
 - name: Definição de lista de escopos para Korp.ERP
   ansible.builtin.set_fact: 
@@ -127,7 +123,7 @@
     name: utils
     tasks_from: oauth_client/add_scope
   vars:
-    service_name: "{{ korp_erp_service_name }}"
+    service_name: "{{ korp_erp_oauth_client_name }}"
     scopes: "{{ korp_erp_scopes }}"
 
 - name: Configuração de fabio pelo consul
