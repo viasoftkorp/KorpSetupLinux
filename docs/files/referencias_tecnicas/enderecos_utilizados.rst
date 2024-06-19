@@ -35,5 +35,8 @@ Quando o IP fixo do cliente tiver sido configurado para receber chamadas da nuve
     - ``152.67.49.65``
     - ``152.67.48.227``
     - ``150.230.73.114``
+    - ``159.112.184.194``
+    - ``168.138.231.128``
+    - ``144.22.219.162``
 
 As chamadas vindas desses IPs, na porta ``9999`` devem ser redirecionadas para o IP do servidor Linux, na porta ``9999``
