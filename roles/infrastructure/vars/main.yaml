@@ -1,2 +1,2 @@
 korp_erp_oauth_client_name: Korp.ERP
-korp_erp_scopes: ['Viasoft.WelcomePage.Dashboard', 'Viasoft.Email', 'Viasoft.Faturamento.NotaFiscal.Core', 'Korp.Legacy.Authentication', 'Viasoft.ObjectStorage.Client']
+korp_erp_scopes: ['Viasoft.WelcomePage.Dashboard', 'Viasoft.Email', 'Viasoft.Faturamento.NotaFiscal.Core', 'Korp.Legacy.Authentication', 'Viasoft.ObjectStorage.Client', 'Viasoft.ERP.ACL.Messaging']
