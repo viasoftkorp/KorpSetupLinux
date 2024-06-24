@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  korp-logistica-wms-conferenciaentrada-gateway:
-    image: "{{ docker_account }}/korp.logistica.wms.conferenciaentrada.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.ConferenciaEntrada.Gateway-{{ version_without_build }}"
+  korp-logistica-wms-gateway:
+    image: "{{ docker_account }}/korp.logistica.wms.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Logistica.WMS.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -30,129 +30,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  korp-logistica-wms-recebimento-gateway:
-    image: "{{ docker_account }}/korp.logistica.wms.recebimento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Recebimento.Gateway-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-enderecamentos-gateway:
-    image: "{{ docker_account }}/korp.logistica.wms.enderecamentos.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Enderecamentos.Gateway-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-transferencias-gateway:
-    image: "{{ docker_account }}/korp.logistica.wms.transferencias.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Transferencias.Gateway-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-remanejamento-gateway:
-    image: "{{ docker_account }}/korp.logistica.wms.remanejamento.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Remanejamento.Gateway-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-conferenciaentrada-core:
-    image: "{{ docker_account }}/korp.logistica.wms.conferenciaentrada.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.ConferenciaEntrada.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-recebimento-core:
-    image: "{{ docker_account }}/korp.logistica.wms.recebimento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Recebimento.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-enderecamentos-core:
-    image: "{{ docker_account }}/korp.logistica.wms.enderecamentos.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Enderecamentos.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-transferencias-core:
-    image: "{{ docker_account }}/korp.logistica.wms.transferencias.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Transferencias.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  korp-logistica-wms-remanejamento-core:
-    image: "{{ docker_account }}/korp.logistica.wms.remanejamento.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.WMS.Remanejamento.Core-{{ version_without_build }}"
+  korp-logistica-wms-core:
+    image: "{{ docker_account }}/korp.logistica.wms.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Logistica.WMS.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

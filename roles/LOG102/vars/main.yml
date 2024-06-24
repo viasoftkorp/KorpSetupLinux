@@ -11,22 +11,6 @@ services:
 
   Korp.Faturamento.SolicitacaoDeFaturamento:
 
-  Korp.Logistica.WMS.ConferenciaEntrada.Gateway:
+  Korp.Logistica.WMS.Gateway:
 
-  Korp.Logistica.WMS.Recebimento.Gateway:
-
-  Korp.Logistica.WMS.Enderecamentos.Gateway:
-
-  Korp.Logistica.WMS.Transferencias.Gateway:
-
-  Korp.Logistica.WMS.Remanejamento.Gateway:
-
-  Korp.Logistica.WMS.ConferenciaEntrada.Core:
-
-  Korp.Logistica.WMS.Recebimento.Core:
-
-  Korp.Logistica.WMS.Enderecamentos.Core:
-
-  Korp.Logistica.WMS.Transferencias.Core:
-
-  Korp.Logistica.WMS.Remanejamento.Core:
+  Korp.Logistica.WMS.Core:
