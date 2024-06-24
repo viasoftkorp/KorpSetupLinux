@@ -14,3 +14,5 @@ services:
   Korp.Logistica.WMS.Gateway:
 
   Korp.Logistica.WMS.Core:
+    db:
+      type: mssql
