@@ -75,7 +75,7 @@
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
-    - docker
+    - docker==7.0.0
 
 - name: Criação de network 'servicos' no docker
   community.docker.docker_network:
