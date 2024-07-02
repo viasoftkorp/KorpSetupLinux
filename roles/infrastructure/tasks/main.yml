@@ -25,37 +25,46 @@
 - name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
-- name: Obtenção de imagem atual do rabbitmq
-  ansible.builtin.shell: "docker ps --format='{{ '{{' }}.Image{{ '}}' }}' | grep korp/rabbitmq:"
-  register: rabbitmq_image_info
-  ignore_errors: true
+- name: Garantia de atualização do RabbitMQ
+  block:
+  - name: Obtenção de imagem atual do RabbitMQ
+    ansible.builtin.shell: "docker ps --format='{{ '{{' }}.Image{{ '}}' }}' | grep korp/rabbitmq:"
+    register: rabbitmq_image_info
+    ignore_errors: true
 
-- name: Valor inesperado ao buscar nome de imagem
-  ansible.builtin.fail:
-    msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
-  when: rabbitmq_image_info.stdout_lines | length > 1
+  - name: Valor inesperado ao buscar nome de imagem
+    ansible.builtin.fail:
+      msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
+    when: rabbitmq_image_info.stdout_lines | length > 1
 
-- name: Definição de imagem atual do RabbitMQ
-  ansible.builtin.set_fact:
-    actual_rabbitmq_image: "{{ rabbitmq_image_info.stdout_lines[0] }}"
+  - name: Definição de imagem atual do RabbitMQ
+    ansible.builtin.set_fact:
+      actual_rabbitmq_image: "{{ rabbitmq_image_info.stdout_lines[0] }}"
 
-- name: Validação de nome da imagem
-  ansible.builtin.set_fact:
-    is_rabbitmq_out_of_date: true
-  when: actual_rabbitmq_image != 'korp/rabbitmq:1.3.0' # todo -> alguma forma de pegar isso dinâmico
+  - name: Validação de nome da imagem
+    ansible.builtin.set_fact:
+      is_rabbitmq_out_of_date: true
+    when: actual_rabbitmq_image != 'korp/rabbitmq:1.3.0' # todo -> alguma forma de pegar isso dinâmico
 
-- name: Permissão para atualização de rabbitmq
-  ansible.builtin.pause:
-    prompt: 
-      "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
-      Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
-      Precione 'enter' para continuar sem a atualização, ou digite 'update' para prosseguir com a atualização:"
-  register: rabbitmq_prompt
+  - name: Obtenção de permissão para atualização
+    block:
+    - name: Permissão para atualização do RabbitMQ
+      ansible.builtin.pause:
+        prompt: 
+          "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
+          Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
+          Precione 'enter' para continuar sem a atualização, ou digite 'update' para prosseguir com a atualização:"
+      register: rabbitmq_prompt
 
-- name: Saída do setup
-  ansible.builtin.fail:
-    msg: "É necessário realizar a atualização do RabbitMQ para prosseguir com a instalação."
-  when: rabbitmq_prompt.user_input != 'update'
+    - name: Saída do setup
+      ansible.builtin.fail:
+        msg: "É necessário realizar a atualização do RabbitMQ para prosseguir com a instalação."
+      when: rabbitmq_prompt.user_input != 'update' 
+
+    - name: Início de atualização do RabbitMQ
+      ansible.builtin.include_tasks: rabbitmq_update.yml
+      when: rabbitmq_prompt.user_input == 'update' 
+    when: is_rabbitmq_out_of_date | default(false)
 
 - name: Criação e inicialização de infrastructure-compose
   community.docker.docker_compose:
