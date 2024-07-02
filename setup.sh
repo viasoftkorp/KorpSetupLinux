@@ -190,8 +190,6 @@ then
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
 
-sudo rm -f /tmp/inventory-playbook.yml
-
 ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
     "token": "'$token'",
