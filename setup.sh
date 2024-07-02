@@ -144,6 +144,8 @@ then
     exit 13
 fi
 
+sudo rm -rf /tmp/KorpSetupLinux
+
 # Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
 git clone -b $branch_name --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
 
