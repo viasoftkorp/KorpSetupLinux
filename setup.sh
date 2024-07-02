@@ -121,14 +121,6 @@ fi
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
-echo Instalando Git
-add-apt-repository ppa:git-core/ppa 
-if [ $? != 0 ]
-then
-    echo "$(tput setaf 1)add-apt-repository ppa:git-core/ppa.$(tput setaf 7)"
-    exit 14
-fi
-
 apt install git
 if [ $? != 0 ]
 then
