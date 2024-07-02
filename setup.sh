@@ -121,7 +121,7 @@ fi
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
-apt install git
+sudo apt install git
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro ao instalar o Git.$(tput setaf 7)"
