@@ -121,6 +121,14 @@ fi
 
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
+echo Instalando Git
+sudo apt install git-all --yes
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)Erro ao instalar o Git.$(tput setaf 7)"
+    exit 14
+fi
+
 echo Instalando Ansible
 
 # caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
@@ -136,6 +144,9 @@ then
     echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
     exit 13
 fi
+
+# Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
+git clone -b $branch_name --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
@@ -181,9 +192,6 @@ then
 fi
 
 sudo rm -f /tmp/inventory-playbook.yml
-
-# Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
-wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
