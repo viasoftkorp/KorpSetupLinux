@@ -183,7 +183,7 @@ fi
 sudo rm -f /tmp/inventory-playbook.yml
 
 # Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
-wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/inventory-playbook.yml
+wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name
 
 ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
@@ -221,7 +221,7 @@ sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 rm /tmp/inventory-playbook.yml
 
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+ansible-playbook /tmp/bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
   --limit localhost \
@@ -234,7 +234,7 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
       "docker_account": "'$docker_account'",
       "docker_image_suffix": "'$docker_image_suffix'",
       "remove_versioned": '$remove_versioned',
-      "remove_unversioned": '$remove_unversioned'
+      "remove_unversioned": '$remove_unversioned',
     },
     "apps":['$apps'],
     "removed_version": "'$removed_version'"
