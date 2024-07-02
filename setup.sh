@@ -151,14 +151,14 @@ git clone -b $branch_name --single-branch https://github.com/viasoftkorp/KorpSet
 
 if [ "$disk" != "" ];
 then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk" -C $branch_name
+    ansible-playbook /tmp/KorpSetupLinux/disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost -C $branch_name
+    ansible-playbook /tmp/KorpSetupLinux/disk-playbook.yml --limit localhost
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
@@ -192,7 +192,7 @@ fi
 
 sudo rm -f /tmp/inventory-playbook.yml
 
-ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
+ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
@@ -226,9 +226,7 @@ fi
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
-rm /tmp/inventory-playbook.yml
-
-ansible-playbook /tmp/bootstrap-playbook.yml \
+ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   -C $branch_name \
   --limit localhost \
