@@ -122,11 +122,18 @@ fi
 # Atualização de repositório, instalação de dependencias, isntalação de ansible
 
 echo Instalando Git
-sudo apt install git-all --yes
+add-apt-repository ppa:git-core/ppa 
+if [ $? != 0 ]
+then
+    echo "$(tput setaf 1)add-apt-repository ppa:git-core/ppa.$(tput setaf 7)"
+    exit 14
+fi
+
+apt install git
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro ao instalar o Git.$(tput setaf 7)"
-    exit 14
+    exit 15
 fi
 
 echo Instalando Ansible
