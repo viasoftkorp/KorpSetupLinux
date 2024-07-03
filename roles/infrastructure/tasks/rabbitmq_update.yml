@@ -19,21 +19,21 @@
 
 - name: Redefinição de 'services_to_restart'
   ansible.builtin.set_fact:
-    services_to_restart: services_to_restart | difference([rabbitmq_container_id])
+    services_to_restart: "{{ services_to_restart | default([]) | difference([rabbitmq_container_id]) }}"
 
 - name: Parada de containeres
   ansible.builtin.shell:
-    docker stop {{ services_to_restart }}
+    docker stop {{ item }}
+  loop: "{{ services_to_restart }}"
 
 - name: Remoção de container do RabbitMQ desatualizado
   ansible.builtin.shell:
     docker rm -f {{ rabbitmq_container_id }}
 
 - name: Backup de volume do RabbitMQ
-  ansible.builtin.copy:
-    src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}" 
-    dest: "{{ dados_docker_dir_path }}/rabbitmq_backup"
-
+  ansible.builtin.shell:
+    cmd: "cp -r {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/ {{ dados_docker_dir_path }}/backup" 
+    
 - name: Atualização progressiva
   ansible.builtin.include_tasks: update_to_version.yml
   loop:
@@ -44,4 +44,5 @@
 
 - name: Reinicio de containeres
   ansible.builtin.shell:
-    docker start {{ services_to_restart }}
+    docker start {{ item }}
+  loop: "{{ services_to_restart }}"
