@@ -32,7 +32,7 @@
 
 - name: Backup de volume do RabbitMQ
   ansible.builtin.shell:
-    cmd: "cp -r {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/ {{ dados_docker_dir_path }}/backup" 
+    cmd: "sudo cp -r {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/ {{ dados_docker_dir_path }}/backup" 
   become: true
 
 - name: Atualização progressiva
