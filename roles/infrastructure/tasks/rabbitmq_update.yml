@@ -11,7 +11,7 @@
 - name: Obter id de container do RabbitMQ
   ansible.builtin.shell:
     docker ps -q --filter name=rabbitmq
-  register: rabbitmq_container_output.stdout
+  register: rabbitmq_container_output
 
 - name: Definição de id de container do RabbitMQ
   ansible.builtin.set_fact:
