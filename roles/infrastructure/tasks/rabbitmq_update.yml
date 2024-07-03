@@ -1,3 +1,47 @@
-- name: Saída do setup
-  ansible.builtin.fail:
-    msg: "RabbitMQ será atualizado."
+# parar containers viasoft.* e korp.* (validar que isso inclui todos)
+- name: "Obter containeres korp e viasoft"
+  ansible.builtin.shell:
+    docker ps -q
+  register: active_services_id
+
+- name: "Obter containeres korp e viasoft"
+  include_tasks: get_service_id_from_image_name.yml
+  loop: "{{ active_services_id.stdout_lines }}"
+
+- name: Obter id de container do RabbitMQ
+  ansible.builtin.shell:
+    docker ps -q --filter name=rabbitmq
+  register: rabbitmq_container_output.stdout
+
+- name: Definição de id de container do RabbitMQ
+  ansible.builtin.set_fact:
+    rabbitmq_container_id: rabbitmq_container_output.stdout
+
+- name: Redefinição de 'services_to_restart'
+  ansible.builtin.set_fact:
+    services_to_restart: services_to_restart | difference([rabbitmq_container_id])
+
+- name: Parada de containeres
+  ansible.builtin.shell:
+    docker stop {{ services_to_restart }}
+
+- name: Remoção de container do RabbitMQ desatualizado
+  ansible.builtin.shell:
+    docker rm -f {{ rabbitmq_container_id }}
+
+- name: Backup de volume do RabbitMQ
+  ansible.builtin.copy:
+    src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}" 
+    dest: "{{ dados_docker_dir_path }}/rabbitmq_backup"
+
+- name: Atualização progressiva
+  ansible.builtin.include_tasks: update_to_version.yml
+  loop:
+    - '3.9'
+    - '3.10'
+    - '3.11'
+    - '3.12'
+
+- name: Reinicio de containeres
+  ansible.builtin.shell:
+    docker start {{ services_to_restart }}

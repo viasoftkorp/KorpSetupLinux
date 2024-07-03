@@ -1,0 +1,9 @@
+- name: Obtenção de informações do container
+  ansible.builtin.shell:
+    docker inspect --format '{{ '{{' }} .Config.Image {{ '}}' }}' {{ item }}
+  register: container_data
+
+- name: Adição à lista
+  ansible.builtin.set_fact: 
+    services_to_restart: "{{ services_to_restart | default([]) + [item] }}"
+  when: "'korp/' in container_data.stdout"

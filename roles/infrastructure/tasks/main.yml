@@ -53,12 +53,11 @@
         prompt: 
           "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
           Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
-          Precione 'enter' para continuar sem a atualização, ou digite 'update' para prosseguir com a atualização:"
+          Precione 'enter' para sair do setup sem atualizar, ou digite 'update' para prosseguir com a atualização:"
       register: rabbitmq_prompt
 
     - name: Saída do setup
-      ansible.builtin.fail:
-        msg: "É necessário realizar a atualização do RabbitMQ para prosseguir com a instalação."
+      ansible.builtin.meta: end_play
       when: rabbitmq_prompt.user_input != 'update' 
 
     - name: Início de atualização do RabbitMQ
