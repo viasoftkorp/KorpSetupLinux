@@ -227,8 +227,7 @@ sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
-  # $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
-  -K \
+  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
