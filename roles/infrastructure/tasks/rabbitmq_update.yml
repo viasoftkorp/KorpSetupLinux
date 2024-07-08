@@ -30,7 +30,7 @@
 
   - name: Parada de container do RabbitMQ desatualizado
     ansible.builtin.shell:
-      docker stop -f {{ rabbitmq_container_id }}
+      docker stop {{ rabbitmq_container_id }}
     when: rabbitmq_container_id != ""
 
   - name: Backup de volume do RabbitMQ
