@@ -29,6 +29,10 @@
   delay: 5
   until: result is not failed
 
+- name: Print de logs
+  ansible.builtin.shell:
+    cmd: docker logs rabbitmq
+
 - name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
     docker rm -f {{ rabbitmq_container_id }}
