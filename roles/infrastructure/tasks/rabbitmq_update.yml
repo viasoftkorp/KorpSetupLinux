@@ -31,6 +31,7 @@
   - name: Remoção de container do RabbitMQ desatualizado
     ansible.builtin.shell:
       docker rm -f {{ rabbitmq_container_id }}
+    when: rabbitmq_container_id != ""
 
   - name: Backup de volume do RabbitMQ
     ansible.builtin.copy:
