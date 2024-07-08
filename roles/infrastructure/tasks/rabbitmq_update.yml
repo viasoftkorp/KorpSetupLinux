@@ -33,8 +33,9 @@
       docker rm -f {{ rabbitmq_container_id }}
 
   - name: Backup de volume do RabbitMQ
-    ansible.builtin.shell:
-      cmd: "cp -r {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/ {{ dados_docker_dir_path }}/backup" 
+    ansible.builtin.copy:
+      src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/" 
+      dest: "{{ dados_docker_dir_path }}/backup/"
     become: true
 
   - name: Atualização progressiva
@@ -60,4 +61,8 @@
       ansible.builtin.shell:
         docker start {{ item }}
       loop: "{{ services_to_restart }}"
+
+    - name: Saída do setup
+      ansible.builtin.fail:
+        msg: "Ocorreu um erro na atualização do RabbitMQ;"
 

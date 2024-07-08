@@ -32,6 +32,11 @@
 - name: Print de logs
   ansible.builtin.shell:
     cmd: docker logs rabbitmq
+  register: logs123
+
+- name: debug
+  ansible.builtin.debug:
+    var: logs123
 
 - name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
