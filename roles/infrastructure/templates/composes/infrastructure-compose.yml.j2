@@ -124,7 +124,7 @@ services:
       - "15672:15672"
       - "5672:5672"
     volumes:
-      - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/:/var/lib/rabbitmq"
+      - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/:/var/lib/rabbitmq"
     networks:
       - servicos
 

@@ -1,11 +1,11 @@
 - name: Subir RabbitMQ nas versão
   ansible.builtin.shell:
-    "docker run --name rabbitmq{{ item }} -e RABBITMQ_NODENAME=rabbitmq -e TCP_PORTS=15672,5672 -d -p 5672:5672 -p 15672:15672 -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/rabbitmq rabbitmq-korp-{{item}}"
+    "docker run --name rabbitmq --hostname rabbitmq -e RABBITMQ_NODENAME=rabbitmq -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/rabbitmq rabbitmq:{{ item }}-management"
   register: new_container_raw_result
 
 - name: Aguarda inicialização do rabbitmq
   community.docker.docker_container_exec:
-    container: rabbitmq{{ item }}
+    container: rabbitmq
     command: |
       rabbitmqctl await_startup
     chdir: /
@@ -18,9 +18,9 @@
   ansible.builtin.set_fact:
     rabbitmq_container_id: "{{ new_container_raw_result.stdout }}"
 
-- name: Aguarda inicialização do rabbitmq
+- name: Habilitação de todas as feature flags
   community.docker.docker_container_exec:
-    container: rabbitmq{{ item }}
+    container: rabbitmq
     command: |
       rabbitmqctl enable_feature_flag all
     chdir: /
@@ -29,7 +29,7 @@
   delay: 5
   until: result is not failed
 
-- name: Remoção de container do RabbitMQ desatualizado
+- name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
     docker rm -f {{ rabbitmq_container_id }}
 
