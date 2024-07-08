@@ -28,9 +28,9 @@
       docker stop {{ item }}
     loop: "{{ services_to_restart }}"
 
-  - name: Remoção de container do RabbitMQ desatualizado
+  - name: Parada de container do RabbitMQ desatualizado
     ansible.builtin.shell:
-      docker rm -f {{ rabbitmq_container_id }}
+      docker stop -f {{ rabbitmq_container_id }}
     when: rabbitmq_container_id != ""
 
   - name: Backup de volume do RabbitMQ
@@ -41,6 +41,11 @@
       group: root
       mode: '0775'
     become: true
+
+  - name: Remoção de container do RabbitMQ desatualizado
+    ansible.builtin.shell:
+      docker rm -f {{ rabbitmq_container_id }}
+    when: rabbitmq_container_id != ""
 
   - name: Atualização progressiva
     ansible.builtin.include_tasks: update_to_version.yml
