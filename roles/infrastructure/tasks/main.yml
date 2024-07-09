@@ -32,7 +32,7 @@
     register: rabbitmq_image_info
     ignore_errors: true
 
-  - name: Valor inesperado ao buscar nome de imagem
+  - name: Validação de retorno do docker
     ansible.builtin.fail:
       msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
     when: rabbitmq_image_info.stdout_lines | length > 1
