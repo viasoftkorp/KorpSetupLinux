@@ -1,4 +1,4 @@
-- name: "Atualização do RabbitMQ"
+- name: Atualização do RabbitMQ
   block:
   # parar containers viasoft.* e korp.* (validar que isso inclui todos)
   - name: "Obter containeres korp e viasoft"
@@ -38,8 +38,6 @@
       src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/" 
       dest: "{{ dados_docker_dir_path }}/backup/"
       owner: "{{ linux_korp.user }}"
-      group: root
-      mode: '0775'
     become: true
 
   - name: Remoção de container do RabbitMQ desatualizado
@@ -59,6 +57,7 @@
   - name: Renomeando pasta do rabbitmq
     ansible.builtin.shell:
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
+    become: true
 
   - name: Reinicio de containeres
     ansible.builtin.shell:
