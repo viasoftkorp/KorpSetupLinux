@@ -65,6 +65,17 @@
       files:
         - rabbitmq-upgrade-compose.yml
 
+  - name: Aguarda inicialização do RabbitMQ
+    community.docker.docker_container_exec:
+      container: "{{ rabbitmq_container_name }}"
+      command: |
+        rabbitmqctl await_startup
+      chdir: /
+    register: result
+    retries: 5
+    delay: 5
+    until: result is not failed
+
   - name: Reinicio de containeres
     ansible.builtin.shell:
       docker start {{ item }}
