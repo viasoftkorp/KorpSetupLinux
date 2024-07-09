@@ -12,7 +12,7 @@
 
   - name: Obter id de container do RabbitMQ
     ansible.builtin.shell:
-      docker ps -q --filter name=rabbitmq
+      docker ps -q --filter name={{ rabbitmq_container_name }}
     register: rabbitmq_container_output
 
   - name: Definição de id de container do RabbitMQ
@@ -36,7 +36,7 @@
   - name: Backup de volume do RabbitMQ
     ansible.builtin.copy:
       src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/" 
-      dest: "{{ dados_docker_dir_path }}/backup/"
+      dest: "{{ dados_docker_dir_path }}/rabbitmq_backup/"
       owner: "{{ linux_korp.user }}"
     become: true
 
@@ -46,7 +46,7 @@
     when: rabbitmq_container_id != ""
 
   - name: Atualização progressiva
-    ansible.builtin.include_tasks: update_to_version.yml
+    ansible.builtin.include_tasks: rabbitmq_update_to_version.yml
     loop:
       - '3.9'
       - '3.10'
@@ -72,5 +72,5 @@
 
     - name: Saída do setup
       ansible.builtin.fail:
-        msg: "Ocorreu um erro na atualização do RabbitMQ;"
+        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup"
 

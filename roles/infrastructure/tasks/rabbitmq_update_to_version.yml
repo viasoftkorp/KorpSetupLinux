@@ -1,11 +1,11 @@
 - name: Subir RabbitMQ na versão transitória
   ansible.builtin.shell:
-    "docker run --name rabbitmq --hostname rabbitmq -e RABBITMQ_NODENAME=rabbitmq -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/rabbitmq rabbitmq:{{ item }}-management"
+    "docker run --name {{ rabbitmq_container_name }} --hostname {{ rabbitmq_container_name }} -e RABBITMQ_NODENAME={{ rabbitmq_container_name }} -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/{{ rabbitmq_container_name }} {{ rabbitmq_container_name }}:{{ item }}-management"
   register: new_container_raw_result
 
-- name: Aguarda inicialização do rabbitmq
+- name: Aguarda inicialização do RabbitMQ
   community.docker.docker_container_exec:
-    container: rabbitmq
+    container: "{{ rabbitmq_container_name }}"
     command: |
       rabbitmqctl await_startup
     chdir: /
@@ -21,24 +21,11 @@
 # Requerido para upgrade em algumas versões
 - name: Habilitação de todas as feature flags
   community.docker.docker_container_exec:
-    container: rabbitmq
+    container: "{{ rabbitmq_container_name }}"
     command: |
       rabbitmqctl enable_feature_flag all
     chdir: /
-  register: result
-  retries: 5
-  delay: 5
-  until: result is not failed
-  when: item in ['3.11', '3.12']
-
-- name: Print de logs
-  ansible.builtin.shell:
-    cmd: docker logs rabbitmq
-  register: logs123
-
-- name: debug
-  ansible.builtin.debug:
-    var: logs123
+  when: item in rabbitmq_breaking_versions
 
 - name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
