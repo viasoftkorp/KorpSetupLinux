@@ -228,8 +228,6 @@ fi
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
-rm /tmp/inventory-playbook.yml
-
 # fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
 sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
 
