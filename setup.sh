@@ -20,6 +20,7 @@ create_random_string() {
 #   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
+#   skip_salt_test=<bool> - OPCIONAL, padrão false
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -48,6 +49,7 @@ db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn="";
 https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
+skip_salt_test=false;
 
 ini_file_path="./setup_config.ini"
 
@@ -226,6 +228,13 @@ fi
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
+rm /tmp/inventory-playbook.yml
+
+# fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
+sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
+
+ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+
 ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   --limit localhost \
@@ -241,7 +250,8 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
       "remove_unversioned": '$remove_unversioned'
     },
     "apps":['$apps'],
-    "removed_version": "'$removed_version'"
+    "removed_version": "'$removed_version'",
+    "skip_salt_test": '$skip_salt_test'
   }'
 
 if [ $? != 0 ]

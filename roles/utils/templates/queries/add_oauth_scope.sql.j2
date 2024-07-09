@@ -1,0 +1,15 @@
+DECLARE @SCOPE VARCHAR(MAX)
+DECLARE @CLIENT_ID VARCHAR(MAX)
+
+SET @SCOPE = '{{ scope }}'
+
+SET @CLIENT_ID = (SELECT Id FROM Clients
+WHERE [ClientId] = '{{ service_name }}');
+
+IF NOT EXISTS (SELECT 1 FROM ClientScopes WHERE [Scope] = @SCOPE and [ClientId] = @CLIENT_ID)
+BEGIN
+	INSERT INTO [ClientScopes] (Scope, ClientId) 
+	VALUES (@SCOPE, @CLIENT_ID)
+END
+
+SELECT 1

@@ -66,9 +66,9 @@
     when: is_rabbitmq_out_of_date | default(false)
 
 - name: Criação e inicialização de infrastructure-compose
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
-    env_file: "{{ docker_env_file_path }}"
+    env_files: ["{{ docker_env_file_path }}"]
     files:
       - infrastructure-compose.yml
 
@@ -144,6 +144,23 @@
     tasks_from: 'consul_kv/ensure_kv'
   vars:
     service_name: Global
+    keys_to_overwrite: ["RuntimeEnvironment"]
+
+- name: Criação de cliente OAuth para Korp.ERP
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_client
+  vars:
+    secret: "{{ general.korp_erp_secret }}"
+    service_name: "{{ korp_erp_oauth_client_name }}"
+
+- name: Criação de escopos para Korp.ERP
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_scope
+  vars:
+    service_name: "{{ korp_erp_oauth_client_name }}"
+    scopes: "{{ korp_erp_scopes }}"
 
 - name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml
