@@ -1,0 +1,32 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  {{ rabbitmq_container_name }}:
+    image: "korp/rabbitmq:1.3.0"
+    container_name: "{{ rabbitmq_container_name }}"
+    hostname: "rabbitmq" 
+    restart: always
+    environment:
+      - TCP_PORTS=15672,5672
+      - RABBITMQ_NODENAME=rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/:/var/lib/rabbitmq"
+    networks:
+      - servicos
