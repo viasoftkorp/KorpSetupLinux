@@ -148,7 +148,6 @@ fi
 
 sudo rm -rf /tmp/KorpSetupLinux
 
-# Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
 git clone -b $branch_name --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
 
 # Configuração de disco segundário, que será mondado em /etc/korp
@@ -256,4 +255,4 @@ then
     exit 11
 fi
 
-sudo rm -r /tmp/KorpSetupLinux
+sudo rm -rf /tmp/KorpSetupLinux
