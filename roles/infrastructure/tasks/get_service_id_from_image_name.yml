@@ -3,6 +3,7 @@
     docker inspect --format '{{ '{{' }} .Config.Image {{ '}}' }}' {{ item }}
   register: container_data
 
+# Irá coletar todos os containeres que tem a imagem pertencente à korp
 - name: Adição à lista
   ansible.builtin.set_fact: 
     services_to_restart: "{{ services_to_restart | default([]) + [item] }}"
