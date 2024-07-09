@@ -239,7 +239,7 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
       "docker_account": "'$docker_account'",
       "docker_image_suffix": "'$docker_image_suffix'",
       "remove_versioned": '$remove_versioned',
-      "remove_unversioned": '$remove_unversioned',
+      "remove_unversioned": '$remove_unversioned'
     },
     "apps":['$apps'],
     "removed_version": "'$removed_version'"
