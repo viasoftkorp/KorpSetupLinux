@@ -252,6 +252,8 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "skip_salt_test": '$skip_salt_test'
   }'
 
+sudo rm -r /tmp/KorpSetupLinux
+
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
