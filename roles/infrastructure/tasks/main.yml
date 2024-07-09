@@ -39,7 +39,7 @@
 
   - name: Definição de imagem atual do RabbitMQ
     ansible.builtin.set_fact:
-      actual_rabbitmq_image: "{{ rabbitmq_image_info.stdout_lines[0] }}"
+      actual_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
 
   - name: Validação de nome da imagem
     ansible.builtin.set_fact:
