@@ -56,13 +56,18 @@
           Precione 'enter' para sair do setup sem atualizar, ou digite 'update' para prosseguir com a atualização:"
       register: rabbitmq_prompt
 
+    - name: Definição de should_update_rabbitmq
+      ansible.builtin.set_fact:
+        should_update_rabbitmq: true
+      when: rabbitmq_prompt.user_input | upper == 'UPDATE'
+
     - name: Saída do setup
       ansible.builtin.meta: end_play
-      when: rabbitmq_prompt.user_input != 'update' 
+      when: not should_update_rabbitmq | default(false)
 
     - name: Início de atualização do RabbitMQ
       ansible.builtin.include_tasks: rabbitmq_update.yml
-      when: rabbitmq_prompt.user_input == 'update' 
+      when: should_update_rabbitmq | default(false)     
     when: is_rabbitmq_out_of_date | default(false)
 
 - name: Criação e inicialização de infrastructure-compose

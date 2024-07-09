@@ -1,6 +1,6 @@
 - name: Subir RabbitMQ na versão transitória
   ansible.builtin.shell:
-    "docker run --name {{ rabbitmq_container_name }} --hostname {{ rabbitmq_container_name }} -e RABBITMQ_NODENAME={{ rabbitmq_container_name }} -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/{{ rabbitmq_container_name }} {{ rabbitmq_container_name }}:{{ item }}-management"
+    "docker run --name {{ rabbitmq_container_name }} --hostname rabbitmq -e RABBITMQ_NODENAME=rabbitmq -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/rabbitmq rabbitmq:{{ item }}-management"
   register: new_container_raw_result
 
 - name: Aguarda inicialização do RabbitMQ

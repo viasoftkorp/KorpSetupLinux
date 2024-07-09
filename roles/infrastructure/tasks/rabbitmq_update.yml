@@ -59,18 +59,20 @@
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
     become: true
 
+  - name: Criação e inicialização de infrastructure-compose
+    community.docker.docker_compose_v2:
+      project_src: "{{ compose_dir_path }}/"
+      env_files: ["{{ docker_env_file_path }}"]
+      files:
+        - infrastructure-compose.yml
+
   - name: Reinicio de containeres
     ansible.builtin.shell:
       docker start {{ item }}
     loop: "{{ services_to_restart }}"
 
   rescue:
-    - name: Reinicio de containeres
-      ansible.builtin.shell:
-        docker start {{ item }}
-      loop: "{{ services_to_restart }}"
-
     - name: Saída do setup
       ansible.builtin.fail:
-        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup"
+        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup; \n Os containeres que devem ser iniciados após a correção são: {{ services_to_restart }}"
 
