@@ -48,18 +48,20 @@
 
   - name: Obtenção de permissão para atualização
     block:
-    - name: Permissão para atualização do RabbitMQ
-      ansible.builtin.debug: "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
-        Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
-        Inicie o setup novamente passando a flag 'should_update_rabbitmq=true'"
+      - name: Requerimento de flag para atualização
+        block:
+        - name: Permissão para atualização do RabbitMQ
+          ansible.builtin.debug: "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
+            Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
+            Inicie o setup novamente passando a flag 'should_update_rabbitmq=true'"
 
-    - name: Saída do setup
-      ansible.builtin.meta: end_play
-      when: should_update_rabbitmq | default(false) != true
+        - name: Saída do setup
+          ansible.builtin.meta: end_play
+        when: not should_update_rabbitmq | bool | default(false)
 
-    - name: Início de atualização do RabbitMQ
-      ansible.builtin.include_tasks: rabbitmq_update.yml
-      when: should_update_rabbitmq | default(false)     
+      - name: Início de atualização do RabbitMQ
+        ansible.builtin.include_tasks: rabbitmq_update.yml
+        when: should_update_rabbitmq | bool | default(false)     
     when: is_rabbitmq_out_of_date | default(false)
 
 - name: Criação e inicialização de infrastructure-compose
