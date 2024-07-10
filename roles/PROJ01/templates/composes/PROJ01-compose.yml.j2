@@ -16,7 +16,7 @@ networks:
 
 services:
   PROJ01:
-    image: "{{ docker_account }}/korp.projetos.gantt-frontend:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.projetos.gantt-frontend:1.2.x{{ docker_image_suffix }}"
     container_name: "PROJ01"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
