@@ -39,12 +39,12 @@
 
   - name: Definição de imagem atual do RabbitMQ
     ansible.builtin.set_fact:
-      actual_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
+      current_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
 
   - name: Validação de nome da imagem
     ansible.builtin.set_fact:
       is_rabbitmq_out_of_date: true
-    when: actual_rabbitmq_image == 'korp/rabbitmq:1.1.0' 
+    when: current_rabbitmq_image == 'korp/rabbitmq:1.1.0' 
 
   - name: Obtenção de permissão para atualização
     block:
@@ -52,7 +52,7 @@
         block:
         - name: Permissão para atualização do RabbitMQ
           ansible.builtin.debug: 
-            msg: "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
+            msg: "ATENÇÃO: A versão do atual do RabbitMQ ({{ current_rabbitmq_image }}) está desatualizada.\n
               Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
               Inicie o setup novamente passando a flag 'should_update_rabbitmq=true'"
 
