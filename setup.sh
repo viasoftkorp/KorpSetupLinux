@@ -141,7 +141,7 @@ fi
 
 sudo rm -rf /tmp/KorpSetupLinux
 
-git clone -b $branch_name --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
+git clone -b $branch_name --depth=1 --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
