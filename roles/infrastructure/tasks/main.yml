@@ -49,20 +49,13 @@
   - name: Obtenção de permissão para atualização
     block:
     - name: Permissão para atualização do RabbitMQ
-      ansible.builtin.prompt: "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
+      ansible.builtin.debug: "ATENÇÃO: A versão do atual do RabbitMQ ({{ actual_rabbitmq_image }}) está desatualizada.\n
         Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
-        Precione 'enter' para sair do setup sem atualizar, ou digite 'update' para prosseguir com a atualização:"
-      timeout: 10
-      register: rabbitmq_prompt
-
-    - name: Definição de should_update_rabbitmq
-      ansible.builtin.set_fact:
-        should_update_rabbitmq: true
-      when: rabbitmq_prompt.user_input | upper == 'UPDATE'
+        Inicie o setup novamente passando a flag 'should_update_rabbitmq=true'"
 
     - name: Saída do setup
       ansible.builtin.meta: end_play
-      when: not should_update_rabbitmq | default(false)
+      when: should_update_rabbitmq | default(false) != true
 
     - name: Início de atualização do RabbitMQ
       ansible.builtin.include_tasks: rabbitmq_update.yml

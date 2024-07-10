@@ -21,6 +21,7 @@ create_random_string() {
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
+#   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -238,7 +239,8 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     },
     "apps":['$apps'],
     "removed_version": "'$removed_version'",
-    "skip_salt_test": '$skip_salt_test'
+    "skip_salt_test": '$skip_salt_test',
+    "should_update_rabbitmq": '$should_update_rabbitmq'
   }'
 
 if [ $? != 0 ]
