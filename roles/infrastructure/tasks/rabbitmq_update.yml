@@ -65,10 +65,11 @@
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
     become: true
 
-  - name: Criação e inicialização de infrastructure-compose
+  - name: Criação e inicialização de RabbitMQ
     community.docker.docker_compose_v2:
       project_src: "{{ compose_dir_path }}/"
       env_files: ["{{ docker_env_file_path }}"]
+      services: ["{{ rabbitmq_container_name }}"]
       files:
         - infrastructure-compose.yml
 
