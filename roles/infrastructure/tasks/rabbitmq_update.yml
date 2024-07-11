@@ -56,7 +56,7 @@
 
   - name: Renomeando pasta do rabbitmq
     ansible.builtin.shell:
-      mv -f {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
+      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/* {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/
     become: true
 
   - name: Criação e inicialização de infrastructure-compose
