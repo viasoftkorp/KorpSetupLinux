@@ -59,6 +59,11 @@
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/* {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/
     become: true
 
+  - name: Removendo pasta antiga
+    ansible.builtin.file:
+      path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/"
+      state: absent
+
   - name: Criação e inicialização de infrastructure-compose
     community.docker.docker_compose_v2:
       project_src: "{{ compose_dir_path }}/"
