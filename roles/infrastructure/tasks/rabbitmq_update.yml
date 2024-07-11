@@ -52,6 +52,7 @@
       - '3.10'
       - '3.11'
       - '3.12'
+      - '3.13'
 
   - name: Renomeando pasta do rabbitmq
     ansible.builtin.shell:

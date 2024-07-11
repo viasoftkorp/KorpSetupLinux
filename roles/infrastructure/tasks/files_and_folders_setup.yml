@@ -167,7 +167,7 @@
   loop:
     - "{{ dados_docker_dir_path }}/consul-server"
     - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
-    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}" #todo
+    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13"
     - "{{ dados_docker_dir_path }}/portainer"
 
 

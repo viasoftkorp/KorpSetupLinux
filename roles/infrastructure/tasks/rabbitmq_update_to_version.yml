@@ -1,7 +1,6 @@
 - name: Subir RabbitMQ na versão transitória
   ansible.builtin.shell:
     "docker run --name {{ rabbitmq_container_name }} --hostname rabbitmq -e RABBITMQ_NODENAME=rabbitmq -e TCP_PORTS=15672,5672 -d -v {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}:/var/lib/rabbitmq rabbitmq:{{ item }}-management"
-  register: new_container_raw_result
 
 - name: Aguarda inicialização do RabbitMQ
   community.docker.docker_container_exec:
@@ -14,10 +13,6 @@
   delay: 5
   until: result is not failed
 
-- name: Obtenção de id do novo container
-  ansible.builtin.set_fact:
-    rabbitmq_container_id: "{{ new_container_raw_result.stdout }}"
-
 # Requerido para upgrade em algumas versões
 - name: Habilitação de todas as feature flags
   community.docker.docker_container_exec:
@@ -29,6 +24,6 @@
 
 - name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
-    docker rm -f {{ rabbitmq_container_id }}
+    docker rm -f {{ rabbitmq_container_name }}
 
 

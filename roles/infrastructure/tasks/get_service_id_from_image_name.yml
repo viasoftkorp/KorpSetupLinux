@@ -7,4 +7,4 @@
 - name: Adição à lista
   ansible.builtin.set_fact: 
     services_to_restart: "{{ services_to_restart | default([]) + [item] }}"
-  when: "'korp/' in container_data.stdout"
+  when: "'korp/' in container_data.stdout and '-frontend' not in container_data.stdout" 
