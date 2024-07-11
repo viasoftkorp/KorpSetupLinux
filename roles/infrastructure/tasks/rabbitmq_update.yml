@@ -54,15 +54,16 @@
       - '3.12'
       - '3.13'
 
-  - name: Renomeando pasta do rabbitmq
-    ansible.builtin.shell:
-      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/* {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/
+  - name: Removendo pasta vazia
+    ansible.builtin.file:
+      path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
+      state: absent
     become: true
 
-  - name: Removendo pasta antiga
-    ansible.builtin.file:
-      path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/"
-      state: absent
+  - name: Renomeando pasta do rabbitmq
+    ansible.builtin.shell:
+      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
+    become: true
 
   - name: Criação e inicialização de infrastructure-compose
     community.docker.docker_compose_v2:
