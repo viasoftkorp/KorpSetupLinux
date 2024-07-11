@@ -54,13 +54,13 @@
       - '3.12'
       - '3.13'
 
-  - name: Removendo pasta vazia
+  - name: Remoção de diretório para substituição
     ansible.builtin.file:
       path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
       state: absent
     become: true
 
-  - name: Renomeando pasta do rabbitmq
+  - name: Alteração de nome de diretório
     ansible.builtin.shell:
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
     become: true
@@ -84,7 +84,7 @@
     delay: 5
     until: result is not failed
 
-  - name: Reinicio de containeres
+  - name: Reinício de containeres
     ansible.builtin.shell:
       docker start {{ item }}
     loop: "{{ services_to_restart }}"
