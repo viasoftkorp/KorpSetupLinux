@@ -53,16 +53,35 @@
       - '3.11'
       - '3.12'
       - '3.13'
+  
+  - name: Definição de 'new_version_dir_path'
+    ansible.builtin.set_fact:
+      new_version_dir_path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
+
+  - name: Verificação de conteúdo de 'new_version_dir_path'
+    ansible.builtin.shell: ls -A {{ new_version_dir_path }}
+    register: result
+
+  - name: Definição de new_version_dir_is_empty
+    ansible.builtin.set_fact:
+      new_version_dir_is_empty: true
+    when: result.stdout == ""
 
   - name: Remoção de diretório para substituição
     ansible.builtin.file:
-      path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
+      path: "{{ new_version_dir_path }}"
       state: absent
     become: true
+    when: new_version_dir_is_empty | default(false)
+
+  - name: Tratativa para caso diretório não esteja vazio
+    ansible.builtin.fail:
+      msg: Resultado inesperado ao efetuar atualização do RabbitMQ. O diretório {{ new_version_dir_path }} já tem conteúdo e não pode ser substituido.
+    when: not new_version_dir_is_empty
 
   - name: Alteração de nome de diretório
     ansible.builtin.shell:
-      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13
+      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ new_version_dir_path }}
     become: true
 
   - name: Criação e inicialização de RabbitMQ
