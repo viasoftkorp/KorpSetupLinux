@@ -7,8 +7,6 @@ services:
       unversioned: true
 
   Viasoft.AuditTrail.Client:
-    oauth_client:
-      skip: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"
     version:
@@ -22,19 +20,13 @@ services:
       unversioned: true
 
   Viasoft.SystemUpdate:
-    oauth_client:
-      skip: true
     version:
       unversioned: true
 
   Viasoft.Legacy.HTTPProxy:
-    oauth_client:
-      skip: true
     version:
       unversioned: true
 
   Viasoft.WelcomePage.Dashboard:
-    oauth_client:
-      skip: true
     version:
       unversioned: true
