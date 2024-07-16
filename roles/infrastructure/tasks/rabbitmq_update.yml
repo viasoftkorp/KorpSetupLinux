@@ -37,6 +37,7 @@
     ansible.builtin.copy:
       src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/" 
       dest: "{{ dados_docker_dir_path }}/rabbitmq_backup/"
+      remote_src: true
       owner: "{{ linux_korp.user }}"
     become: true
 
