@@ -1,12 +1,12 @@
 - name: Atualização do RabbitMQ
   block:
   # parar containers viasoft.* e korp.* (validar que isso inclui todos)
-  - name: "Obter containeres korp e viasoft"
+  - name: "Obter containers korp e viasoft"
     ansible.builtin.shell:
       docker ps -q
     register: active_services_id
 
-  - name: "Obter containeres korp e viasoft"
+  - name: "Obter containers korp e viasoft"
     include_tasks: get_service_id_from_image_name.yml
     loop: "{{ active_services_id.stdout_lines }}"
 
@@ -23,7 +23,7 @@
     ansible.builtin.set_fact:
       services_to_restart: "{{ services_to_restart | default([]) | difference([rabbitmq_container_id]) }}"
 
-  - name: Parada de containeres
+  - name: Parada de containers
     ansible.builtin.shell:
       docker stop {{ item }}
     loop: "{{ services_to_restart }}"
@@ -54,7 +54,7 @@
       - '3.11'
       - '3.12'
       - '3.13'
-  
+
   - name: Definição de 'new_version_dir_path'
     ansible.builtin.set_fact: 
       new_version_dir_path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
@@ -107,5 +107,5 @@
   rescue:
     - name: Saída do setup
       ansible.builtin.fail:
-        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup; \n Os containeres que devem ser iniciados após a correção são: {{ services_to_restart }}"
+        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup; \n Os containers que devem ser iniciados após a correção são: {{ services_to_restart }}"
 
