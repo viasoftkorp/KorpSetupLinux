@@ -3,35 +3,21 @@
   # parar containers viasoft.* e korp.* (validar que isso inclui todos)
   - name: "Obter containers korp e viasoft"
     ansible.builtin.shell:
-      docker ps -q
-    register: active_services_id
+       docker ps -q --filter "name=Viasoft" --filter "name=Korp"
+    register: services_to_restart
 
-  - name: "Obter containers korp e viasoft"
-    include_tasks: get_service_id_from_image_name.yml
-    loop: "{{ active_services_id.stdout_lines }}"
-
-  - name: Obter id de container do RabbitMQ
-    ansible.builtin.shell:
-      docker ps -q --filter name={{ rabbitmq_container_name }}
-    register: rabbitmq_container_output
-
-  - name: Definição de id de container do RabbitMQ
-    ansible.builtin.set_fact:
-      rabbitmq_container_id: "{{ rabbitmq_container_output.stdout }}"
-
-  - name: Redefinição de 'services_to_restart'
-    ansible.builtin.set_fact:
-      services_to_restart: "{{ services_to_restart | default([]) | difference([rabbitmq_container_id]) }}"
+  # # - name: Redefinição de 'services_to_restart'
+  # #   ansible.builtin.set_fact:
+  # #     services_to_restart: "{{ services_to_restart | default([]) | difference([rabbitmq_container_id]) }}"
 
   - name: Parada de containers
     ansible.builtin.shell:
       docker stop {{ item }}
-    loop: "{{ services_to_restart }}"
+    loop: "{{ services_to_restart.stdout | split('\n') }}"
 
-  - name: Parada de container do RabbitMQ desatualizado
+  - name: Remoção de container do RabbitMQ desatualizado
     ansible.builtin.shell:
-      docker stop {{ rabbitmq_container_id }}
-    when: rabbitmq_container_id != ""
+      docker rm -f {{ rabbitmq_container_name }}
 
   - name: Backup de volume do RabbitMQ
     ansible.builtin.copy:
@@ -40,11 +26,7 @@
       remote_src: true
       owner: "{{ linux_korp.user }}"
     become: true
-
-  - name: Remoção de container do RabbitMQ desatualizado
-    ansible.builtin.shell:
-      docker rm -f {{ rabbitmq_container_id }}
-    when: rabbitmq_container_id != ""
+    become_user: root
 
   - name: Atualização progressiva
     ansible.builtin.include_tasks: rabbitmq_update_to_version.yml
@@ -54,6 +36,8 @@
       - '3.11'
       - '3.12'
       - '3.13'
+    loop_control:
+      loop_var: upgrade_version
 
   - name: Definição de 'new_version_dir_path'
     ansible.builtin.set_fact: 
@@ -81,6 +65,14 @@
       mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ new_version_dir_path }}
     become: true
 
+  - name: Configuração e transferência de arquivos de compose
+    ansible.builtin.template:
+      dest: "{{ compose_dir_path }}/infrastructure-compose.yml"
+      src: "composes/infrastructure-compose.yml.j2"
+      owner: "{{ linux_korp.user }}"
+      group: root
+      mode: '0644'
+
   - name: Criação e inicialização de RabbitMQ
     community.docker.docker_compose_v2:
       project_src: "{{ compose_dir_path }}/"
@@ -100,7 +92,15 @@
     delay: 5
     until: result is not failed
 
-  - name: Reinício de containers
+  - name: Habilitação de todas as feature flags
+    community.docker.docker_container_exec:
+      container: "{{ rabbitmq_container_name }}"
+      command: |
+        rabbitmqctl enable_feature_flag all
+      chdir: /
+    when: item in rabbitmq_breaking_versions
+
+  - name: Inicialização de containers
     ansible.builtin.shell:
       docker start $(docker ps -aq)
 

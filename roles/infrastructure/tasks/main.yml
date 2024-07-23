@@ -27,24 +27,39 @@
 
 - name: Garantia de atualização do RabbitMQ
   block:
-  - name: Obtenção de imagem atual do RabbitMQ
-    ansible.builtin.shell: "docker ps --format='{{ '{{' }}.Image{{ '}}' }}' | grep korp/rabbitmq:"
-    register: rabbitmq_image_info
-    ignore_errors: true
+  # - name: Obtenção de imagem atual do RabbitMQ
+  #   ansible.builtin.shell: "docker ps --format='{{ '{{' }}.Image{{ '}}' }}' | grep korp/rabbitmq:"
+  #   register: rabbitmq_image_info
+  #   ignore_errors: true
 
-  - name: Validação de retorno do docker
-    ansible.builtin.fail:
-      msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
-    when: rabbitmq_image_info.stdout_lines | length > 1
+  # - name: Validação de retorno do docker
+  #   ansible.builtin.fail:
+  #     msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
+  #   when: rabbitmq_image_info.stdout_lines | length > 1 || rabbitmq_image_info.failed
 
-  - name: Definição de imagem atual do RabbitMQ
+  # - name: Definição de imagem atual do RabbitMQ
+  #   ansible.builtin.set_fact:
+  #     current_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
+
+  - name: ""
+    ansible.builtin.stat:
+      path: "{{ compose_dir_path }}/infrastructure-compose.yml"
+    register: infrastructure_compose_file
+  
+  - name: 
     ansible.builtin.set_fact:
-      current_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
+      infrastructure_compose_content: "{{ lookup('file', '{{ compose_dir_path }}/infrastructure-compose.yml') | from_yaml }}"
+    when: infrastructure_compose_file.stat.exists
+
+  - debug:
+     msg:
+      - "{{ infrastructure_compose_content | default(None) }}"
+      - "{{ infrastructure_compose_content.services[ rabbitmq_container_name ].image | default(None) }}"
 
   - name: Validação de nome da imagem
     ansible.builtin.set_fact:
       is_rabbitmq_out_of_date: true
-    when: current_rabbitmq_image == 'korp/rabbitmq:1.1.0' 
+    when: infrastructure_compose_content.services[ rabbitmq_container_name ].image | default(None) == 'korp/rabbitmq:1.1.0' 
 
   - name: Obtenção de permissão para atualização
     block:
@@ -64,6 +79,16 @@
         ansible.builtin.include_tasks: rabbitmq_update.yml
         when: should_update_rabbitmq | bool | default(false)     
     when: is_rabbitmq_out_of_date | default(false)
+
+- name: Configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
 
 - name: Criação e inicialização de infrastructure-compose
   community.docker.docker_compose_v2:
