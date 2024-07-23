@@ -19,6 +19,6 @@
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
     env_files: ["{{ docker_env_file_path }}"]
-    restarted: true
+    state : restarted
     files:
       - infrastructure-identity-compose.yml
