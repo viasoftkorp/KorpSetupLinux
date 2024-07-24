@@ -57,7 +57,7 @@
 
   - name: Tratativa para caso diretório não esteja vazio
     ansible.builtin.fail:
-      msg: Resultado inesperado ao efetuar atualização do RabbitMQ. O diretório {{ new_version_dir_path }} já tem conteúdo e não pode ser substituido.
+      msg: Resultado inesperado ao efetuar atualização do RabbitMQ. O diretório {{ new_version_dir_path }} já tem conteúdo e não pode ser substituído.
     when: new_version_dir_db.stat.exists
 
   - name: Alteração de nome de diretório
