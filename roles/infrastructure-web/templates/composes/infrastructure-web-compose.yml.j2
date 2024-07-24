@@ -347,7 +347,7 @@ services:
       - servicos
 
   ADM01:
-    image: "{{ docker_account }}/viasoft.administration-frontend:3.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.administration-frontend:4.0.x{{ docker_image_suffix }}"
     container_name: "ADM01"
     restart: always
     extra_hosts: *default-extra_hosts
