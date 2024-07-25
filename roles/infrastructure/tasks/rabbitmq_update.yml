@@ -92,14 +92,6 @@
     delay: 5
     until: result is not failed
 
-  - name: Habilitação de todas as feature flags
-    community.docker.docker_container_exec:
-      container: "{{ rabbitmq_container_name }}"
-      command: |
-        rabbitmqctl enable_feature_flag all
-      chdir: /
-    when: item in rabbitmq_breaking_versions
-
   - name: Inicialização de containers
     ansible.builtin.shell:
       docker start $(docker ps -aq)
