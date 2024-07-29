@@ -27,34 +27,15 @@
 
 - name: Garantia de atualização do RabbitMQ
   block:
-  # - name: Obtenção de imagem atual do RabbitMQ
-  #   ansible.builtin.shell: "docker ps --format='{{ '{{' }}.Image{{ '}}' }}' | grep korp/rabbitmq:"
-  #   register: rabbitmq_image_info
-  #   ignore_errors: true
-
-  # - name: Validação de retorno do docker
-  #   ansible.builtin.fail:
-  #     msg: "Valor inesperado ao buscar nome de imagem do RabbitMQ ativo"
-  #   when: rabbitmq_image_info.stdout_lines | length > 1 || rabbitmq_image_info.failed
-
-  # - name: Definição de imagem atual do RabbitMQ
-  #   ansible.builtin.set_fact:
-  #     current_rabbitmq_image: "{{ rabbitmq_image_info.stdout }}"
-
-  - name: ""
+  - name: "Leitura de 'infrastructure-compose.yml'"
     ansible.builtin.stat:
       path: "{{ compose_dir_path }}/infrastructure-compose.yml"
     register: infrastructure_compose_file
   
-  - name: 
+  - name: "Definição de 'infrastructure_compose_content'"
     ansible.builtin.set_fact:
       infrastructure_compose_content: "{{ lookup('file', '{{ compose_dir_path }}/infrastructure-compose.yml') | from_yaml }}"
     when: infrastructure_compose_file.stat.exists
-
-  - debug:
-     msg:
-      - "{{ infrastructure_compose_content | default(None) }}"
-      - "{{ infrastructure_compose_content.services[ rabbitmq_container_name ].image | default(None) }}"
 
   - name: Validação de nome da imagem
     ansible.builtin.set_fact:

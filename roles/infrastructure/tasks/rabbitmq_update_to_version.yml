@@ -22,10 +22,6 @@
     chdir: /
   when: upgrade_version in rabbitmq_breaking_versions
 
-# - name: ""
-#   ansible.builtin.pause:
-#     prompt: "Rabbit mq atualizado para {{ upgrade_version }} "
-
 - name: Remoção de container do RabbitMQ
   ansible.builtin.shell:
     docker rm -f {{ rabbitmq_container_name }}
