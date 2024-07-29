@@ -146,18 +146,6 @@
       CDN_GATEWAY={{ docker_servicos_network_ip_address_start | default ('172.18') }}.0.1
       USE_SERVERGC={{ use_servergc }}
 
-# itera sobre os aquivos "*.yml.j2" presentes em 'templates/composes', substituindo as variáveis presentes.
-# o diretório de transferência deve existir, por isso as duas tasks a cima são necessárias.
-- name: Configuração e transferência de arquivos de compose
-  ansible.builtin.template:
-    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
-    src: "composes/{{ item | basename }}"
-    owner: "{{ linux_korp.user }}"
-    group: root
-    mode: '0644'
-  loop:
-    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
-
 - name: Garantia da existência dos diretórios de volume infrastructure
   ansible.builtin.include_role:
     name: utils
@@ -167,9 +155,8 @@
   loop:
     - "{{ dados_docker_dir_path }}/consul-server"
     - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}"
-    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}"
+    - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13"
     - "{{ dados_docker_dir_path }}/portainer"
-
 
 - name: "Verificação de existência de {{ config_dir_path }}/installed_apps.yml"
   ansible.builtin.stat:
