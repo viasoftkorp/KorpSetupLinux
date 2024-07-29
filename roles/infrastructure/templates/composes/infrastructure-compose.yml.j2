@@ -50,7 +50,7 @@ services:
       com.centurylinklabs.watchtower.enable: false
 
   consul-server:
-    image: "consul:1.12"
+    image: "hashicorp/consul:1.19.1"
     container_name: "consul-server"
     restart: always
     command: "agent -server -bootstrap-expect=1"
@@ -70,7 +70,7 @@ services:
       com.centurylinklabs.watchtower.enable: false
 
   fabio:
-    image: "fabiolb/fabio:latest"
+    image: "fabiolb/fabio:1.6.3"
     container_name: "fabio"
     restart: always
     depends_on:
