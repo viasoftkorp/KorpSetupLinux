@@ -25,6 +25,52 @@
 - name: Configuração de arquivos e pastas
   ansible.builtin.import_tasks: files_and_folders_setup.yml
 
+- name: Garantia de atualização do RabbitMQ
+  block:
+  - name: "Leitura de 'infrastructure-compose.yml'"
+    ansible.builtin.stat:
+      path: "{{ compose_dir_path }}/infrastructure-compose.yml"
+    register: infrastructure_compose_file
+  
+  - name: "Definição de 'infrastructure_compose_content'"
+    ansible.builtin.set_fact:
+      infrastructure_compose_content: "{{ lookup('file', '{{ compose_dir_path }}/infrastructure-compose.yml') | from_yaml }}"
+    when: infrastructure_compose_file.stat.exists
+
+  - name: Validação de nome da imagem
+    ansible.builtin.set_fact:
+      is_rabbitmq_out_of_date: true
+    when: infrastructure_compose_content.services[ rabbitmq_container_name ].image | default(None) == 'korp/rabbitmq:1.1.0' 
+
+  - name: Obtenção de permissão para atualização
+    block:
+      - name: Requerimento de flag para atualização
+        block:
+        - name: Permissão para atualização do RabbitMQ
+          ansible.builtin.debug: 
+            msg: "ATENÇÃO: A versão do atual do RabbitMQ ({{ infrastructure_compose_content.services[ rabbitmq_container_name ].image }}) está desatualizada.\n
+              Para realizar a atualização, o setup precisará parar todos os serviços até que a atualização seja concluída;\n
+              Inicie o setup novamente passando a flag 'should_update_rabbitmq=true'"
+
+        - name: Saída do setup
+          ansible.builtin.meta: end_play
+        when: not should_update_rabbitmq | bool | default(false)
+
+      - name: Início de atualização do RabbitMQ
+        ansible.builtin.include_tasks: rabbitmq_update.yml
+        when: should_update_rabbitmq | bool | default(false)     
+    when: is_rabbitmq_out_of_date | default(false)
+
+- name: Configuração e transferência de arquivos de compose
+  ansible.builtin.template:
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
+
 - name: Criação e inicialização de infrastructure-compose
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
