@@ -21,6 +21,7 @@ create_random_string() {
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
+#   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -121,9 +122,8 @@ else
     fi
 fi
 
-# Atualização de repositório, instalação de dependencias, isntalação de ansible
-
-echo Instalando Ansible
+# Atualização de repositório, instalação de dependencias, instalação de ansible e git
+echo Instalando Ansible e Git
 
 # caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
 sudo add-apt-repository --yes --update ppa:ansible/ansible
@@ -132,25 +132,29 @@ then
     echo "$(tput setaf 1)Erro 'sudo add-apt-repository --yes --update ppa:ansible/ansible'.$(tput setaf 7)"
     exit 12
 fi
-sudo apt install ansible --yes
+sudo apt install git ansible --yes
 if [ $? != 0 ]
 then
     echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
     exit 13
 fi
 
+sudo rm -rf /tmp/KorpSetupLinux
+
+git clone -b $branch_name --depth=1 --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
+
 # Configuração de disco segundário, que será mondado em /etc/korp
 
 if [ "$disk" != "" ];
 then
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk" -C $branch_name
+    ansible-playbook /tmp/KorpSetupLinux/disk-playbook.yml --limit localhost --extra-vars "korp_disk=$disk"
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
         exit 07
     fi
 else
-    ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git disk-playbook.yml --limit localhost -C $branch_name
+    ansible-playbook /tmp/KorpSetupLinux/disk-playbook.yml --limit localhost
     if [ $? != 0 ]
     then
         echo "$(tput setaf 1)Erro durante a execução do playbook 'disk-playbook.yml'.$(tput setaf 7)"
@@ -182,12 +186,7 @@ then
     sudo chmod 644 /etc/korp/ansible/inventory.yml
 fi
 
-sudo rm -f /tmp/inventory-playbook.yml
-
-# Download de inventory-playbook.yml pois 'ansible-pull' não suporta o módulo 'ansible.builtin.pause'
-wget -P /tmp https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/inventory-playbook.yml
-
-ansible-playbook /tmp/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
+ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
@@ -221,14 +220,11 @@ fi
 sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
-rm /tmp/inventory-playbook.yml
-
 # fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
 sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
 
-ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
+ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
-  -C $branch_name \
   --limit localhost \
   --vault-id /etc/korp/ansible/.vault_key \
   --tags=$ansible_tags \
@@ -243,7 +239,8 @@ ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-play
     },
     "apps":['$apps'],
     "removed_version": "'$removed_version'",
-    "skip_salt_test": '$skip_salt_test'
+    "skip_salt_test": '$skip_salt_test',
+    "should_update_rabbitmq": '$should_update_rabbitmq'
   }'
 
 if [ $? != 0 ]
@@ -251,3 +248,5 @@ then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
     exit 11
 fi
+
+sudo rm -rf /tmp/KorpSetupLinux

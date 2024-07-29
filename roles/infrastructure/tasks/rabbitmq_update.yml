@@ -1,0 +1,97 @@
+- name: Atualização do RabbitMQ
+  block:
+  - name: "Obter containers korp e viasoft"
+    ansible.builtin.shell:
+       docker ps -q --filter "name=Viasoft" --filter "name=Korp"
+    register: services_to_restart
+
+  - name: Parada de containers
+    ansible.builtin.shell:
+      docker stop {{ item }}
+    loop: "{{ services_to_restart.stdout | split('\n') }}"
+
+  - name: Remoção de container do RabbitMQ desatualizado
+    ansible.builtin.shell:
+      docker rm -f {{ rabbitmq_container_name }}
+
+  - name: Backup de volume do RabbitMQ
+    ansible.builtin.copy:
+      src: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}/" 
+      dest: "{{ dados_docker_dir_path }}/rabbitmq_backup/"
+      remote_src: true
+      owner: "{{ linux_korp.user }}"
+    become: true
+    become_user: root
+
+  - name: Atualização progressiva
+    ansible.builtin.include_tasks: rabbitmq_update_to_version.yml
+    loop:
+      - '3.9'
+      - '3.10'
+      - '3.11'
+      - '3.12'
+      - '3.13'
+    loop_control:
+      loop_var: upgrade_version
+
+  - name: Definição de 'new_version_dir_path'
+    ansible.builtin.set_fact: 
+      new_version_dir_path: "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/"
+
+  - name: Verificação de conteúdo em 'new_version_dir_path'
+    ansible.builtin.stat:
+      path: "{{ new_version_dir_path }}/mnesia"
+    register: new_version_dir_db
+
+  - name: Remoção de diretório para substituição
+    ansible.builtin.file:
+      path: "{{ new_version_dir_path }}"
+      state: absent
+    become: true
+    when: not new_version_dir_db.stat.exists
+
+  - name: Tratativa para caso diretório não esteja vazio
+    ansible.builtin.fail:
+      msg: Resultado inesperado ao efetuar atualização do RabbitMQ. O diretório {{ new_version_dir_path }} já tem conteúdo e não pode ser substituído.
+    when: new_version_dir_db.stat.exists
+
+  - name: Alteração de nome de diretório
+    ansible.builtin.shell:
+      mv {{ dados_docker_dir_path }}/{{ rabbitmq_container_name }} {{ new_version_dir_path }}
+    become: true
+
+  - name: Configuração e transferência de arquivos de compose
+    ansible.builtin.template:
+      dest: "{{ compose_dir_path }}/infrastructure-compose.yml"
+      src: "composes/infrastructure-compose.yml.j2"
+      owner: "{{ linux_korp.user }}"
+      group: root
+      mode: '0644'
+
+  - name: Criação e inicialização de RabbitMQ
+    community.docker.docker_compose_v2:
+      project_src: "{{ compose_dir_path }}/"
+      env_files: ["{{ docker_env_file_path }}"]
+      services: ["{{ rabbitmq_container_name }}"]
+      files:
+        - infrastructure-compose.yml
+
+  - name: Aguarda inicialização do RabbitMQ
+    community.docker.docker_container_exec:
+      container: "{{ rabbitmq_container_name }}"
+      command: |
+        rabbitmqctl await_startup
+      chdir: /
+    register: result
+    retries: 5
+    delay: 5
+    until: result is not failed
+
+  - name: Inicialização de containers
+    ansible.builtin.shell:
+      docker start $(docker ps -aq)
+
+  rescue:
+    - name: Saída do setup
+      ansible.builtin.fail:
+        msg: "Ocorreu um erro na atualização do RabbitMQ; Foi criado uma pasta de backup no caminho {{ dados_docker_dir_path }}/rabbitmq_backup; \n Os containers que devem ser iniciados após a correção são: {{ services_to_restart }}"
