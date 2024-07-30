@@ -31,17 +31,3 @@
   vars:
     service_name: "Viasoft.IntegracaoPropostaComercialWeb"
     secret: "{{ services_secrets.Others.CustomOauthClients['Viasoft.IntegracaoPropostaComercialWeb'] }}"
-
-- name: Leitura de secret consul
-  community.general.consul_kv:
-    key: "Viasoft.WelcomePage.Dashboard"
-  register: checkEnvironment_secret
-
-- name: Adição de cliente oauth2 para "Korp.Desktop.CheckEnvironment"
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: oauth_client/add_client
-  vars:
-    raw_kv: "{{ checkEnvironment_secret.data.Value | from_json }}"
-    service_name: "{{ raw_kv.CheckEnvironmentAuthorization.Client }}"
-    secret: "{{ raw_kv.CheckEnvironmentAuthorization.Secret }}"
