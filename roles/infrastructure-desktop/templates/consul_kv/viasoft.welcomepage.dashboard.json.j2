@@ -6,7 +6,7 @@
   "TimeToRefreshContentInMinutes": "60",
   "UpdateStaticFilesTime": "04:00",
   "CheckEnvironmentAuthorization": {
-    "Secret": "{{ secret }}",
-    "Client": "Korp.Desktop.CheckEnvironment"
+    "Secret": "{{ services_secrets['Viasoft.WelcomePage.Dashboard'].CheckEnvironmentAuthorization.Secret }}",
+    "Client": "{{ services_secrets['Viasoft.WelcomePage.Dashboard'].CheckEnvironmentAuthorization.ClientId }}"
   }
 }
