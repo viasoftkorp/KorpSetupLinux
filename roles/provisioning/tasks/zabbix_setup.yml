@@ -56,3 +56,4 @@
     status_code: 
       - 200
       - 201
+  when: not skip_salt_test | default(false) # TODO REMOVER
