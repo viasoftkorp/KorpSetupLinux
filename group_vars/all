@@ -65,3 +65,5 @@ customs:
 # Variáveis padrão pra sobrescrita de KV (será sobrescrito em todos os serviços);
 # Para sobrescrita de variáveis exclusivamente em um aplicativo, definir 'custom_kv_overwrite' na respectiva role;
 default_kv_overwrite: ["ServiceBus.StorageConnectionString", "ConnectionStrings.DefaultConnection", "Provisioning.EnableSchemaProvisioning", "EnableEnvironmentDependentConnectionString"]
+
+korp_erp_oauth_client_name: Korp.ERP
