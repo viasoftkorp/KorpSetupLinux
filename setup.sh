@@ -224,7 +224,7 @@ sudo chmod 644 /etc/korp/ansible/inventory.yml
 rm /tmp/inventory-playbook.yml
 
 # fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
-sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
+sudo ansible-galaxy collection install 'community.docker:>=3.10.3' -p /usr/lib/python3/dist-packages/ansible_collections --force
 
 ansible-pull -U https://github.com/viasoftkorp/KorpSetupLinux.git bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
