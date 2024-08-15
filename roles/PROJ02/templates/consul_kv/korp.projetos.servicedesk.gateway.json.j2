@@ -1,0 +1,16 @@
+{
+  "Authorization": {
+    "Secret": "{{ secret }}"
+  },
+  "ServiceBus": {
+    "StorageConnectionString": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server={{ postgres_container_name }},5432; Host={{ postgres_container_name }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
+  },
+  "EnableEnvironmentDependentConnectionString": "false",
+  "ServiceDeskConfiguration": {
+    "MainTenantId": "16a7571e-7ff6-479e-a6f5-3514414179dc",
+    "MainEnvironmentId": "773e9846-c46f-4133-a3f3-39dcfd8885b4"
+  }
+}
