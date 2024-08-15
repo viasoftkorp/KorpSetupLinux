@@ -1,4 +1,0 @@
-services:
-  Korp.AtualizacaoSistema:
-    version:
-      unversioned: true
