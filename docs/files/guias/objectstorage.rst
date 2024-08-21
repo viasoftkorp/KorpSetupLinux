@@ -15,7 +15,7 @@ Servidor Linux:
 
                 .. code-block:: bash
 
-			        IP: ***.***.***.*** - Usuário: ****** - Senha: ******
+			        IP: ***.***.***.*** - Usuário: ***** - Senha: *****
 
         #. Verificar tamanho da pasta PRD.
 
