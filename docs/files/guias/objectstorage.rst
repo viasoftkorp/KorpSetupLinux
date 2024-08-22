@@ -17,23 +17,23 @@ Servidor Linux:
 
 			        IP: ***.***.***.*** - Usuário: ***** - Senha: *****
 
-        #. Verificar tamanho da pasta PRD.
-
-                .. code-block:: bash
-                    
-                    du -sh /etc/korp/dados-docker/minio-server/*******-****-*****-*********/* | sort -hr
-
         #. Conectar com o usuário root.
 		
                 .. code-block:: bash
                     
                     sudo su
 
+        #. Verificar tamanho da pasta PRD.
+
+                .. code-block:: bash
+                    
+                    du -sh /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_PRD>/ | sort -hr
+
         #. Remover arquivos da pasta BASE_HMLG.	
 
                 .. code-block:: bash
                     
-                    rm -rf /etc/korp/dados-docker/minio-server/*******-****-*****-*********/BASE_HMLG/*
+                    rm -rf /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_HMLG>/*
 
         #. Verificar se á espaço no disco de dados.
 
@@ -45,11 +45,11 @@ Servidor Linux:
 
                 .. code-block:: bash
 
-                    cp -r /etc/korp/dados-docker/minio-server/*******-****-*****-*********/BASE_PRD/* /etc/korp/dados-docker/minio-server/*******-****-*****-*********/BASE_HMLG/
+                    cp -r /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_PRD>/* /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_HMLG>/
 
 
 .. note::
-    ATENÇÃO: trocar onde está /*******-****-*****-*********/ pelo tenant da empresa.
+    ATENÇÃO: Trocar <Tenant_Id> pelo tenant da empresa, <BASE_PRD> pelo nome da base de produção e <BASE_HMLG> pelo nome da base de homologação.
 
 Servidor Windows
 ````````````````
@@ -72,17 +72,29 @@ Remover imagem do Cadastro de Produto do ambiente de Homologação
 
 Após restaurar a base de homologação, executar os seguintes passos. 
 
-SQLServer
-``````````
+Servidor Linux:
+```````````````
+        #. Conectar no servidor Linux.
 
-		- Listar registro tabela: ESTOQUE_IMAGEM 
+                .. code-block:: bash
 
-                .. code-block:: SQL
+			        IP: ***.***.***.*** - Usuário: ***** - Senha: *****
 
-                    USE [@@BASE_HMLG]
-                    SELECT * FROM ESTOQUE_IMAGEM
+        #. Conectar com o usuário root.
+		
+                .. code-block:: bash
+                    
+                    sudo su
 
-		- Remover todos os registros tabela: ESTOQUE_IMAGEM 		
+        #. Remover arquivos da pasta BASE_HMLG.	
+
+                .. code-block:: bash
+                    
+                    rm -rf /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_HMLG>/*
+Servidor Windows
+````````````````
+
+		- Executar script no SQLServer
 
                 .. code-block:: SQL
             
