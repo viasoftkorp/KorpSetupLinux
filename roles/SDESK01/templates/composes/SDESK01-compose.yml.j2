@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  PROJ02:
+  SDESK01:
     image: "{{ docker_account }}/korp.projetos.servicedesk-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "PROJ02"
+    container_name: "SDESK01"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
