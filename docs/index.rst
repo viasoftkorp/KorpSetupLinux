@@ -27,7 +27,7 @@ Documentação
 
    files/guias/guia_portainer
    files/guias/disponibilizacao_externa
-   files/guias/atualizacoes_korp
+   files/guias/atualizacao_servicos_web
    files/guias/objectstorage
 
 .. toctree::
