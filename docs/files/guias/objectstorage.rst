@@ -91,6 +91,7 @@ Servidor Linux:
                 .. code-block:: bash
                     
                     rm -rf /etc/korp/dados-docker/minio-server/<Tenant_Id>/<BASE_HMLG>/*
+
 Servidor Windows
 ````````````````
 
@@ -104,5 +105,3 @@ Servidor Windows
 
 .. note::
     ATENÇÃO: trocar onde está @@BASE_HMLG pelo nome da base de dados de homologação
-
-----

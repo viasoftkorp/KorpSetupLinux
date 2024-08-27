@@ -1,4 +1,3 @@
-
 Atualizando versão do Korp
 --------------------------
 
@@ -21,15 +20,17 @@ Servidor Linux
     - No menu da lateral esquerda, clicar em 'Configurações'.
 
     - Em 'Configuração do servidor de aplicação Linux' - Selecionar a versão desejada, e clicar no botão ``Gerar comando para atualização de versão``.
-    
-.. note::
-    ATENÇÃO: O comando de instalação será copiado para a área de transferência.
 
-#. Conectar no servidor Linux pelo (virtualizador ou ssh).
+    .. note::
+        O comando de instalação será copiado para a área de transferência.
 
-    -  Colar e executar o comando de atualização gerado no passo '4'.
+#. Conectar no servidor Linux (pelo virtualizador ou ssh).
 
-    - O Comando deve finalizar sua execução sem nenhum erro.
+    - Colar e executar o comando de atualização gerado no passo anterior.
+
+
+    .. note::
+        O Comando deve finalizar sua execução sem nenhum erro.
 
 
 Servidor Windows
@@ -50,7 +51,7 @@ Atualizando versão do Korp - Homologação
 
 #. Portal da Korp
 
-    - Acessar a Área do Cliente e baixar a Atualização do Korp "KorpRelease-****.*.exe".
+    - Acessar a Área do Cliente e baixar a Atualização do Korp ``KorpRelease-****.*.exe``.
     - Executar a Atualização do Korp ``KorpRelease-****.*.exe`` na pasta de Homologação.
     - Conectar no Korp com um usuário administrador para atualizar a base.
 
