@@ -29,7 +29,7 @@
 
 - name: Remoção de configuração de object-storage caso necessário
   ansible.builtin.set_fact:
-    consul_fabio_config: "{{ consul_fabio_config | difference(item) }}"
+    consul_fabio_config: "{{ consul_fabio_config | difference([item]) }}"
   when: (item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')) and ('object-storage' in (apps_map.unversioned | default([], true) ) )
   loop: "{{ consul_fabio_config }}"
 
