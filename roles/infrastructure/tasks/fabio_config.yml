@@ -24,6 +24,9 @@
   when: not (consul_fabio_config | regex_search(item + '*'))
   loop: "{{ ansible_fabio_config }}"
 
+- debug:
+    var: consul_fabio_config
+
 - name: Remoção de configuração de object-storage caso necessário
   ansible.builtin.set_fact:
     consul_fabio_config: "{{ consul_fabio_config | difference(item) }}"
