@@ -3,7 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
-  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "testing_db_mssql:$TESTING_DB_MSSQL"
   - "app_server:$APP_SERVER"
   - "{{ dns.api }}:$API_GATEWAY"
   - "{{ dns.frontend }}:$PORTAL_GATEWAY"
@@ -16,7 +16,7 @@ networks:
 
 services:
   LOG01_W:
-    image: "{{ docker_account }}/viasoft.logistics.product-frontend:2.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.logistics.product-frontend:3.0.x{{ docker_image_suffix }}"
     container_name: "LOG01_W"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
