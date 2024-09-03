@@ -30,6 +30,9 @@
       when: item | regex_search('route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/' + '*')
       loop: "{{ routers }}"
 
+    - debug:
+        var: routers
+
     - name: Escrita de configuração de fabio ao consul
       community.general.consul_kv:
         key: fabio/config
