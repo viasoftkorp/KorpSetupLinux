@@ -154,7 +154,7 @@ services:
       - servicos
 
   viasoft-reporting-stimulsoft:
-    image: "{{ docker_account }}/viasoft.reporting.stimulsoft:1.2.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.reporting.stimulsoft:1.3.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Reporting.Stimulsoft"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -171,7 +171,7 @@ services:
       - servicos
 
   viasoft-reporting:
-    image: "{{ docker_account }}/viasoft.reporting:1.4.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.reporting:1.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Reporting"
     restart: always
     extra_hosts: *default-extra_hosts
