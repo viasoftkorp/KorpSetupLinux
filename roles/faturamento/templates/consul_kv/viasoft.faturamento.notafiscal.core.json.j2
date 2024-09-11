@@ -11,5 +11,8 @@
   "Provisioning": {
     "EnableSchemaProvisioning": "false"
   },
-  "EnableEnvironmentDependentConnectionString": "true"
+  "EnableEnvironmentDependentConnectionString": "true",
+  "NuvemFiscalEmissorNFe": {
+    "Secret": "{{ services_secrets['Viasoft.Faturamento.NotaFiscal.Core'].NuvemFiscalEmissorNFe.Secret }}"
+  }
 }
