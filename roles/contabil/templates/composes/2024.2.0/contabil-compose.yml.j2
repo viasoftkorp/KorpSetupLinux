@@ -15,7 +15,7 @@ networks:
       name: servicos
 
 services:
-  korp-contabilidade-conciliacaocontabil-2024-2-0.json:
+  korp-contabilidade-conciliacaocontabil-2024-2-0:
     image: "{{ docker_account }}/korp.contabilidade.conciliacaocontabil:2024.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Contabilidade.ConciliacaoContabil-2024.2.0"
     restart: unless-stopped
