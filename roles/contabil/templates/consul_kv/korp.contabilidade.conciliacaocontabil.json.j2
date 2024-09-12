@@ -5,5 +5,8 @@
   },
   "ServiceBus": {
     "StorageConnectionString": "Server=db_mssql; Database={{ service_vars.db.name }}; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; MultipleActiveResultSets=true; Encrypt=False;"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=db_mssql; Database={{ service_vars.db.name }}; User Id={{ mssql.korp_user }}; Password={{ mssql.korp_password }}; Encrypt=False;"
   }
 }
