@@ -4,7 +4,7 @@ services:
       name: Viasoft_Accounting
       type: mssql
 
- Korp.Contabilidade.ConciliacaoContabil:
+  Korp.Contabilidade.ConciliacaoContabil:
     db:
       name: Korp_Contabilidade_ConciliacaoContabil
       type: mssql
