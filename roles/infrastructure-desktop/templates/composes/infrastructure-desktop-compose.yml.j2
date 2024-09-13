@@ -113,3 +113,18 @@ services:
       - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos
+
+  korp-atualizacaosistema:
+    image: "{{ docker_account }}/korp.atualizacaosistema:1.0.x{{ docker_image_suffix }}"
+    container_name: "Korp.AtualizacaoSistema"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
