@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo rm -f /tmp/setup.sh
+
 create_random_string() {
   local l=15
   [ -n "$1" ] && l=$1
