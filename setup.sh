@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo rm -f /tmp/setup.sh
+sudo rm /tmp/setup.sh
 
 create_random_string() {
   local l=15
