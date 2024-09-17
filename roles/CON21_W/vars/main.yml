@@ -1,0 +1,5 @@
+services:
+  Korp.Contabilidade.ConciliacaoContabil:
+    db:
+      name: Korp_Contabilidade_ConciliacaoContabil
+      type: mssql
