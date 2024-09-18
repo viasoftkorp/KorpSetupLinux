@@ -13,6 +13,7 @@
           tags:
             - provisioning
             - default-setup
+            - update
 
       # bloco só será executado caso ocorra algum erro
       rescue:
