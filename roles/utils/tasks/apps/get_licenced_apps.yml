@@ -1,17 +1,17 @@
-- name: Garantia de cadastro de minion no salt master
+- name: Obtenção de ids de aplicativos licenciados
   ansible.builtin.uri:
-    url: "https://victor-pegoraro-api.com/vault/manager/server-deploy/get-licensed-apps/76ikk7754193a34k"
+    url: "{{ gateway_url }}/vault/manager/server-deploy/get-licensed-apps/{{ token }}"
     status_code: 
       - 200
-    validate_certs: false
+    validate_certs: false # todo
   register: result
   ignore_errors: true
 
 - name: Definição de licensed_apps_id
   ansible.builtin.set_fact:
-    licensed_apps_id: "{{ result.json.ids }}"
+    licensed_apps_ids: "{{ result.json.ids }}"
 
-- name: get roles folder
+- name: Obtenção de roles disponíveis
   ansible.builtin.command: ls roles
   register: result
   delegate_to: localhost
@@ -22,4 +22,4 @@
 
 - name: Obtenção de diferença
   ansible.builtin.set_fact:
-    apps: "{{ licensed_apps_id | intersect(available_roles) }}"
+    apps: "{{ licensed_apps_ids | intersect(available_roles) + apps | default([]) }}"
