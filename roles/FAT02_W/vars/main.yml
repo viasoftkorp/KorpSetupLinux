@@ -1,5 +1,7 @@
 services:
   Viasoft.Faturamento.SolicitacaoFaturamento.Core:
+    db:
+      type: mssql
 
   Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
 
