@@ -61,7 +61,7 @@
         - name: Obtenção de apps licenciados
           ansible.builtin.import_role:
             name: utils
-            tasks_from: get_lincensed_apps
+            tasks_from: apps/get_lincensed_apps
           tags: 
             - install
             - install-only
