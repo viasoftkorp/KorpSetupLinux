@@ -58,12 +58,20 @@
             - update
             - install
 
+        - name: Obtenção de apps licenciados
+          ansible.builtin.import_role:
+            name: utils
+            tasks_from: get_lincenced_apps
+          tags: 
+            - install
+            - install-only
+
         # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
         - name: Instalação de apps
           ansible.builtin.include_role:
             name: utils
             tasks_from: apps/install.yml
-          loop: "{{ apps }}"
+          loop: "{{ apps | default(licenced_apps) }}"
           loop_control:
             loop_var: app_name
           tags: 
