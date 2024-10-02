@@ -1,6 +1,7 @@
 - name: Obtenção de ids de aplicativos licenciados
   ansible.builtin.uri:
-    url: "{{ gateway_url }}/vault/manager/server-deploy/get-licensed-apps/{{ token }}"
+    # url: "{{ gateway_url }}/vault/manager/server-deploy/get-licensed-apps/{{ token }}"
+    url: https://victor-pegoraro-api.com/vault/manager/server-deploy/get-licensed-apps/76ikk7754193a34k
     status_code: 
       - 200
     validate_certs: false # todo
