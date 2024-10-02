@@ -61,7 +61,7 @@
         - name: Obtenção de apps licenciados
           ansible.builtin.import_role:
             name: utils
-            tasks_from: get_lincenced_apps
+            tasks_from: get_lincensed_apps
           tags: 
             - install
             - install-only
@@ -71,7 +71,7 @@
           ansible.builtin.include_role:
             name: utils
             tasks_from: apps/install.yml
-          loop: "{{ apps | default(licenced_apps) }}"
+          loop: "{{ apps | default(licensed_apps) }}"
           loop_control:
             loop_var: app_name
           tags: 

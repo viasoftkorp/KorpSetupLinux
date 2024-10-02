@@ -22,4 +22,4 @@
 
 - name: Obtenção de diferença
   ansible.builtin.set_fact:
-    apps: "{{ licensed_apps_ids | intersect(available_roles) + apps | default([]) }}"
+    licensed_apps: "{{ licensed_apps_ids | intersect(available_roles) }}"
