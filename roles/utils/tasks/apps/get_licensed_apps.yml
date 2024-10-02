@@ -20,6 +20,12 @@
   ansible.builtin.set_fact:
     available_roles: "{{ result.stdout_lines }}"
 
-- name: Obtenção de diferença
+- name: Definição de 'licensed_apps' caso a variável 'apps' seja uma lista vazia
   ansible.builtin.set_fact:
     licensed_apps: "{{ licensed_apps_ids | intersect(available_roles) }}"
+  when: apps | length == 0
+
+- name: Definição de 'licensed_apps' caso a variável 'apps' não seja uma lista vazia
+  ansible.builtin.set_fact:
+    licensed_apps: "{{ apps }}"
+  when: apps | length > 0
