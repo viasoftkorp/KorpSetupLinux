@@ -187,6 +187,7 @@ then
 fi
 
 ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
+  -v \
   --extra-vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
