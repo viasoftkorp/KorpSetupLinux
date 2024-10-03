@@ -1,32 +1,34 @@
-- name: Obtenção de ids de aplicativos licenciados
-  ansible.builtin.uri:
-    # url: "{{ gateway_url }}/vault/manager/server-deploy/get-licensed-apps/{{ token }}"
-    url: https://victor-pegoraro-api.com/vault/manager/server-deploy/get-licensed-apps/76ikk7754193a34k
-    status_code: 
-      - 200
-    validate_certs: false # todo
-  register: result
-  ignore_errors: true
+- name: Definição de 'apps_to_install' caso a variável 'apps' seja uma lista vazia
+  block:
+  - name: Obtenção de ids de aplicativos licenciados
+    ansible.builtin.uri:
+      # url: "{{ gateway_url }}/vault/manager/server-deploy/get-licensed-apps/{{ token }}"
+      url: https://victor-pegoraro-api.com/vault/manager/server-deploy/get-licensed-apps/76ikk7754193a34k
+      status_code: 
+        - 200
+      validate_certs: false # todo
+    register: result
+    ignore_errors: true
 
-- name: Definição de licensed_apps_id
-  ansible.builtin.set_fact:
-    licensed_apps_ids: "{{ result.json.ids }}"
+  - name: Definição de licensed_apps_id
+    ansible.builtin.set_fact:
+      licensed_apps_ids: "{{ result.json.ids }}"
 
-- name: Obtenção de roles disponíveis
-  ansible.builtin.command: ls roles
-  register: result
-  delegate_to: localhost
+  - name: Obtenção de roles disponíveis
+    ansible.builtin.command: ls roles
+    register: result
+    delegate_to: localhost
 
-- name: Definição de lista de roles
-  ansible.builtin.set_fact:
-    available_roles: "{{ result.stdout_lines }}"
+  - name: Definição de lista de roles
+    ansible.builtin.set_fact:
+      available_roles: "{{ result.stdout_lines }}"
 
-- name: Definição de 'licensed_apps' caso a variável 'apps' seja uma lista vazia
-  ansible.builtin.set_fact:
-    licensed_apps: "{{ licensed_apps_ids | intersect(available_roles) }}"
+  - name: Definição de 'apps_to_install'
+    ansible.builtin.set_fact:
+      apps_to_install: "{{ licensed_apps_ids | intersect(available_roles) }}"
   when: apps | length == 0
 
-- name: Definição de 'licensed_apps' caso a variável 'apps' não seja uma lista vazia
+- name: Definição de 'apps_to_install' caso a variável 'apps' não seja uma lista vazia
   ansible.builtin.set_fact:
-    licensed_apps: "{{ apps }}"
+    apps_to_install: "{{ apps }}"
   when: apps | length > 0
