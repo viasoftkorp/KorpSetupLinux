@@ -63,6 +63,7 @@
             name: utils
             tasks_from: apps/get_licensed_apps.yml
           tags: 
+            - default-setup
             - install
             - install-only
 
