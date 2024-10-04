@@ -56,8 +56,8 @@
   },
   "MinioConfigGateway": {
     "EndPoint": "{{ services_secrets.Global.MinioConfigGateway.EndPoint }}",
-    "AccessKeyID": "{{ minio_gateway_config.AccessKey }}",
-    "SecretAccessKey": "{{ minio_gateway_config.SecretKey }}",
+    "AccessKeyID": "",
+    "SecretAccessKey": "",
     "useSSL": {{ services_secrets.Global.MinioConfigGateway.useSSL }}
   },
   "OnPremiseLicensedTenants": "{{ tenant_id }}",
