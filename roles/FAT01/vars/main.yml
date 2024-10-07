@@ -3,7 +3,3 @@ services:
     db:
       name: Viasoft_Faturamento_NotaFiscal_Core
       type: mssql
-    version:
-      unversioned: true
-
-
