@@ -5,10 +5,10 @@
         name: utils
         tasks_from: default/variables_setup.yml
 
-    # - name: Configuração de docker
-    #   community.docker.docker_login:
-    #     username: "{{ services_secrets.Others.Docker.Account }}"
-    #     password: "{{ services_secrets.Others.Docker.AccessToken }}"
+    - name: Configuração de docker
+      community.docker.docker_login:
+        username: "korp"
+        password: "korp!4518"
 
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
