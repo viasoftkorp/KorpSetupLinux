@@ -1,0 +1,5 @@
+services:
+  Viasoft.Faturamento.NotaFiscal.Core:
+    db:
+      name: Viasoft_Faturamento_NotaFiscal_Core
+      type: mssql

@@ -58,19 +58,3 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  # Por enquanto release estatica por que esta em dev ainda mas querem validar a solicitacao web 06/02/2024 Amos
-  viasoft-faturamento-notafiscal-core:
-    image: "{{ docker_account }}/viasoft.faturamento.notafiscal.core:1.0.x-hmlg"
-    container_name: "Viasoft.Faturamento.NotaFiscal.Core"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
