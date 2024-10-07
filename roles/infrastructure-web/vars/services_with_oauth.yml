@@ -36,3 +36,10 @@ services:
   Korp.Legacy.Authorization:
     version:
       unversioned: true
+
+  Korp.Documents.Pdf:
+    db:
+      name: Korp_Documents_Pdf
+      type: postgres
+    version:
+      unversioned: true
