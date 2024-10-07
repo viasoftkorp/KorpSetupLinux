@@ -134,15 +134,15 @@
   ansible.builtin.shell: |
     docker exec -i "{{ postgres_container_name }}" psql -U postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}') THEN EXECUTE 'CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD ''{{ postgres.korp_password }}'' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;'; END IF; END \$\$;"
 
-# - name: Leitura de configuração de minio da nuvem
-#   ansible.builtin.uri:
-#     url: "{{ gateway_url }}/vault/manager/server-deploy/minio-gateway-config/{{ token }}"
-#     return_content: true
-#   register: response
+- name: Leitura de configuração de minio da nuvem
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/vault/manager/server-deploy/minio-gateway-config/{{ token }}"
+    return_content: true
+  register: response
 
-# - name: Definição de minio_gateway_config
-#   ansible.builtin.set_fact:
-#     minio_gateway_config: "{{ response.json | default('') }}"
+- name: Definição de minio_gateway_config
+  ansible.builtin.set_fact:
+    minio_gateway_config: "{{ response.json | default('') }}"
 
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
