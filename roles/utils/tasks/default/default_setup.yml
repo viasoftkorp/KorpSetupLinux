@@ -7,8 +7,8 @@
 
     - name: Configuração de docker
       community.docker.docker_login:
-        username: "korp"
-        password: "korp!4518"
+        username: "{{ services_secrets.Others.Docker.Account }}"
+        password: "{{ services_secrets.Others.Docker.AccessToken }}"
 
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
