@@ -142,7 +142,7 @@
 
 - name: Definição de minio_gateway_config
   ansible.builtin.set_fact:
-    minio_gateway_config: "{{ response.json | default('') }}"
+    minio_gateway_config: "{{ response.json }}"
 
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
