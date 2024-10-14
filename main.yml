@@ -59,7 +59,7 @@
             - install
 
         - name: Obtenção de apps licenciados
-          ansible.builtin.import_role:
+          ansible.builtin.include_role:
             name: utils
             tasks_from: apps/get_licensed_apps.yml
           tags: 
