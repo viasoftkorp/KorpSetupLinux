@@ -7,7 +7,8 @@ korp_erp_scopes:
   - Viasoft.ERP.ACL.Messaging
   - Korp.Logistica.WMS.Core
   - Korp.AtualizacaoSistema
-  - Korp.Contabilidade.ConciliacaoContabi
+  - Korp.Contabilidade.ConciliacaoContabil
+  - Korp.Documents.Pdf
 
 services:
   Korp.Legacy.Authentication:
