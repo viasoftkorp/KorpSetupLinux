@@ -382,17 +382,13 @@ services:
 
   korp-documents-pdf:
     image: "{{ docker_account }}/korp.documents.pdf:1.0.x{{ docker_image_suffix }}"
-    container_name: "korp.Documents.Pdf"
+    container_name: "Korp.Documents.Pdf"
     restart: always
     extra_hosts: *default-extra_hosts
-    depends_on:
-      - viasoft-portal
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
