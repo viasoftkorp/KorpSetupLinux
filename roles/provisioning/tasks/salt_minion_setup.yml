@@ -55,10 +55,10 @@
         - name: Ping para minion
           ansible.builtin.uri:
             url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
-            status_code: 
+            status_code:
               - 200
-          retries: 6 
-          delay: 5 
+          retries: 6
+          delay: 5
           register: result
           ignore_errors: true
 
