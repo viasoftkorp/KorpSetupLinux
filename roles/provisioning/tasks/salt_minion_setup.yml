@@ -7,63 +7,63 @@
     path: "/etc/salt/"
   register: salt_folder_status
 
-- name: Instalação de Salt
-  block:
-    # download de salt-minion
-    - name: Download de bootstrap-salt
-      ansible.builtin.get_url:
-        url: https://bootstrap.saltproject.io
-        dest: /tmp/bootstrap-salt.sh
-        mode: '0555'
+# - name: Instalação de Salt
+#   block:
+#     # download de salt-minion
+#     - name: Download de bootstrap-salt
+#       ansible.builtin.get_url:
+#         url: https://bootstrap.saltproject.io
+#         dest: /tmp/bootstrap-salt.sh
+#         mode: '0555'
 
-    - name: Instalação de salt-minion
-      ansible.builtin.shell: /tmp/bootstrap-salt.sh
+#     - name: Instalação de salt-minion
+#       ansible.builtin.shell: /tmp/bootstrap-salt.sh
 
-    - name: Configuração de salt-minion
-      ansible.builtin.template:
-        dest: "/etc/salt/minion.d/korp-default.conf"
-        src: "configs/salt-minion.conf.j2"
-        owner: "{{ linux_korp.user }}"
-        group: root
-        mode: '0644'
-      notify: Reinicio de salt-minion
+#     - name: Configuração de salt-minion
+#       ansible.builtin.template:
+#         dest: "/etc/salt/minion.d/korp-default.conf"
+#         src: "configs/salt-minion.conf.j2"
+#         owner: "{{ linux_korp.user }}"
+#         group: root
+#         mode: '0644'
+#       notify: Reinicio de salt-minion
 
-  when: not salt_folder_status.stat.exists
+#   when: not salt_folder_status.stat.exists
 
-- name: Cadastro de salt-minion
-  block:
-    - name: Garantia de cadastro de minion no salt master
-      ansible.builtin.uri:
-        url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
-        status_code: 
-          - 200
-          - 201
-      changed_when: response.status == 201
-      retries: 6 
-      delay: 5 
-      notify: Reinicio de salt-minion
-      register: result
-      ignore_errors: true
+# - name: Cadastro de salt-minion
+#   block:
+#     - name: Garantia de cadastro de minion no salt master
+#       ansible.builtin.uri:
+#         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
+#         status_code: 
+#           - 200
+#           - 201
+#       changed_when: response.status == 201
+#       retries: 6 
+#       delay: 5 
+#       notify: Reinicio de salt-minion
+#       register: result
+#       ignore_errors: true
 
-    - name: Validação de resultado de registro
-      ansible.builtin.fail:
-        msg: "Ocorreu um problema durante registro do minion: {{ result }}"
-      when: result.status != 200 and result.status != 201
+#     - name: Validação de resultado de registro
+#       ansible.builtin.fail:
+#         msg: "Ocorreu um problema durante registro do minion: {{ result }}"
+#       when: result.status != 200 and result.status != 201
 
-    - name: Teste de conexão com salt
-      block:
-        - name: Ping para minion
-          ansible.builtin.uri:
-            url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
-            status_code: 
-              - 200
-          retries: 6 
-          delay: 5 
-          register: result
-          ignore_errors: true
+#     - name: Teste de conexão com salt
+#       block:
+#         - name: Ping para minion
+#           ansible.builtin.uri:
+#             url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
+#             status_code: 
+#               - 200
+#           retries: 6 
+#           delay: 5 
+#           register: result
+#           ignore_errors: true
 
-        - name: Validação de resultado do teste
-          ansible.builtin.fail:
-            msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
-          when: result.status != 200
-      when: not skip_salt_test | default(false)
+#         - name: Validação de resultado do teste
+#           ansible.builtin.fail:
+#             msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
+#           when: result.status != 200
+#       when: not skip_salt_test | default(false)
