@@ -82,8 +82,8 @@
 # - name: Setup do salt-minion
 #   import_tasks: salt_minion_setup.yml
 
-- name: Setup de zabbix-agent2
-  import_tasks: zabbix_setup.yml
+# - name: Setup de zabbix-agent2
+#   import_tasks: zabbix_setup.yml
 
 - name: Setup do Docker
   import_tasks: docker_setup.yml
