@@ -2,11 +2,11 @@
   ansible.builtin.command: apt-get clean
   become: true
 
-- name: Atualização de cache do repositório
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600
-    force_apt_get: true
+# - name: Atualização de cache do repositório
+#   ansible.builtin.apt:
+#     update_cache: true
+#     cache_valid_time: 3600
+#     force_apt_get: true
 
 - name: Verificação da versão do sistema operacional
   ansible.builtin.fail:
@@ -79,8 +79,8 @@
     group: root
     mode: '0644'
 
-- name: Setup do salt-minion
-  import_tasks: salt_minion_setup.yml
+# - name: Setup do salt-minion
+#   import_tasks: salt_minion_setup.yml
 
 - name: Setup de zabbix-agent2
   import_tasks: zabbix_setup.yml
