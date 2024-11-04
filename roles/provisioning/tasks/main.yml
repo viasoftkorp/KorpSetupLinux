@@ -21,7 +21,6 @@
   loop:
     - python3
     - python3-pip
-    - passlib
     # necessário para o funcionamento de become_user
     - acl
     # necessário para o funcionamento de postgresql
@@ -33,6 +32,7 @@
   ansible.builtin.pip:
     name: "{{ item }}"
   loop:
+    - passlib
     # Bibliotecas usadas pelo Ansible para usar o Postgres
     - psycopg2
     - cryptography>=3.0
