@@ -1,33 +1,18 @@
-# Documentação de instalação de salt:
-# https://docs.saltproject.io/salt/install-guide/en/latest/topics/bootstrap.html#install-using-the-bootstrap-script
-
-
-- name: Add Apt signing key on remote server to keyring
+- name: Download de chave publica
   ansible.builtin.get_url:
     url: https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
     dest: /etc/apt/keyrings/salt-archive-keyring-2023.pgp
     mode: '0644'
 
-- name: Adicionar repositório SaltProject
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring-2023.pgp arch=amd64] https://packages.broadcom.com/artifactory/saltproject-deb/ stable main"
-    state: present
+- name: Configuração de repositório
+  ansible.builtin.copy:
+    content: 'deb [signed-by=/etc/apt/keyrings/salt-archive-keyring-2023.pgp arch=amd64] https://packages.broadcom.com/artifactory/saltproject-deb/ stable main'
+    dest: /etc/apt/sources.list.d/salt.list
 
 - name: Instalação de salt
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: salt-minion
     update_cache: true
-  loop:
-    - salt-minion
-# # download de salt-minion
-# - name: Download de bootstrap-salt
-#   ansible.builtin.get_url:
-#     url: https://bootstrap.saltproject.io
-#     dest: /tmp/bootstrap-salt.sh
-#     mode: '0555'
-
-# - name: Instalação de salt-minion
-#   ansible.builtin.shell: /tmp/bootstrap-salt.sh
 
 - name: Configuração de salt-minion
   ansible.builtin.template:
