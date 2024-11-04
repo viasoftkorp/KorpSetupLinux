@@ -1,34 +1,27 @@
-# Documentação de instalação de salt:
-# https://docs.saltproject.io/salt/install-guide/en/latest/topics/bootstrap.html#install-using-the-bootstrap-script
+- name: Download de chave publica
+  ansible.builtin.get_url:
+    url: https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+    dest: /etc/apt/keyrings/salt-archive-keyring-2023.pgp
+    mode: '0644'
 
+- name: Configuração de repositório
+  ansible.builtin.copy:
+    content: 'deb [signed-by=/etc/apt/keyrings/salt-archive-keyring-2023.pgp arch=amd64] https://packages.broadcom.com/artifactory/saltproject-deb/ stable main'
+    dest: /etc/apt/sources.list.d/salt.list
 
-- name: Verificação de diretório de Salt
-  ansible.builtin.stat:
-    path: "/etc/salt/"
-  register: salt_folder_status
+- name: Instalação de salt
+  ansible.builtin.apt:
+    name: salt-minion
+    update_cache: true
 
-- name: Instalação de Salt
-  block:
-    # download de salt-minion
-    - name: Download de bootstrap-salt
-      ansible.builtin.get_url:
-        url: https://bootstrap.saltproject.io
-        dest: /tmp/bootstrap-salt.sh
-        mode: '0555'
-
-    - name: Instalação de salt-minion
-      ansible.builtin.shell: /tmp/bootstrap-salt.sh
-
-    - name: Configuração de salt-minion
-      ansible.builtin.template:
-        dest: "/etc/salt/minion.d/korp-default.conf"
-        src: "configs/salt-minion.conf.j2"
-        owner: "{{ linux_korp.user }}"
-        group: root
-        mode: '0644'
-      notify: Reinicio de salt-minion
-
-  when: not salt_folder_status.stat.exists
+- name: Configuração de salt-minion
+  ansible.builtin.template:
+    dest: "/etc/salt/minion.d/korp-default.conf"
+    src: "configs/salt-minion.conf.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  notify: Reinicio de salt-minion
 
 - name: Cadastro de salt-minion
   block:
