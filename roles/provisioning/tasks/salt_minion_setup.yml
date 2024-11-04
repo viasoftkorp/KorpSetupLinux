@@ -3,10 +3,10 @@
 
 
 - name: Add Apt signing key on remote server to keyring
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
-    file: /etc/apt/keyrings/salt-archive-keyring-2023.pgp
-    state: present
+    dest: /etc/apt/keyrings/salt-archive-keyring-2023.pgp
+    mode: '0644'
 
 - name: Adicionar repositório SaltProject
   ansible.builtin.apt_repository:
