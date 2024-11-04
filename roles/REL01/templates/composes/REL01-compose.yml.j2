@@ -3,7 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
-  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "testing_db_mssql:$TESTING_DB_MSSQL"
   - "app_server:$APP_SERVER"
   - "{{ dns.api }}:$API_GATEWAY"
   - "{{ dns.frontend }}:$PORTAL_GATEWAY"
@@ -16,7 +16,7 @@ networks:
 
 services:
   viasoft-relatorios:
-    image: "{{ docker_account }}/viasoft.relatorios:1.3.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.relatorios:1.4.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Relatorios"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -31,7 +31,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-reporting-pivottable:
-    image: "{{ docker_account }}/viasoft.reporting.pivottable:1.2.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.reporting.pivottable:1.3.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Reporting.PivotTable"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
@@ -44,7 +44,7 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
+
   viasoft-relatorios-agendador:
     image: "{{ docker_account }}/viasoft.relatorios.agendador:1.2.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Relatorios.Agendador"
