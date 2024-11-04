@@ -23,7 +23,6 @@
     mode: '0644'
   notify: Reinicio de salt-minion
 
-
 - name: Cadastro de salt-minion
   block:
     - name: Garantia de cadastro de minion no salt master
