@@ -2,3 +2,9 @@ services:
   Korp.Producao.Apontamento:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/PRO09/reports/"
+
+  Korp.Producao.Gateway:
+
+  Korp.Producao.Core:
+    db:
+      type: mssql
