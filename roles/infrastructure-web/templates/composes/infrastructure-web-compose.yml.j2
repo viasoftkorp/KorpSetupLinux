@@ -3,7 +3,7 @@ version: "3.8"
 x-extra_hosts:
   &default-extra_hosts
   - "db_mssql:$DB_MSSQL"
-  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "testing_db_mssql:$TESTING_DB_MSSQL"
   - "app_server:$APP_SERVER"
   - "{{ dns.api }}:$API_GATEWAY"
   - "{{ dns.frontend }}:$PORTAL_GATEWAY"
@@ -66,7 +66,7 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
-      - servicos 
+      - servicos
 
   viasoft-tenantmanagement:
     image: "{{ docker_account }}/viasoft.tenantmanagement:1.3.x{{ docker_image_suffix }}"
@@ -361,10 +361,10 @@ services:
     networks:
       - servicos
     volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/" 
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   REL01:
-    image: "{{ docker_account }}/viasoft.relatorios-frontend:2.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.relatorios-frontend:2.2.x{{ docker_image_suffix }}"
     container_name: "REL01"
     restart: always
     extra_hosts: *default-extra_hosts
