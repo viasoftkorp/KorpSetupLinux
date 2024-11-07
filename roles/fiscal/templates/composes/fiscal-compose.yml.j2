@@ -47,7 +47,7 @@ services:
   
   korp-fiscal-dapi:
     image: "{{ docker_account }}/korp.fiscal.dapi:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Fiscal.Dapi-{{ version_without_build }}"
+    container_name: "Korp.Fiscal.DAPI-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
