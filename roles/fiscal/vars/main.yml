@@ -8,3 +8,8 @@ services:
       type: mssql
     version:
       unversioned: true
+  
+  Korp.Fiscal.DAPI:
+    db:
+      name: Korp_Fiscal_Dapi
+      type: mssql
