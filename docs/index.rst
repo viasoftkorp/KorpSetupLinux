@@ -19,7 +19,7 @@ Documentação
    files/tutoriais/configuracao_ambiente
    files/tutoriais/homologacao
    files/tutoriais/virada_servidores
-   files/tutoriais/atualizacao_sistema
+
 
 .. toctree::
    :maxdepth: 2
@@ -29,6 +29,7 @@ Documentação
    files/guias/disponibilizacao_externa
    files/guias/atualizacao_servicos_web
    files/guias/objectstorage
+
 
 .. toctree::
    :maxdepth: 2
