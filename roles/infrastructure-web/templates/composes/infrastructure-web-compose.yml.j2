@@ -137,7 +137,7 @@ services:
       - servicos
 
   viasoft-administration:
-    image: "{{ docker_account }}/viasoft.administration:1.5.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.administration:1.4.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Administration"
     restart: always
     extra_hosts: *default-extra_hosts
