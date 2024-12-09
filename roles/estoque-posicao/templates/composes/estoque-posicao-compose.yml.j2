@@ -16,7 +16,7 @@ networks:
 
 services:
   korp-logistica-estoqueposicao:
-    image: "korp/korp.logistica.estoqueposicao:1.0.x"
+    image: "korp/korp.logistica.estoqueposicao:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.EstoquePosicao"
     restart: always
     extra_hosts: *default-extra_hosts
