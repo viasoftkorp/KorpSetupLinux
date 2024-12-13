@@ -29,3 +29,13 @@
   retries: 5
   delay: 5
   until: result is not failed
+
+- name: Chamada para criação de clients de Viasoft.Authentication
+  ansible.builtin.uri:
+    return_content: true
+    url: '{{ frontend.endpoints.gateway_url }}/oauth/account/authorization-context'
+    method: GET
+  register: result
+  retries: 5
+  delay: 5
+  until: result is not failed
