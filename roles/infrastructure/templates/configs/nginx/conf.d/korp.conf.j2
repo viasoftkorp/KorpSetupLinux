@@ -16,3 +16,13 @@ server {
 
     include /etc/nginx/conf.d/korp.ssl-locations;
 }
+
+upstream fabio_upstream {
+    server fabio:9999;
+    keepalive 64;
+}
+
+upstream Viasoft.Loader_upstream {
+    server Viasoft.Loader:80;
+    keepalive 64;
+}
