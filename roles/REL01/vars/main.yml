@@ -19,3 +19,10 @@ services:
       type: mssql
     version:
       unversioned: true
+
+  Korp.Spreadsheet:
+    db:
+      name: Korp_Spreadsheet
+      type: mssql
+    version:
+      unversioned: true
