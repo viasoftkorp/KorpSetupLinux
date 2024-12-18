@@ -13,3 +13,8 @@ services:
     db:
       name: Korp_Fiscal_Dapi
       type: mssql
+      
+  Korp.Fiscal.DOT:
+    db:
+      name: Korp_Fiscal_Dot
+      type: mssql      
