@@ -10,6 +10,7 @@ korp_erp_scopes:
   - Korp.Contabilidade.ConciliacaoContabil
   - Korp.Documents.Pdf
   - Korp.Fiscal.DAPI
+  - Korp.Fiscal.DOT
 
 # ATENÇÃO!!! é necessário também passar ao Felipe Radins o novo escopo para ser adicionado manualmente na nuvem
 
