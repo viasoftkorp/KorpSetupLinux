@@ -25,6 +25,12 @@ services:
       name: Viasoft_Legacy_Logistica
       type: mssql
 
+  Viasoft.Logistica.Saldo:
+    db:
+      type: mssql
+    version:
+      unversioned: true
+
   Viasoft.Logistica.Estoque:
     version:
       unversioned: true
