@@ -8,6 +8,12 @@ korp_erp_scopes:
   - Korp.Logistica.WMS.Core
   - Korp.AtualizacaoSistema
   - Korp.Contabilidade.ConciliacaoContabil
+  - Korp.Documents.Pdf
+  - Korp.Fiscal.DAPI
+  - Korp.Fiscal.DOT
+  - Viasoft.Sales.CommercialProposal.Sync
+
+# ATENÇÃO!!! é necessário também passar ao Felipe Radins o novo escopo para ser adicionado manualmente na nuvem
 
 services:
   Korp.Legacy.Authentication:
