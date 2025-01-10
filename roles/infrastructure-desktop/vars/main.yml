@@ -1,3 +1,8 @@
+korp_erp_scopes:
+  - Viasoft.Sales.CommercialProposal.Sync
+
+# ATENÇÃO!!! é necessário também passar ao Felipe Radins o novo escopo para ser adicionado manualmente na nuvem
+
 services:
   Korp.Legacy.Authentication:
     db:
