@@ -47,8 +47,8 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
  
-  korp-projetos-ordens-de-servico:
-    image: "{{ docker_account }}/korp.projetos.ordens-de-servico:1.0.x{{ docker_image_suffix }}"
+  korp-projetos-ordensdeservico:
+    image: "{{ docker_account }}/korp.projetos.ordensdeservico:1.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Projetos.OrdensDeServico"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
