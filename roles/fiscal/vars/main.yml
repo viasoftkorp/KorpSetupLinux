@@ -9,7 +9,7 @@ services:
     version:
       unversioned: true
   
-  # Korp.Fiscal.DAPI:
-  #   db:
-  #     name: Korp_Fiscal_Dapi
-  #     type: mssql
+  Korp.Fiscal.DAPI:
+    db:
+      name: Korp_Fiscal_Dapi
+      type: mssql
