@@ -28,3 +28,10 @@ services:
       unversioned: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/REL01/spreadsheets/"
+
+  Korp.Analytics.IA:
+    db:
+      name: Korp_Analytics_IA
+      type: postgres
+    version:
+      unversioned: true
