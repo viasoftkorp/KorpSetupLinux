@@ -184,6 +184,7 @@ then
     # Encripta 'inventory.yml' com ansible-vault
     sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key
     sudo chmod 644 /etc/korp/ansible/inventory.yml
+    sudo mkdir -p /etc/korp/ansible/logs/
 fi
 
 ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
@@ -223,6 +224,8 @@ sudo chmod 644 /etc/korp/ansible/inventory.yml
 # fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
 sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
 
+sudo mkdir -p /etc/korp/ansible/logs/
+
 ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
   $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
   --limit localhost \
@@ -241,7 +244,7 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "removed_version": "'$removed_version'",
     "skip_salt_test": '$skip_salt_test',
     "should_update_rabbitmq": '$should_update_rabbitmq'
-  }'
+  }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
 if [ $? != 0 ]
 then
