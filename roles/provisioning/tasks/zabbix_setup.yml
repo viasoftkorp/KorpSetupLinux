@@ -50,9 +50,9 @@
     mode: '0644'
   notify: Reinicio de zabbix-agent2
 
-- name: Alteração de visible name
-  ansible.builtin.uri:
-    url: "{{ gateway_url }}/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}" 
-    status_code: 
-      - 200
-      - 201
+# - name: Alteração de visible name
+#   ansible.builtin.uri:
+#     url: "{{ gateway_url }}/vault/manager/server-deploy/zabbix/update-visible-name/{{ token }}" 
+#     status_code: 
+#       - 200
+#       - 201
