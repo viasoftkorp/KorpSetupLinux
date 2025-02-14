@@ -26,8 +26,8 @@
     return_content: true
     url: "{{ frontend.endpoints.gateway_url }}/oauth/.well-known/openid-configuration/jwks"
   register: result
-  retries: 5
-  delay: 5
+  retries: 10
+  delay: 10
   until: result is not failed
 
 - name: Chamada para criação de clients de Viasoft.Authentication
