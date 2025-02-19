@@ -9,7 +9,7 @@
 
     - name: Definição de lista de serviços
       ansible.builtin.set_fact:
-        services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] }}"
+        services_list: "{{ temp_apps_map.unversioned + temp_apps_map.versioned[latest_installed_version] | default([]) }}"
       when: has_versioned_apps
 
     - name: Instalação de apps
