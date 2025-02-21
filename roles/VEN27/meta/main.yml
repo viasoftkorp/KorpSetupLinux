@@ -4,6 +4,7 @@ dependencies:
   - role: faturamento
   - role: financeiro
   - role: indexador-moedas
+  - role: engenharia
   - role: fiscal
   - role: LOG00
   - role: LOG01_W
