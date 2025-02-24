@@ -40,10 +40,6 @@ services:
     version:
       unversioned: true
 
-  Viasoft.Legacy.HTTPProxy:
-    version:
-      unversioned: true
-
   Viasoft.WelcomePage.Dashboard:
     version:
       unversioned: true
