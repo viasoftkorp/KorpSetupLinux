@@ -129,7 +129,7 @@ services:
       - servicos
 
   {{ redis_container_name }}:
-    image: "redis:7.0"
+    image: "redis:7.4"
     container_name: "{{ redis_container_name }}"
     hostname: "redis"
     restart: always
