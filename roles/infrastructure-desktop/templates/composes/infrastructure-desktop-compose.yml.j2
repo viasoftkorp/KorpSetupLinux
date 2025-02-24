@@ -65,24 +65,6 @@ services:
     networks:
       - servicos
 
-  viasoft-legacy-httpproxy:
-    image: "{{ docker_account }}/viasoft.legacy.httpproxy:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Httpproxy"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-      - HTTP_PORT=1505
-    ports:
-      - "1505:1505"
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-    networks:
-      - servicos
-
   viasoft-welcomepage-dashboard:
     image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x{{ docker_image_suffix }}"
     container_name: "Viasoft.WelcomePage.Dashboard"
