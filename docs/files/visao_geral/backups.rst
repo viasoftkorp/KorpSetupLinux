@@ -8,9 +8,9 @@ Backups
 Servidor Linux
 ==============
 
-O dados usados pelas aplicações da korp, estão todos no disco de dados, montado em ``/etc/korp``
-
-Apenas o backup do disco de dados, já garante segurança dos dados. Porém recomendamos também um backup do disco em que o sistema operacional está instalado, para maior facilidade em caso de necessidade de restauração da maquina.
+Todos os dados utilizados pelo Korp estão armazenados no disco de dados, montado em ``/etc/korp``, incluindo os bancos de dados. Dessa forma, ao realizar o backup desse disco, a integridade e segurança das informações já estarão asseguradas, sem a necessidade de interromper nenhum serviço.
+ 
+O backup do disco de dados garante a proteção das informações essenciais. No entanto, recomendamos também a criação de um backup do disco onde o sistema operacional está instalado, para facilitar a restauração da máquina, caso necessário.
 
 
 SQL Server
