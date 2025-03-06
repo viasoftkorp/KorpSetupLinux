@@ -15,9 +15,9 @@ networks:
       name: servicos
 
 services:
-  QUA37_W-2024-2-0:
-    image: "{{ docker_account }}/korp.qualidade.controle-tratamento-termico-frontend:2024.2.0.x{{ docker_image_suffix }}"
-    container_name: "QUA37_W-2024.2.0"
+  QUA37-2024-3-0:
+    image: "{{ docker_account }}/korp.qualidade.controle-tratamento-termico-frontend:2024.3.0.x{{ docker_image_suffix }}"
+    container_name: "QUA37-2024.3.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
