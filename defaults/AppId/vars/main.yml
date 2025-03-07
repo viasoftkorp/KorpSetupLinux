@@ -18,4 +18,3 @@ services:
     custom_kv_overwrite: [<chave1>, <chave2>, ...]
     # OPCIONAL, pula a adição de KV no consul
     kv_skip: false # valor padrão - false
-
