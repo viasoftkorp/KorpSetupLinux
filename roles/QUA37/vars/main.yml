@@ -3,5 +3,5 @@ services:
     oauth_client:
       skip: true
     version:
-      unversioned: true
+      unversioned: false
     kv_skip: true
