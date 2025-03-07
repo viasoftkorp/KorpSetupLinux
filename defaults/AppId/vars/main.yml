@@ -16,4 +16,5 @@ services:
     # OPCIONAL, Uma lista de strings representando os caminhos das chaves (relativos aos do kv atual) que podem ser sobrescritas no Consul.
     # Explicação mais detalhada em `readme.md`.
     custom_kv_overwrite: [<chave1>, <chave2>, ...]
-
+    # OPCIONAL, pula a adição de KV no consul
+    kv_skip: false # valor padrão - false
