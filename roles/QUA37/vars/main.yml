@@ -1,1 +1,7 @@
 services:
+  dummy:
+    oauth_client:
+      skip: true
+    version:
+      unversioned: false
+    kv_skip: true
