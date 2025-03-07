@@ -2,27 +2,13 @@
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
-# - name: Adição de serviços de QUA37
-#   ansible.builtin.include_role:
-#     name: utils
-#     tasks_from: services/add_service
-#   vars:
-#     service_name: "{{ item.key }}"
-#     id: QUA37
-#   with_dict: "{{ services }}"
-#   loop_control:
-#     extended: true
-
-- name: "Startup de setup de role {{ id }}"
-  vars:
-    id: QUA37
+- name: Adição de serviços de QUA37
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/startup
-
-- name: "Setup de composes e registro de {{ id }}"
+    tasks_from: services/add_service
   vars:
+    service_name: "{{ item.key }}"
     id: QUA37
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/compose_and_mapping
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
