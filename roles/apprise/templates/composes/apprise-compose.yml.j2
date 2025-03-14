@@ -16,7 +16,7 @@ networks:
 
 services:
   {{ apprise_container_name }}:
-    image: "caronc/apprise:latest"
+    image: "caronc/apprise:1.1.9"
     container_name: "{{ apprise_container_name }}"
     restart: always
     environment:
