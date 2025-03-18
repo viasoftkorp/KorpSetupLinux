@@ -24,7 +24,6 @@
       ansible.builtin.command: docker restart "{{ service_to_restart }}"
       become: true
       loop:
-      - 'Viasoft.TenantManagement'
       - 'Viasoft.Administration'
       loop_control:
         loop_var: service_to_restart
