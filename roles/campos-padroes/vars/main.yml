@@ -1,0 +1,7 @@
+services:
+  Korp.Configuracoes.CamposPadroes:
+    db:
+      name: Korp_Configuracoes_CamposPadroes
+      type: mssql
+    version:
+      unversioned: true
