@@ -7,7 +7,7 @@
 - name: Validação de instalação de zabbix
   ansible.builtin.fail:
       msg: "Erro durante instalação do zabbix: {{ zabbix_install_output.msg }}"
-  when: zabbix_install_output.failed and zabbix_install_output.msg != "A later version is already installed"
+  when: zabbix_install_output.failed and not (zabbix_install_output.msg = "A later version is already installed" or zabbix_install_output.msg = "Uma versão mais atual já está instalada")
 
 - name: Atualização de cache do repositório
   ansible.builtin.apt:
