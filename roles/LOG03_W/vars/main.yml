@@ -1,0 +1,8 @@
+services: 
+  Korp.Logistica.RequisicaoContraAlmoxarifado.Core:
+    version:
+      unversioned: true
+
+  Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway:
+    version:
+      unversioned: true
