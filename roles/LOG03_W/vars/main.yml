@@ -1,8 +1,7 @@
 services: 
   Korp.Logistica.RequisicaoContraAlmoxarifado.Core:
-    version:
-      unversioned: true
+    db:
+      name: Korp_Logistica_RequisicaoContraAlmoxarifado_Core
+      type: mssql
 
   Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway:
-    version:
-      unversioned: true
