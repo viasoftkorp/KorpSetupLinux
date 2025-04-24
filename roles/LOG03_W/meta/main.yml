@@ -1,0 +1,3 @@
+dependencies:
+  - role: LOG102
+  - role: campos-padroes
