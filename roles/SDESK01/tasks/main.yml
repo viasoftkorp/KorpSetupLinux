@@ -1,0 +1,14 @@
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
+    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+
+- name: Adição de serviços de SDESK01
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: SDESK01
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
