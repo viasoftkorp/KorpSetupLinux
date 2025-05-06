@@ -10,7 +10,7 @@ Abaixo estão os requisitos mínimos do servidor, sendo que estes poderá ser ne
 
 * Linux Ubuntu Server versão 22.04 (sem interface gráfica) (`link para download da iso`_)
 
-* 4GB de memória RAM
+* 8GB de memória RAM
 
 * Disco de boot no tamanho de 30GB
 
