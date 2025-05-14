@@ -12,6 +12,7 @@ korp_erp_scopes:
   - Korp.Fiscal.DAPI
   - Korp.Fiscal.DOT
   - Viasoft.Sales.CommercialProposal.Sync
+  - Viasoft.Billing.CTe.Sefaz
 
 # ATENÇÃO!!! é necessário também passar ao Felipe Radins o novo escopo para ser adicionado manualmente na nuvem
 
