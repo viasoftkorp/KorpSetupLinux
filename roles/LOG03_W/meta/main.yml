@@ -1,3 +1,6 @@
 dependencies:
   - role: LOG102
   - role: campos-padroes
+  - role: contabil
+  - role: logistica
+  - role: financeiro
