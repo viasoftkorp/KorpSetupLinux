@@ -1,0 +1,76 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  viasoft-production-aps-distribution:
+    image: "{{ docker_account }}/viasoft.production.aps.distribution:1.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Distribution"
+    restart: "no"
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
+
+  viasoft-production-aps:
+    image: "{{ docker_account }}/viasoft.production.aps:1.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS"
+    restart: "no"
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
+
+  viasoft-production-aps-dataimporting:
+    image: "{{ docker_account }}/viasoft.production.aps.dataimporting:1.1.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.DataImporting"
+    restart: "no"
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
+
+  viasoft-production-aps-simulation:
+    image: "{{ docker_account }}/viasoft.production.aps.simulation:1.2.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Simulation"
+    restart: "no"
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos

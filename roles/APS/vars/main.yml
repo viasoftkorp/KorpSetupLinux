@@ -1,0 +1,22 @@
+services:
+  Viasoft.Production.APS.Distribution:
+    version:
+      unversioned: true
+
+  Viasoft.Production.APS:
+    db:
+      type: mssql
+    version:
+      unversioned: true
+
+  Viasoft.Production.APS.DataImporting:
+    db:
+      type: mssql
+    version:
+      unversioned: true
+
+  Viasoft.Production.APS.Simulation:
+    db:
+      type: mssql
+    version:
+      unversioned: true
