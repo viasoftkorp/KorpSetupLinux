@@ -1,7 +1,7 @@
 services: 
   Korp.Logistica.RequisicaoContraAlmoxarifado.Core:
     db:
-      name: Korp_Logistica_RequisicaoContraAlmoxarifado_Core
+      name: Korp_Logistica_Core
       type: mssql
 
   Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway:
