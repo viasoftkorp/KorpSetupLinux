@@ -1,20 +1,22 @@
-korp_erp_scopes:
-  - Viasoft.WelcomePage.Dashboard
-  - Viasoft.Email
-  - Viasoft.Faturamento.NotaFiscal.Core
-  - Korp.Legacy.Authentication
-  - Viasoft.ObjectStorage.Client
-  - Viasoft.ERP.ACL.Messaging
-  - Korp.Logistica.WMS.Core
-  - Korp.AtualizacaoSistema
-  - Korp.Contabilidade.ConciliacaoContabil
-  - Korp.Documents.Pdf
-  - Korp.Fiscal.DAPI
-  - Korp.Fiscal.DOT
-  - Viasoft.Sales.CommercialProposal.Sync
-  - Viasoft.Billing.CTE.SEFAZ
 
-# ATENÇÃO!!! é necessário também passar ao Felipe Radins o novo escopo para ser adicionado manualmente na nuvem
+# Não é mais necessário adicionar escopos porque a partir da versão 2025.1 o sistema vai emitir um token
+# que todos os serviços vão aceitar. Estou mantendo tudo comentado aqui para que os programadores não se percam
+# ao procurar sobre
+# korp_erp_scopes:
+  #- Viasoft.WelcomePage.Dashboard
+  #- Viasoft.Email
+  #- Viasoft.Faturamento.NotaFiscal.Core
+  #- Korp.Legacy.Authentication
+  #- Viasoft.ObjectStorage.Client
+  #- Viasoft.ERP.ACL.Messaging
+  #- Korp.Logistica.WMS.Core
+  #- Korp.AtualizacaoSistema
+  #- Korp.Contabilidade.ConciliacaoContabil
+  #- Korp.Documents.Pdf
+  #- Korp.Fiscal.DAPI
+  #- Korp.Fiscal.DOT
+  #- Viasoft.Sales.CommercialProposal.Sync
+  #- Viasoft.Billing.CTE.SEFAZ
 
 services:
   Korp.Legacy.Authentication:
