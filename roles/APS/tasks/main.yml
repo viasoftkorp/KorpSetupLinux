@@ -12,3 +12,21 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+- name: Adição de cliente oauth2 para Octopus.APS, client utilizado pelo ERP para chamar o APS
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_client
+  vars:
+    service_name: "Octopus.APS"
+    secret: "{{ services_secrets.Others.CustomOauthClients['Octopus.APS'] }}"
+
+- name: Criação de escopos para Korp.ERP
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: oauth_client/add_scope
+  vars:
+    service_name: "Octopus.APS"
+    scopes:
+      - Viasoft.Production.APS.DataImporting
+      - Viasoft.Production.APS.Simulation
