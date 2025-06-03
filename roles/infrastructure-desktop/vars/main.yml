@@ -38,3 +38,7 @@ services:
       skip: true
     version:
       unversioned: true
+
+  Korp.AtualizacaoSistema:
+    version:
+      unversioned: true
