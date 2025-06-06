@@ -137,7 +137,7 @@ services:
       - servicos
 
   viasoft-administration:
-    image: "{{ docker_account }}/viasoft.administration:1.4.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.administration:1.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Administration"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -296,7 +296,7 @@ services:
       - servicos
 
   viasoft-userprofile:
-    image: "{{ docker_account }}/viasoft.userprofile:1.4.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.userprofile:1.5.x{{ docker_image_suffix }}"
     container_name: "Viasoft.UserProfile"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -311,7 +311,7 @@ services:
       - servicos
 
   login:
-    image: "{{ docker_account }}/viasoft.authentication-frontend:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.authentication-frontend:1.1.x{{ docker_image_suffix }}"
     container_name: "login"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -328,7 +328,7 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   portal:
-    image: "{{ docker_account }}/viasoft.portal-frontend:3.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.portal-frontend:3.1.x{{ docker_image_suffix }}"
     container_name: "portal"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -347,7 +347,7 @@ services:
       - servicos
 
   ADM01:
-    image: "{{ docker_account }}/viasoft.administration-frontend:4.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.administration-frontend:4.1.x{{ docker_image_suffix }}"
     container_name: "ADM01"
     restart: always
     extra_hosts: *default-extra_hosts
