@@ -97,7 +97,7 @@ Renovando o certificado
 
 #. Copiar o arquivo ``cert.crt`` para o diretório ``/etc/korp/certs/certs``
 
-#. Executar o script ``/etc/korp/scripts/cert_renew.sh``
+#. Executar o script ``/etc/korp/scripts/certs_reload.sh``
 
 #. Garantir que o script rodou com sucesso
 
