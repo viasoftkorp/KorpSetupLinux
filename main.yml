@@ -52,6 +52,7 @@
             - REL01
             - ERP_ACL
             - FAT02_W
+            - FAT01
           loop_control:
             loop_var: app_name
           tags:
