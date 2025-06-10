@@ -29,5 +29,9 @@ location / {
     fastcgi_send_timeout 600;
     fastcgi_read_timeout 600;
 
-    proxy_pass http://fabio:9999;
+    # Necessário para conexões persistentes (keepalive)
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+    proxy_pass http://fabio_upstream;
 }
