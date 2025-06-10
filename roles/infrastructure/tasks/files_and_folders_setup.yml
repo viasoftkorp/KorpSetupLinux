@@ -76,6 +76,7 @@
         group: root
         mode: '0644'
       loop:
+        - "upstreams.conf"
         - "korp.conf"
         - "korp-api.conf"
         - "korp-cdn.conf"
