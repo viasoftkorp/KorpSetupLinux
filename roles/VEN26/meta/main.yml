@@ -11,3 +11,4 @@ dependencies:
   - role: workflow 
   - role: geolocation
   - role: apprise
+  - role: FAT01
