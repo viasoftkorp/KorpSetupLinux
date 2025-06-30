@@ -51,7 +51,7 @@ services:
       - servicos
 
   korp-legacy-authentication:
-    image: "{{ docker_account }}/korp.legacy.authentication:1.5.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.legacy.authentication:1.6.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Authentication"
     restart: always
     extra_hosts: *default-extra_hosts
