@@ -138,11 +138,18 @@
   ansible.builtin.uri:
     url: "{{ gateway_url }}/vault/manager/server-deploy/minio-gateway-config/{{ token }}"
     return_content: true
-  register: response
+  register: minio_gateway_response
+
+- name: Leitura de configuração de onpremise_auth na nuvem
+  ansible.builtin.uri:
+    url: "{{ gateway_url }}/vault/manager/server-deploy/onpremise-auth-config/{{ token }}"
+    return_content: true
+  register: onpremise_auth_response
 
 - name: Definição de minio_gateway_config
   ansible.builtin.set_fact:
-    minio_gateway_config: "{{ response.json }}"
+    minio_gateway_config: "{{ minio_gateway_response.json }}"
+    onpremise_auth_config: "{{ onpremise_auth_response.json }}"
 
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
