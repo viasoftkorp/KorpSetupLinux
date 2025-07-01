@@ -15,35 +15,35 @@ networks:
       name: servicos
 
 services:
-  viasoft-erp-core:
-    image: "{{ docker_account }}/viasoft.erp.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Core-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  viasoft-erp-sync:
-    image: "{{ docker_account }}/viasoft.erp.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Sync-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-erp-core:
+  #  image: "{{ docker_account }}/viasoft.erp.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.ERP.Core-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC=$USE_SERVERGC
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
+#
+  #viasoft-erp-sync:
+  #  image: "{{ docker_account }}/viasoft.erp.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.ERP.Sync-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC=$USE_SERVERGC
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-legacy-parametros:
     image: "{{ docker_account }}/viasoft.legacy.parametros:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -60,35 +60,35 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-erp-activities:
-    image: "{{ docker_account }}/viasoft.erp.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ERP.Activities-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-erp-activities:
+  #  image: "{{ docker_account }}/viasoft.erp.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.ERP.Activities-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC=$USE_SERVERGC
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-organizationalstructuremanagement:
-    image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.OrganizationalStructureManagement-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+  #viasoft-organizationalstructuremanagement:
+  #  image: "{{ docker_account }}/viasoft.organizationalstructuremanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+  #  container_name: "Viasoft.OrganizationalStructureManagement-{{ version_without_build }}"
+  #  restart: unless-stopped
+  #  extra_hosts: *default-extra_hosts
+  #  environment:
+  #    - ON_PREMISE_MODE=true
+  #    - USE_SERVERGC=$USE_SERVERGC
+  #    - URL_CONSUL=http://consul-server:8500
+  #    - CERT_FILE_PATH={{ containers_cert_path }}
+  #  networks:
+  #    - servicos
+  #  volumes:
+  #    - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-messagebird:
     image: "{{ docker_account }}/viasoft.messagebird:2.1.x{{ docker_image_suffix }}"
