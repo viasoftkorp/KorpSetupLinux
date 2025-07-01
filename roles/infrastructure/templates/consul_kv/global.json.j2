@@ -60,7 +60,7 @@
     "SecretAccessKey": "{{ minio_gateway_config.SecretKey }}",
     "useSSL": {{ services_secrets.Global.MinioConfigGateway.useSSL }}
   },
-  "OnPremiseAuth" {
+  "OnPremiseAuth": {
     "ClientId": "{{ onpremise_auth_config.ClientId }}",
     "ClientSecret": "{{ onpremise_auth_config.ClientSecret }}"
   },
