@@ -13,7 +13,7 @@ import (
 
 /*
 cd .\versionador
-.\versionador.exe -versaoAnterior="2024.3.0" -novaVersao="2025.1.0" -caminho="..\\roles"
+.\versionador.exe -versaoAnterior="2025.1.0" -novaVersao="2025.2.0" -caminho="..\\roles"
 */
 type OpcoesVersionador struct {
 	VersaoAnterior string
