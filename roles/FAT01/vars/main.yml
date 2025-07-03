@@ -3,3 +3,7 @@ services:
     db:
       name: Viasoft_Faturamento_NotaFiscal_Core
       type: mssql
+  Viasoft.Faturamento.NotaFiscal.Gateway:
+    db:
+      name: Viasoft_Faturamento_NotaFiscal_Gateway
+      type: mssql      
