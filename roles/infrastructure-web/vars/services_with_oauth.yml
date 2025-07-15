@@ -21,6 +21,8 @@ services:
       type: mssql
     version:
       unversioned: true
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-reporting/cache/"
 
   Viasoft.Emailing:
     db:

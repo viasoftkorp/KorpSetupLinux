@@ -5,6 +5,8 @@ services:
       type: mssql
     oauth_client:
       skip: true
+    volumes_directories:
+      - "{{ dados_docker_dir_path }}/viasoft-reporting-stimulsoft/cache/"
 
   Viasoft.Portal:
     db:

@@ -167,6 +167,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+      # Caso seja alterado o caminho dentro do container, deve-se atualizar a prop Stimulsoft:CachePath no KV do consul
+      - "{{ dados_docker_dir_path }}/viasoft-reporting-stimulsoft/cache/:/app/cache/"
     networks:
       - servicos
 
@@ -184,6 +186,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+      # Caso seja alterado o caminho dentro do container, deve-se atualizar a prop Stimulsoft:CachePath no KV do consul
+      - "{{ dados_docker_dir_path }}/viasoft-reporting/cache/:/app/cache/"
     networks:
       - servicos
 
