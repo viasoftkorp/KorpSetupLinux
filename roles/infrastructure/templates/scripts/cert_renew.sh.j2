@@ -1,4 +1,12 @@
-## Script é executado com o usuário 'korp' pelo cronjob
+#!/bin/bash
+
+## Script é executado com o usuário '{{ linux_korp.user }}' pelo cronjob
+
+# Verificar se o script está sendo executado pelo usuário '{{ linux_korp.user }}'
+if [ "$(whoami)" != "{{ linux_korp.user }}" ]; then
+    echo "ERRO: Este script deve ser executado pelo usuário '{{ linux_korp.user }}'. Usuário atual: $(whoami)" >&2
+    exit 1
+fi
 
 # chamda de 'logrotate' para rotação de logs
 /usr/sbin/logrotate  {{ korp_dir_path }}/logrotate.d/korp_cert_renew  -s {{ korp_dir_path }}/certs/logs/logrotate.status
