@@ -50,3 +50,65 @@ services:
   Korp.AtualizacaoSistema:
     version:
       unversioned: true
+
+delphi_services:
+  KorpCadastrosService:
+    version:
+      unversioned: true
+  KorpComissaoService:
+    version:
+      unversioned: true
+  KorpComprasEntradaNotaFiscalService:
+    version:
+      unversioned: true
+  KorpFaturamentoEmissaoNotaFiscalLegacyService:
+    version:
+      unversioned: true
+  KorpFaturamentoEmissaoNotaFiscalService:
+    version:
+      unversioned: true
+  KorpFinanceiroEmailCobrancaService:
+    version:
+      unversioned: true
+  KorpFiscalReinfService:
+    version:
+      unversioned: true
+  KorpLogisticaMovimentacaoEstoqueBackgroundService:
+    version:
+      unversioned: true
+  KorpLogisticaService:
+    version:
+      unversioned: true
+  KorpLogisticaWmsService:
+    version:
+      unversioned: true
+  KorpLogisticaMRPService:
+    version:
+      unversioned: true
+  KorpTributosService:
+    version:
+      unversioned: true
+  KorpVendasMobileService:
+    version:
+      unversioned: true
+  KorpVendasService:
+    version:
+      unversioned: true
+  KorpEngenhariaBackgroundService:
+    version:
+      unversioned: true
+  KorpCusteioProducaoBackgroundService:
+    version:
+      unversioned: true
+  KorpFaturamentoSolicitacaoFaturamentoService:
+    version:
+      unversioned: true
+  KorpFaturamentoNotaFiscalSagaService:
+    version:
+      unversioned: true
+  KorpSPEDBackgroundService:
+    version:
+      unversioned: true
+  KorpFinanceiroService:
+    version:
+      unversioned: true
