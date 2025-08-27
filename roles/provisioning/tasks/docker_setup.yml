@@ -24,7 +24,7 @@
   ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
-    state: latest
+    state: present
   loop:
     - docker-ce
     - docker-ce-cli
