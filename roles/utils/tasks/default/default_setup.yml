@@ -9,6 +9,7 @@
       community.docker.docker_login:
         username: "{{ services_secrets.Others.Docker.Account }}"
         password: "{{ services_secrets.Others.Docker.AccessToken }}"
+      become: true
 
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
