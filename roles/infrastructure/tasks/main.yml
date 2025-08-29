@@ -10,12 +10,6 @@
 
 - name: Configuração de certificado padrão
   block:
-  - name: editando arquivo de setup
-    ansible.builtin.lineinfile:
-      path: /etc/korp/ansible/inventory.yml
-      search_string: 'external'
-      line: "external: false"
-
   - name: debug vars
     ansible.builtin.debug:
       var: reverse_proxy.external
