@@ -15,10 +15,6 @@
 
 - name: Configuração de certificado padrão
   block:
-
-  - name: parar
-    ansible.builtin.meta: end_play
-
   - name: Provisão da CA para geração do certificado
     ansible.builtin.import_tasks: ca_certificate.yml
 
