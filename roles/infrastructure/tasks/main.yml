@@ -12,7 +12,7 @@
   block:
   - name: Verificação das variáveis de certificado
     ansible.builtin.fail:
-      msg: "Configuração inválida: 'external' está definido como true enquanto 'self_signed' está definido como false."
+      msg: "Erro de configuração: para utilizar reverse_proxy.external=true é necessário definir certs.self_signed.certificate=true"
     when: reverse_proxy.external == true and certs.self_signed.certificate == false
 
   - name: parar
