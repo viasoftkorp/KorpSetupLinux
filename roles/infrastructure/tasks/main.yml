@@ -21,7 +21,7 @@
   - name: Verificação das variáveis de certificado
     ansible.builtin.fail:
       msg: "O valor da variável external é false e self_signed está como true"
-    when: reverse_proxy.external == false and certs.self_signed.certificate == true
+    when: reverse_proxy.external == "" and certs.self_signed.certificate == true
 
   - name: parar
     ansible.builtin.meta: end_play
