@@ -12,7 +12,11 @@
   block:
   - name: debug vars
     ansible.builtin.debug:
-      var: reverse_proxy
+      var: reverse_proxy.external
+
+  - name: debug vars 2
+    ansible.builtin.debug:
+      var: certs.self_signed.certificate
 
   - name: Provisão da CA para geração do certificado
     ansible.builtin.import_tasks: ca_certificate.yml
