@@ -10,6 +10,10 @@
 
 - name: Configuração de certificado padrão
   block:
+  - name: debug vars
+    ansible.builtin.debug:
+      var: reverse_proxy
+
   - name: Provisão da CA para geração do certificado
     ansible.builtin.import_tasks: ca_certificate.yml
 
