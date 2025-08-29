@@ -115,4 +115,4 @@ delphi_services:
       unversioned: true
   KorpComprasEntradaNotaFiscalBackgroundService:
     version:
-      unversioned: true      
+      unversioned: true
