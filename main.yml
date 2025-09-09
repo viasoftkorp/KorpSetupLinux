@@ -5,7 +5,6 @@
   vars:
     ansible_become_password: "{{ linux_korp.password }}"
   become_user: "{{ linux_korp.user }}"
-  become: true
 
   tasks:
     - name: Execução de playbook
