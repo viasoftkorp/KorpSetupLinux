@@ -56,7 +56,7 @@
 
 - name: Remoção HybridProxy caso exista
   community.docker.docker_container:
-    name: viasoft-core-hybridproxy
+    name: Viasoft.Core.HybridProxy
     state: absent
 
 - name: Parar tarefa
