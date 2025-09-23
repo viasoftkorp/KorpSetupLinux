@@ -58,3 +58,6 @@
   community.docker.docker_container:
     name: viasoft-core-hybridproxy
     state: absent
+
+- name: Parar tarefa
+  ansible.builtin.meta: end_play
