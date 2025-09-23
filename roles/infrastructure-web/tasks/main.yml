@@ -29,7 +29,7 @@
 - name: Setup Viasoft.Authentication
   ansible.builtin.import_tasks: authentication.yml
 
-# # esses serviços devem ser adicionados depois do setup do Viasoft.Authentication
+# esses serviços devem ser adicionados depois do setup do Viasoft.Authentication
 - name: Definição de variáveis
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/services_with_oauth.yml') | from_yaml)['services'] }}"
