@@ -45,15 +45,30 @@
 
     - name: Teste de conexão com salt
       block:
-        - name: Ping para minion
+        - name: Teste para minion
           ansible.builtin.uri:
             url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
-            status_code: 
+            status_code:
               - 200
-          retries: 6 
-          delay: 5 
+          register: first_try_result
+          ignore_errors: true
+
+        - name: Reinicio de salt-minion após primeira falha
+          ansible.builtin.service:
+            name: salt-minion
+            state: restarted
+          when: first_try_result.status != 200
+
+        - name: Teste para minion após reinicio
+          ansible.builtin.uri:
+            url: "{{ gateway_url }}/vault/manager/server-deploy/salt/test/{{ token }}"
+            status_code:
+              - 200
+          retries: 5
+          delay: 5
           register: result
           ignore_errors: true
+          when: first_try_result.status != 200
 
         - name: Validação de resultado do teste
           ansible.builtin.fail:
