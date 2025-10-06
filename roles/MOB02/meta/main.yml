@@ -4,3 +4,5 @@ dependencies:
   - role: logistica
   - role: ERP
   - role: MOB01
+  - role: VEN27
+  - role: VENV6
