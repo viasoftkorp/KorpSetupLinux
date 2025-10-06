@@ -3,3 +3,4 @@ route add Viasoft.LicensingServer /licensing/license-server/ http://app_server:1
 route add Delphi /korp/services/ http://app_server:1504/
 route add Delphi /Korp/Services/ http://app_server:1504/
 route add Viasoft.ObjectStorage.Client /object-store/ http://app_server:1504/
+route add Proxy /api http://fabio:9999 opts "strip=/api"
