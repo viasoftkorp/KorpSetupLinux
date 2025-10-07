@@ -4,3 +4,8 @@ services:
       - "{{ dados_docker_dir_path }}/MOB02/reports"
     version:
       unversioned: true
+
+  Viasoft.Vendas.Mobile.Sincronismo:
+    db:
+      name: Viasoft_Vendas_Mobile_Sincronismo
+      type: mssql
