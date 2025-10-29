@@ -22,6 +22,12 @@
     dns_api: ""
     dns_cdn: ""
     dns_frontend: ""
+    dns_api_gateway: ""
+
+    default_dns_api: "korp-api.local"
+    default_dns_cdn: "korp-cdn.local"
+    default_dns_frontend: "korp.local"
+    default_dns_api_gateway: "api.korp.local"
 
     # valores padrões, podem ser alterados durante o playbook ou durante sua chamada
     alowerd_cert_types: ["selfsigned", "custom", "certbot"]
@@ -38,6 +44,7 @@
         api: ""
         cdn: ""
         frontend: ""
+        dns_api_gateway: ""
       https_port: ""
       external_reverse_proxy: false
       use_servergc: false
@@ -390,30 +397,57 @@
     - name: Setup de DNS
       block:
 
-        - name: Verificação de número de DNSs definidos
-          ansible.builtin.set_fact:
-            undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == ''] | select() | list | length }}"
+        - name: Definição de valores padrões de DNS
+          block:
+            - name: Verificação de número de DNSs definidos
+              ansible.builtin.set_fact:
+                undefined_dns_num: "{{ [custom_setup_info.dns.api == '', custom_setup_info.dns.cdn == '', custom_setup_info.dns.frontend == '', custom_setup_info.dns.api_gateway == ''] | select() | list | length }}"
 
-        - name: Definição de valores de DNS padrão
-          ansible.builtin.set_fact:
-            dns_api: "korp-api.local"
-            dns_cdn: "korp-cdn.local"
-            dns_frontend: "korp.local"
-          when: undefined_dns_num == "3"
+            - name: Definição de valores de DNS padrão
+              ansible.builtin.set_fact:
+                dns_api: "{{ default_dns_api }}" 
+                dns_cdn: "{{ default_dns_cdn }}" 
+                dns_frontend: "{{ default_dns_frontend }}" 
+                dns_api_gateway: "{{ default_dns_api_gateway }}" 
+              when: undefined_dns_num == "4"
 
-        - name: Verificação de DNS customizado
-          ansible.builtin.fail:
-            msg: "Nem todos os DNSs customizados foram definidos"
-          when: undefined_dns_num != "0" and undefined_dns_num != "3"
+            - name: Verificação de DNS customizado
+              ansible.builtin.fail:
+                msg: "Nem todos os DNSs customizados foram definidos"
+              when: undefined_dns_num != "0" and undefined_dns_num != "4"
 
-        - name: Definição de valores de DNS padrão
-          ansible.builtin.set_fact:
-            dns_api: "{{ custom_setup_info.dns.api }}"
-            dns_cdn: "{{ custom_setup_info.dns.cdn }}"
-            dns_frontend: "{{ custom_setup_info.dns.frontend }}"
-          when: undefined_dns_num == "0"
+            - name: Definição de valores de DNS padrão
+              ansible.builtin.set_fact:
+                dns_api: "{{ custom_setup_info.dns.api }}"
+                dns_cdn: "{{ custom_setup_info.dns.cdn }}"
+                dns_frontend: "{{ custom_setup_info.dns.frontend }}"
+                dns_api_gateway: "{{ custom_setup_info.dns.api_gateway }}"
+              when: undefined_dns_num == "0"
 
-      when: shrink_inventory.dns is undefined
+          when: shrink_inventory.dns is undefined
+
+        - name: Definição de DNS para API gateway
+          block:
+            - name: "Definição de DNS para api gateway customizado"
+              block:
+                - name: Coleta de informações de DNS
+                  ansible.builtin.pause:
+                    prompt: "Novo DNS para API é necessário, hoje os DNSs são: {{ shrink_inventory.dns.frontend }}. {{ shrink_inventory.dns.api }} e {{ shrink_inventory.dns.cdn }}. Insira o valor do novo DNS:"
+                  register: api_gateway_dns
+
+                - name: "Definição de DNS para api gateway"
+                  ansible.builtin.set_fact:
+                    dns_api_gateway: "{{ api_gateway_dns.user_input }}"
+
+              when: shrink_inventory.dns.frontend != default_dns_frontend
+
+            - name: "Definição de DNS para api gateway"
+              ansible.builtin.set_fact:
+                dns_api_gateway: "{{ default_dns_api_gateway }}"
+              when: shrink_inventory.dns.frontend == default_dns_frontend
+
+          when: shrink_inventory.dns is defined and shrink_inventory.dns.api_gateway is undefined
+
 
     - name: Definição de porta HTTPS
       ansible.builtin.set_fact:
@@ -525,6 +559,7 @@
               'api': shrink_inventory.dns.api | default (dns_api),
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
+              'api_gateway': shrink_inventory.dns.api_gateway | default (dns_api_gateway)
             },
             'https_port': shrink_inventory.https_port | default (https_port) | string,
             'reverse_proxy': {
@@ -534,6 +569,7 @@
                 'api': reverse_proxy.http_ports.api | default ('9875'),
                 'cdn': reverse_proxy.http_ports.cdn | default ('9876'),
                 'frontend': reverse_proxy.http_ports.frontend | default ('9877')
+                'dns_api_gateway': reverse_proxy.http_ports.dns_api_gateway | default ('9878')
               }
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),

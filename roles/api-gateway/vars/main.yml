@@ -1,0 +1,14 @@
+services:
+    Korp.Api.Gateway.Vendas:
+
+    Korp.Api.Gateway.Producao:
+
+    Korp.Api.Gateway.Pessoas:
+
+    Korp.Api.Gateway.Logistica:
+
+    Korp.Api.Gateway.Estruturaproduto:
+
+    Korp.Api.Gateway.Estoque:
+
+    Korp.Api.Gateway.Faturamento:
