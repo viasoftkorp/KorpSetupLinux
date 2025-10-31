@@ -1,14 +1,14 @@
 services:
-    Korp.Api.Gateway.Vendas:
+    Korp.API.Gateway.Vendas:
 
-    Korp.Api.Gateway.Producao:
+    Korp.API.Gateway.Producao:
 
-    Korp.Api.Gateway.Pessoas:
+    Korp.API.Gateway.Pessoas:
 
-    Korp.Api.Gateway.Logistica:
+    Korp.API.Gateway.Logistica:
 
-    Korp.Api.Gateway.Estruturaproduto:
+    Korp.API.Gateway.Estruturaproduto:
 
-    Korp.Api.Gateway.Estoque:
+    Korp.API.Gateway.Estoque:
 
-    Korp.Api.Gateway.Faturamento:
+    Korp.API.Gateway.Faturamento:
