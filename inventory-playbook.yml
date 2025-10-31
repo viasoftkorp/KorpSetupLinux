@@ -558,7 +558,7 @@
             'dns': {
               'api': shrink_inventory.dns.api | default (dns_api),
               'cdn': shrink_inventory.dns.cdn | default (dns_cdn),
-              'frontend': shrink_inventory.dns.frontend | default (dns_frontend)
+              'frontend': shrink_inventory.dns.frontend | default (dns_frontend),
               'api_gateway': shrink_inventory.dns.api_gateway | default (dns_api_gateway)
             },
             'https_port': shrink_inventory.https_port | default (https_port) | string,
@@ -568,7 +568,7 @@
               'http_ports': {
                 'api': reverse_proxy.http_ports.api | default ('9875'),
                 'cdn': reverse_proxy.http_ports.cdn | default ('9876'),
-                'frontend': reverse_proxy.http_ports.frontend | default ('9877')
+                'frontend': reverse_proxy.http_ports.frontend | default ('9877'),
                 'dns_api_gateway': reverse_proxy.http_ports.dns_api_gateway | default ('9878')
               }
             },
