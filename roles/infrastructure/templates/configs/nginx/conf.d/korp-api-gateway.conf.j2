@@ -1,0 +1,18 @@
+{% if reverse_proxy.external %}
+server {
+    listen {{ reverse_proxy.http_ports.api_gateway }};
+
+    include /etc/nginx/default_conf;
+
+    include /etc/nginx/conf.d/korp-api-gateway.locations;
+}
+{% endif %}
+
+server {
+    server_name {{ dns.api_gateway }};
+
+    include /etc/nginx/ssl_conf;
+    include /etc/nginx/default_conf;
+
+    include /etc/nginx/conf.d/korp-api-gateway.ssl-locations;
+}

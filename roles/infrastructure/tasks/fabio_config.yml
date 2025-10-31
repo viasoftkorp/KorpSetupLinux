@@ -34,3 +34,8 @@
   community.general.consul_kv:
     key: fabio/config
     value: "{{ consul_fabio_config | join('\r\n') }}"
+
+- name: Garantia de configuração de fabio ao consul
+  community.general.consul_kv:
+    key: fabio/api-gateway-config
+    value: "{{ lookup('file', 'configs/fabio/api-gateway-config') }}"
