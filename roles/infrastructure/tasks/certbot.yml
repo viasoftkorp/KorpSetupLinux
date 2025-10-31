@@ -61,6 +61,9 @@
     - "korp.ssl-locations"
     - "korp-api.ssl-locations"
     - "korp-cdn.ssl-locations"
+    - "korp-api-gateway.conf"
+    - "korp-api-gateway.locations"
+    - "korp-api-gateway.ssl-locations"
   register: nginx_files_status
 
 - name: Reload de nginx

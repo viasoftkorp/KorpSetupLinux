@@ -56,6 +56,7 @@ frontend:
     gateway_url: ""
     cdn_url: ""
     frontend_url: ""
+    api_gateway_url: ""
 
 # essas variáveis podem ser passadas como extra-vars durante a chamada dos playbooks
 customs:

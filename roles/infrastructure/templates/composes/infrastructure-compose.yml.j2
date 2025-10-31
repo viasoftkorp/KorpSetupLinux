@@ -88,6 +88,20 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: false
 
+  fabio-api-gateway:
+    image: "fabiolb/fabio:1.6.3"
+    container_name: "fabio-api-gateway"
+    restart: always
+    environment:
+      - registry_consul_addr=http://consul-server:8500
+      - proxy_matcher=iprefix
+      - registry_consul_kvpath=/fabio/api-gateway-config
+      - registry_consul_tagprefix=urlprefix_api-gateway-
+    networks:
+      - servicos
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
   {{ postgres_container_name }}:
     image: "postgres:14"
     command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]

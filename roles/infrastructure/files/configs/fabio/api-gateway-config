@@ -1,0 +1,1 @@
+route add oauth-token /oauth/connect/token http://fabio:9999
