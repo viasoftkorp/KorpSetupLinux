@@ -65,7 +65,8 @@
                 'endpoints': {
                   'gateway_url': 'https://' + dns.api,
                   'cdn_url': 'https://' + dns.cdn,
-                  'frontend_url': 'https://' + dns.frontend
+                  'frontend_url': 'https://' + dns.frontend,
+                  'api_gateway_url': 'https://' + dns.api_gateway
                 }
               }, recursive=True) }}"
 
@@ -77,6 +78,7 @@
                   'gateway_url': frontend.endpoints.gateway_url + ':' + https_port,
                   'cdn_url': frontend.endpoints.cdn_url + ':' + https_port,
                   'frontend_url': frontend.endpoints.frontend_url + ':' + https_port
+                  'api_gateway_url': frontend.endpoints.api_gateway_url + ':' + https_port,
                 }
               }, recursive=True) }}"
           when: https_port != "443"
