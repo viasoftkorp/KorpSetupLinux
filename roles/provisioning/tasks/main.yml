@@ -76,7 +76,7 @@
 - name: Configuração de hosts
   ansible.builtin.lineinfile:
     path: /etc/hosts
-    line: "127.0.0.1 {{ dns.frontend }} {{ dns.api }} {{ dns.cdn }}"
+    line: "127.0.0.1 {{ dns.frontend }} {{ dns.api }} {{ dns.cdn }} {{ dns.api_gateway }}" 
     owner: root
     group: root
     mode: '0644'
