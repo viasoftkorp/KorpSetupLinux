@@ -4,6 +4,7 @@ server {
     server_name {{ dns.api }}
                 {{ dns.cdn }}
                 {{ dns.frontend }}
+                {{ dns.api_gateway }}
                 ;
 
     location /.well-known/acme-challenge/ {
