@@ -53,6 +53,7 @@
             - ERP_ACL
             - FAT02_W
             - FAT01
+            - api-gateway
           loop_control:
             loop_var: app_name
           tags:
