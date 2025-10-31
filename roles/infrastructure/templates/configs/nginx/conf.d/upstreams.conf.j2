@@ -1,0 +1,20 @@
+
+upstream fabio_upstream {
+    server fabio:9999;
+    keepalive 64;
+}
+
+upstream Viasoft.Loader_upstream {
+    server Viasoft.Loader:80;
+    keepalive 64;
+}
+
+upstream Korp.Legacy.Frontend-router_upstream {
+    server Korp.Legacy.Frontend-router:80;
+    keepalive 64;
+}
+
+upstream fabio-api-gateway_upstream {
+    server fabio-api-gateway:9999;
+    keepalive 64;
+}

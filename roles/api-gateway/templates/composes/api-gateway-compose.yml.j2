@@ -1,0 +1,121 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL" 
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-api-gateway-vendas:
+    image: "{{ docker_account }}/korp.api.gateway.vendas:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Vendas-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-producao:
+    image: "{{ docker_account }}/korp.api.gateway.producao:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Producao-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-pessoas:
+    image: "{{ docker_account }}/korp.api.gateway.pessoas:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Pessoas-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-logistica:
+    image: "{{ docker_account }}/korp.api.gateway.logistica:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Logistica-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-estruturaproduto:
+    image: "{{ docker_account }}/korp.api.gateway.estruturaproduto:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.EstruturaProduto-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-estoque:
+    image: "{{ docker_account }}/korp.api.gateway.estoque:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Estoque-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-api-gateway-faturamento:
+    image: "{{ docker_account }}/korp.api.gateway.faturamento:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.API.Gateway.Faturamento-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
