@@ -41,6 +41,7 @@
       - "DNS:{{ dns.frontend }}"
       - "DNS:{{ dns.api }}"
       - "DNS:{{ dns.cdn }}"
+      - "DNS:{{ dns.api_gateway }}"
     backup: true
 
 - name: Geração do certificado assinado pela CA

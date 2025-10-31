@@ -8,6 +8,7 @@ x-extra_hosts:
   - "{{ dns.api }}:$API_GATEWAY"
   - "{{ dns.frontend }}:$PORTAL_GATEWAY"
   - "{{ dns.cdn }}:$CDN_GATEWAY"
+  - "{{ dns.api_gateway }}:$API_GATEWAY_GATEWAY"
 
 networks:
   servicos:
