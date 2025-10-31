@@ -18,5 +18,5 @@ location / {
     proxy_http_version 1.1;
     proxy_set_header Connection "";
 
-    proxy_pass http://fabio-api-gateway_upstream;
+    proxy_pass http://fabio-api-gateway:9999;
 }
