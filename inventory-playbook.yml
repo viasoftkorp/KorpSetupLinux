@@ -448,6 +448,10 @@
 
           when: shrink_inventory.dns is defined and shrink_inventory.dns.api_gateway is undefined
 
+        - name: "Validação de valor de 'dns_api_gateway'"
+          ansible.builtin.fail:
+            msg: "'dns_api_gateway' não está definido "
+          when: dns_api_gateway == '' and shrink_inventory.dns.api_gateway == ''
 
     - name: Definição de porta HTTPS
       ansible.builtin.set_fact:
