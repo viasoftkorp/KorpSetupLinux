@@ -26,7 +26,6 @@
       loop:
       - 'Viasoft.TenantManagement'
       - 'Viasoft.Administration'
-      - 'Viasoft.TenantManagement'
       - 'Korp.AtualizacaoSistema'
       loop_control:
         loop_var: service_to_restart
