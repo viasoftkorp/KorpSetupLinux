@@ -44,7 +44,7 @@
         api: ""
         cdn: ""
         frontend: ""
-        dns_api_gateway: ""
+        api_gateway: ""
       https_port: ""
       external_reverse_proxy: false
       use_servergc: false
