@@ -34,6 +34,7 @@ create_random_string() {
 #   dns_api="<dns.domain>"      - OPCIONAL
 #   dns_cdn="<dns.domain>"      - OPCIONAL
 #   dns_frontend="<dns.domain>" - OPCIONAL
+#   dns_api_gateway="<dns.domain>" - OPCIONAL
 ## HTTPS
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
 ## Proxy reverso
@@ -47,7 +48,7 @@ branch_name="master";
 remove_versioned=false; remove_unversioned=false; removed_version="";
 docker_image_suffix="";
 db_suffix="";
-dns_api=""; dns_frontend=""; dns_cdn="";
+dns_api=""; dns_frontend=""; dns_cdn=""; dns_api_gateway="";
 https_port="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
@@ -63,6 +64,7 @@ then
     dns_api=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_frontend=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_frontend[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     dns_cdn=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_cdn[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
+    dns_api_gateway=$(sed -nr "/^\[OPTIONS\]/ { :l /^dns_api_gateway[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
 
     db_suffix=$(sed -nr "/^\[OPTIONS\]/ { :l /^db_suffix[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
     custom_cert=$(sed -nr "/^\[OPTIONS\]/ { :l /^custom_cert[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b l;}" $ini_file_path)
@@ -202,7 +204,8 @@ ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp
       "dns": {
         "api": "'$dns_api'",
         "frontend": "'$dns_frontend'",
-        "cdn": "'$dns_cdn'"
+        "cdn": "'$dns_cdn'",
+        "api_gateway": "'$dns_api_gateway'"
       },
       "https_port": "'$https_port'",
       "external_reverse_proxy": "'$external_reverse_proxy'",
