@@ -215,8 +215,6 @@ cat > /tmp/vars.json <<EOF
 }
 EOF
 
-exec < /dev/tty # resolve alguns bugs no modulo 'ansible.builtin.pause'
-
 ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml \
   --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars "@/tmp/vars.json"
