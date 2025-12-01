@@ -215,9 +215,10 @@ cat > /tmp/vars.json <<EOF
 }
 EOF
 
-ansible-playbook inventory-playbook.yml \
+ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml \
   --vault-id /etc/korp/ansible/.vault_key \
   --extra-vars "@/tmp/vars.json"
+
 
 if [ $? != 0 ]
 then
