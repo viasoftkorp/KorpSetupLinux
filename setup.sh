@@ -189,30 +189,35 @@ then
     sudo mkdir -p /etc/korp/ansible/logs/
 fi
 
-ansible-playbook /tmp/KorpSetupLinux/inventory-playbook.yml --vault-id /etc/korp/ansible/.vault_key \
-  --extra-vars='{
-    "token": "'$token'",
-    "gateway_url": "'$gateway_url'",
-    "db_suffix": "'$db_suffix'",
-    "custom_setup_info": {
-      "cert": {
-        "cert_type": "'$cert_type'",
-        "custom_cert_has_pass": "'$custom_cert_has_pass'",
-        "custom_cert_path": "'$custom_cert_path'",
-        "certbot_email": "'$certbot_email'"
-      },
-      "dns": {
-        "api": "'$dns_api'",
-        "frontend": "'$dns_frontend'",
-        "cdn": "'$dns_cdn'",
-        "api_gateway": "'$dns_api_gateway'"
-      },
-      "https_port": "'$https_port'",
-      "external_reverse_proxy": "'$external_reverse_proxy'",
-      "use_servergc": "'$use_servergc'",
-      "expose_postgres": "'$expose_postgres'"
-    }
-  }'
+cat > /tmp/vars.json <<EOF
+{
+  "token": "$token",
+  "gateway_url": "$gateway_url",
+  "db_suffix": "$db_suffix",
+  "custom_setup_info": {
+    "cert": {
+      "cert_type": "$cert_type",
+      "custom_cert_has_pass": "$custom_cert_has_pass",
+      "custom_cert_path": "$custom_cert_path",
+      "certbot_email": "$certbot_email"
+    },
+    "dns": {
+      "api": "$dns_api",
+      "frontend": "$dns_frontend",
+      "cdn": "$dns_cdn",
+      "api_gateway": "$dns_api_gateway"
+    },
+    "https_port": "$https_port",
+    "external_reverse_proxy": "$external_reverse_proxy",
+    "use_servergc": "$use_servergc",
+    "expose_postgres": "$expose_postgres"
+  }
+}
+EOF
+
+ansible-playbook inventory-playbook.yml \
+  --vault-id /etc/korp/ansible/.vault_key \
+  --extra-vars "@/tmp/vars.json"
 
 if [ $? != 0 ]
 then
