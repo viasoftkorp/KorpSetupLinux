@@ -17,8 +17,8 @@ networks:
 
 services:
   viasoft-billing-cte:
-    image: "korp/viasoft.billing.cte:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.CTe-{{ version_without_build }}"
+    image: "{{ docker_account }}/viasoft.billing.cte:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Billing.CTE-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -32,8 +32,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-billing-cte-sefaz:
-    image: "korp/viasoft.billing.cte.sefaz:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.CTe.Sefaz-{{ version_without_build }}"
+    image: "{{ docker_account }}/viasoft.billing.cte.sefaz:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Billing.CTE.SEFAZ-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
