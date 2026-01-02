@@ -17,8 +17,8 @@ networks:
 
 services:
   viasoft-billing-cte:
-    image: "{{ docker_account }}/viasoft.billing.cte:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.CTE"
+    image: "korp/viasoft.billing.cte:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Billing.CTe-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -32,8 +32,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-billing-cte-sefaz:
-    image: "{{ docker_account }}/viasoft.billing.cte.sefaz:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Billing.CTE.SEFAZ"
+    image: "korp/viasoft.billing.cte.sefaz:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Billing.CTe.Sefaz-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -46,19 +46,3 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  FAT12:
-    image: "{{ docker_account }}/viasoft.billing.cte-frontend:2.1.x{{ docker_image_suffix }}"
-    container_name: "FAT12"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
