@@ -25,6 +25,10 @@
 
 - name: Cadastro de salt-minion
   block:
+    - name: ""
+      debug:
+        msg: "TESTE"
+
     - name: Garantia de cadastro de minion no salt master
       ansible.builtin.uri:
         url: "{{ gateway_url }}/vault/manager/server-deploy/salt/register/{{ token }}"
