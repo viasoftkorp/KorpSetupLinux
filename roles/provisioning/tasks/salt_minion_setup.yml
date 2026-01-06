@@ -31,10 +31,10 @@
         status_code: 
           - 200
           - 201
+        timeout: 120
       changed_when: response.status == 201
       retries: 6
       delay: 5
-      timeout: 120
       notify: Reinicio de salt-minion
       register: result
       ignore_errors: true
