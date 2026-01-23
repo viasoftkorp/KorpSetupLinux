@@ -49,8 +49,7 @@
           dns.api_gateway | default('', true)
         ]
         | select('truthy')
-        | map('string')
-        | map('prepend', 'DNS:')
+        | map('regex_replace', '^', 'DNS:')
         | list
       }}
 
