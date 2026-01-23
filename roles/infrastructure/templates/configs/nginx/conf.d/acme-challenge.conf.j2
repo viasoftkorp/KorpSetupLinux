@@ -4,7 +4,9 @@ server {
     server_name {{ dns.api }}
                 {{ dns.cdn }}
                 {{ dns.frontend }}
+            {% if dns.api_gateway is defined and dns.api_gateway != "" %}
                 {{ dns.api_gateway }}
+            {% endif %}
                 ;
 
     location /.well-known/acme-challenge/ {

@@ -60,28 +60,57 @@
 
         - name: "Definição de variáveis 'frontend.endpoints'"
           ansible.builtin.set_fact:
-            frontend: "{{ frontend | combine(
-              {
-                'endpoints': {
-                  'gateway_url': 'https://' + dns.api,
-                  'cdn_url': 'https://' + dns.cdn,
-                  'frontend_url': 'https://' + dns.frontend,
-                  'api_gateway_url': 'https://' + dns.api_gateway
+            frontend: "{{ frontend | combine(frontend_endpoints, recursive=True) }}"
+          vars:
+            frontend_endpoints: >-
+              {{
+                {
+                  'endpoints': {
+                    'gateway_url': 'https://' + dns.api,
+                    'cdn_url': 'https://' + dns.cdn,
+                    'frontend_url': 'https://' + dns.frontend
+                  }
                 }
-              }, recursive=True) }}"
+                |
+                combine(
+                  {
+                    'endpoints': {
+                      'api_gateway_url': 'https://' + dns.api_gateway
+                    }
+                  }
+                  if dns.api_gateway | default('', true) | length > 0
+                  else {},
+                  recursive=True
+                )
+              }}
 
         - name: "Adição de 'https_port' à 'frontend.endpoints'"
           ansible.builtin.set_fact:
-            frontend: "{{ frontend | combine(
-              {
-                'endpoints': {
-                  'gateway_url': frontend.endpoints.gateway_url + ':' + https_port,
-                  'cdn_url': frontend.endpoints.cdn_url + ':' + https_port,
-                  'frontend_url': frontend.endpoints.frontend_url + ':' + https_port,
-                  'api_gateway_url': frontend.endpoints.api_gateway_url + ':' + https_port
-                }
-              }, recursive=True) }}"
+            frontend: "{{ frontend | combine(frontend_endpoints_with_port, recursive=True) }}"
           when: https_port != "443"
+          vars:
+            frontend_endpoints_with_port: >-
+              {{
+                {
+                  'endpoints': {
+                    'gateway_url': frontend.endpoints.gateway_url ~ ':' ~ https_port,
+                    'cdn_url': frontend.endpoints.cdn_url ~ ':' ~ https_port,
+                    'frontend_url': frontend.endpoints.frontend_url ~ ':' ~ https_port
+                  }
+                }
+                |
+                combine(
+                  {
+                    'endpoints': {
+                      'api_gateway_url': frontend.endpoints.api_gateway_url ~ ':' ~ https_port
+                    }
+                  }
+                  if frontend.endpoints.api_gateway_url is defined
+                  else {},
+                  recursive=True
+                )
+              }}
+
 
         - name: Definição de variável docker_account
           ansible.builtin.set_fact:

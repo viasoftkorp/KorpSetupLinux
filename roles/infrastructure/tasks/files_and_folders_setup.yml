@@ -67,7 +67,6 @@
       loop:
         - "ssl_conf"
         - "default_conf"
-
     - name: Configuração e transferência de arquivos de nginx
       ansible.builtin.template:
         dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
@@ -75,21 +74,35 @@
         owner: "{{ linux_korp.user }}"
         group: root
         mode: '0644'
-      loop:
-        - "korp.conf"
-        - "korp-api.conf"
-        - "korp-cdn.conf"
-        - "korp.locations"
-        - "korp-api.locations"
-        - "korp-cdn.locations"
-        - "korp.ssl-locations"
-        - "korp-api.ssl-locations"
-        - "korp-cdn.ssl-locations"
-        - "korp-api-gateway.conf"
-        - "korp-api-gateway.locations"
-        - "korp-api-gateway.ssl-locations"
-      # arquivos devem ser copiados posteriormente caso o certificado seja provisionado pelo certbot
+      loop: "{{ nginx_conf_files }}"
       when: not certs.certbot_automated.certificate
+      vars:
+        nginx_conf_files: >-
+          {{
+            [
+              "upstreams.conf",
+              "korp.conf",
+              "korp-api.conf",
+              "korp-cdn.conf",
+              "korp.locations",
+              "korp-api.locations",
+              "korp-cdn.locations",
+              "korp.ssl-locations",
+              "korp-api.ssl-locations",
+              "korp-cdn.ssl-locations"
+            ]
+            +
+            (
+              [
+                "korp-api-gateway.conf",
+                "korp-api-gateway.locations",
+                "korp-api-gateway.ssl-locations"
+              ]
+              if dns.api_gateway | default('', true) | length > 0
+              else []
+            )
+          }}
+
 
     - name: Configuração para certbot
       block:

@@ -8,7 +8,9 @@ x-extra_hosts:
   - "{{ dns.api }}:$API_GATEWAY"
   - "{{ dns.frontend }}:$PORTAL_GATEWAY"
   - "{{ dns.cdn }}:$CDN_GATEWAY"
+{% if dns.api_gateway is defined and dns.api_gateway != "" %}
   - "{{ dns.api_gateway }}:$API_GATEWAY_GATEWAY"
+{% endif %}
 
 networks:
   servicos:
