@@ -37,12 +37,22 @@
       - clientAuth
     extended_key_usage_critical: true
     create_subject_key_identifier: true
-    subject_alt_name:
-      - "DNS:{{ dns.frontend }}"
-      - "DNS:{{ dns.api }}"
-      - "DNS:{{ dns.cdn }}"
-      - "DNS:{{ dns.api_gateway }}"
+    subject_alt_name: "{{ csr_subject_alt_names }}"
     backup: true
+  vars:
+    csr_subject_alt_names: >-
+      {{
+        [
+          dns.frontend,
+          dns.api,
+          dns.cdn,
+          dns.api_gateway | default('', true)
+        ]
+        | select('length')
+        | map('regex_replace', '^(.*)$', 'DNS:\\1')
+        | list
+      }}
+
 
 - name: Geração do certificado assinado pela CA
   community.crypto.x509_certificate:
