@@ -23,7 +23,7 @@
       --email {{ certs.certbot_automated.email }}
       --deploy-hook {{ korp_dir_path }}/scripts/certs_reload.sh
       --cert-name {{ certbot_cert_name }}
-      -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }} -d {{ dns.api_gateway }}
+      -d {{ dns.api }} -d {{ dns.cdn }} -d {{ dns.frontend }} {{ '-d ' ~ dns.api_gateway if dns.api_gateway is defined and dns.api_gateway | length > 0 else '' }}
       --agree-tos
       --noninteractive
       --key-type rsa

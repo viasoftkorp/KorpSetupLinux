@@ -77,7 +77,9 @@
   },
   "ApiWebKey": "{{ services_secrets.Global.ApiWebKey }}",
   "GatewayFrontendUrl": "{{ services_secrets.Global.GatewayFrontendUrl}}",
+{% if dns.api_gateway is defined and dns.api_gateway != "" %}
   "PublicGatewayUrl": "{{ frontend.endpoints.api_gateway_url }}",
+{% endif %}
   "GatewayUrl": "{{ gateway_url }}",
   "LegacyGateway": "{{ frontend.endpoints.gateway_url }}",
   "CORS": "{{ frontend.endpoints.frontend_url }}",
