@@ -1,3 +1,8 @@
+- name: "Validação de configuração de DNS de API Gateway"
+  ansible.builtin.fail:
+    msg: Para Executar a role 'api-gateway' é necessário configurar o DNS api_gateway. Para fazer isso execute o setup com a flag 'configure_api_gateway_dns=true'
+  when: dns.api_gateway is undefined or dns.api_gateway == ""
+
 - name: Definição de variáveis
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"

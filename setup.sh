@@ -35,6 +35,7 @@ create_random_string() {
 #   dns_cdn="<dns.domain>"      - OPCIONAL
 #   dns_frontend="<dns.domain>" - OPCIONAL
 #   dns_api_gateway="<dns.domain>" - OPCIONAL
+#   configure_api_gateway_dns=<bool> - OPCIONAL, padrão false - Caso true obriga a configuração de dns_api_gateway no inventário
 ## HTTPS
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
 ## Proxy reverso
@@ -207,6 +208,7 @@ cat > /tmp/vars.json <<EOF
       "cdn": "$dns_cdn",
       "api_gateway": "$dns_api_gateway"
     },
+    "configure_api_gateway_dns": "$configure_api_gateway_dns",
     "https_port": "$https_port",
     "external_reverse_proxy": "$external_reverse_proxy",
     "use_servergc": "$use_servergc",
