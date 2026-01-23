@@ -450,7 +450,7 @@
                     dns_api_gateway: "{{ default_dns_api_gateway }}"
                   when: shrink_inventory.dns.frontend == default_dns_frontend
 
-              when: shrink_inventory.dns is defined and shrink_inventory.dns.api_gateway is undefined
+              when: shrink_inventory.dns is defined and (shrink_inventory.dns.api_gateway is undefined or shrink_inventory.dns.api_gateway == "")
 
             - name: "Validação de valor de 'dns_api_gateway'"
               ansible.builtin.fail:
