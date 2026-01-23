@@ -48,7 +48,7 @@
           dns.cdn,
           dns.api_gateway | default('', true)
         ]
-        | select('length')
+        | select('truthy')
         | map('regex_replace', '^(.*)$', 'DNS:\\1')
         | list
       }}
