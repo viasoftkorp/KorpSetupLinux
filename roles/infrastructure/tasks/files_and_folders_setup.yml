@@ -80,7 +80,6 @@
         nginx_conf_files: >-
           {{
             [
-              "upstreams.conf",
               "korp.conf",
               "korp-api.conf",
               "korp-cdn.conf",
