@@ -91,7 +91,7 @@
     name: "korp cert renew"
     hour: "1"
     minute: "0"
-    user: "{{ linux_korp.user }}"
+    user: "{{ linux_korp.ussadfer }}"
     job: "{{ korp_dir_path }}/scripts/cert_renew.sh"
 
 - name: Adição de rotação de logs para renovação de certificados
