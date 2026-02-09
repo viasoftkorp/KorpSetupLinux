@@ -3,8 +3,6 @@ services:
     db:
       name: Viasoft_Contabil_Dre
       type: postgres
-    version:
-      unversioned: true
 
   Viasoft.Contabil.Gateway:
     db:

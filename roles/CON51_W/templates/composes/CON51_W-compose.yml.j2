@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-contabil-dre:
-    image: "{{ docker_account }}/viasoft.contabil.dre:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Contabil.Dre"
+    image: "{{ docker_account }}/viasoft.contabil.dre:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Contabil.Dre-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
