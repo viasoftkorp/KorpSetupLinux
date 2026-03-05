@@ -18,26 +18,24 @@ networks:
       name: servicos
 
 services:
-  LOG01_W:
-    image: "{{ docker_account }}/viasoft.logistics.product-frontend:3.0.x{{ docker_image_suffix }}"
-    container_name: "LOG01_W"
+  viasoft-logistics-products:
+    image: "{{ docker_account }}/viasoft.logistics.products:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistics.Products-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  viasoft-logistics-products:
-    image: "{{ docker_account }}/viasoft.logistics.products:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Logistics.Products-{{ version_without_build }}"
+  viasoft.logistica.produto.gateway:
+    image: "{{ docker_account }}/viasoft.logistica.produto.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistica.Produto.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
