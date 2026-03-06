@@ -1,4 +1,5 @@
 services:
+  Viasoft.Logistica.Produto.Gateway:
   Viasoft.Logistics.Products:
     db:
       name: Viasoft_Logistics_Products
