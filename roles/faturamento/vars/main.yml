@@ -11,3 +11,5 @@ services:
     db:
       name: Korp_Legacy_Faturamento
       type: mssql
+      
+  Korp.Faturamento.DFe.Integracao:
