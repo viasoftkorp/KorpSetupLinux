@@ -43,3 +43,5 @@ services:
   Korp.Sales.PriceControl:
 
   Korp.Vendas.ListaPreco:
+
+  Korp.API.Gateway.Vendas:
