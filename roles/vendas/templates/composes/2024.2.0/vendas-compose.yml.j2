@@ -63,17 +63,3 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  korp-api-gateway-vendas-2024-2-0:
-    image: "{{ docker_account }}/korp.api.gateway.vendas:2024.2.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.API.Gateway.Vendas-2024.2.0"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
