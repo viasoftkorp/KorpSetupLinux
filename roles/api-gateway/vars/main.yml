@@ -14,3 +14,5 @@ services:
     Korp.API.Gateway.Faturamento:
 
     Korp.API.Gateway.Compras:
+        db:
+            type: mssql
