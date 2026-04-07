@@ -51,19 +51,33 @@
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
-  loop:
-    - "korp.conf"
-    - "korp-api.conf"
-    - "korp-cdn.conf"
-    - "korp.locations"
-    - "korp-api.locations"
-    - "korp-cdn.locations"
-    - "korp.ssl-locations"
-    - "korp-api.ssl-locations"
-    - "korp-cdn.ssl-locations"
-    - "korp-api-gateway.conf"
-    - "korp-api-gateway.locations"
-    - "korp-api-gateway.ssl-locations"
+  loop: "{{ nginx_conf_files }}"
+  vars:
+    nginx_conf_files: >-
+      {{
+        [
+          "upstreams.conf",
+          "korp.conf",
+          "korp-api.conf",
+          "korp-cdn.conf",
+          "korp.locations",
+          "korp-api.locations",
+          "korp-cdn.locations",
+          "korp.ssl-locations",
+          "korp-api.ssl-locations",
+          "korp-cdn.ssl-locations"
+        ]
+        +
+        (
+          [
+            "korp-api-gateway.conf",
+            "korp-api-gateway.locations",
+            "korp-api-gateway.ssl-locations"
+          ]
+          if dns.api_gateway | default('', true) | length > 0
+          else []
+        )
+      }}
   register: nginx_files_status
 
 - name: Reload de nginx
