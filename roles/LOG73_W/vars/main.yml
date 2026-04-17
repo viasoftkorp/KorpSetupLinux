@@ -1,0 +1,7 @@
+services: 
+  Korp.Logistica.Repacking.Core:
+    db:
+      name: Korp_Logistica_Repacking_Core
+      type: mssql
+
+  Korp.Logistica.Repacking.Gateway:
