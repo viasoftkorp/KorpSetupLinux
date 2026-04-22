@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-audittrail-client:
-    image: "{{ docker_account }}/viasoft.audittrail.client:3.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Audittrail.Client"
+    image: "{{ docker_account }}/viasoft.audittrail.client:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Audittrail.Client-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

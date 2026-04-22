@@ -12,7 +12,6 @@ services:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"
     version:
-      unversioned: true
 
   Viasoft.Email:
     volumes_directories:
