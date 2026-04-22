@@ -36,8 +36,8 @@ services:
       - servicos
 
   viasoft-email:
-    image: "{{ docker_account }}/viasoft.email:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Email"
+    image: "{{ docker_account }}/viasoft.email:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Email-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
