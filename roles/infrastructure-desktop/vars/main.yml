@@ -18,7 +18,6 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-email/data"
       - "{{ dados_docker_dir_path }}/viasoft-email/errors"
     version:
-      unversioned: true
 
   Viasoft.SystemUpdate:
     oauth_client:
