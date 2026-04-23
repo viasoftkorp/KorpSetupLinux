@@ -36,8 +36,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   korp-projetos-bpmn-gateway:
-    image: "{{ docker_account }}/korp.projetos.bpmn.gateway:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Projetos.BPMN.Gateway"
+    image: "{{ docker_account }}/korp.projetos.bpmn.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Projetos.BPMN.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
