@@ -99,8 +99,8 @@ services:
       - servicos
 
   viasoft-systemupdate:
-    image: "{{ docker_account }}/viasoft.systemupdate:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.SystemUpdate"
+    image: "{{ docker_account }}/viasoft.systemupdate:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.SystemUpdate-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

@@ -23,7 +23,6 @@ services:
     oauth_client:
       skip: true
     version:
-      unversioned: true
 
   Viasoft.Legacy.HTTPProxy:
     oauth_client:
