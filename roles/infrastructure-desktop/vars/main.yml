@@ -39,7 +39,6 @@ services:
 
   Viasoft.SystemUpdate:
     version:
-      unversioned: true
 
   Viasoft.WelcomePage.Dashboard:
     version:
