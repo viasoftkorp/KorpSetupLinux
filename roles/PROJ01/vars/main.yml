@@ -5,4 +5,3 @@ services:
       name: Korp_Projetos_Gantt_Gateway
       type: postgres
     version:
-      unversioned: true
