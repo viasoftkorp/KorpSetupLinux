@@ -16,7 +16,7 @@ networks:
 
 services:
   BPMN01:
-    image: "{{ docker_account }}/korp.projetos.bpmn-frontend:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.projetos.bpmn-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "BPMN01"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
