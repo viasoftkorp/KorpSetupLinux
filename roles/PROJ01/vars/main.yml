@@ -11,4 +11,3 @@ services:
       name: Korp_Projetos_OrdensDeServico
       type: postgres
     version:
-      unversioned: true
