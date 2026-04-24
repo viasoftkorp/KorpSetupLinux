@@ -12,3 +12,10 @@ services:
   Korp.Legacy.Compras.EntradaNota:
     version:
       unversioned: true
+
+  Korp.Compras.Core:
+    db:
+      name: Korp_Compras_Core
+      type: mssql
+
+  Korp.Compras.Gateway:
