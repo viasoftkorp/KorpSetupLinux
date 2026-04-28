@@ -19,8 +19,8 @@ networks:
 
 services:
   PES01:
-    image: "{{ docker_account }}/viasoft.erp.person.preregistration-frontend:3.2.x{{ docker_image_suffix }}"
-    container_name: "PES01"
+    image: "{{ docker_account }}/viasoft.erp.person.preregistration-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "PES01-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
