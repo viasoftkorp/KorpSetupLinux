@@ -19,8 +19,8 @@ networks:
       
 services:
   korp-configuracoes-campospadroes:
-    image: "{{ docker_account }}/korp.configuracoes.campospadroes:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Configuracoes.CamposPadroes"
+    image: "{{ docker_account }}/korp.configuracoes.campospadroes:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Configuracoes.CamposPadroes-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
