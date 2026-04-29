@@ -19,8 +19,8 @@ networks:
 
 services:
   LOG00:
-    image: "{{ docker_account }}/viasoft.logistics.preregistration-frontend:3.1.x{{ docker_image_suffix }}"
-    container_name: "LOG00"
+    image: "{{ docker_account }}/viasoft.logistics.preregistration-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "LOG00-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
