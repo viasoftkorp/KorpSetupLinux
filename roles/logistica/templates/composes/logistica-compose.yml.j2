@@ -31,8 +31,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-logistica-inventario-background:
-    image: "{{ docker_account }}/viasoft.logistica.inventario.background:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Logistica.Inventario.Background"
+    image: "{{ docker_account }}/viasoft.logistica.inventario.background:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistica.Inventario.Background-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
