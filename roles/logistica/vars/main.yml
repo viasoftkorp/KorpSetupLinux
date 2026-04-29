@@ -18,7 +18,6 @@ services:
       name: Viasoft_Logistica_AjusteEstoque_Background
       type: postgres
     version:
-      unversioned: true
 
   Viasoft.Legacy.Logistica:
     db:
