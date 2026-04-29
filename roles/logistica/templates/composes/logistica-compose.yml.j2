@@ -94,8 +94,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-logistica-saldo:
-    image: "{{ docker_account }}/viasoft.logistica.saldo:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Logistica.Saldo"
+    image: "{{ docker_account }}/viasoft.logistica.saldo:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Logistica.Saldo-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

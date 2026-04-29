@@ -27,7 +27,6 @@ services:
     db:
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Logistica.Estoque:
     version:
