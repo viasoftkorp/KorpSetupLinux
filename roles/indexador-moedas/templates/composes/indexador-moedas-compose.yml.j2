@@ -19,8 +19,8 @@ networks:
 
 services:
   korp-financeiro-indexador-moedas:
-    image: "korp/korp.financeiro.indexador.moedas:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Financeiro.Indexador.Moedas"
+    image: "korp/korp.financeiro.indexador.moedas:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Financeiro.Indexador.Moedas-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
