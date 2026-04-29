@@ -1,4 +1,3 @@
 services:
   Korp.Logistica.EstoquePosicao:
     version:
-      unversioned: true
