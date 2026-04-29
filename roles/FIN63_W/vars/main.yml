@@ -5,7 +5,6 @@ services:
       name: Viasoft_Financeiro_Dre
       type: postgres
     version:
-      unversioned: true
 
   Viasoft.Financeiro.Gateway:
     db:
