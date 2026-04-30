@@ -16,8 +16,8 @@ networks:
 
 services:
   korp-integration-solidworks:
-    image: "korp/korp.integration.solidworks:1.3.x{{ docker_image_suffix }}"
-    container_name: "Korp.Integration.SolidWorks"
+    image: "korp/korp.integration.solidworks:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Integration.SolidWorks-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
