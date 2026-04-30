@@ -19,8 +19,8 @@ networks:
 
 services:
   korp-mobile:
-    image: "{{ docker_account }}/korp.mobile:4.2.x{{ docker_image_suffix }}"
-    container_name: "Korp.Mobile"
+    image: "{{ docker_account }}/korp.mobile:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Mobile-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
