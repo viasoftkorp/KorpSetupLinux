@@ -34,8 +34,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-financeiro-gateway:
-    image: "{{ docker_account }}/viasoft.financeiro.gateway:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Financeiro.Gateway"
+    image: "{{ docker_account }}/viasoft.financeiro.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Financeiro.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
