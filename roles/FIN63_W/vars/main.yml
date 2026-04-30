@@ -11,4 +11,3 @@ services:
       name: Viasoft_Financeiro_Gateway
       type: postgres
     version:
-      unversioned: true
