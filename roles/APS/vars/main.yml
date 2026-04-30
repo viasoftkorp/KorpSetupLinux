@@ -7,7 +7,6 @@ services:
     db:
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Production.APS.DataImporting:
     db:
