@@ -34,8 +34,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   MOB01:
-    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao-frontend:1.2.x{{ docker_image_suffix }}"
-    container_name: "MOB01"
+    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "MOB01-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
