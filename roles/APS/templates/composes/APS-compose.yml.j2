@@ -34,8 +34,8 @@ services:
       - servicos
 
   viasoft-production-aps:
-    image: "{{ docker_account }}/viasoft.production.aps:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS"
+    image: "{{ docker_account }}/viasoft.production.aps:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS-{{ version_without_build }}"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
