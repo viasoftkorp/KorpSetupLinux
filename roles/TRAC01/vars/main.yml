@@ -11,4 +11,3 @@ services:
       name: Korp_Sales_Tracking_Gateway
       type: postgres 
     version:
-      unversioned: true
