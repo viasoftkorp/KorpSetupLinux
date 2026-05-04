@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-production-aps-distribution:
-    image: "{{ docker_account }}/viasoft.production.aps.distribution:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.Distribution"
+    image: "{{ docker_account }}/viasoft.production.aps.distribution:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Distribution-{{ version_without_build }}"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
