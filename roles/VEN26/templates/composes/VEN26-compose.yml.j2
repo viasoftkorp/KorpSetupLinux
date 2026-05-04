@@ -49,8 +49,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   viasoft-sales-crm-activities:
-    image: "{{ docker_account }}/viasoft.sales.crm.activities:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Activities"
+    image: "{{ docker_account }}/viasoft.sales.crm.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.Activities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
