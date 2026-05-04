@@ -49,8 +49,8 @@ services:
       - servicos
 
   viasoft-production-aps-dataimporting:
-    image: "{{ docker_account }}/viasoft.production.aps.dataimporting:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.DataImporting"
+    image: "{{ docker_account }}/viasoft.production.aps.dataimporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.DataImporting-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
