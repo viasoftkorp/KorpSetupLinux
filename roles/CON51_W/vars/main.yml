@@ -11,4 +11,3 @@ services:
       name: Viasoft_Contabil_Gateway
       type: postgres
     version:
-      unversioned: true
