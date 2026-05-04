@@ -7,4 +7,3 @@ services:
 
   Korp.Sales.Tracking.Gateway:
     version:
-      unversioned: true
