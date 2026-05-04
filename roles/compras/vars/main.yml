@@ -11,4 +11,3 @@ services:
 
   Korp.Legacy.Compras.EntradaNota:
     version:
-      unversioned: true
