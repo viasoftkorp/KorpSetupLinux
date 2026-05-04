@@ -64,8 +64,8 @@ services:
       - servicos
 
   viasoft-production-aps-simulation:
-    image: "{{ docker_account }}/viasoft.production.aps.simulation:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.Simulation"
+    image: "{{ docker_account }}/viasoft.production.aps.simulation:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Simulation-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
