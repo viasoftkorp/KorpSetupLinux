@@ -4,7 +4,6 @@ services:
       name: Viasoft_Sales_CRM_Core
       type: postgres
     version:
-      unversioned: true
 
   Viasoft.Sales.CRM.Accounts:
     db:
