@@ -7,7 +7,6 @@ services:
       name: Viasoft_TaxManagement
       type: mssql
     version:
-      unversioned: true
   
   Korp.Fiscal.DAPI:
     db:
