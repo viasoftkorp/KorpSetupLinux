@@ -60,4 +60,3 @@ services:
       name: Viasoft_Sales_CRM_NPS
       type: postgres
     version:
-      unversioned: true

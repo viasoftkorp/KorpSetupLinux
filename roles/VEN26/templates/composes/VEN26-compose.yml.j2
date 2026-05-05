@@ -173,8 +173,8 @@ services:
 
 
   viasoft-sales-crm-nps:
-    image: "{{ docker_account }}/viasoft.sales.crm.nps:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.NPS"
+    image: "{{ docker_account }}/viasoft.sales.crm.nps:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.NPS-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
