@@ -27,7 +27,6 @@ services:
       name: Viasoft_Sales_CRM_Leads
       type: postgres
     version:
-      unversioned: true
 
   Viasoft.Sales.CRM.Opportunities:
     db:
