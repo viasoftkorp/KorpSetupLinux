@@ -140,8 +140,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-sync:
-    image: "{{ docker_account }}/viasoft.sales.crm.sync:2.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Sync"
+    image: "{{ docker_account }}/viasoft.sales.crm.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
