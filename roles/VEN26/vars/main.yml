@@ -21,7 +21,6 @@ services:
       name: Viasoft_Sales_CRM_Goals
       type: postgres
     version:
-      unversioned: true
 
   Viasoft.Sales.CRM.Leads:
     db:
