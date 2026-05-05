@@ -125,8 +125,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-sales-crm-reporting:
-    image: "{{ docker_account }}/viasoft.sales.crm.reporting:3.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Reporting"
+    image: "{{ docker_account }}/viasoft.sales.crm.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Sales.CRM.Reporting-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
