@@ -35,7 +35,6 @@ services:
 
   Korp.Legacy.Authorization:
     version:
-      unversioned: true
 
   Korp.Documents.Pdf:
     db:
