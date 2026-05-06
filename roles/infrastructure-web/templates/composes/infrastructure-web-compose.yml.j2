@@ -203,8 +203,8 @@ services:
       - servicos
 
   korp-legacy-authorization:
-    image: "{{ docker_account }}/korp.legacy.authorization:2.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Authorization"
+    image: "{{ docker_account }}/korp.legacy.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Authorization-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

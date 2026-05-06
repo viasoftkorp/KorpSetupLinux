@@ -35,4 +35,3 @@ services:
 
   Korp.Legacy.Authorization:
     version:
-      unversioned: true
