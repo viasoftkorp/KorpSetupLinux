@@ -4,7 +4,6 @@ services:
       name: Viasoft_QuickFilter
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.FileProvider:
     db:
