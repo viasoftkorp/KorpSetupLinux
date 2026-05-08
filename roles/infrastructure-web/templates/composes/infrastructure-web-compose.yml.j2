@@ -89,8 +89,8 @@ services:
       - servicos
 
   viasoft-portal:
-    image: "{{ docker_account }}/viasoft.portal:1.8.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Portal"
+    image: "{{ docker_account }}/viasoft.portal:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Portal-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
