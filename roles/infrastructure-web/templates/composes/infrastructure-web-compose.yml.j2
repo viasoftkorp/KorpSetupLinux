@@ -105,8 +105,8 @@ services:
       - servicos
 
   viasoft-authorization:
-    image: "{{ docker_account }}/viasoft.authorization:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Authorization"
+    image: "{{ docker_account }}/viasoft.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Authorization-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
