@@ -281,8 +281,8 @@ services:
       - servicos
 
   viasoft-quickfilter:
-    image: "{{ docker_account }}/viasoft.quickfilter:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.QuickFilter"
+    image: "{{ docker_account }}/viasoft.quickfilter:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.QuickFilter-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
