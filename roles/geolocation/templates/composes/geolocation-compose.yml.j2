@@ -19,8 +19,8 @@ networks:
       
 services:
   viasoft-geolocation:
-    image: "{{ docker_account }}/viasoft.geolocation:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Geolocation"
+    image: "{{ docker_account }}/viasoft.geolocation:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Geolocation-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
