@@ -269,8 +269,8 @@ services:
       - servicos
 
   viasoft-dashboard:
-    image: "{{ docker_account }}/viasoft.dashboard:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Dashboard"
+    image: "{{ docker_account }}/viasoft.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Dashboard-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
