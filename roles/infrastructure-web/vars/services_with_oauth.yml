@@ -26,7 +26,6 @@ services:
       name: Viasoft_Emailing
       type: postgres
     version:
-      unversioned: true
 
   Korp.Legacy.Administration:
     version:
