@@ -236,8 +236,8 @@ services:
       - servicos
 
   viasoft-emailing-emailtemplate:
-    image: "{{ docker_account }}/viasoft.emailing.emailtemplate:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Emailing.EmailTemplate"
+    image: "{{ docker_account }}/viasoft.emailing.emailtemplate:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Emailing.EmailTemplate-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
