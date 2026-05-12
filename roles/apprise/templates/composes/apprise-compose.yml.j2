@@ -32,8 +32,8 @@ services:
       com.centurylinklabs.watchtower.enable: false
 
   viasoft-apprise-proxy:
-    image: "{{ docker_account }}/viasoft.apprise.proxy:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Apprise.Proxy"
+    image: "{{ docker_account }}/viasoft.apprise.proxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Apprise.Proxy-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
