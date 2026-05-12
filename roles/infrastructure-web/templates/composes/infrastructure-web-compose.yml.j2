@@ -106,8 +106,8 @@ services:
       - servicos
 
   viasoft-notification:
-    image: "{{ docker_account }}/viasoft.notification:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Notification"
+    image: "{{ docker_account }}/viasoft.notification:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Notification-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
