@@ -12,7 +12,6 @@ services:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-fileprovider/"
     version:
-      unversioned: true
 
   Viasoft.Reporting:
     db:
