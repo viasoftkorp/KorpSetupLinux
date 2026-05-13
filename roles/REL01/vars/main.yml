@@ -10,7 +10,6 @@ services:
       name: Viasoft_Relatorios_Agendador
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Reporting.PivotTable:
     db:
