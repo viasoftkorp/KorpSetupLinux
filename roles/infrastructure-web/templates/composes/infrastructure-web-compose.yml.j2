@@ -299,8 +299,8 @@ services:
       - servicos
 
   viasoft-userprofile:
-    image: "{{ docker_account }}/viasoft.userprofile:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.UserProfile"
+    image: "{{ docker_account }}/viasoft.userprofile:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.UserProfile-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
