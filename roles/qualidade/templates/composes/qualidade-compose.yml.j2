@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-qualidade-inspecao-background:
-    image: "{{ docker_account }}/viasoft.qualidade.inspecao.background:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Qualidade.Inspecao.Background"
+    image: "{{ docker_account }}/viasoft.qualidade.inspecao.background:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Qualidade.Inspecao.Background-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
