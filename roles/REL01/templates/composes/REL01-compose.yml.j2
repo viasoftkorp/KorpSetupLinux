@@ -49,8 +49,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-relatorios-agendador:
-    image: "{{ docker_account }}/viasoft.relatorios.agendador:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Relatorios.Agendador"
+    image: "{{ docker_account }}/viasoft.relatorios.agendador:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Relatorios.Agendador-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
