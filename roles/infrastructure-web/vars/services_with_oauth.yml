@@ -18,7 +18,6 @@ services:
       name: Viasoft_Reporting
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Emailing:
     db:
