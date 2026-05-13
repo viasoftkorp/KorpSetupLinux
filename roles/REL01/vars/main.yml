@@ -4,7 +4,6 @@ services:
       name: Viasoft_Relatorios
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Relatorios.Agendador:
     db:
