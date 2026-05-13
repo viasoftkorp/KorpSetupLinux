@@ -16,7 +16,6 @@ services:
       name: Viasoft_Reporting_PivotTable
       type: mssql
     version:
-      unversioned: true
 
   Korp.Spreadsheet:
     db:
