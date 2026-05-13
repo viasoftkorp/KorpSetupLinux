@@ -174,8 +174,8 @@ services:
       - servicos
 
   viasoft-reporting:
-    image: "{{ docker_account }}/viasoft.reporting:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Reporting"
+    image: "{{ docker_account }}/viasoft.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Reporting-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
