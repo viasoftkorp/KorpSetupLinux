@@ -10,4 +10,3 @@ services:
       name: Viasoft_Workflow_Elsa
       type: postgres
     version:
-      unversioned: true

@@ -30,8 +30,8 @@ services:
     networks:
       - servicos
   viasoft-workflow-elsa:
-    image: "{{ docker_account }}/viasoft.workflow.elsa:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Workflow.Elsa"
+    image: "{{ docker_account }}/viasoft.workflow.elsa:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Workflow.Elsa-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
