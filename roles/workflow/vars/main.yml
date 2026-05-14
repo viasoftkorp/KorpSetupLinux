@@ -4,7 +4,8 @@ services:
       name: Viasoft_Workflow_Orchestrator
       type: postgres
     version:
-      unversioned: true
+
+
   Viasoft.Workflow.Elsa:
     db:
       name: Viasoft_Workflow_Elsa
