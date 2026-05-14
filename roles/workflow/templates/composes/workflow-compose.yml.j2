@@ -19,8 +19,8 @@ networks:
       
 services:
   viasoft-workflow-orchestrator:
-    image: "{{ docker_account }}/viasoft.workflow.orchestrator:1.6.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Workflow.Orchestrator"
+    image: "{{ docker_account }}/viasoft.workflow.orchestrator:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Workflow.Orchestrator-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
