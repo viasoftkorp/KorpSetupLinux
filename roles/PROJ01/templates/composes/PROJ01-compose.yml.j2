@@ -19,8 +19,8 @@ networks:
 
 services:
   PROJ01:
-    image: "{{ docker_account }}/korp.projetos.gantt-frontend:1.2.x{{ docker_image_suffix }}"
-    container_name: "PROJ01"
+    image: "{{ docker_account }}/korp.projetos.gantt-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "PROJ01-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -36,8 +36,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
   
   korp-projetos-gantt-gateway:
-    image: "{{ docker_account }}/korp.projetos.gantt.gateway:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Projetos.Gantt.Gateway"
+    image: "{{ docker_account }}/korp.projetos.gantt.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Projetos.Gantt.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -51,8 +51,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
  
   korp-projetos-ordensdeservico:
-    image: "{{ docker_account }}/korp.projetos.ordensdeservico:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Projetos.OrdensDeServico"
+    image: "{{ docker_account }}/korp.projetos.ordensdeservico:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Projetos.OrdensDeServico-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
