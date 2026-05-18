@@ -27,7 +27,6 @@ services:
 
   Korp.Legacy.Administration:
     version:
-      unversioned: true
 
   Korp.Legacy.Authorization:
     version:
