@@ -311,8 +311,8 @@ services:
       - servicos
 
   login:
-    image: "{{ docker_account }}/viasoft.authentication-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "login"
+    image: "{{ docker_account }}/viasoft.authentication-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "login-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
