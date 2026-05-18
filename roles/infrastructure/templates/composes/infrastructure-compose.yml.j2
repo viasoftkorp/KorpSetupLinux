@@ -187,8 +187,8 @@ services:
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
   korp-legacy-frontend-router:
-    image: "{{ docker_account }}/korp.legacy.frontend-router:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Frontend-router"
+    image: "{{ docker_account }}/korp.legacy.frontend-router:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Frontend-router-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
