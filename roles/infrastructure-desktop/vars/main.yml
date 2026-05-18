@@ -15,7 +15,6 @@ services:
       name: Auth_Legacy_Integration
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.AuditTrail.Client:
     oauth_client:
