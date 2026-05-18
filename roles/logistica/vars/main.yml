@@ -5,6 +5,9 @@ services:
   Korp.Logistica.SaldoProdutos:
 
   Viasoft.Logistica.Produto.Core:
+    db:
+      name: Viasoft_Logistica_Produto_Core
+      type: mssql
 
   Viasoft.Logistica.Inventario.Background:
     db:
