@@ -42,7 +42,6 @@ services:
 
   Viasoft.WelcomePage.Dashboard:
     version:
-      unversioned: true
 
   Korp.AtualizacaoSistema:
     version:
