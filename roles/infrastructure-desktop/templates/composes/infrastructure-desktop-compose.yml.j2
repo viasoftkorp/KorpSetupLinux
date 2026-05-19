@@ -69,8 +69,8 @@ services:
       - servicos
 
   viasoft-welcomepage-dashboard:
-    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.WelcomePage.Dashboard"
+    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.WelcomePage.Dashboard-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
