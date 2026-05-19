@@ -312,8 +312,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   portal:
-    image: "{{ docker_account }}/viasoft.portal-frontend:3.1.x{{ docker_image_suffix }}"
-    container_name: "portal"
+    image: "{{ docker_account }}/viasoft.portal-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "portal-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
