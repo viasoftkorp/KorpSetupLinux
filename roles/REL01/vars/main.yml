@@ -22,7 +22,6 @@ services:
       name: Korp_Spreadsheet
       type: mssql
     version:
-      unversioned: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/REL01/spreadsheets/"
 
