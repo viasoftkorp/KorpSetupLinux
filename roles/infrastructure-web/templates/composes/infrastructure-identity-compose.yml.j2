@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-authentication:
-    image: "{{ docker_account }}/viasoft.authentication:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Authentication"
+    image: "{{ docker_account }}/viasoft.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Authentication-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
