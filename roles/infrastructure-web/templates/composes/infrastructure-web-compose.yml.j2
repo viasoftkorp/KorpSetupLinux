@@ -72,8 +72,8 @@ services:
       - servicos
 
   viasoft-tenantmanagement:
-    image: "{{ docker_account }}/viasoft.tenantmanagement:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.TenantManagement"
+    image: "{{ docker_account }}/viasoft.tenantmanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.TenantManagement-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
