@@ -29,7 +29,7 @@ services:
   Viasoft.Sales.CommercialProposal.Gateway:
     db:
       name: Viasoft_Sales_CommercialProposal_Gateway
-      type: postgres
+      type: mssql
 
   Viasoft.Vendas.Core:
     custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
