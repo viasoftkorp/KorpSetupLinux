@@ -5,6 +5,19 @@
         name: utils
         tasks_from: default/variables_setup.yml
 
+    - name: Verificação de grupos do usuário korp
+      ansible.builtin.command: id -Gn {{ linux_korp.user }}
+      register: korp_groups_check
+      changed_when: false
+
+    - name: Validação de permissão no grupo docker
+      ansible.builtin.assert:
+        that: "'docker' in korp_groups_check.stdout.split()"
+        fail_msg: >-
+          O usuário '{{ linux_korp.user }}' não pertence ao grupo 'docker'.
+          O provisioning não foi executado nesta máquina ou foi executado com falha.
+          Solução: execute o setup com 'custom_tags=provisioning' antes de usar 'install-only'.
+
     - name: Configuração de docker
       community.docker.docker_login:
         username: "{{ services_secrets.Others.Docker.Account }}"
