@@ -1,3 +1,0 @@
-system.forceSearchAttributesCacheRefreshOnRead:
-  - value: false # Dev setup only. Please don't turn this on in production.
-    constraints: {}
