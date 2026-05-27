@@ -44,13 +44,6 @@
             - update
             - install
 
-        - name: Temporal
-          ansible.builtin.import_role:
-            name: temporal
-          tags:
-            - never
-            - temporal
-
         - name: Instalação de apps padrões
           ansible.builtin.include_role:
             name: utils
