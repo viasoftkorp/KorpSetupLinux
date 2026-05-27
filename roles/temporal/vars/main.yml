@@ -1,0 +1,9 @@
+temporal_version: "1.31.0"
+temporal_admintools_version: "1.31.0"
+temporal_ui_version: "2.50.0"
+temporal_elasticsearch_version: "7.17.27"
+temporal_nginx_version: "1.29.4"
+temporal_namespaces:
+  - prd
+  - hmlg
+temporal_postgres_user: "temporal"
