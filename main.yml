@@ -44,6 +44,14 @@
             - update
             - install
 
+        - name: Temporal
+          ansible.builtin.import_role:
+            name: temporal
+          tags:
+            - temporal
+            - default-setup
+            - install
+
         - name: Instalação de apps padrões
           ansible.builtin.include_role:
             name: utils
