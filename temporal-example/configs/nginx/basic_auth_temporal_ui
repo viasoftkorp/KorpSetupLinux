@@ -1,4 +1,0 @@
-# credencial utilizada pelo nginx com autenticação basic deve ser gerado o arquivo de senha usando o seguinte comando: 
-# `htpasswd -cB ./basic_auth_temporal_ui admin`
-# Não commitar valor
-# Valor disponivel no vault warden
