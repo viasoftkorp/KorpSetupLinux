@@ -18,3 +18,5 @@ services:
             type: mssql
 
     Korp.API.Gateway.Projetos:
+
+    Korp.API.Gateway.Fiscal:
