@@ -11,7 +11,7 @@
     END IF; \
     END \$\$;"
 
-- name: Criação de diretórios de dados e configuração do Temporal
+- name: Criação de diretórios de configuração do Temporal
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -19,12 +19,11 @@
     owner: "{{ linux_korp.user }}"
     group: root
   loop:
-    - "{{ dados_docker_dir_path }}/temporal-elasticsearch"
     - "{{ config_dir_path }}/temporalio/dynamicconfig"
     - "{{ config_dir_path }}/temporalio/nginx"
     - "{{ config_dir_path }}/temporalio/scripts"
 
-- name: Configuração de permissões do diretório de dados do Elasticsearch
+- name: Criação de diretório de dados do Elasticsearch com permissões corretas
   ansible.builtin.file:
     path: "{{ dados_docker_dir_path }}/temporal-elasticsearch"
     state: directory
