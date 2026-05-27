@@ -48,9 +48,8 @@
           ansible.builtin.import_role:
             name: temporal
           tags:
+            - never
             - temporal
-            - default-setup
-            - install
 
         - name: Instalação de apps padrões
           ansible.builtin.include_role:
