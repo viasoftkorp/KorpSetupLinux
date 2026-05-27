@@ -3,8 +3,8 @@
 #   docker compose -f {{ compose_dir_path }}/temporal-ui-compose.yml up -d
 networks:
   servicos:
-    external:
-      name: servicos
+    name: servicos
+    external: true
 
 services:
   temporal-ui:

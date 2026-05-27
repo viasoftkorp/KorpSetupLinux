@@ -22,6 +22,7 @@
     - "{{ dados_docker_dir_path }}/temporal-elasticsearch"
     - "{{ config_dir_path }}/temporalio/dynamicconfig"
     - "{{ config_dir_path }}/temporalio/nginx"
+    - "{{ config_dir_path }}/temporalio/scripts"
 
 - name: Cópia de dynamicconfig do Temporal
   ansible.builtin.copy:
@@ -38,6 +39,17 @@
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
+
+- name: Cópia de scripts do Temporal
+  ansible.builtin.copy:
+    src: "configs/scripts/{{ item }}"
+    dest: "{{ config_dir_path }}/temporalio/scripts/{{ item }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0755'
+  loop:
+    - setup-postgres-es.sh
+    - create-namespace.sh
 
 - name: Geração de htpasswd para Temporal UI
   community.general.htpasswd:
@@ -68,23 +80,6 @@
     env_files: ["{{ docker_env_file_path }}"]
     files:
       - temporal-compose.yml
-
-- name: Aguardar Temporal estar saudável
-  ansible.builtin.command: >
-    docker exec temporal-admin-tools
-    temporal operator cluster health --address temporal:7233
-  register: temporal_health
-  retries: 30
-  delay: 10
-  until: temporal_health.rc == 0
-
-- name: Criação de namespaces do Temporal
-  ansible.builtin.shell: |
-    docker exec temporal-admin-tools \
-    temporal operator namespace describe -n {{ item }} --address temporal:7233 \
-    || docker exec temporal-admin-tools \
-    temporal operator namespace create -n {{ item }} --address temporal:7233
-  loop: "{{ temporal_namespaces }}"
 
 - name: Garantia de kv no consul para Temporal (Global)
   ansible.builtin.include_role:
