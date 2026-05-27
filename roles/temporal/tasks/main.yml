@@ -24,6 +24,14 @@
     - "{{ config_dir_path }}/temporalio/nginx"
     - "{{ config_dir_path }}/temporalio/scripts"
 
+- name: Configuração de permissões do diretório de dados do Elasticsearch
+  ansible.builtin.file:
+    path: "{{ dados_docker_dir_path }}/temporal-elasticsearch"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+
 - name: Cópia de dynamicconfig do Temporal
   ansible.builtin.copy:
     src: configs/dynamicconfig/development-sql.yaml
