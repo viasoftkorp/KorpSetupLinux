@@ -72,6 +72,7 @@ services:
       - ENABLE_ES=true
       - ES_SEEDS=temporal-elasticsearch
       - ES_VERSION=v7
+      - ES_VISIBILITY_INDEX=temporal_visibility_v1
     networks:
       - servicos
     expose:
