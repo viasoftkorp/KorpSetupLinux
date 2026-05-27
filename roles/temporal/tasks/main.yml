@@ -73,7 +73,7 @@
     path: "{{ config_dir_path }}/temporalio/nginx/basic_auth_temporal_ui"
     owner: "{{ linux_korp.user }}"
     group: root
-    mode: '0640'
+    mode: '0644'
 
 - name: Configuração e transferência de composes do Temporal
   ansible.builtin.template:
