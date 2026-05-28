@@ -11,14 +11,31 @@ set -eu
 : "${POSTGRES_SEEDS:?ERROR: POSTGRES_SEEDS environment variable is required}"
 : "${POSTGRES_USER:?ERROR: POSTGRES_USER environment variable is required}"
 
+# Executa o comando ignorando apenas erros de "already exists".
+# Qualquer outro erro é propagado normalmente.
+run_if_not_exists() {
+  set +e
+  output=$("$@" 2>&1)
+  exit_code=$?
+  set -e
+  if [ $exit_code -ne 0 ]; then
+    if echo "$output" | grep -qi "already exist"; then
+      echo "Skipping (already exists): $1"
+    else
+      echo "$output" >&2
+      return $exit_code
+    fi
+  fi
+}
+
 echo 'Starting PostgreSQL and Elasticsearch schema setup...'
 echo 'Waiting for PostgreSQL port to be available...'
 nc -z -w 10 ${POSTGRES_SEEDS} ${DB_PORT:-5432}
 echo 'PostgreSQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
-temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
+run_if_not_exists temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal create
+run_if_not_exists temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal setup-schema -v 0.0
 temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER} -p ${DB_PORT:-5432} --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
 
 # Setup Elasticsearch index
@@ -26,7 +43,7 @@ temporal-sql-tool --plugin postgres12 --ep ${POSTGRES_SEEDS} -u ${POSTGRES_USER}
 if [ -x /usr/local/bin/temporal-elasticsearch-tool ]; then
   echo 'Using temporal-elasticsearch-tool for Elasticsearch setup'
   temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" setup-schema
-  temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" create-index --index $ES_VISIBILITY_INDEX
+  run_if_not_exists temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" create-index --index $ES_VISIBILITY_INDEX
 else
   echo 'Using curl for Elasticsearch setup'
   echo 'WARNING: curl will be removed from admin-tools in v1.30.'
