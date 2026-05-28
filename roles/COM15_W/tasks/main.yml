@@ -1,6 +1,14 @@
 - name: Definição de variáveis
   ansible.builtin.set_fact:
-    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] | default({}) }}"
+
+- name: Setup de COM15_W (compose-only, sem serviços backend)
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/setup_compose_only
+  vars:
+    id: COM15_W
+  when: services | length == 0
 
 - name: Adição de serviços de COM15_W
   ansible.builtin.include_role:
@@ -10,5 +18,6 @@
     service_name: "{{ item.key }}"
     id: COM15_W
   with_dict: "{{ services }}"
+  when: services | length > 0
   loop_control:
     extended: true

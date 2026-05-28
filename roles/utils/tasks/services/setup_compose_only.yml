@@ -1,0 +1,15 @@
+# Usado por roles que possuem apenas compose (ex: frontend puro), sem serviços backend.
+# Substitui o fluxo do add_service quando services: {} em vars/main.yml.
+#
+# vars:
+#   id: - (string) OBRIGATÓRIO
+
+- name: "Startup de setup de role {{ id }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/startup
+
+- name: "Setup de composes e registro de {{ id }}"
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/compose_and_mapping
