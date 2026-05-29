@@ -18,7 +18,7 @@ networks:
       name: servicos
 
 services:
-  BPMN01:
+  BPMN01-2025-1-0:
     image: "{{ docker_account }}/korp.projetos.bpmn-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "BPMN01-{{ version_without_build }}"
     restart: unless-stopped
