@@ -18,7 +18,7 @@ networks:
       name: servicos
 
 services:
-  TRAC01:
+  TRAC01-2025-1-0:
     image: "{{ docker_account }}/korp.sales.tracking-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "TRAC01-{{ version_without_build }}"
     restart: unless-stopped
