@@ -1,0 +1,95 @@
+- name: Criação de usuário PostgreSQL para Temporal
+  ansible.builtin.shell: |
+    docker exec -i "{{ postgres_container_name }}" psql -U postgres -c \
+    "DO \$\$ BEGIN \
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{{ temporal_postgres_user }}') \
+      THEN EXECUTE 'CREATE USER \"{{ temporal_postgres_user }}\" WITH PASSWORD ''{{ temporal.postgres_password }}'' LOGIN CREATEDB;'; \
+    END IF; \
+    END \$\$;"
+
+- name: Criação de diretórios de configuração do Temporal
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop:
+    - "{{ config_dir_path }}/temporalio/dynamicconfig"
+    - "{{ config_dir_path }}/temporalio/nginx"
+    - "{{ config_dir_path }}/temporalio/scripts"
+
+- name: Criação de diretório de dados do Elasticsearch com permissões corretas
+  ansible.builtin.file:
+    path: "{{ dados_docker_dir_path }}/temporal-elasticsearch"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+  become: true
+  become_user: root
+
+- name: Cópia de dynamicconfig do Temporal
+  ansible.builtin.copy:
+    src: configs/dynamicconfig/development-sql.yaml
+    dest: "{{ config_dir_path }}/temporalio/dynamicconfig/development-sql.yaml"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: Cópia de configuração nginx para Temporal UI
+  ansible.builtin.copy:
+    src: configs/nginx/nginx.conf
+    dest: "{{ config_dir_path }}/temporalio/nginx/nginx.conf"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: Cópia de scripts do Temporal
+  ansible.builtin.copy:
+    src: "configs/scripts/{{ item }}"
+    dest: "{{ config_dir_path }}/temporalio/scripts/{{ item }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0755'
+  loop:
+    - setup-postgres-es.sh
+    - create-namespace.sh
+
+- name: Geração de htpasswd para Temporal UI
+  community.general.htpasswd:
+    path: "{{ config_dir_path }}/temporalio/nginx/basic_auth_temporal_ui"
+    name: admin
+    password: "{{ temporal.nginx_password }}"
+    crypt_scheme: apr_md5_crypt
+
+- name: Configuração de permissões do htpasswd
+  ansible.builtin.file:
+    path: "{{ config_dir_path }}/temporalio/nginx/basic_auth_temporal_ui"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: Configuração e transferência de composes do Temporal
+  ansible.builtin.template:
+    dest: "{{ compose_dir_path }}/{{ item[:-3] | basename }}"
+    src: "composes/{{ item | basename }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop: "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
+
+- name: Criação e inicialização do Temporal
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir_path }}/"
+    env_files: ["{{ docker_env_file_path }}"]
+    files:
+      - temporal-compose.yml
+
+- name: Garantia de kv no consul para Temporal (Global)
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: consul_kv/ensure_kv
+  vars:
+    service_name: Global
+    keys_to_overwrite: ["Temporal"]

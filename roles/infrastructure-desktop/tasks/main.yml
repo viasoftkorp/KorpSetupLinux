@@ -11,6 +11,7 @@
 - name: Definição de variáveis
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+    delphi_services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['delphi_services'] }}"
 
 - name: Adição de serviços de infrastructure-desktop
   ansible.builtin.include_role:
@@ -21,6 +22,19 @@
     id: infrastructure-desktop
     skip_app_register: true
   with_dict: "{{ services }}"
+  loop_control:
+    extended: true
+
+- name: Adição de serviços de infrastructure-desktop-delphi
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: infrastructure-desktop-delphi
+    skip_app_register: true
+    skip_compose: true
+  with_dict: "{{ delphi_services }}"
   loop_control:
     extended: true
 

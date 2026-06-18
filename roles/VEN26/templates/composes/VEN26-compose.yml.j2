@@ -20,7 +20,11 @@ networks:
 services:
   viasoft-sales-crm-core:
     image: "{{ docker_account }}/viasoft.sales.crm.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Core-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Core"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -35,7 +39,11 @@ services:
 
   viasoft-sales-crm-accounts:
     image: "{{ docker_account }}/viasoft.sales.crm.accounts:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Accounts-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Accounts"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -50,7 +58,11 @@ services:
   
   viasoft-sales-crm-activities:
     image: "{{ docker_account }}/viasoft.sales.crm.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Activities-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Activities"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -66,7 +78,11 @@ services:
     
   viasoft-sales-crm-goals:
     image: "{{ docker_account }}/viasoft.sales.crm.goals:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Goals-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Goals"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -81,7 +97,11 @@ services:
       
   viasoft-sales-crm-leads:
     image: "{{ docker_account }}/viasoft.sales.crm.leads:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Leads-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Leads"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -111,7 +131,11 @@ services:
 
   viasoft-sales-crm-qualification:
     image: "{{ docker_account }}/viasoft.sales.crm.qualification:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Qualification-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Qualification"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -126,7 +150,7 @@ services:
 
   viasoft-sales-crm-reporting:
     image: "{{ docker_account }}/viasoft.sales.crm.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Reporting-{{ version_without_build }}"
+    container_name: "Viasoft.Sales.CRM.Reporting"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -141,7 +165,11 @@ services:
 
   viasoft-sales-crm-sync:
     image: "{{ docker_account }}/viasoft.sales.crm.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.Sync-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.Sync"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -156,7 +184,11 @@ services:
 
   VEN26:
     image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "VEN26-{{ version_without_build }}"
+=======
+    container_name: "VEN26"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -174,7 +206,11 @@ services:
 
   viasoft-sales-crm-nps:
     image: "{{ docker_account }}/viasoft.sales.crm.nps:{{ version_without_build }}.x{{ docker_image_suffix }}"
+<<<<<<< HEAD
     container_name: "Viasoft.Sales.CRM.NPS-{{ version_without_build }}"
+=======
+    container_name: "Viasoft.Sales.CRM.NPS"
+>>>>>>> master
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:

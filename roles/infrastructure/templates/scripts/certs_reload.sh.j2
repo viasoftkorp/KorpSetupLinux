@@ -1,4 +1,7 @@
 echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >> {{ certs_directory }}/logs/certs_reload.log
 docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+echo "Limpando todas as chaves do Redis - $(date)" >> {{ certs_directory }}/logs/certs_reload.log
+docker exec {{ redis_container_name }} redis-cli -a "{{ redis.password }}" FLUSHALL >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+echo "Limpeza do Redis concluída" >> {{ certs_directory }}/logs/certs_reload.log
 docker restart Viasoft.Authentication >> {{ certs_directory }}/logs/certs_reload.log 2>&1
 echo "Reload de serviços finalizada" >> {{ certs_directory }}/logs/certs_reload.log

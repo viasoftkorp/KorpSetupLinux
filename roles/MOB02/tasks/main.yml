@@ -1,6 +1,6 @@
-- name: Correção de mobile
-  ansible.builtin.include_tasks:
-    file: mobile_fix.yml
+# - name: Correção de mobile
+#   ansible.builtin.include_tasks:
+#     file: mobile_fix.yml
 
 - name: Definição de variáveis
   ansible.builtin.set_fact:

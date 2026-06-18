@@ -8,6 +8,11 @@
     # Bibliotecas usadas pelo Ansible para rodar querys no SQL Server
     - pymssql
 
+- name: Verificação das variáveis de certificado
+  ansible.builtin.fail:
+    msg: "Erro de configuração: para utilizar reverse_proxy.external=true é necessário definir certs.self_signed.certificate=true"
+  when: reverse_proxy.external == true and certs.self_signed.certificate == false
+
 - name: Configuração de certificado padrão
   block:
   - name: Provisão da CA para geração do certificado
