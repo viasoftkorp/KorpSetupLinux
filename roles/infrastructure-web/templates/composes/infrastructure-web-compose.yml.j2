@@ -55,8 +55,8 @@ services:
     #   - "9113:9001"
 
   viasoft-tenantmanagement:
-    image: "{{ docker_account }}/viasoft.tenantmanagement:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.TenantManagement"
+    image: "{{ docker_account }}/viasoft.tenantmanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.TenantManagement-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -70,8 +70,8 @@ services:
       - servicos
 
   viasoft-portal:
-    image: "{{ docker_account }}/viasoft.portal:1.8.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Portal"
+    image: "{{ docker_account }}/viasoft.portal:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Portal-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
@@ -89,8 +89,8 @@ services:
       - servicos
 
   viasoft-authorization:
-    image: "{{ docker_account }}/viasoft.authorization:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Authorization"
+    image: "{{ docker_account }}/viasoft.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Authorization-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
@@ -106,8 +106,8 @@ services:
       - servicos
 
   viasoft-notification:
-    image: "{{ docker_account }}/viasoft.notification:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Notification"
+    image: "{{ docker_account }}/viasoft.notification:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Notification-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -121,8 +121,8 @@ services:
       - servicos
 
   viasoft-administration:
-    image: "{{ docker_account }}/viasoft.administration:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Administration"
+    image: "{{ docker_account }}/viasoft.administration:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Administration-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
@@ -138,8 +138,8 @@ services:
       - servicos
 
   viasoft-reporting-stimulsoft:
-    image: "{{ docker_account }}/viasoft.reporting.stimulsoft:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Reporting.Stimulsoft"
+    image: "{{ docker_account }}/viasoft.reporting.stimulsoft:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Reporting.Stimulsoft-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
@@ -155,8 +155,8 @@ services:
       - servicos
 
   viasoft-reporting:
-    image: "{{ docker_account }}/viasoft.reporting:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Reporting"
+    image: "{{ docker_account }}/viasoft.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Reporting-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     depends_on:
@@ -172,8 +172,8 @@ services:
       - servicos
 
   korp-legacy-administration:
-    image: "{{ docker_account }}/korp.legacy.administration:1.2.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Administration"
+    image: "{{ docker_account }}/korp.legacy.administration:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Administration-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -187,8 +187,8 @@ services:
       - servicos
 
   korp-legacy-authorization:
-    image: "{{ docker_account }}/korp.legacy.authorization:2.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Authorization"
+    image: "{{ docker_account }}/korp.legacy.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Authorization-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -202,8 +202,8 @@ services:
       - servicos
 
   viasoft-emailing:
-    image: "{{ docker_account }}/viasoft.emailing:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Emailing"
+    image: "{{ docker_account }}/viasoft.emailing:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Emailing-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -217,8 +217,8 @@ services:
       - servicos
 
   viasoft-emailing-emailtemplate:
-    image: "{{ docker_account }}/viasoft.emailing.emailtemplate:1.3.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Emailing.EmailTemplate"
+    image: "{{ docker_account }}/viasoft.emailing.emailtemplate:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Emailing.EmailTemplate-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -232,8 +232,8 @@ services:
       - servicos
 
   viasoft-fileprovider:
-    image: "{{ docker_account }}/viasoft.fileprovider:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.FileProvider"
+    image: "{{ docker_account }}/viasoft.fileprovider:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.FileProvider-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -250,8 +250,8 @@ services:
       - servicos
 
   viasoft-dashboard:
-    image: "{{ docker_account }}/viasoft.dashboard:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Dashboard"
+    image: "{{ docker_account }}/viasoft.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Dashboard-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -265,8 +265,8 @@ services:
       - servicos
 
   viasoft-quickfilter:
-    image: "{{ docker_account }}/viasoft.quickfilter:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.QuickFilter"
+    image: "{{ docker_account }}/viasoft.quickfilter:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.QuickFilter-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -280,8 +280,8 @@ services:
       - servicos
 
   viasoft-userprofile:
-    image: "{{ docker_account }}/viasoft.userprofile:1.5.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.UserProfile"
+    image: "{{ docker_account }}/viasoft.userprofile:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.UserProfile-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -293,80 +293,10 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-
-  login:
-    image: "{{ docker_account }}/viasoft.authentication-frontend:1.1.x{{ docker_image_suffix }}"
-    container_name: "login"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  portal:
-    image: "{{ docker_account }}/viasoft.portal-frontend:3.1.x{{ docker_image_suffix }}"
-    container_name: "portal"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    depends_on:
-      - viasoft-portal
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-    networks:
-      - servicos
-
-  ADM01:
-    image: "{{ docker_account }}/viasoft.administration-frontend:4.1.x{{ docker_image_suffix }}"
-    container_name: "ADM01"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  REL01:
-    image: "{{ docker_account }}/viasoft.relatorios-frontend:2.2.x{{ docker_image_suffix }}"
-    container_name: "REL01"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-documents-pdf:
-    image: "{{ docker_account }}/korp.documents.pdf:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Documents.Pdf"
+    image: "{{ docker_account }}/korp.documents.pdf:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Documents.Pdf-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -378,3 +308,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+
+
+
+
+

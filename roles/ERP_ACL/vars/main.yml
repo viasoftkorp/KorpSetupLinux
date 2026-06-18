@@ -3,4 +3,3 @@ services:
     db:
       type: mssql
     version:
-      unversioned: true

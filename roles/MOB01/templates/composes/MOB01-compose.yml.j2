@@ -19,31 +19,14 @@ networks:
 
 services:
   viasoft-vendas-mobile-configuracao:
-    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Vendas.Mobile.Configuracao"
+    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Vendas.Mobile.Configuracao-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  MOB01:
-    image: "{{ docker_account }}/viasoft.vendas.mobile.configuracao-frontend:1.2.x{{ docker_image_suffix }}"
-    container_name: "MOB01"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
