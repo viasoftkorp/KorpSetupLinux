@@ -1,0 +1,107 @@
+networks:
+  servicos:
+    name: servicos
+    external: true
+
+services:
+  temporal-elasticsearch:
+    image: elasticsearch:{{ temporal_elasticsearch_version }}
+    container_name: temporal-elasticsearch
+    environment:
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=512mb
+      - cluster.routing.allocation.disk.watermark.high=256mb
+      - cluster.routing.allocation.disk.watermark.flood_stage=128mb
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - xpack.security.enabled=false
+    volumes:
+      - {{ dados_docker_dir_path }}/temporal-elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - servicos
+    expose:
+      - 9200
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=1s || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+
+  temporal-admin-tools:
+    container_name: temporal-admin-tools
+    image: temporalio/admin-tools:{{ temporal_admintools_version }}
+    restart: on-failure:6
+    depends_on:
+      temporal-elasticsearch:
+        condition: service_healthy
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER={{ temporal_postgres_user }}
+      - POSTGRES_PWD={{ temporal.postgres_password }}
+      - POSTGRES_SEEDS={{ postgres_container_name }}
+      - SQL_PASSWORD={{ temporal.postgres_password }}
+      - ES_SCHEME=http
+      - ES_HOST=temporal-elasticsearch
+      - ES_PORT=9200
+      - ES_VERSION=v7
+      - ES_VISIBILITY_INDEX=temporal_visibility_v1
+    networks:
+      - servicos
+    volumes:
+      - {{ config_dir_path }}/temporalio/scripts:/scripts
+    entrypoint: ["/bin/sh"]
+    command: /scripts/setup-postgres-es.sh
+
+  temporal:
+    container_name: temporal
+    image: temporalio/server:{{ temporal_version }}
+    restart: always
+    depends_on:
+      temporal-admin-tools:
+        condition: service_completed_successfully
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER={{ temporal_postgres_user }}
+      - POSTGRES_PWD={{ temporal.postgres_password }}
+      - POSTGRES_SEEDS={{ postgres_container_name }}
+      - BIND_ON_IP=0.0.0.0
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
+      - ENABLE_ES=true
+      - ES_SEEDS=temporal-elasticsearch
+      - ES_VERSION=v7
+      - ES_VIS_INDEX=temporal_visibility_v1
+    networks:
+      - servicos
+    expose:
+      - 7233
+    volumes:
+      - {{ config_dir_path }}/temporalio/dynamicconfig:/etc/temporal/config/dynamicconfig
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "7233"]
+      interval: 5s
+      timeout: 3s
+      start_period: 30s
+      retries: 60
+
+{% for ns in temporal_namespaces %}
+  temporal-create-namespace-{{ ns }}:
+    container_name: temporal-create-namespace-{{ ns }}
+    image: temporalio/admin-tools:{{ temporal_admintools_version }}
+    restart: on-failure:5
+    depends_on:
+      temporal:
+        condition: service_healthy
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - DEFAULT_NAMESPACE={{ ns }}
+    networks:
+      - servicos
+    volumes:
+      - {{ config_dir_path }}/temporalio/scripts:/scripts
+    entrypoint: ["/bin/sh"]
+    command: /scripts/create-namespace.sh
+
+{% endfor %}

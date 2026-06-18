@@ -584,7 +584,11 @@
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
             'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool),
-            'watchtower_cron': shrink_inventory.watchtower_cron | default ('0 0 3 * * *')
+            'watchtower_cron': shrink_inventory.watchtower_cron | default ('0 0 3 * * *'),
+            'temporal': {
+              'postgres_password': shrink_inventory.temporal.postgres_password | default(lookup('community.general.random_string', length=16, special=False)),
+              'nginx_password': shrink_inventory.temporal.nginx_password | default(lookup('community.general.random_string', length=16, special=False))
+            }
           }, recursive=True) }}"
 
     - name: Ajuste de estrutura do inventário
