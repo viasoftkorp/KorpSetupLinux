@@ -69,8 +69,8 @@ services:
       - servicos
 
   viasoft-legacy-httpproxy:
-    image: "{{ docker_account }}/viasoft.legacy.httpproxy:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Httpproxy"
+    image: "{{ docker_account }}/viasoft.legacy.httpproxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Httpproxy-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -131,3 +131,4 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+

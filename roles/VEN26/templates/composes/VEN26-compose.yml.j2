@@ -63,7 +63,6 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-    
   viasoft-sales-crm-goals:
     image: "{{ docker_account }}/viasoft.sales.crm.goals:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Sales.CRM.Goals-{{ version_without_build }}"
@@ -153,24 +152,6 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  VEN26:
-    image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "VEN26-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
 
   viasoft-sales-crm-nps:
     image: "{{ docker_account }}/viasoft.sales.crm.nps:{{ version_without_build }}.x{{ docker_image_suffix }}"

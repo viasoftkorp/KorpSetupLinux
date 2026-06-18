@@ -1,0 +1,285 @@
+{
+  "korp.appbuilder-frontend": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "korp.appbuilder.codegenerator": {},
+  "korp.consul.proxy": {},
+  "korp.flow": {
+    "release/2023.4.0.x": "1.1.x",
+    "release/2024.1.0.x": "1.1.x",
+    "release/2024.2.0.x": "1.1.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "korp.flow-frontend": {
+    "release/2023.4.0.x": "1.1.x",
+    "release/2024.1.0.x": "1.1.x",
+    "release/2024.2.0.x": "1.1.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "korp.legacy.administration": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.2.x",
+    "release/2025.1.0.x": "1.2.x"
+  },
+  "korp.legacy.authentication": {
+    "release/2023.4.0.x": "1.5.x",
+    "release/2024.1.0.x": "1.5.x",
+    "release/2024.2.0.x": "1.5.x",
+    "release/2025.1.0.x": "1.6.x"
+  },
+  "korp.legacy.cargainicial": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "korp.legacy.frontend-router": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "korp.powerbi.portaldataconnector": {},
+  "korp.react-sdk": {},
+  "korp.react.liquidexpression": {},
+  "korp.reporting.olapserver": {},
+  "korp.scss.utility.classes": {},
+  "korp.sdk": {},
+  "korp.spreadsheet": {
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "korp.spreadsheet-frontend": {},
+  "korp.uptime-kuma": {},
+  "korp.webpack.lazy.scss.loader": {},
+  "viasoft.administration": {
+    "release/2023.4.0.x": "1.4.x",
+    "release/2024.1.0.x": "1.4.x",
+    "release/2024.2.0.x": "1.4.x",
+    "release/2025.1.0.x": "1.5.x"
+  },
+  "viasoft.administration-frontend": {
+    "release/2023.4.0.x": "3.1.x",
+    "release/2024.1.0.x": "3.1.x",
+    "release/2024.2.0.x": "4.0.x",
+    "release/2025.1.0.x": "4.1.x"
+  },
+  "viasoft.apprise.proxy": {
+    "release/2023.4.0.x": "1.1.x",
+    "release/2024.1.0.x": "1.1.x",
+    "release/2024.2.0.x": "1.1.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "viasoft.approval-frontend": {},
+  "viasoft.approval.web-frontend": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "viasoft.assinatura.digital": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "viasoft.authentication": {
+    "release/2023.4.0.x": "1.5.x",
+    "release/2024.1.0.x": "1.5.x",
+    "release/2024.2.0.x": "1.5.x",
+    "release/2025.1.0.x": "1.6.x"
+  },
+  "viasoft.authentication-frontend": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "viasoft.authentication.legacyintegration": {},
+  "viasoft.authorization": {
+    "release/2023.4.0.x": "1.3.x",
+    "release/2024.1.0.x": "1.3.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.4.x"
+  },
+  "viasoft.balanca.serial": {},
+  "viasoft.dashboard": {
+    "release/2023.4.0.x": "1.4.x",
+    "release/2024.1.0.x": "1.4.x",
+    "release/2024.2.0.x": "1.4.x",
+    "release/2025.1.0.x": "1.4.x"
+  },
+  "viasoft.datasources.permissions-frontend": {},
+  "viasoft.digital.assign-frontend": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "viasoft.emailing": {
+    "release/2023.4.0.x": "1.1.x",
+    "release/2024.1.0.x": "1.1.x",
+    "release/2024.2.0.x": "1.1.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "viasoft.emailing.emailtemplate": {
+    "release/2023.4.0.x": "1.3.x",
+    "release/2024.1.0.x": "1.3.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.3.x"
+  },
+  "viasoft.emailing.emailtemplate-frontend": {},
+  "viasoft.fileprovider": {
+    "release/2023.4.0.x": "1.5.x",
+    "release/2024.1.0.x": "1.5.x",
+    "release/2024.2.0.x": "1.5.x",
+    "release/2025.1.0.x": "1.5.x"
+  },
+  "viasoft.fileprovider-frontend": {},
+  "viasoft.fontawesome": {},
+  "viasoft.geolocation": {
+    "release/2023.4.0.x": "1.1.x",
+    "release/2024.1.0.x": "1.1.x",
+    "release/2024.2.0.x": "1.1.x",
+    "release/2025.1.0.x": "1.1.x"
+  },
+  "viasoft.issuetrackerdemo": {},
+  "viasoft.jenkins": {},
+  "viasoft.korp.remoteaccess.core": {},
+  "viasoft.korp.remoteaccess.core-frontend": {},
+  "viasoft.legacy.httpproxy": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.2.x"
+  },
+  "viasoft.loader": {
+    "release/2023.4.0.x": "2.1.x",
+    "release/2024.1.0.x": "3.0.x",
+    "release/2024.2.0.x": "3.0.x",
+    "release/2025.1.0.x": "3.1.x"
+  },
+  "viasoft.notification": {
+    "release/2023.4.0.x": "1.3.x",
+    "release/2024.1.0.x": "1.3.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.3.x"
+  },
+  "viasoft.objectstorage.client": {
+    "release/2023.4.0.x": "1.5.x",
+    "release/2024.1.0.x": "1.5.x",
+    "release/2024.2.0.x": "1.5.x",
+    "release/2025.1.0.x": "1.5.x"
+  },
+  "viasoft.odata.datasources": {},
+  "viasoft.organizationalstructuremanagement-frontend": {},
+  "viasoft.portal": {
+    "release/2023.4.0.x": "1.6.x",
+    "release/2024.1.0.x": "1.7.x",
+    "release/2024.2.0.x": "1.8.x",
+    "release/2025.1.0.x": "1.8.x"
+  },
+  "viasoft.portal-frontend": {
+    "release/2023.4.0.x": "3.0.x",
+    "release/2024.1.0.x": "3.0.x",
+    "release/2024.2.0.x": "3.0.x",
+    "release/2025.1.0.x": "3.1.x"
+  },
+  "viasoft.projecttemplates.golang": {},
+  "viasoft.qualidade.inspecao.background": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "viasoft.quickfilter": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.2.x",
+    "release/2025.1.0.x": "1.2.x"
+  },
+  "viasoft.registering": {},
+  "viasoft.registering-frontend": {},
+  "viasoft.relatorios": {
+    "release/2023.4.0.x": "1.3.x",
+    "release/2024.1.0.x": "1.3.x",
+    "release/2024.2.0.x": "1.4.x",
+    "release/2025.1.0.x": "1.4.x"
+  },
+  "viasoft.relatorios-frontend": {
+    "release/2023.4.0.x": "2.1.x",
+    "release/2024.1.0.x": "2.1.x",
+    "release/2024.2.0.x": "2.2.x",
+    "release/2025.1.0.x": "2.2.x"
+  },
+  "viasoft.relatorios.agendador": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.2.x",
+    "release/2025.1.0.x": "1.2.x"
+  },
+  "viasoft.reporting": {
+    "release/2023.4.0.x": "1.4.x",
+    "release/2024.1.0.x": "1.4.x",
+    "release/2024.2.0.x": "1.5.x",
+    "release/2025.1.0.x": "1.5.x"
+  },
+  "viasoft.reporting.pivottable": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.3.x"
+  },
+  "viasoft.reporting.stimulsoft": {
+    "release/2023.4.0.x": "1.2.x",
+    "release/2024.1.0.x": "1.2.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.3.x"
+  },
+  "viasoft.schematics": {},
+  "viasoft.sdk.authorizationmanagement": {},
+  "viasoft.sdk.dashboard": {},
+  "viasoft.sdk.datepicker": {},
+  "viasoft.sdk.formbuilder.legacy": {},
+  "viasoft.sdk.map": {},
+  "viasoft.sdk.texteditor": {},
+  "viasoft.services.updater": {},
+  "viasoft.showcase": {},
+  "viasoft.tenantmanagement": {
+    "release/2023.4.0.x": "1.3.x",
+    "release/2024.1.0.x": "1.3.x",
+    "release/2024.2.0.x": "1.3.x",
+    "release/2025.1.0.x": "1.3.x"
+  },
+  "viasoft.testing": {},
+  "viasoft.userprofile": {
+    "release/2023.4.0.x": "1.4.x",
+    "release/2024.1.0.x": "1.4.x",
+    "release/2024.2.0.x": "1.4.x",
+    "release/2025.1.0.x": "1.5.x"
+  },
+  "viasoft.vault.manager": {},
+  "viasoft.videoplayer": {},
+  "viasoft.welcomepage.dashboard": {
+    "release/2023.4.0.x": "1.4.x",
+    "release/2024.1.0.x": "1.4.x",
+    "release/2024.2.0.x": "1.4.x",
+    "release/2025.1.0.x": "1.4.x"
+  },
+  "viasoft.workflow.elsa": {
+    "release/2023.4.0.x": "1.0.x",
+    "release/2024.1.0.x": "1.0.x",
+    "release/2024.2.0.x": "1.0.x",
+    "release/2025.1.0.x": "1.0.x"
+  },
+  "viasoft.workflow.elsa.replica1": {},
+  "viasoft.workflow.orchestrator": {
+    "release/2023.4.0.x": "1.6.x",
+    "release/2024.1.0.x": "1.6.x",
+    "release/2024.2.0.x": "1.6.x",
+    "release/2025.1.0.x": "1.6.x"
+  },
+  "viasoft.workflow.orchestrator-frontend": {}
+}

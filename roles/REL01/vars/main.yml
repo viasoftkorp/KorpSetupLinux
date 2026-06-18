@@ -22,4 +22,3 @@ services:
       name: Korp_Spreadsheet
       type: mssql
     version:
-      unversioned: true

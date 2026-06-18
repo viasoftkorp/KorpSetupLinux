@@ -55,8 +55,8 @@ services:
     #   - "9113:9001"
 
   viasoft-core-hybridproxy:
-    image: "{{ docker_account }}/viasoft.core.hybridproxy:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Core.HybridProxy"
+    image: "{{ docker_account }}/viasoft.core.hybridproxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Core.HybridProxy-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -313,79 +313,9 @@ services:
     networks:
       - servicos
 
-  login:
-    image: "{{ docker_account }}/viasoft.authentication-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "login-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  portal:
-    image: "{{ docker_account }}/viasoft.portal-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "portal-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    depends_on:
-      - viasoft-portal
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-    networks:
-      - servicos
-
-  ADM01:
-    image: "{{ docker_account }}/viasoft.administration-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "ADM01-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  REL01:
-    image: "{{ docker_account }}/viasoft.relatorios-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "REL01-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
   korp-documents-pdf:
-    image: "{{ docker_account }}/korp.documents.pdf:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Documents.Pdf"
+    image: "{{ docker_account }}/korp.documents.pdf:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Documents.Pdf-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -397,3 +327,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+
+
+
+
+

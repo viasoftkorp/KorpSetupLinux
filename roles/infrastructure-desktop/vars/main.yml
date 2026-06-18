@@ -40,11 +40,9 @@ services:
 
   Viasoft.Legacy.HTTPProxy:
     version:
-      unversioned: true
 
   Viasoft.WelcomePage.Dashboard:
     version:
 
   Korp.AtualizacaoSistema:
     version:
-      unversioned: true

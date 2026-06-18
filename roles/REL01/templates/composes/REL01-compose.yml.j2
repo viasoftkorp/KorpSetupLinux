@@ -64,8 +64,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   korp-spreadsheet:
-    image: "{{ docker_account }}/korp.spreadsheet:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Spreadsheet"
+    image: "{{ docker_account }}/korp.spreadsheet:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Spreadsheet-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -77,3 +77,4 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
