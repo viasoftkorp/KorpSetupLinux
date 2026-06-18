@@ -1,14 +1,14 @@
 {
   "summary": {
-    "total_roles_scanned": 71,
+    "total_roles_scanned": 73,
     "exclusive_services": {
-      "total_found": 148,
-      "valid": 148,
+      "total_found": 152,
+      "valid": 152,
       "invalid": 0
     },
     "non_exclusive_services": {
-      "total_found": 130,
-      "valid": 130,
+      "total_found": 132,
+      "valid": 132,
       "invalid": 0
     }
   },
@@ -764,6 +764,24 @@
           }
         },
         {
+          "role": "api-gateway",
+          "file_path": "roles/api-gateway/templates/composes/api-gateway-compose.yml.j2",
+          "details": {
+            "service_name": "korp-api-gateway-projetos",
+            "image": "{{ docker_account }}/korp.api.gateway.projetos:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.API.Gateway.Projetos-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "api-gateway",
+          "file_path": "roles/api-gateway/templates/composes/api-gateway-compose.yml.j2",
+          "details": {
+            "service_name": "korp-api-gateway-fiscal",
+            "image": "{{ docker_account }}/korp.api.gateway.fiscal:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.API.Gateway.Fiscal-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "apprise",
           "file_path": "roles/apprise/templates/composes/apprise-compose.yml.j2",
           "details": {
@@ -815,6 +833,24 @@
             "service_name": "korp.legacy.compras.entradanota",
             "image": "{{ docker_account }}/korp.legacy.compras.entradanota:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Korp.Legacy.Compras.EntradaNota-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "compras",
+          "file_path": "roles/compras/templates/composes/compras-compose.yml.j2",
+          "details": {
+            "service_name": "korp-compras-core",
+            "image": "{{ docker_account }}/korp.compras.core:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Compras.Core-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "compras",
+          "file_path": "roles/compras/templates/composes/compras-compose.yml.j2",
+          "details": {
+            "service_name": "korp-compras-gateway",
+            "image": "{{ docker_account }}/korp.compras.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Compras.Gateway-{{ version_without_build }}"
           }
         },
         {
@@ -1454,6 +1490,16 @@
           }
         },
         {
+          "role": "COM15_W",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/COM15_W/templates/composes/2025.1.0/COM15_W-compose.yml.j2",
+          "details": {
+            "service_name": "COM15_W-2025-1-0",
+            "image": "{{ docker_account }}/korp.compras.analises-compras-frontend:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "COM15_W-2025.1.0"
+          }
+        },
+        {
           "role": "CON21_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/CON21_W/templates/composes/2024.2.0/CON21_W-compose.yml.j2",
@@ -1671,6 +1717,16 @@
             "service_name": "LOG00-2025-1-0",
             "image": "{{ docker_account }}/viasoft.logistics.preregistration-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "LOG00-2025.1.0"
+          }
+        },
+        {
+          "role": "LOG01_W",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/LOG01_W/templates/composes/2024.2.0/LOG01_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG01_W-2024-2-0",
+            "image": "{{ docker_account }}/viasoft.logistica.produto-frontend:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG01_W-2024.2.0"
           }
         },
         {
@@ -1946,7 +2002,7 @@
         {
           "role": "LOG73_W",
           "version_folder": "2025.1.0",
-          "file_path": "roles/LOG73_W/templates/composes/2025.1.0/LOG73_Wcompose.yml.j2",
+          "file_path": "roles/LOG73_W/templates/composes/2025.1.0/LOG73_W-compose.yml.j2",
           "details": {
             "service_name": "LOG73_W-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.repacking-frontend:2025.1.0.x{{ docker_image_suffix }}",
