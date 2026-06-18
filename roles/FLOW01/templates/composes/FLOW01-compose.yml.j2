@@ -19,8 +19,8 @@ networks:
 
 services:
   korp-flow:
-    image: "{{ docker_account }}/korp.flow:1.1.x{{ docker_image_suffix }}"
-    container_name: "Korp.Flow"
+    image: "{{ docker_account }}/korp.flow:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Flow-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -33,9 +33,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  FLOW01:
-    image: "{{ docker_account }}/korp.flow-frontend:1.1.x{{ docker_image_suffix }}"
-    container_name: "FLOW01"
+  SDK-FLOW:
+    image: "{{ docker_account }}/sdk.flow-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "SDK.FLOW-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -50,19 +50,5 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  SDK-FLOW:
-    image: "{{ docker_account }}/sdk.flow-parcel:1.1.x{{ docker_image_suffix }}"
-    container_name: "SDK.FLOW"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+

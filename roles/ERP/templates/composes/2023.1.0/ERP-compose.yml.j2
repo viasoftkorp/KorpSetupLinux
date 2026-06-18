@@ -48,7 +48,6 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-
   SYNC01-2023-1-0:
     image: "{{ docker_account }}/viasoft.erp.sync-frontend:2023.1.0.x{{ docker_image_suffix }}"
     container_name: "SYNC01-2023.1.0"
