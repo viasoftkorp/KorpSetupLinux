@@ -30,4 +30,3 @@ services:
       name: Korp_Analytics_IA
       type: postgres
     version:
-      unversioned: true
