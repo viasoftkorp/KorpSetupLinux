@@ -1,4 +1,3 @@
 services:
   Korp.Integration.SolidWorks:
     version:
-      unversioned: true

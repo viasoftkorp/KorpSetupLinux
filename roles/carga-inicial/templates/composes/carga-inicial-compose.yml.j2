@@ -19,8 +19,8 @@ networks:
 
 services:
   korp-legacy-cargainicial:
-    image: "{{ docker_account }}/korp.legacy.cargainicial:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.CargaInicial"
+    image: "{{ docker_account }}/korp.legacy.cargainicial:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.CargaInicial-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -32,3 +32,4 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+

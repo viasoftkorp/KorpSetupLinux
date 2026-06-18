@@ -3,4 +3,3 @@ services:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/"
     version:
-      unversioned: true
