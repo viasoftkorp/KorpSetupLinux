@@ -11,3 +11,10 @@ services:
 
   Korp.Legacy.Compras.EntradaNota:
     version:
+
+  Korp.Compras.Core:
+    db:
+      name: Korp_Compras_Core
+      type: mssql
+
+  Korp.Compras.Gateway:

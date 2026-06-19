@@ -8,6 +8,12 @@ const REPORT_PATH = path.join(__dirname, '../validacao-servicos/report.json');
 const REPO_ROOT = path.resolve(__dirname, '../..');
 const ALLOWED_VERSION_FOLDERS = ['2025.1.0', '2024.2.0'];
 
+const UNVERSIONED_SERVICE_EXCEPTIONS = new Set([
+  'Korp.AtualizacaoSistema',
+  'Korp.Legacy.Frontend-router',
+  'Viasoft.Loader',
+]);
+
 const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 
@@ -688,26 +694,41 @@ function listVersionedRoles() {
 
 function removeUnversionedTrueFromVars(content) {
   let currentSection = null;
+  let currentService = null;
 
   return content
     .split('\n')
     .filter((line) => {
       if (/^services:\s*$/.test(line)) {
         currentSection = 'services';
+        currentService = null;
         return true;
       }
 
       if (/^delphi_services:\s*$/.test(line)) {
         currentSection = 'delphi_services';
+        currentService = null;
         return true;
       }
 
       if (/^[A-Za-z_][\w-]*:\s*$/.test(line)) {
         currentSection = null;
+        currentService = null;
+      }
+
+      if (currentSection === 'services') {
+        const serviceMatch = line.match(/^  (\S.*?):\s*$/);
+        if (serviceMatch) {
+          currentService = parseScalarValue(serviceMatch[1]);
+        }
       }
 
       if (/^\s+unversioned:\s*true\s*$/.test(line)) {
-        return currentSection !== 'services';
+        if (currentSection !== 'services') {
+          return true;
+        }
+
+        return UNVERSIONED_SERVICE_EXCEPTIONS.has(currentService);
       }
 
       return true;
@@ -715,36 +736,46 @@ function removeUnversionedTrueFromVars(content) {
     .join('\n');
 }
 
+function listRoleVarsYamlFiles(roleName) {
+  const varsDir = path.join(REPO_ROOT, 'roles', roleName, 'vars');
+  if (!fs.existsSync(varsDir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(varsDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.yml'))
+    .map((entry) => path.join(varsDir, entry.name))
+    .sort();
+}
+
 function removeLegacyUnversionedFlags(summary) {
   for (const role of listVersionedRoles()) {
-    const varsPath = path.join(REPO_ROOT, 'roles', role, 'vars', 'main.yml');
-    if (!fs.existsSync(varsPath)) {
-      continue;
+    for (const varsPath of listRoleVarsYamlFiles(role)) {
+      const original = fs.readFileSync(varsPath, 'utf8');
+      if (!/^\s+unversioned:\s*true\s*$/m.test(original)) {
+        continue;
+      }
+
+      const updated = removeUnversionedTrueFromVars(original);
+      if (updated === original) {
+        continue;
+      }
+
+      fs.writeFileSync(varsPath, updated.endsWith('\n') ? updated : `${updated}\n`, 'utf8');
+
+      const relativePath = path.relative(REPO_ROOT, varsPath);
+      const removedCount =
+        (original.match(/^\s+unversioned:\s*true\s*$/gm) ?? []).length -
+        (updated.match(/^\s+unversioned:\s*true\s*$/gm) ?? []).length;
+
+      summary.corrected.push({
+        action: 'unversioned_flag_removed',
+        file_path: relativePath,
+        role,
+        removed_count: removedCount,
+      });
     }
-
-    const original = fs.readFileSync(varsPath, 'utf8');
-    if (!/^\s+unversioned:\s*true\s*$/m.test(original)) {
-      continue;
-    }
-
-    const updated = removeUnversionedTrueFromVars(original);
-    if (updated === original) {
-      continue;
-    }
-
-    fs.writeFileSync(varsPath, updated.endsWith('\n') ? updated : `${updated}\n`, 'utf8');
-
-    const relativePath = path.relative(REPO_ROOT, varsPath);
-    const removedCount =
-      (original.match(/^\s+unversioned:\s*true\s*$/gm) ?? []).length -
-      (updated.match(/^\s+unversioned:\s*true\s*$/gm) ?? []).length;
-
-    summary.corrected.push({
-      action: 'unversioned_flag_removed',
-      file_path: relativePath,
-      role,
-      removed_count: removedCount,
-    });
   }
 }
 
@@ -834,6 +865,7 @@ module.exports = {
   fixNonExclusiveServiceKey,
   transformFrontendBlockForVersion,
   ensureBlankLinesBetweenServices,
+  listRoleVarsYamlFiles,
   removeLegacyUnversionedFlags,
   removeUnversionedTrueFromVars,
   roleHasVersionedComposes,
