@@ -69,7 +69,7 @@ KorpSetupLinux/
 - **Obrigatoriedade:** Serviços de frontend devem residir estritamente dentro das pastas de versão física (`2024.2.0/` ou `2025.1.0/`), seguindo a regra de Versionados Não Exclusivos.
 
 ## 6. Remoção de Tags Legadas (Unversioned)
-- **Regra de Compose:** Nenhum Serviço Versionado (Exclusivo ou Não Exclusivo) pode conter a flag `unversioned: true` em seu arquivo de configuração de variáveis globais (`roles/[NOME_DA_ROLE]/vars/main.yml`).
+- **Regra de Compose:** Nenhum Serviço Versionado (Exclusivo ou Não Exclusivo) pode conter a flag `unversioned: true` em seus arquivos de variáveis da role (`roles/[NOME_DA_ROLE]/vars/*.yml`).
 - **Preservação do bloco `version:`:** Ao remover `unversioned: true`, o nível `version:` **deve ser mantido** no YAML, mesmo que fique vazio. Exemplo correto após a correção:
 
 ```yaml
@@ -79,3 +79,7 @@ KorpSetupLinux/
 
 - **Proibido:** Remover a chave `version:` junto com a flag legada.
 - **Exceção `delphi_services:`:** Entradas sob o bloco `delphi_services:` **não** devem sofrer remoção de `unversioned: true`. A limpeza da tag legada aplica-se **apenas** ao bloco `services:`.
+- **Exceção por serviço:** Entradas em `services:` com as chaves abaixo **mantêm** `unversioned: true` (mesma lista de imagens ignoradas no validador):
+  - `Korp.AtualizacaoSistema` (`korp.atualizacaosistema` — tag fixa `1.0.x`)
+  - `Korp.Legacy.Frontend-router` (`korp.legacy.frontend-router`)
+  - `Viasoft.Loader` (`viasoft.loader`)
