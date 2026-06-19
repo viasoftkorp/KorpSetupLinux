@@ -50,12 +50,16 @@ O script deve ler os arrays de erros de cada item inválido e aplicar a respecti
 
 ---
 
-## 5. Remoção de `unversioned: true` em `vars/main.yml`
-Para roles versionadas, o script remove a flag legada `unversioned: true` dos arquivos `roles/{role}/vars/main.yml`.
+## 5. Remoção de `unversioned: true` em `vars/*.yml`
+Para roles versionadas, o script remove a flag legada `unversioned: true` de **todos** os arquivos `.yml` em `roles/{role}/vars/` (ex.: `main.yml`, `services_with_oauth.yml`).
 
 - **Escopo:** apenas entradas sob o bloco `services:`.
 - **Preservação:** o nível `version:` deve permanecer no YAML, mesmo vazio.
 - **Exceção:** entradas em `delphi_services:` **não** sofrem remoção de `unversioned: true`.
+- **Exceção por serviço:** entradas em `services:` com as chaves abaixo **mantêm** `unversioned: true` (equivalente à lista de imagens ignoradas no validador):
+  - `Korp.AtualizacaoSistema`
+  - `Korp.Legacy.Frontend-router`
+  - `Viasoft.Loader`
 
 ---
 
