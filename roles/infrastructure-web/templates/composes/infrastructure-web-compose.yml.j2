@@ -55,8 +55,8 @@ services:
     #   - "9113:9001"
 
   viasoft-core-hybridproxy:
-    image: "{{ docker_account }}/viasoft.core.hybridproxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Core.HybridProxy-{{ version_without_build }}"
+    image: "{{ docker_account }}/viasoft.core.hybridproxy:1.0.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Core.HybridProxy"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
