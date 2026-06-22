@@ -54,3 +54,26 @@
     files:
       - infrastructure-web-compose.yml
 
+- name: Checagem de compose versionado de frontends infrastructure-web
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/roles/infrastructure-web/templates/composes/{{ version_without_build }}/infrastructure-web-compose.yml.j2"
+  register: versioned_frontend_compose
+  become: false
+
+- name: Configuração e transferência de compose versionado de frontends infrastructure-web
+  ansible.builtin.template:
+    dest: "{{ versioned_compose_dir_path }}/infrastructure-web-compose.yml"
+    src: "composes/{{ version_without_build }}/infrastructure-web-compose.yml.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  when: versioned_frontend_compose.stat.exists
+
+- name: Criação e inicialização de compose versionado de frontends infrastructure-web
+  community.docker.docker_compose_v2:
+    project_src: "{{ versioned_compose_dir_path }}/"
+    env_files: ["{{ docker_env_file_path }}"]
+    files:
+      - infrastructure-web-compose.yml
+  when: versioned_frontend_compose.stat.exists
+
