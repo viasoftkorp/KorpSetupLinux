@@ -20,7 +20,7 @@ networks:
 services:
   VEN26-2024-2-0:
     image: "{{ docker_account }}/viasoft.sales.crm.core-frontend:2024.2.0.x{{ docker_image_suffix }}"
-    container_name: "VEN26-2024.2.0.x"
+    container_name: "VEN26-2024.2.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
