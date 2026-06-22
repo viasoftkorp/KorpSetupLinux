@@ -47,13 +47,6 @@
   loop_control:
     extended: true
 
-- name: Criação e inicialização de compose de infraestrutura WEB
-  community.docker.docker_compose_v2:
-    project_src: "{{ korp_dir_path }}/composes/"
-    env_files: ["{{ docker_env_file_path }}"]
-    files:
-      - infrastructure-web-compose.yml
-
 - name: Checagem de compose versionado de frontends infrastructure-web
   ansible.builtin.stat:
     path: "{{ playbook_dir }}/roles/infrastructure-web/templates/composes/{{ version_without_build }}/infrastructure-web-compose.yml.j2"
@@ -69,11 +62,16 @@
     mode: '0644'
   when: versioned_frontend_compose.stat.exists
 
-- name: Criação e inicialização de compose versionado de frontends infrastructure-web
+- name: Criação e inicialização de compose de infraestrutura WEB
   community.docker.docker_compose_v2:
-    project_src: "{{ versioned_compose_dir_path }}/"
+    project_src: "{{ korp_dir_path }}/composes/"
     env_files: ["{{ docker_env_file_path }}"]
-    files:
-      - infrastructure-web-compose.yml
-  when: versioned_frontend_compose.stat.exists
+    files: "{{ infrastructure_web_compose_files }}"
+  vars:
+    infrastructure_web_compose_files: >-
+      {{
+        ['infrastructure-web-compose.yml', version_without_build ~ '/infrastructure-web-compose.yml']
+        if versioned_frontend_compose.stat.exists
+        else ['infrastructure-web-compose.yml']
+      }}
 
