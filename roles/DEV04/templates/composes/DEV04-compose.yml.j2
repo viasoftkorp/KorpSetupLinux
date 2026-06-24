@@ -32,6 +32,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   DEV04:
     image: "{{ docker_account }}/korp.appbuilder-frontend:1.0.x{{ docker_image_suffix }}"
@@ -47,6 +49,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -64,6 +68,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -81,5 +87,7 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
