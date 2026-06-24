@@ -32,6 +32,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-production-aps:
     image: "{{ docker_account }}/viasoft.production.aps:1.1.x{{ docker_image_suffix }}"
@@ -47,6 +49,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-production-aps-dataimporting:
     image: "{{ docker_account }}/viasoft.production.aps.dataimporting:1.1.x{{ docker_image_suffix }}"
@@ -62,6 +66,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-production-aps-simulation:
     image: "{{ docker_account }}/viasoft.production.aps.simulation:1.2.x{{ docker_image_suffix }}"
@@ -77,6 +83,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   PRO08:
     image: "{{ docker_account }}/viasoft.production.aps-frontend:2.1.x{{ docker_image_suffix }}"
@@ -92,5 +100,7 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"

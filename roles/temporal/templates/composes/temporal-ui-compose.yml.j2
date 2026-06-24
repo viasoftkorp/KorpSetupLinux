@@ -16,6 +16,8 @@ services:
       - TEMPORAL_CORS_ORIGINS=http://localhost:3000
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     expose:
       - 8080
 
@@ -30,5 +32,7 @@ services:
       - {{ config_dir_path }}/temporalio/nginx/basic_auth_temporal_ui:/etc/nginx/.htpasswd
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     depends_on:
       - temporal-ui
