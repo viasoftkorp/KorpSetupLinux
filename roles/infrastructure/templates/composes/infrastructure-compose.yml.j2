@@ -49,6 +49,8 @@ services:
 
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -69,6 +71,8 @@ services:
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -88,6 +92,8 @@ services:
     networks:
       servicos:
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.0"
+    dns_opt:
+      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -102,6 +108,8 @@ services:
       - registry_consul_tagprefix=urlprefix_api-gateway-
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -122,6 +130,8 @@ services:
       - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
 
@@ -144,6 +154,8 @@ services:
       - "{{ dados_docker_dir_path }}/{{ rabbitmq_container_name }}_3-13/:/var/lib/rabbitmq"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   {{ redis_container_name }}:
     image: "redis:7.4"
@@ -157,6 +169,8 @@ services:
       net.core.somaxconn: 1024
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     # ports:
     #   - "6379:6379"
     volumes:
@@ -171,6 +185,8 @@ services:
     command: --admin-password='$$2y$$12$$G0u7sVYXDoCWYfBaPqwFOu00X.uHOXhGTF.mcySC2M1pxyWcXUOHe'
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     ports:
       - "9011:9000"
     volumes:
@@ -185,6 +201,8 @@ services:
     restart: always
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     environment:
       - WATCHTOWER_HTTP_API_TOKEN={{ services_secrets.Others.WatchTower.ApiToken }}
       - REPO_USER={{ services_secrets.Others.Docker.Account }}
@@ -214,6 +232,8 @@ services:
     networks:
       servicos:  
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.1"
+    dns_opt:
+      - single-request-reopen
 
   viasoft-loader:
     image: "{{ docker_account }}/viasoft.loader:3.1.x{{ docker_image_suffix }}"
@@ -225,3 +245,5 @@ services:
     networks:
       servicos:
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.2"
+    dns_opt:
+      - single-request-reopen
