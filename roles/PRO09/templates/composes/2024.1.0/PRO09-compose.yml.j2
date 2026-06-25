@@ -30,6 +30,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
       - "{{ dados_docker_dir_path }}/PRO09/reports/:/app/reports/"
@@ -48,5 +50,7 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"

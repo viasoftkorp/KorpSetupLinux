@@ -26,5 +26,7 @@ services:
       - CERT_FILE_PATH={{ self_signed_ca_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
