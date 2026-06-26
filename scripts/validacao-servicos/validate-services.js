@@ -15,11 +15,12 @@ const ALLOWED_VERSION_FOLDERS = ['2025.1.0', '2024.2.0'];
 const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 const DOCKER_ACCOUNT_IMAGE_PREFIX = '{{ docker_account }}';
-const IGNORED_IMAGE_NAMES = [
+const IGNORED_IMAGE_NAMES = ['korp.atualizacaosistema'];
+
+const FIXED_CONTAINER_NAME_IMAGE_BASES = new Set([
   'korp.legacy.frontend-router',
   'viasoft.loader',
-  'korp.atualizacaosistema',
-];
+]);
 
 function getImageBaseName(image) {
   let name = String(image);
@@ -256,9 +257,13 @@ function validateExclusiveService(serviceName, serviceConfig) {
     );
   }
 
+  const imageBaseName = image != null ? getImageBaseName(image) : null;
+  const hasFixedContainerName =
+    imageBaseName != null && FIXED_CONTAINER_NAME_IMAGE_BASES.has(imageBaseName);
+
   if (containerName == null || containerName === '') {
     errors.push("Chave 'container_name' ausente ou vazia");
-  } else if (!String(containerName).endsWith(CONTAINER_NAME_SUFFIX)) {
+  } else if (!hasFixedContainerName && !String(containerName).endsWith(CONTAINER_NAME_SUFFIX)) {
     errors.push("Chave 'container_name' não possui o sufixo -{{ version_without_build }}");
   }
 

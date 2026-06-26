@@ -148,9 +148,20 @@ O script deve possuir um Array estático contendo os nomes bases das imagens que
 
 A checagem deve ser feita baseando-se no corpo do nome da imagem (removendo o prefixo da conta e a tag de versão).
 
-**Imagens que devem ser ignoradas:**
-1. `korp.legacy.frontend-router`
-2. `viasoft.loader`
-3. `korp.atualizacaosistema`
+**Imagens completamente ignoradas:**
+1. `korp.atualizacaosistema`
+
+## 9. Exceção Parcial: Container Name Fixo
+Serviços cujo `container_name` e chave YAML **não** variam com a versão, mas cuja **imagem** segue o padrão dinâmico `{{ version_without_build }}.x{{ docker_image_suffix }}`:
+
+| Imagem base | `container_name` fixo |
+|-------------|----------------------|
+| `korp.legacy.frontend-router` | `Korp.Legacy.Frontend-router` |
+| `viasoft.loader` | `Viasoft.Loader` |
+
+**Regras de validação para esses serviços:**
+- **Imagem:** deve terminar com `:{{ version_without_build }}.x{{ docker_image_suffix }}` (mesma regra dos exclusivos).
+- **Container name:** **não** exige sufixo `-{{ version_without_build }}`; basta estar presente e não vazio.
+- **Nome do serviço (chave YAML):** fora do escopo da validação (permanece fixo, ex.: `korp-legacy-frontend-router`, `viasoft-loader`).
 
 ---
