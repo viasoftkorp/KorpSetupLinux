@@ -37,10 +37,10 @@
     "release/2025.1.0.x": "1.0.x"
   },
   "korp.legacy.frontend-router": {
-    "release/2023.4.0.x": "1.0.x",
-    "release/2024.1.0.x": "1.0.x",
-    "release/2024.2.0.x": "1.0.x",
-    "release/2025.1.0.x": "1.0.x"
+    "release/2023.4.0.x": "2023.4.0.x",
+    "release/2024.1.0.x": "2024.1.0.x",
+    "release/2024.2.0.x": "2024.2.0.x",
+    "release/2025.1.0.x": "2025.1.0.x"
   },
   "korp.powerbi.portaldataconnector": {},
   "korp.react-sdk": {},
@@ -156,10 +156,10 @@
     "release/2024.2.0.x": "1.2.x"
   },
   "viasoft.loader": {
-    "release/2023.4.0.x": "2.1.x",
-    "release/2024.1.0.x": "3.0.x",
-    "release/2024.2.0.x": "3.0.x",
-    "release/2025.1.0.x": "3.1.x"
+    "release/2023.4.0.x": "2023.4.0.x",
+    "release/2024.1.0.x": "2024.1.0.x",
+    "release/2024.2.0.x": "2024.2.0.x",
+    "release/2025.1.0.x": "2025.1.0.x"
   },
   "viasoft.notification": {
     "release/2023.4.0.x": "1.3.x",

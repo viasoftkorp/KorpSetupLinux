@@ -79,7 +79,8 @@ KorpSetupLinux/
 
 - **Proibido:** Remover a chave `version:` junto com a flag legada.
 - **Exceção `delphi_services:`:** Entradas sob o bloco `delphi_services:` **não** devem sofrer remoção de `unversioned: true`. A limpeza da tag legada aplica-se **apenas** ao bloco `services:`.
-- **Exceção por serviço:** Entradas em `services:` com as chaves abaixo **mantêm** `unversioned: true` (mesma lista de imagens ignoradas no validador):
-  - `Korp.AtualizacaoSistema` (`korp.atualizacaosistema` — tag fixa `1.0.x`)
+- **Exceção por serviço:** Entradas em `services:` com as chaves abaixo **mantêm** `unversioned: true` (equivalente à lista de imagens completamente ignoradas no validador):
+  - `Korp.AtualizacaoSistema` (`korp.atualizacaosistema` — tag fixa `1.0.x`, container name fixo)
+- **Exceção parcial (container name fixo):** Os serviços abaixo usam imagem dinâmica `{{ version_without_build }}.x{{ docker_image_suffix }}`, mas **não** alteram `container_name` nem chave YAML do compose:
   - `Korp.Legacy.Frontend-router` (`korp.legacy.frontend-router`)
   - `Viasoft.Loader` (`viasoft.loader`)

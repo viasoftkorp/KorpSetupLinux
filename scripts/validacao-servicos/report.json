@@ -2,9 +2,9 @@
   "summary": {
     "total_roles_scanned": 69,
     "exclusive_services": {
-      "total_found": 145,
-      "valid": 145,
-      "invalid": 0
+      "total_found": 149,
+      "valid": 148,
+      "invalid": 1
     },
     "non_exclusive_services": {
       "total_found": 82,
@@ -14,7 +14,21 @@
   },
   "results": {
     "exclusive": {
-      "invalid_services": [],
+      "invalid_services": [
+        {
+          "role": "infrastructure-web",
+          "file_path": "roles/infrastructure-web/templates/composes/infrastructure-web-compose.yml.j2",
+          "errors": [
+            "Chave 'image' não termina com o padrão :{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "Chave 'container_name' não possui o sufixo -{{ version_without_build }}"
+          ],
+          "details": {
+            "service_name": "viasoft-core-hybridproxy",
+            "image": "{{ docker_account }}/viasoft.core.hybridproxy:1.0.x{{ docker_image_suffix }}",
+            "container_name": "Viasoft.Core.HybridProxy"
+          }
+        }
+      ],
       "valid_services": [
         {
           "role": "APS",
@@ -926,6 +940,33 @@
           }
         },
         {
+          "role": "indexador-moedas",
+          "file_path": "roles/indexador-moedas/templates/composes/indexador-moedas-compose.yml.j2",
+          "details": {
+            "service_name": "korp-financeiro-indexador-moedas",
+            "image": "{{ docker_account }}/korp.financeiro.indexador.moedas:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Financeiro.Indexador.Moedas-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "infrastructure",
+          "file_path": "roles/infrastructure/templates/composes/infrastructure-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-frontend-router",
+            "image": "{{ docker_account }}/korp.legacy.frontend-router:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Frontend-router"
+          }
+        },
+        {
+          "role": "infrastructure",
+          "file_path": "roles/infrastructure/templates/composes/infrastructure-compose.yml.j2",
+          "details": {
+            "service_name": "viasoft-loader",
+            "image": "{{ docker_account }}/viasoft.loader:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Viasoft.Loader"
+          }
+        },
+        {
           "role": "infrastructure-desktop",
           "file_path": "roles/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2",
           "details": {
@@ -986,15 +1027,6 @@
             "service_name": "viasoft-authentication",
             "image": "{{ docker_account }}/viasoft.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Authentication-{{ version_without_build }}"
-          }
-        },
-        {
-          "role": "infrastructure-web",
-          "file_path": "roles/infrastructure-web/templates/composes/infrastructure-web-compose.yml.j2",
-          "details": {
-            "service_name": "viasoft-core-hybridproxy",
-            "image": "{{ docker_account }}/viasoft.core.hybridproxy:{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "container_name": "Viasoft.Core.HybridProxy-{{ version_without_build }}"
           }
         },
         {
@@ -1229,6 +1261,15 @@
             "service_name": "viasoft-qualidade-inspecao-background",
             "image": "{{ docker_account }}/viasoft.qualidade.inspecao.background:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Qualidade.Inspecao.Background-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "solidworks",
+          "file_path": "roles/solidworks/templates/composes/solidworks-compose.yml.j2",
+          "details": {
+            "service_name": "korp-integration-solidworks",
+            "image": "{{ docker_account }}/korp.integration.solidworks:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Integration.SolidWorks-{{ version_without_build }}"
           }
         },
         {
