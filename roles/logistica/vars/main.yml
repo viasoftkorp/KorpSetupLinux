@@ -33,4 +33,3 @@ services:
 
   Viasoft.Logistica.Estoque:
     version:
-      unversioned: true
