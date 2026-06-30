@@ -32,6 +32,7 @@ services:
       - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
       - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
     {% endif %}
+    
     volumes:
       - {{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
