@@ -34,6 +34,7 @@ services:
       - servicos
     dns_opt:
       - single-request-reopen
+      
   viasoft-workflow-elsa:
     image: "{{ docker_account }}/viasoft.workflow.elsa:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Workflow.Elsa-{{ version_without_build }}"
