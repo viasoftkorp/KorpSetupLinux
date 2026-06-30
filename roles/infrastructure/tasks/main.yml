@@ -43,12 +43,12 @@
         ansible.builtin.debug:
           msg: |
             {{ infrastructure_compose_raw.split('\n')[19:45] | zip(range(20, 46)) | map('reverse') | map('join', ' | ') | join('\n') }}
-        verbosity: 3
+          verbosity: 3
 
       - name: Verbose (-vvv) - conteúdo completo de 'infrastructure-compose.yml'
         ansible.builtin.debug:
           var: infrastructure_compose_raw
-        verbosity: 3
+          verbosity: 3
 
       - name: Parse de 'infrastructure-compose.yml'
         ansible.builtin.set_fact:
@@ -57,7 +57,7 @@
       - name: Verbose (-vvv) - 'infrastructure_compose_content'
         ansible.builtin.debug:
           var: infrastructure_compose_content
-        verbosity: 3
+          verbosity: 3
 
     rescue:
       - name: Falha ao parsear 'infrastructure-compose.yml'
