@@ -23,20 +23,34 @@ services:
     container_name: "nginx"
     restart: always
     extra_hosts: *default-extra_hosts
-{% set nginx_https_host_port = (https_port | default('443', true) | string | trim | replace('"', '') | replace("'", '')) or '443' %}
-    ports:
+{%- set _https_port_raw = (https_port | default('443', true) | string | trim) or '443' %}
+{%- if _https_port_raw[0:1] == '"' and _https_port_raw[-1:] == '"' and _https_port_raw|length > 1 %}
+{%- set nginx_https_host_port = _https_port_raw[1:-1] %}
+{%- else %}
+{%- set nginx_https_host_port = _https_port_raw %}
+{%- endif %}
+{%- set nginx_port_lines %}
       - "80:80"
-      - "{{ nginx_https_host_port }}:443"{%- if reverse_proxy.external %}
+      - "{{ nginx_https_host_port }}:443"
+{%- if reverse_proxy.external %}
       - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
       - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
-      - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"{%- endif %}
-
-    volumes:
+      - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
+{%- endif %}
+{%- endset %}
+    ports:
+{{ nginx_port_lines }}
+{%- set nginx_volume_lines %}
       - {{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ certs_directory }}/:/etc/nginx/certs/{% if certs.certbot_automated.certificate %}
-      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt{% endif %}
+      - {{ certs_directory }}/:/etc/nginx/certs/
+{%- if certs.certbot_automated.certificate %}
+      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
+{%- endif %}
+{%- endset %}
+    volumes:
+{{ nginx_volume_lines }}
     networks:
       - servicos
     dns_opt:
@@ -110,10 +124,13 @@ services:
     environment:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
+{%- set postgres_port_block %}
 {%- if postgres.expose_postgres %}
     ports:
       - "5432:5432"
 {%- endif %}
+{%- endset %}
+{{ postgres_port_block }}
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
       - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
