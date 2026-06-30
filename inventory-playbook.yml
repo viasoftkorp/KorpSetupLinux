@@ -571,7 +571,7 @@
               'frontend': shrink_inventory.dns.frontend | default (dns_frontend),
               'api_gateway': shrink_inventory.dns.api_gateway | default (dns_api_gateway, true)
             },
-            'https_port': (shrink_inventory.https_port | default (https_port) | string | trim) | default('443', true),
+            'https_port': shrink_inventory.https_port | default (https_port) | string,
             'reverse_proxy': {
               'external': reverse_proxy.external | default (custom_setup_info.external_reverse_proxy),
               'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),
