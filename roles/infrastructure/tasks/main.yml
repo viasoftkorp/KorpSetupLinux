@@ -33,9 +33,42 @@
     register: infrastructure_compose_file
   
   - name: "Definição de 'infrastructure_compose_content'"
-    ansible.builtin.set_fact:
-      infrastructure_compose_content: "{{ lookup('file', '{{ compose_dir_path }}/infrastructure-compose.yml') | from_yaml }}"
     when: infrastructure_compose_file.stat.exists
+    block:
+      - name: Leitura bruta de 'infrastructure-compose.yml'
+        ansible.builtin.set_fact:
+          infrastructure_compose_raw: "{{ lookup('file', compose_dir_path ~ '/infrastructure-compose.yml') }}"
+
+      - name: Verbose (-vvv) - trecho de 'infrastructure-compose.yml' (linhas 20-45)
+        ansible.builtin.debug:
+          msg: |
+            {{ infrastructure_compose_raw.split('\n')[19:45] | zip(range(20, 46)) | map('reverse') | map('join', ' | ') | join('\n') }}
+        verbosity: 3
+
+      - name: Verbose (-vvv) - conteúdo completo de 'infrastructure-compose.yml'
+        ansible.builtin.debug:
+          var: infrastructure_compose_raw
+        verbosity: 3
+
+      - name: Parse de 'infrastructure-compose.yml'
+        ansible.builtin.set_fact:
+          infrastructure_compose_content: "{{ infrastructure_compose_raw | from_yaml }}"
+
+      - name: Verbose (-vvv) - 'infrastructure_compose_content'
+        ansible.builtin.debug:
+          var: infrastructure_compose_content
+        verbosity: 3
+
+    rescue:
+      - name: Falha ao parsear 'infrastructure-compose.yml'
+        ansible.builtin.fail:
+          msg: |
+            Falha ao parsear {{ compose_dir_path }}/infrastructure-compose.yml
+
+            Trecho (linhas 20-45):
+            {{ infrastructure_compose_raw.split('\n')[19:45] | zip(range(20, 46)) | map('reverse') | map('join', ' | ') | join('\n') }}
+
+            Execute com -vvv para ver o conteúdo completo do arquivo.
 
   - name: Validação de nome da imagem
     ansible.builtin.set_fact:
