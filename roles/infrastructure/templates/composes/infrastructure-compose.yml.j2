@@ -27,7 +27,6 @@ services:
       - "80:80"
       - "{{ https_port }}:443"
 
-
     {% if reverse_proxy.external %}
 
       - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
