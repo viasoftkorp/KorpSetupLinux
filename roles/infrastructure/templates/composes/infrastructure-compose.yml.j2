@@ -23,22 +23,20 @@ services:
     container_name: "nginx"
     restart: always
     extra_hosts: *default-extra_hosts
+{% set nginx_https_host_port = (https_port | default('443', true) | string | trim | replace('"', '') | replace("'", '')) or '443' %}
     ports:
       - "80:80"
-      - "{{ https_port }}:443"
-    {% if reverse_proxy.external %}
+      - "{{ nginx_https_host_port }}:443"{%- if reverse_proxy.external %}
       - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
       - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
-      - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
-    {% endif %}
+      - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"{%- endif %}
+
     volumes:
       - {{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf
       - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
       - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ certs_directory }}/:/etc/nginx/certs/
-    {% if certs.certbot_automated.certificate %}
-      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
-    {% endif %}
+      - {{ certs_directory }}/:/etc/nginx/certs/{% if certs.certbot_automated.certificate %}
+      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt{% endif %}
     networks:
       - servicos
     dns_opt:
@@ -112,10 +110,10 @@ services:
     environment:
       - POSTGRES_USER={{ postgres.default_user }}
       - POSTGRES_PASSWORD={{ postgres.default_password }}
-    {% if postgres.expose_postgres -%}
+{%- if postgres.expose_postgres %}
     ports:
       - "5432:5432"
-    {% endif -%}
+{%- endif %}
     volumes:
       - "{{ dados_docker_dir_path }}/{{ postgres_container_name }}/:/var/lib/postgresql/data"
       - "{{ config_dir_path }}/postgres/postgresql.conf:/etc/postgresql.conf"
