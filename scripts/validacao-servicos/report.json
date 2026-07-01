@@ -2,8 +2,8 @@
   "summary": {
     "total_roles_scanned": 72,
     "exclusive_services": {
-      "total_found": 155,
-      "valid": 155,
+      "total_found": 157,
+      "valid": 157,
       "invalid": 0
     },
     "non_exclusive_services": {
@@ -530,6 +530,15 @@
           }
         },
         {
+          "role": "REL01",
+          "file_path": "roles/REL01/templates/composes/REL01-compose.yml.j2",
+          "details": {
+            "service_name": "korp-analytics-ia",
+            "image": "{{ docker_account }}/korp.analytics.ia:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Analytics.IA-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "TRAC01",
           "file_path": "roles/TRAC01/templates/composes/TRAC01-compose.yml.j2",
           "details": {
@@ -887,6 +896,15 @@
             "service_name": "viasoft-engenharia-gateway",
             "image": "{{ docker_account }}/viasoft.engenharia.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Engenharia.Gateway-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "estoque-posicao",
+          "file_path": "roles/estoque-posicao/templates/composes/estoque-posicao-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-estoqueposicao",
+            "image": "{{ docker_account }}/korp.logistica.estoqueposicao:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.EstoquePosicao-{{ version_without_build }}"
           }
         },
         {

@@ -22,15 +22,18 @@ const NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN =
 
 function replaceNonExclusiveImageTagSuffix(value, versionFolder) {
   const expectedSuffix = `:${versionFolder}.x{{ docker_image_suffix }}`;
-  if (value.endsWith(expectedSuffix)) {
-    return null;
+  let normalized = value.replace(/^korp\//, '{{ docker_account }}/');
+
+  if (normalized.endsWith(expectedSuffix)) {
+    return normalized === value ? null : normalized;
   }
 
-  if (!NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN.test(value)) {
-    return value;
+  if (!NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN.test(normalized)) {
+    return normalized === value ? null : normalized;
   }
 
-  return value.replace(NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN, expectedSuffix);
+  const updated = normalized.replace(NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN, expectedSuffix);
+  return updated === value ? null : updated;
 }
 
 function versionToHyphen(version) {
@@ -230,7 +233,8 @@ function fixExclusiveImageLine(line) {
       ? raw.slice(1, -1)
       : raw;
 
-  const fixed = value.replace(
+  let fixed = value.replace(/^korp\//, '{{ docker_account }}/');
+  fixed = fixed.replace(
     /:(?!\{\{\s*version_without_build\s*\}\})[^"'\s]+\.x\{\{\s*docker_image_suffix\s*\}\}/,
     ':{{ version_without_build }}.x{{ docker_image_suffix }}'
   );
@@ -323,7 +327,7 @@ function isNonExclusiveContainerNameError(errors) {
 }
 
 function isNonExclusiveImageError(errors) {
-  return errors.some((error) => error.startsWith('A image deveria terminar com'));
+  return errors.some((error) => error.startsWith("Chave 'image'"));
 }
 
 function isExclusiveContainerNameError(errors) {
@@ -333,9 +337,7 @@ function isExclusiveContainerNameError(errors) {
 }
 
 function isExclusiveImageError(errors) {
-  return errors.some((error) =>
-    error.includes("Chave 'image' não termina com o padrão :{{ version_without_build }}")
-  );
+  return errors.some((error) => error.startsWith("Chave 'image'"));
 }
 
 function loadReport() {

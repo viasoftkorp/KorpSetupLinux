@@ -88,8 +88,8 @@ services:
       - "{{ dados_docker_dir_path }}/REL01/spreadsheets/:/app/spreadsheets/"
 
   korp-analytics-ia:
-    image: "korp/korp.analytics.ia:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Analytics.IA"
+    image: "{{ docker_account }}/korp.analytics.ia:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Analytics.IA-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -103,4 +103,5 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
 
