@@ -1,0 +1,1599 @@
+{
+  "summary": {
+    "portainer_url": "http://qa-aux:9011",
+    "endpoint_id": "2",
+    "scope_version": "2024.2.0",
+    "valid_version_pattern": "20XX.X.X (ex.: 2024.1.0, 2024.2.0, 2025.1.0)",
+    "total_containers": 235,
+    "korp_containers_scanned": 219,
+    "legacy_containers": 1,
+    "migration_pairs": 0,
+    "issue_counts": {
+      "LEGACY_UNVERSIONED": 1,
+      "LEGACY_IMAGE_TAG": 1
+    }
+  },
+  "migration_pairs": [],
+  "legacy_containers": [
+    {
+      "container_name": "Viasoft.Core.HybridProxy",
+      "image": "korp/viasoft.core.hybridproxy:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Core.HybridProxy",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    }
+  ],
+  "scanned_containers": [
+    {
+      "container_name": "ADM01-2024.2.0",
+      "image": "korp/viasoft.administration-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "APV_W-2024.2.0",
+      "image": "korp/viasoft.approval.web-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "CDP01-2024.1.0",
+      "image": "korp/viasoft.vendas.custeioproduto-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "CDP01-2024.2.0",
+      "image": "korp/viasoft.vendas.custeioproduto-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "CON21_W-2024.2.0",
+      "image": "korp/korp.contabilidade.conciliacaocontabil-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "ENG50_W-2024.1.0",
+      "image": "korp/viasoft.engenharia.core-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "ENG50_W-2024.2.0",
+      "image": "korp/viasoft.engenharia.core-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "FAT02_W-2024.1.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "FAT02_W-2024.2.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "FAT12-2024.2.0",
+      "image": "korp/viasoft.billing.cte-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "FLOW01-2024.2.0",
+      "image": "korp/korp.flow-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Estoque-2024.2.0",
+      "image": "korp/korp.api.gateway.estoque:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.EstruturaProduto-2024.2.0",
+      "image": "korp/korp.api.gateway.estruturaproduto:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Faturamento-2024.2.0",
+      "image": "korp/korp.api.gateway.faturamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Logistica-2024.2.0",
+      "image": "korp/korp.api.gateway.logistica:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Pessoas-2024.2.0",
+      "image": "korp/korp.api.gateway.pessoas:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Producao-2024.2.0",
+      "image": "korp/korp.api.gateway.producao:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Vendas-2024.2.0",
+      "image": "korp/korp.api.gateway.vendas:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.AtualizacaoSistema",
+      "image": "korp/korp.atualizacaosistema:1.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Compras.NotaFiscal-2024.1.0",
+      "image": "korp/korp.compras.notafiscal:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Compras.NotaFiscal-2024.2.0",
+      "image": "korp/korp.compras.notafiscal:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Configuracoes.CamposPadroes-2024.2.0",
+      "image": "korp/korp.configuracoes.campospadroes:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Contabilidade.ConciliacaoContabil-2024.2.0",
+      "image": "korp/korp.contabilidade.conciliacaocontabil:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Documents.Pdf-2024.2.0",
+      "image": "korp/korp.documents.pdf:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Engenharia.Processo-2024.1.0",
+      "image": "korp/korp.engenharia.processo:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Engenharia.Processo-2024.2.0",
+      "image": "korp/korp.engenharia.processo:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Faturamento.SolicitacaoDeFaturamento-2024.1.0",
+      "image": "korp/korp.faturamento.solicitacaodefaturamento:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Faturamento.SolicitacaoDeFaturamento-2024.2.0",
+      "image": "korp/korp.faturamento.solicitacaodefaturamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Financeiro.Indexador.Moedas-2024.2.0",
+      "image": "korp/korp.financeiro.indexador.moedas:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Financial.Situation-2024.1.0",
+      "image": "korp/korp.financial.situation:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Financial.Situation-2024.2.0",
+      "image": "korp/korp.financial.situation:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Fiscal.Dapi-2024.2.0",
+      "image": "korp/korp.fiscal.dapi:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Flow-2024.2.0",
+      "image": "korp/korp.flow:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Integration.SolidWorks-2024.2.0",
+      "image": "korp/korp.integration.solidworks:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Administration-2024.2.0",
+      "image": "korp/korp.legacy.administration:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Authentication-2024.2.0",
+      "image": "korp/korp.legacy.authentication:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Authorization-2024.2.0",
+      "image": "korp/korp.legacy.authorization:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Compras-2024.2.0",
+      "image": "korp/korp.legacy.compras:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Compras.EntradaNota-2024.2.0",
+      "image": "korp/korp.legacy.compras.entradanota:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.ELT-2024.1.0",
+      "image": "korp/korp.legacy.elt:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.ELT-2024.2.0",
+      "image": "korp/korp.legacy.elt:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Faturamento-2024.2.0",
+      "image": "korp/korp.legacy.faturamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Financeiro-2024.2.0",
+      "image": "korp/korp.legacy.financeiro:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Frontend-router",
+      "image": "korp/korp.legacy.frontend-router:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Legacy.Vendas-2024.2.0",
+      "image": "korp/korp.legacy.vendas:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistic.Tracking-2024.1.0",
+      "image": "korp/korp.logistic.tracking:2024.1.0.x",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistic.Tracking-2024.2.0",
+      "image": "korp/korp.logistic.tracking:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Carga-2024.1.0",
+      "image": "korp/korp.logistica.carga:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Carga-2024.2.0",
+      "image": "korp/korp.logistica.carga:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.ConferenciaSaida-2024.2.0",
+      "image": "korp/korp.logistica.conferenciasaida:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.AjusteEstoque-2024.1.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.AjusteEstoque-2024.2.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.Inventario-2024.1.0",
+      "image": "korp/korp.logistica.estoque.inventario:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.Inventario-2024.2.0",
+      "image": "korp/korp.logistica.estoque.inventario:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking-2024.1.0",
+      "image": "korp/korp.logistica.picking:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking-2024.2.0",
+      "image": "korp/korp.logistica.picking:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.AnaliseDeEstoque-2024.1.0",
+      "image": "korp/korp.logistica.picking.analisedeestoque:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.AnaliseDeEstoque-2024.2.0",
+      "image": "korp/korp.logistica.picking.analisedeestoque:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.ControlePedidos-2024.1.0",
+      "image": "korp/korp.logistica.picking.controlepedidos:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.ControlePedidos-2024.2.0",
+      "image": "korp/korp.logistica.picking.controlepedidos:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.Faturamento-2024.1.0",
+      "image": "korp/korp.logistica.picking.faturamento:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.Faturamento-2024.2.0",
+      "image": "korp/korp.logistica.picking.faturamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.OrdemProducao-2024.1.0",
+      "image": "korp/korp.logistica.picking.ordemproducao:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.OrdemProducao-2024.2.0",
+      "image": "korp/korp.logistica.picking.ordemproducao:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.RequisicaoContraAlmoxarifado.Core-2024.2.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway-2024.2.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.SaldoProdutos-2024.1.0",
+      "image": "korp/korp.logistica.saldoprodutos:2024.1.0.x",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.SaldoProdutos-2024.2.0",
+      "image": "korp/korp.logistica.saldoprodutos:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.WMS.Core-2024.2.0",
+      "image": "korp/korp.logistica.wms.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Logistica.WMS.Gateway-2024.2.0",
+      "image": "korp/korp.logistica.wms.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Producao.Apontamento-2024.1.0",
+      "image": "korp/korp.producao.apontamento:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Producao.Apontamento-2024.2.0",
+      "image": "korp/korp.producao.apontamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Producao.Core-2024.2.0",
+      "image": "korp/korp.producao.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Producao.Gateway-2024.2.0",
+      "image": "korp/korp.producao.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoEntrada-2024.1.0",
+      "image": "korp/korp.qualidade.inspecaoentrada:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoEntrada-2024.2.0",
+      "image": "korp/korp.qualidade.inspecaoentrada:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoSaida-2024.1.0",
+      "image": "korp/korp.qualidade.inspecaosaida:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoSaida-2024.2.0",
+      "image": "korp/korp.qualidade.inspecaosaida:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.RMA.Core-2024.1.0",
+      "image": "korp/korp.rma.core:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.RMA.Core-2024.2.0",
+      "image": "korp/korp.rma.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Sales.PriceControl-2024.1.0",
+      "image": "korp/korp.sales.pricecontrol:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Sales.PriceControl-2024.2.0",
+      "image": "korp/korp.sales.pricecontrol:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Sales.Tracking-2024.2.0",
+      "image": "korp/korp.sales.tracking:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Sales.Tracking.Gateway-2024.2.0",
+      "image": "korp/korp.sales.tracking.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Spreadsheet-2024.2.0",
+      "image": "korp/korp.spreadsheet:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Vendas.Clientes-2024.2.0",
+      "image": "korp/korp.vendas.clientes:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Vendas.CustoProduto-2024.1.0",
+      "image": "korp/korp.vendas.custoproduto:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.CustoProduto-2024.2.0",
+      "image": "korp/korp.vendas.custoproduto:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Vendas.ListaPreco-2024.1.0",
+      "image": "korp/korp.vendas.listapreco:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.ListaPreco-2024.2.0",
+      "image": "korp/korp.vendas.listapreco:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG00-2024.2.0",
+      "image": "korp/viasoft.logistics.preregistration-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG01_W-2024.2.0",
+      "image": "korp/viasoft.logistica.produto-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG03_W-2024.2.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG04_W-2024.1.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "LOG04_W-2024.2.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG05_W-2024.1.0",
+      "image": "korp/korp.logistica.estoque.inventario-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "LOG05_W-2024.2.0",
+      "image": "korp/korp.logistica.estoque.inventario-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "LOG102-2024.1.0",
+      "image": "korp/korp.logistica.picking-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "LOG102-2024.2.0",
+      "image": "korp/korp.logistica.picking-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "login-2024.2.0",
+      "image": "korp/viasoft.authentication-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "MOB01-2024.2.0",
+      "image": "korp/viasoft.vendas.mobile.configuracao-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "PCRG001-2024.1.0",
+      "image": "korp/korp.logistica.carga-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "PCRG001-2024.2.0",
+      "image": "korp/korp.logistica.carga-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "PES00-2024.2.0",
+      "image": "korp/viasoft.erp.person-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "PES01-2024.2.0",
+      "image": "korp/viasoft.erp.person.preregistration-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "portal-2024.2.0",
+      "image": "korp/viasoft.portal-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "PRO09-2024.1.0",
+      "image": "korp/korp.producao.apontamento-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "PRO09-2024.2.0",
+      "image": "korp/korp.producao.apontamento-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "QUA01_W-2024.1.0",
+      "image": "korp/korp.qualidade.inspecaoentrada-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "QUA01_W-2024.2.0",
+      "image": "korp/korp.qualidade.inspecaoentrada-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "QUA02_W-2024.1.0",
+      "image": "korp/korp.qualidade.inspecaosaida-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "QUA02_W-2024.2.0",
+      "image": "korp/korp.qualidade.inspecaosaida-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "QUA06_W-2024.1.0",
+      "image": "korp/viasoft.qualidade.rnc-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "QUA06_W-2024.2.0",
+      "image": "korp/viasoft.qualidade.rnc-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "QUA37-2024.1.0",
+      "image": "korp/korp.qualidade.controletratamentotermico-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "QUA37-2024.2.0",
+      "image": "korp/korp.qualidade.controletratamentotermico-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "rabbitmq",
+      "image": "korp/rabbitmq:1.3.1",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "REL01-2024.2.0",
+      "image": "korp/viasoft.relatorios-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "SDK.FLOW-2024.2.0",
+      "image": "korp/sdk.flow-parcel:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "SYNC01-2024.1.0",
+      "image": "korp/viasoft.erp.sync-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "SYNC01-2024.2.0",
+      "image": "korp/viasoft.erp.sync-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "TRAC01-2024.2.0",
+      "image": "korp/korp.sales.tracking-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "VEN07_W-2024.1.0",
+      "image": "korp/viasoft.vendas.orcamento-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "VEN07_W-2024.2.0",
+      "image": "korp/viasoft.vendas.orcamento-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "VEN26-2024.2.0",
+      "image": "korp/viasoft.sales.crm.core-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "VEN27-2024.1.0",
+      "image": "korp/viasoft.sales.commercialproposal-frontend:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "VEN27-2024.2.0",
+      "image": "korp/viasoft.sales.commercialproposal-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Accounting-2024.2.0",
+      "image": "korp/viasoft.accounting:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Administration-2024.2.0",
+      "image": "korp/viasoft.administration:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Apprise.Proxy-2024.2.0",
+      "image": "korp/viasoft.apprise.proxy:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Approval-2024.2.0",
+      "image": "korp/viasoft.approval:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Audittrail.Client-2024.2.0",
+      "image": "korp/viasoft.audittrail.client:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Authentication-2024.2.0",
+      "image": "korp/viasoft.authentication:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Authorization-2024.2.0",
+      "image": "korp/viasoft.authorization:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.CTE-2024.2.0",
+      "image": "korp/viasoft.billing.cte:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.CTE.SEFAZ-2024.2.0",
+      "image": "korp/viasoft.billing.cte.sefaz:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.NFE-2024.2.0",
+      "image": "korp/viasoft.billing.nfe:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Compras.PlanilhasPreco-2024.2.0",
+      "image": "korp/viasoft.compras.planilhaspreco:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Core.HybridProxy",
+      "image": "korp/viasoft.core.hybridproxy:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Customer.Portifolio-2024.1.0",
+      "image": "korp/viasoft.customer.portifolio:2024.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.1.0"
+    },
+    {
+      "container_name": "Viasoft.Customer.Portifolio-2024.2.0",
+      "image": "korp/viasoft.customer.portifolio:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Dashboard-2024.2.0",
+      "image": "korp/viasoft.dashboard:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Email-2024.2.0",
+      "image": "korp/viasoft.email:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Emailing-2024.2.0",
+      "image": "korp/viasoft.emailing:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Emailing.EmailTemplate-2024.2.0",
+      "image": "korp/viasoft.emailing.emailtemplate:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.Core-2024.2.0",
+      "image": "korp/viasoft.engenharia.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.CustoOrcamento-2024.2.0",
+      "image": "korp/viasoft.engenharia.custoorcamento:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.Gateway-2024.2.0",
+      "image": "korp/viasoft.engenharia.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.ACL.Messaging-2024.2.0",
+      "image": "korp/viasoft.erp.acl.messaging:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Activities-2024.2.0",
+      "image": "korp/viasoft.erp.activities:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Core-2024.2.0",
+      "image": "korp/viasoft.erp.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Person-2024.2.0",
+      "image": "korp/viasoft.erp.person:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Person.PreRegistration-2024.2.0",
+      "image": "korp/viasoft.erp.person.preregistration:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Sync-2024.2.0",
+      "image": "korp/viasoft.erp.sync:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.Core-2024.2.0",
+      "image": "korp/viasoft.faturamento.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.NotaFiscal.Core-2024.2.0",
+      "image": "korp/viasoft.faturamento.notafiscal.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.NotaFiscal.Gateway-2024.2.0",
+      "image": "korp/viasoft.faturamento.notafiscal.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.Core-2024.2.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.Gateway-2024.2.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel-2024.2.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.readmodel:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.FileProvider-2024.2.0",
+      "image": "korp/viasoft.fileprovider:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Financeiro.Core-2024.2.0",
+      "image": "korp/viasoft.financeiro.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.FinancialAccounting.AccountsReceivable-2024.2.0",
+      "image": "korp/viasoft.financialaccounting.accountsreceivable:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.FinancialAccounting.Installment-2024.2.0",
+      "image": "korp/viasoft.financialaccounting.installment:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Fiscal.Core-2024.2.0",
+      "image": "korp/viasoft.fiscal.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Geolocation-2024.2.0",
+      "image": "korp/viasoft.geolocation:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Legacy.Httpproxy-2024.2.0",
+      "image": "korp/viasoft.legacy.httpproxy:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Legacy.Logistica-2024.2.0",
+      "image": "korp/viasoft.legacy.logistica:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Legacy.Parametros-2024.2.0",
+      "image": "korp/viasoft.legacy.parametros:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Loader",
+      "image": "korp/viasoft.loader:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Logistica.AjusteEstoque.Background-2024.2.0",
+      "image": "korp/viasoft.logistica.ajusteestoque.background:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Estoque-2024.2.0",
+      "image": "korp/viasoft.logistica.estoque:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Inventario.Background-2024.2.0",
+      "image": "korp/viasoft.logistica.inventario.background:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Produto.Core-2024.2.0",
+      "image": "korp/viasoft.logistica.produto.core:2024.2.0.x-hmlg",
+      "state": "restarting",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Produto.Gateway-2024.2.0",
+      "image": "korp/viasoft.logistica.produto.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Saldo-2024.2.0",
+      "image": "korp/viasoft.logistica.saldo:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistics.PreRegistration-2024.2.0",
+      "image": "korp/viasoft.logistics.preregistration:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Logistics.Products-2024.2.0",
+      "image": "korp/viasoft.logistics.products:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.MessageBird-2024.2.0",
+      "image": "korp/viasoft.messagebird:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Notification-2024.2.0",
+      "image": "korp/viasoft.notification:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.ObjectStorage.Client-2024.2.0",
+      "image": "korp/viasoft.objectstorage.client:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.OrganizationalStructureManagement-2024.2.0",
+      "image": "korp/viasoft.organizationalstructuremanagement:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Portal-2024.2.0",
+      "image": "korp/viasoft.portal:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.Inspecao.Background-2024.2.0",
+      "image": "korp/viasoft.qualidade.inspecao.background:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.RNC.Core-2024.2.0",
+      "image": "korp/viasoft.qualidade.rnc.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.RNC.Gateway-2024.2.0",
+      "image": "korp/viasoft.qualidade.rnc.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.QuickFilter-2024.2.0",
+      "image": "korp/viasoft.quickfilter:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Relatorios-2024.2.0",
+      "image": "korp/viasoft.relatorios:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Relatorios.Agendador-2024.2.0",
+      "image": "korp/viasoft.relatorios.agendador:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting-2024.2.0",
+      "image": "korp/viasoft.reporting:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting.PivotTable-2024.2.0",
+      "image": "korp/viasoft.reporting.pivottable:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting.Stimulsoft-2024.2.0",
+      "image": "korp/viasoft.reporting.stimulsoft:2024.2.0.x-hmlg",
+      "state": "restarting",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Core-2024.2.0",
+      "image": "korp/viasoft.sales.commercialproposal.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Gateway-2024.2.0",
+      "image": "korp/viasoft.sales.commercialproposal.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Sync-2024.2.0",
+      "image": "korp/viasoft.sales.commercialproposal.sync:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Core-2024.2.0",
+      "image": "korp/viasoft.sales.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Accounts-2024.2.0",
+      "image": "korp/viasoft.sales.crm.accounts:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Activities-2024.2.0",
+      "image": "korp/viasoft.sales.crm.activities:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Core-2024.2.0",
+      "image": "korp/viasoft.sales.crm.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Goals-2024.2.0",
+      "image": "korp/viasoft.sales.crm.goals:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Leads-2024.2.0",
+      "image": "korp/viasoft.sales.crm.leads:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.NPS-2024.2.0",
+      "image": "korp/viasoft.sales.crm.nps:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Opportunities-2024.2.0",
+      "image": "korp/viasoft.sales.crm.opportunities:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Qualification-2024.2.0",
+      "image": "korp/viasoft.sales.crm.qualification:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Reporting-2024.2.0",
+      "image": "korp/viasoft.sales.crm.reporting:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Sync-2024.2.0",
+      "image": "korp/viasoft.sales.crm.sync:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CustomerPortfolio-2024.2.0",
+      "image": "korp/viasoft.sales.customerportfolio:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Customers-2024.2.0",
+      "image": "korp/viasoft.sales.customers:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Discount-2024.2.0",
+      "image": "korp/viasoft.sales.discount:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.PriceList-2024.2.0",
+      "image": "korp/viasoft.sales.pricelist:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.SystemUpdate-2024.2.0",
+      "image": "korp/viasoft.systemupdate:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.TaxManagement-2024.2.0",
+      "image": "korp/viasoft.taxmanagement:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.TenantManagement-2024.2.0",
+      "image": "korp/viasoft.tenantmanagement:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.UserProfile-2024.2.0",
+      "image": "korp/viasoft.userprofile:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Core-2024.2.0",
+      "image": "korp/viasoft.vendas.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.CusteioProduto-2024.2.0",
+      "image": "korp/viasoft.vendas.custeioproduto:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.CusteioProduto.Gateway-2024.2.0",
+      "image": "korp/viasoft.vendas.custeioproduto.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Mobile.Configuracao-2024.2.0",
+      "image": "korp/viasoft.vendas.mobile.configuracao:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Orcamento.Core-2024.2.0",
+      "image": "korp/viasoft.vendas.orcamento.core:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Orcamento.Gateway-2024.2.0",
+      "image": "korp/viasoft.vendas.orcamento.gateway:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.WelcomePage.Dashboard-2024.2.0",
+      "image": "korp/viasoft.welcomepage.dashboard:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Workflow.Elsa-2024.2.0",
+      "image": "korp/viasoft.workflow.elsa:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Workflow.Orchestrator-2024.2.0",
+      "image": "korp/viasoft.workflow.orchestrator:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    }
+  ]
+}

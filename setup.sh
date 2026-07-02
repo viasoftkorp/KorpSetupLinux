@@ -260,8 +260,6 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
 ansible_rc=${PIPESTATUS[0]}
 
 if [ "$ansible_rc" != 0 ]; then
-if [ $? != 0 ]
-then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
     exit 11
 fi

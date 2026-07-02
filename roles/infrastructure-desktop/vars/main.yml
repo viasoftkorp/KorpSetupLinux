@@ -22,32 +22,26 @@ services:
       name: Auth_Legacy_Integration
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.AuditTrail.Client:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/"
     version:
-      unversioned: true
 
   Viasoft.Email:
     volumes_directories:
       - "{{ dados_docker_dir_path }}/viasoft-email/data"
       - "{{ dados_docker_dir_path }}/viasoft-email/errors"
     version:
-      unversioned: true
 
   Viasoft.SystemUpdate:
     version:
-      unversioned: true
 
   Viasoft.Legacy.HTTPProxy:
     version:
-      unversioned: true
 
   Viasoft.WelcomePage.Dashboard:
     version:
-      unversioned: true
 
   Korp.AtualizacaoSistema:
     version:

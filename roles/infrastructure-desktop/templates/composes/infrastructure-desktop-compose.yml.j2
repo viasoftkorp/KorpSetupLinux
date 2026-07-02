@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-audittrail-client:
-    image: "{{ docker_account }}/viasoft.audittrail.client:3.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Audittrail.Client"
+    image: "{{ docker_account }}/viasoft.audittrail.client:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Audittrail.Client-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -38,8 +38,8 @@ services:
       - single-request-reopen
 
   viasoft-email:
-    image: "{{ docker_account }}/viasoft.email:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Email"
+    image: "{{ docker_account }}/viasoft.email:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Email-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -58,8 +58,8 @@ services:
       - single-request-reopen
 
   viasoft-legacy-httpproxy:
-    image: "{{ docker_account }}/viasoft.legacy.httpproxy:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Legacy.Httpproxy"
+    image: "{{ docker_account }}/viasoft.legacy.httpproxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Legacy.Httpproxy-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -78,8 +78,8 @@ services:
       - single-request-reopen
 
   viasoft-welcomepage-dashboard:
-    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.WelcomePage.Dashboard"
+    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.WelcomePage.Dashboard-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -95,8 +95,8 @@ services:
       - single-request-reopen
 
   viasoft-systemupdate:
-    image: "{{ docker_account }}/viasoft.systemupdate:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.SystemUpdate"
+    image: "{{ docker_account }}/viasoft.systemupdate:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.SystemUpdate-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -126,5 +126,9 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+<<<<<<< HEAD
+
+=======
     dns_opt:
       - single-request-reopen
+>>>>>>> release/2024.2.0.x
