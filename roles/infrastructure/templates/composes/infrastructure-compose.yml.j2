@@ -26,26 +26,20 @@ services:
     ports:
       - "80:80"
       - "{{ https_port }}:443"
-
-    {% if reverse_proxy.external %}
-
+{%- if reverse_proxy.external %}
       - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
       - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
       - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
-
-    {% endif %}
+{%- endif %}
 
     volumes:
-      - {{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf
-      - {{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf
-      - {{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d/
-      - {{ certs_directory }}/:/etc/nginx/certs/
-
-    {% if certs.certbot_automated.certificate %}
-
-      - {{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt
-
-    {% endif %}
+      - "{{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf"
+      - "{{ config_dir_path }}/nginx/ssl_conf:/etc/nginx/ssl_conf"
+      - "{{ config_dir_path }}/nginx/conf.d/:/etc/nginx/conf.d"
+      - "{{ certs_directory }}/:/etc/nginx/certs/"
+{%- if certs.certbot_automated.certificate %}
+      - "{{ config_dir_path }}/nginx/letsencrypt/:/letsencrypt"
+{%- endif %}
 
     networks:
       - servicos
@@ -222,7 +216,7 @@ services:
 # o NGINX resolve o DNS logo ao subir, que estão indicados nos arquivos conf. esses dois serviços são utilizados para roteamento,
 # por isso eles estão nesse compose
   korp-legacy-frontend-router:
-    image: "{{ docker_account }}/korp.legacy.frontend-router:1.0.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.legacy.frontend-router:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Korp.Legacy.Frontend-router"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -236,7 +230,7 @@ services:
       - single-request-reopen
 
   viasoft-loader:
-    image: "{{ docker_account }}/viasoft.loader:3.1.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/viasoft.loader:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Loader"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -247,3 +241,4 @@ services:
         ipv4_address: "{{ docker_servicos_network_ip_address_start | default ('172.18') }}.128.2"
     dns_opt:
       - single-request-reopen
+

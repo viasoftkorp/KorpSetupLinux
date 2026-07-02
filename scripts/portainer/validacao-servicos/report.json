@@ -1,0 +1,1929 @@
+{
+  "summary": {
+    "portainer_url": "http://qa-hmlg:9011",
+    "endpoint_id": "2",
+    "scope_version": "2025.1.0",
+    "valid_version_pattern": "20XX.X.X (ex.: 2024.1.0, 2024.2.0, 2025.1.0)",
+    "total_containers": 218,
+    "korp_containers_scanned": 196,
+    "legacy_containers": 32,
+    "migration_pairs": 0,
+    "issue_counts": {
+      "LEGACY_UNVERSIONED": 32,
+      "LEGACY_IMAGE_TAG": 23
+    }
+  },
+  "migration_pairs": [],
+  "legacy_containers": [
+    {
+      "container_name": "APV_W",
+      "image": "korp/viasoft.approval.web-frontend:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "APV_W",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "FLOW01",
+      "image": "korp/korp.flow-frontend:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "FLOW01",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Analytics.IA",
+      "image": "korp/korp.analytics.ia:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Analytics.IA",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Configuracoes.CamposPadroes",
+      "image": "korp/korp.configuracoes.campospadroes:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Configuracoes.CamposPadroes",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Financeiro.Indexador.Moedas",
+      "image": "korp/korp.financeiro.indexador.moedas:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Financeiro.Indexador.Moedas",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Flow",
+      "image": "korp/korp.flow:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Flow",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Legacy.CargaInicial",
+      "image": "korp/korp.legacy.cargainicial:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Legacy.CargaInicial",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Legacy.Compras.EntradaNota",
+      "image": "korp/korp.legacy.compras.entradanota:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Legacy.Compras.EntradaNota",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Mobile",
+      "image": "korp/korp.mobile:4.2.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Mobile",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '4.2.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Sales.Tracking",
+      "image": "korp/korp.sales.tracking:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Sales.Tracking",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Korp.Sales.Tracking.Gateway",
+      "image": "korp/korp.sales.tracking.gateway:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Korp.Sales.Tracking.Gateway",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "LOG00",
+      "image": "korp/viasoft.logistics.preregistration-frontend:3.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "LOG00",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '3.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "MOB01",
+      "image": "korp/viasoft.vendas.mobile.configuracao-frontend:1.2.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "MOB01",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.2.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "PES00",
+      "image": "korp/viasoft.erp.person-frontend:3.3.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "PES00",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '3.3.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "PES01",
+      "image": "korp/viasoft.erp.person.preregistration-frontend:3.2.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "PES01",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '3.2.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "SDK.FLOW",
+      "image": "korp/sdk.flow-parcel:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "SDK.FLOW",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "TRAC01",
+      "image": "korp/korp.sales.tracking-frontend:1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "TRAC01",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.0.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Apprise.Proxy",
+      "image": "korp/viasoft.apprise.proxy:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Apprise.Proxy",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Approval",
+      "image": "korp/viasoft.approval:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Approval",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Geolocation",
+      "image": "korp/viasoft.geolocation:1.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Geolocation",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Legacy.Httpproxy",
+      "image": "korp/viasoft.legacy.httpproxy:1.2.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Legacy.Httpproxy",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.2.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.MessageBird",
+      "image": "korp/viasoft.messagebird:2.1.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.MessageBird",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '2.1.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Accounts",
+      "image": "korp/viasoft.sales.crm.accounts:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Accounts",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Activities",
+      "image": "korp/viasoft.sales.crm.activities:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Activities",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Core",
+      "image": "korp/viasoft.sales.crm.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Core",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Goals",
+      "image": "korp/viasoft.sales.crm.goals:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Goals",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Leads",
+      "image": "korp/viasoft.sales.crm.leads:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Leads",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.NPS",
+      "image": "korp/viasoft.sales.crm.nps:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.NPS",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Qualification",
+      "image": "korp/viasoft.sales.crm.qualification:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Qualification",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Reporting",
+      "image": "korp/viasoft.sales.crm.reporting:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Reporting",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Sync",
+      "image": "korp/viasoft.sales.crm.sync:2025.1.0.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Sales.CRM.Sync",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        }
+      ]
+    },
+    {
+      "container_name": "Viasoft.Vendas.Mobile.Configuracao",
+      "image": "korp/viasoft.vendas.mobile.configuracao:1.2.x-hmlg",
+      "state": "running",
+      "version_suffix": null,
+      "base_name": "Viasoft.Vendas.Mobile.Configuracao",
+      "issues": [
+        {
+          "code": "LEGACY_UNVERSIONED",
+          "message": "Container sem sufixo de versão no padrão ano (ex.: -2024.1.0, -2024.2.0, -2025.1.0)."
+        },
+        {
+          "code": "LEGACY_IMAGE_TAG",
+          "message": "Tag de imagem legada '1.2.x-hmlg' (esperado padrão 20XX.X.X, ex.: 2024.2.0.x-hmlg)."
+        }
+      ]
+    }
+  ],
+  "scanned_containers": [
+    {
+      "container_name": "ADM01-2025.1.0",
+      "image": "korp/viasoft.administration-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "APV_W",
+      "image": "korp/viasoft.approval.web-frontend:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "CDP01-2025.1.0",
+      "image": "korp/viasoft.vendas.custeioproduto-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "COM15_W-2025.1.0",
+      "image": "korp/korp.compras.analises-compras-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "CON21_W-2025.1.0",
+      "image": "korp/korp.contabilidade.conciliacaocontabil-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "ENG50_W-2025.1.0",
+      "image": "korp/viasoft.engenharia.core-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "FAT02_W-2025.1.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "FAT12-2025.1.0",
+      "image": "korp/viasoft.billing.cte-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "FLOW01",
+      "image": "korp/korp.flow-frontend:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Analytics.IA",
+      "image": "korp/korp.analytics.ia:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.API.Gateway.Estoque-2025.1.0",
+      "image": "korp/korp.api.gateway.estoque:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.EstruturaProduto-2025.1.0",
+      "image": "korp/korp.api.gateway.estruturaproduto:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Faturamento-2025.1.0",
+      "image": "korp/korp.api.gateway.faturamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Logistica-2025.1.0",
+      "image": "korp/korp.api.gateway.logistica:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Pessoas-2025.1.0",
+      "image": "korp/korp.api.gateway.pessoas:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Producao-2025.1.0",
+      "image": "korp/korp.api.gateway.producao:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.API.Gateway.Vendas-2025.1.0",
+      "image": "korp/korp.api.gateway.vendas:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.AtualizacaoSistema",
+      "image": "korp/korp.atualizacaosistema:1.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Compras.Core-2025.1.0",
+      "image": "korp/korp.compras.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Compras.Gateway-2025.1.0",
+      "image": "korp/korp.compras.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Compras.NotaFiscal-2025.1.0",
+      "image": "korp/korp.compras.notafiscal:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Configuracoes.CamposPadroes",
+      "image": "korp/korp.configuracoes.campospadroes:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Contabilidade.ConciliacaoContabil-2025.1.0",
+      "image": "korp/korp.contabilidade.conciliacaocontabil:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Documents.Pdf-2025.1.0",
+      "image": "korp/korp.documents.pdf:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Engenharia.Processo-2025.1.0",
+      "image": "korp/korp.engenharia.processo:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Faturamento.SolicitacaoDeFaturamento-2025.1.0",
+      "image": "korp/korp.faturamento.solicitacaodefaturamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Financeiro.Indexador.Moedas",
+      "image": "korp/korp.financeiro.indexador.moedas:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Financial.Situation-2025.1.0",
+      "image": "korp/korp.financial.situation:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Fiscal.DAPI-2025.1.0",
+      "image": "korp/korp.fiscal.dapi:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Fiscal.DOT-2025.1.0",
+      "image": "korp/korp.fiscal.dot:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Flow",
+      "image": "korp/korp.flow:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Legacy.Administration-2025.1.0",
+      "image": "korp/korp.legacy.administration:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Authentication-2025.1.0",
+      "image": "korp/korp.legacy.authentication:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Authorization-2025.1.0",
+      "image": "korp/korp.legacy.authorization:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.CargaInicial",
+      "image": "korp/korp.legacy.cargainicial:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Legacy.Compras-2025.1.0",
+      "image": "korp/korp.legacy.compras:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Compras.EntradaNota",
+      "image": "korp/korp.legacy.compras.entradanota:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Legacy.ELT-2024.2.0",
+      "image": "korp/korp.legacy.elt:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Korp.Legacy.ELT-2025.1.0",
+      "image": "korp/korp.legacy.elt:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Faturamento-2025.1.0",
+      "image": "korp/korp.legacy.faturamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Financeiro-2025.1.0",
+      "image": "korp/korp.legacy.financeiro:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Legacy.Frontend-router",
+      "image": "korp/korp.legacy.frontend-router:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Legacy.Vendas-2025.1.0",
+      "image": "korp/korp.legacy.vendas:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistic.Tracking-2025.1.0",
+      "image": "korp/korp.logistic.tracking:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Carga-2025.1.0",
+      "image": "korp/korp.logistica.carga:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.ConferenciaSaida-2025.1.0",
+      "image": "korp/korp.logistica.conferenciasaida:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.AjusteEstoque-2025.1.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Estoque.Inventario-2025.1.0",
+      "image": "korp/korp.logistica.estoque.inventario:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking-2025.1.0",
+      "image": "korp/korp.logistica.picking:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.AnaliseDeEstoque-2025.1.0",
+      "image": "korp/korp.logistica.picking.analisedeestoque:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.ControlePedidos-2025.1.0",
+      "image": "korp/korp.logistica.picking.controlepedidos:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.Faturamento-2025.1.0",
+      "image": "korp/korp.logistica.picking.faturamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Picking.OrdemProducao-2025.1.0",
+      "image": "korp/korp.logistica.picking.ordemproducao:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Repacking.Core-2025.1.0",
+      "image": "korp/korp.logistica.repacking.core:2025.1.0.x-hmlg",
+      "state": "restarting",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.Repacking.Gateway-2025.1.0",
+      "image": "korp/korp.logistica.repacking.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.RequisicaoContraAlmoxarifado.Core-2025.1.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway-2025.1.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.SaldoProdutos-2025.1.0",
+      "image": "korp/korp.logistica.saldoprodutos:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.WMS.Core-2025.1.0",
+      "image": "korp/korp.logistica.wms.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Logistica.WMS.Gateway-2025.1.0",
+      "image": "korp/korp.logistica.wms.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Mobile",
+      "image": "korp/korp.mobile:4.2.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Producao.Apontamento-2025.1.0",
+      "image": "korp/korp.producao.apontamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Producao.Core-2025.1.0",
+      "image": "korp/korp.producao.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Producao.Gateway-2025.1.0",
+      "image": "korp/korp.producao.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoEntrada-2025.1.0",
+      "image": "korp/korp.qualidade.inspecaoentrada:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Qualidade.InspecaoSaida-2025.1.0",
+      "image": "korp/korp.qualidade.inspecaosaida:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.RMA.Core-2025.1.0",
+      "image": "korp/korp.rma.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Sales.PriceControl-2025.1.0",
+      "image": "korp/korp.sales.pricecontrol:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Sales.Tracking",
+      "image": "korp/korp.sales.tracking:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Sales.Tracking.Gateway",
+      "image": "korp/korp.sales.tracking.gateway:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Korp.Spreadsheet-2025.1.0",
+      "image": "korp/korp.spreadsheet:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.AutomatizacaoDeFrete-2025.1.0",
+      "image": "korp/korp.vendas.automatizacaodefrete:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.Clientes-2025.1.0",
+      "image": "korp/korp.vendas.clientes:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.CustoProduto-2025.1.0",
+      "image": "korp/korp.vendas.custoproduto:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Korp.Vendas.ListaPreco-2025.1.0",
+      "image": "korp/korp.vendas.listapreco:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG00",
+      "image": "korp/viasoft.logistics.preregistration-frontend:3.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "LOG01_W-2025.1.0",
+      "image": "korp/viasoft.logistica.produto-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG03_W-2025.1.0",
+      "image": "korp/korp.logistica.requisicaocontraalmoxarifado-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG04_W-2025.1.0",
+      "image": "korp/korp.logistica.estoque.ajusteestoque-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG05_W-2025.1.0",
+      "image": "korp/korp.logistica.estoque.inventario-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG102-2025.1.0",
+      "image": "korp/korp.logistica.picking-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "LOG73_W-2025.1.0",
+      "image": "korp/korp.logistica.repacking-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "login-2025.1.0",
+      "image": "korp/viasoft.authentication-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "MOB01",
+      "image": "korp/viasoft.vendas.mobile.configuracao-frontend:1.2.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "PCRG001-2025.1.0",
+      "image": "korp/korp.logistica.carga-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "PES00",
+      "image": "korp/viasoft.erp.person-frontend:3.3.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "PES01",
+      "image": "korp/viasoft.erp.person.preregistration-frontend:3.2.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "portal-2025.1.0",
+      "image": "korp/viasoft.portal-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "PRO09-2025.1.0",
+      "image": "korp/korp.producao.apontamento-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "QUA01_W-2025.1.0",
+      "image": "korp/korp.qualidade.inspecaoentrada-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "QUA02_W-2025.1.0",
+      "image": "korp/korp.qualidade.inspecaosaida-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "QUA06_W-2025.1.0",
+      "image": "korp/viasoft.qualidade.rnc-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "QUA37-2025.1.0",
+      "image": "korp/korp.qualidade.controletratamentotermico-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "rabbitmq",
+      "image": "korp/rabbitmq:1.3.1",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "REL01-2025.1.0",
+      "image": "korp/viasoft.relatorios-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "SDK.FLOW",
+      "image": "korp/sdk.flow-parcel:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "SYNC01-2024.2.0",
+      "image": "korp/viasoft.erp.sync-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "SYNC01-2025.1.0",
+      "image": "korp/viasoft.erp.sync-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "TRAC01",
+      "image": "korp/korp.sales.tracking-frontend:1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "VEN_WEB_01-2025.1.0",
+      "image": "korp/korp.vendas.automatizacaodefrete-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "VEN07_W-2025.1.0",
+      "image": "korp/viasoft.vendas.orcamento-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "VEN26-2025.1.0",
+      "image": "korp/viasoft.sales.crm.core-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "VEN27-2024.2.0",
+      "image": "korp/viasoft.sales.commercialproposal-frontend:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "VEN27-2025.1.0",
+      "image": "korp/viasoft.sales.commercialproposal-frontend:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Accounting-2025.1.0",
+      "image": "korp/viasoft.accounting:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Administration-2025.1.0",
+      "image": "korp/viasoft.administration:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Apprise.Proxy",
+      "image": "korp/viasoft.apprise.proxy:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Approval",
+      "image": "korp/viasoft.approval:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Audittrail.Client-2025.1.0",
+      "image": "korp/viasoft.audittrail.client:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Authentication-2025.1.0",
+      "image": "korp/viasoft.authentication:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Authorization-2025.1.0",
+      "image": "korp/viasoft.authorization:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.CTE-2025.1.0",
+      "image": "korp/viasoft.billing.cte:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.CTE.SEFAZ-2025.1.0",
+      "image": "korp/viasoft.billing.cte.sefaz:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Billing.NFE-2025.1.0",
+      "image": "korp/viasoft.billing.nfe:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Compras.PlanilhasPreco-2025.1.0",
+      "image": "korp/viasoft.compras.planilhaspreco:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Customer.Portifolio-2024.2.0",
+      "image": "korp/viasoft.customer.portifolio:2024.2.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2024.2.0"
+    },
+    {
+      "container_name": "Viasoft.Customer.Portifolio-2025.1.0",
+      "image": "korp/viasoft.customer.portifolio:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Dashboard-2025.1.0",
+      "image": "korp/viasoft.dashboard:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Email-2025.1.0",
+      "image": "korp/viasoft.email:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Emailing-2025.1.0",
+      "image": "korp/viasoft.emailing:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Emailing.EmailTemplate-2025.1.0",
+      "image": "korp/viasoft.emailing.emailtemplate:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.Core-2025.1.0",
+      "image": "korp/viasoft.engenharia.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.CustoOrcamento-2025.1.0",
+      "image": "korp/viasoft.engenharia.custoorcamento:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Engenharia.Gateway-2025.1.0",
+      "image": "korp/viasoft.engenharia.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.ACL.Messaging-2025.1.0",
+      "image": "korp/viasoft.erp.acl.messaging:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Activities-2025.1.0",
+      "image": "korp/viasoft.erp.activities:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Core-2025.1.0",
+      "image": "korp/viasoft.erp.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Person-2025.1.0",
+      "image": "korp/viasoft.erp.person:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Person.PreRegistration-2025.1.0",
+      "image": "korp/viasoft.erp.person.preregistration:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ERP.Sync-2025.1.0",
+      "image": "korp/viasoft.erp.sync:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.Core-2025.1.0",
+      "image": "korp/viasoft.faturamento.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.NotaFiscal.Core-2025.1.0",
+      "image": "korp/viasoft.faturamento.notafiscal.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.NotaFiscal.Gateway-2025.1.0",
+      "image": "korp/viasoft.faturamento.notafiscal.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.Core-2025.1.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.Gateway-2025.1.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel-2025.1.0",
+      "image": "korp/viasoft.faturamento.solicitacaofaturamento.readmodel:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.FileProvider-2025.1.0",
+      "image": "korp/viasoft.fileprovider:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Financeiro.Core-2025.1.0",
+      "image": "korp/viasoft.financeiro.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.FinancialAccounting.AccountsReceivable-2025.1.0",
+      "image": "korp/viasoft.financialaccounting.accountsreceivable:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.FinancialAccounting.Installment-2025.1.0",
+      "image": "korp/viasoft.financialaccounting.installment:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Fiscal.Core-2025.1.0",
+      "image": "korp/viasoft.fiscal.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Geolocation",
+      "image": "korp/viasoft.geolocation:1.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Legacy.Httpproxy",
+      "image": "korp/viasoft.legacy.httpproxy:1.2.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Legacy.Logistica-2025.1.0",
+      "image": "korp/viasoft.legacy.logistica:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Legacy.Parametros-2025.1.0",
+      "image": "korp/viasoft.legacy.parametros:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Loader",
+      "image": "korp/viasoft.loader:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": true,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Logistica.AjusteEstoque.Background-2025.1.0",
+      "image": "korp/viasoft.logistica.ajusteestoque.background:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Estoque-2025.1.0",
+      "image": "korp/viasoft.logistica.estoque:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Inventario.Background-2025.1.0",
+      "image": "korp/viasoft.logistica.inventario.background:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Produto.Core-2025.1.0",
+      "image": "korp/viasoft.logistica.produto.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Produto.Gateway-2025.1.0",
+      "image": "korp/viasoft.logistica.produto.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistica.Saldo-2025.1.0",
+      "image": "korp/viasoft.logistica.saldo:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistics.PreRegistration-2025.1.0",
+      "image": "korp/viasoft.logistics.preregistration:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Logistics.Products-2025.1.0",
+      "image": "korp/viasoft.logistics.products:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.MessageBird",
+      "image": "korp/viasoft.messagebird:2.1.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Notification-2025.1.0",
+      "image": "korp/viasoft.notification:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.ObjectStorage.Client-2025.1.0",
+      "image": "korp/viasoft.objectstorage.client:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.OrganizationalStructureManagement-2025.1.0",
+      "image": "korp/viasoft.organizationalstructuremanagement:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Portal-2025.1.0",
+      "image": "korp/viasoft.portal:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.Inspecao.Background-2025.1.0",
+      "image": "korp/viasoft.qualidade.inspecao.background:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.RNC.Core-2025.1.0",
+      "image": "korp/viasoft.qualidade.rnc.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Qualidade.RNC.Gateway-2025.1.0",
+      "image": "korp/viasoft.qualidade.rnc.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.QuickFilter-2025.1.0",
+      "image": "korp/viasoft.quickfilter:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Relatorios-2025.1.0",
+      "image": "korp/viasoft.relatorios:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Relatorios.Agendador-2025.1.0",
+      "image": "korp/viasoft.relatorios.agendador:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting-2025.1.0",
+      "image": "korp/viasoft.reporting:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting.PivotTable-2025.1.0",
+      "image": "korp/viasoft.reporting.pivottable:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Reporting.Stimulsoft-2025.1.0",
+      "image": "korp/viasoft.reporting.stimulsoft:2025.1.0.x-hmlg",
+      "state": "restarting",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Core-2025.1.0",
+      "image": "korp/viasoft.sales.commercialproposal.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Gateway-2025.1.0",
+      "image": "korp/viasoft.sales.commercialproposal.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CommercialProposal.Sync-2025.1.0",
+      "image": "korp/viasoft.sales.commercialproposal.sync:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Core-2025.1.0",
+      "image": "korp/viasoft.sales.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Accounts",
+      "image": "korp/viasoft.sales.crm.accounts:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Activities",
+      "image": "korp/viasoft.sales.crm.activities:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Core",
+      "image": "korp/viasoft.sales.crm.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Goals",
+      "image": "korp/viasoft.sales.crm.goals:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Leads",
+      "image": "korp/viasoft.sales.crm.leads:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.NPS",
+      "image": "korp/viasoft.sales.crm.nps:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Opportunities-2025.1.0",
+      "image": "korp/viasoft.sales.crm.opportunities:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Qualification",
+      "image": "korp/viasoft.sales.crm.qualification:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Reporting",
+      "image": "korp/viasoft.sales.crm.reporting:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CRM.Sync",
+      "image": "korp/viasoft.sales.crm.sync:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Sales.CustomerPortfolio-2025.1.0",
+      "image": "korp/viasoft.sales.customerportfolio:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Customers-2025.1.0",
+      "image": "korp/viasoft.sales.customers:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.Discount-2025.1.0",
+      "image": "korp/viasoft.sales.discount:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Sales.PriceList-2025.1.0",
+      "image": "korp/viasoft.sales.pricelist:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.SystemUpdate-2025.1.0",
+      "image": "korp/viasoft.systemupdate:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.TaxManagement-2025.1.0",
+      "image": "korp/viasoft.taxmanagement:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.TenantManagement-2025.1.0",
+      "image": "korp/viasoft.tenantmanagement:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.UserProfile-2025.1.0",
+      "image": "korp/viasoft.userprofile:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Core-2025.1.0",
+      "image": "korp/viasoft.vendas.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.CusteioProduto-2025.1.0",
+      "image": "korp/viasoft.vendas.custeioproduto:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.CusteioProduto.Gateway-2025.1.0",
+      "image": "korp/viasoft.vendas.custeioproduto.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Mobile.Configuracao",
+      "image": "korp/viasoft.vendas.mobile.configuracao:1.2.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": null
+    },
+    {
+      "container_name": "Viasoft.Vendas.Mobile.Sincronismo-2025.1.0",
+      "image": "korp/viasoft.vendas.mobile.sincronismo:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Orcamento.Core-2025.1.0",
+      "image": "korp/viasoft.vendas.orcamento.core:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Vendas.Orcamento.Gateway-2025.1.0",
+      "image": "korp/viasoft.vendas.orcamento.gateway:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.WelcomePage.Dashboard-2025.1.0",
+      "image": "korp/viasoft.welcomepage.dashboard:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Workflow.Elsa-2025.1.0",
+      "image": "korp/viasoft.workflow.elsa:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    },
+    {
+      "container_name": "Viasoft.Workflow.Orchestrator-2025.1.0",
+      "image": "korp/viasoft.workflow.orchestrator:2025.1.0.x-hmlg",
+      "state": "running",
+      "ignored": false,
+      "version_suffix": "2025.1.0"
+    }
+  ]
+}

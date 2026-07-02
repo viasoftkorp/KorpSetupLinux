@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "source_report": "http://qa-hmlg:9011",
+    "scope_version": "2024.2.0",
+    "mode": "migration",
+    "scope": "all",
+    "service": null,
+    "execute": true,
+    "dry_run": 0,
+    "targets": 2,
+    "removed": 2,
+    "already_absent": 0,
+    "skipped": 0,
+    "failed": 0,
+    "idempotent_noop": 0
+  },
+  "results": [
+    {
+      "container_name": "SYNC01",
+      "base_name": "SYNC01",
+      "versioned_containers": [
+        "SYNC01-2025.1.0",
+        "SYNC01-2024.2.0"
+      ],
+      "source": "migration_pairs",
+      "image": "korp/viasoft.erp.sync-frontend:1.0.x-hmlg",
+      "state": "running",
+      "status": "removed",
+      "message": "Removido via Portainer API",
+      "changed": true
+    },
+    {
+      "container_name": "VEN26",
+      "base_name": "VEN26",
+      "versioned_containers": [
+        "VEN26-2025.1.0"
+      ],
+      "source": "migration_pairs",
+      "image": "korp/viasoft.sales.crm.core-frontend:4.0.x-hmlg",
+      "state": "running",
+      "status": "removed",
+      "message": "Removido via Portainer API",
+      "changed": true
+    }
+  ]
+}

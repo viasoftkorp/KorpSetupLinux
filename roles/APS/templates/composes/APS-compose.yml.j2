@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-production-aps-distribution:
-    image: "{{ docker_account }}/viasoft.production.aps.distribution:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.Distribution"
+    image: "{{ docker_account }}/viasoft.production.aps.distribution:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Distribution-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
@@ -36,8 +36,8 @@ services:
       - single-request-reopen
 
   viasoft-production-aps:
-    image: "{{ docker_account }}/viasoft.production.aps:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS"
+    image: "{{ docker_account }}/viasoft.production.aps:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
@@ -53,8 +53,8 @@ services:
       - single-request-reopen
 
   viasoft-production-aps-dataimporting:
-    image: "{{ docker_account }}/viasoft.production.aps.dataimporting:1.1.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.DataImporting"
+    image: "{{ docker_account }}/viasoft.production.aps.dataimporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.DataImporting-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
@@ -70,8 +70,8 @@ services:
       - single-request-reopen
 
   viasoft-production-aps-simulation:
-    image: "{{ docker_account }}/viasoft.production.aps.simulation:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Production.APS.Simulation"
+    image: "{{ docker_account }}/viasoft.production.aps.simulation:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Production.APS.Simulation-{{ version_without_build }}"
     restart: "no"
     extra_hosts: *default-extra_hosts
     environment:
@@ -85,22 +85,3 @@ services:
       - servicos
     dns_opt:
       - single-request-reopen
-
-  PRO08:
-    image: "{{ docker_account }}/viasoft.production.aps-frontend:2.1.x{{ docker_image_suffix }}"
-    container_name: "PRO08"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"

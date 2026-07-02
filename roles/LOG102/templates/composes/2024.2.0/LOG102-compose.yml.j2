@@ -35,7 +35,7 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-  korp-logistic-picking-analisedeestoque-2024.2.0:
+  korp-logistic-picking-analisedeestoque-2024-2-0:
     image: "{{ docker_account }}/korp.logistica.picking.analisedeestoque:2024.2.0.x{{ docker_image_suffix }}"
     container_name: "Korp.Logistica.Picking.AnaliseDeEstoque-2024.2.0"
     restart: unless-stopped
@@ -138,3 +138,4 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

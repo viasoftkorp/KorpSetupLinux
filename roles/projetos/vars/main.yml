@@ -5,4 +5,3 @@ services:
       name: Viasoft_Projetos_Core
       type: postgres
     version:
-      unversioned: true
