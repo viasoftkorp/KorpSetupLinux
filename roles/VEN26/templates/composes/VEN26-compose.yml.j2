@@ -20,7 +20,7 @@ networks:
 services:
   viasoft-sales-crm-core:
     image: "{{ docker_account }}/viasoft.sales.crm.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Core"
+    container_name: "Viasoft.Sales.CRM.Core-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -37,7 +37,7 @@ services:
 
   viasoft-sales-crm-accounts:
     image: "{{ docker_account }}/viasoft.sales.crm.accounts:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Accounts"
+    container_name: "Viasoft.Sales.CRM.Accounts-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -54,7 +54,7 @@ services:
   
   viasoft-sales-crm-activities:
     image: "{{ docker_account }}/viasoft.sales.crm.activities:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Activities"
+    container_name: "Viasoft.Sales.CRM.Activities-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -69,10 +69,9 @@ services:
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
-    
   viasoft-sales-crm-goals:
     image: "{{ docker_account }}/viasoft.sales.crm.goals:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Goals"
+    container_name: "Viasoft.Sales.CRM.Goals-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -89,7 +88,7 @@ services:
       
   viasoft-sales-crm-leads:
     image: "{{ docker_account }}/viasoft.sales.crm.leads:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Leads"
+    container_name: "Viasoft.Sales.CRM.Leads-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -123,7 +122,7 @@ services:
 
   viasoft-sales-crm-qualification:
     image: "{{ docker_account }}/viasoft.sales.crm.qualification:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Qualification"
+    container_name: "Viasoft.Sales.CRM.Qualification-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -140,7 +139,7 @@ services:
 
   viasoft-sales-crm-reporting:
     image: "{{ docker_account }}/viasoft.sales.crm.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Reporting"
+    container_name: "Viasoft.Sales.CRM.Reporting-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -157,7 +156,7 @@ services:
 
   viasoft-sales-crm-sync:
     image: "{{ docker_account }}/viasoft.sales.crm.sync:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.Sync"
+    container_name: "Viasoft.Sales.CRM.Sync-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -174,7 +173,7 @@ services:
 
   viasoft-sales-crm-nps:
     image: "{{ docker_account }}/viasoft.sales.crm.nps:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Sales.CRM.NPS"
+    container_name: "Viasoft.Sales.CRM.NPS-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -188,3 +187,4 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

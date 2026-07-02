@@ -16,8 +16,8 @@ networks:
 
 services:
   viasoft-elt:
-    image: "{{ docker_account }}/viasoft.elt:2.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.ELT"
+    image: "{{ docker_account }}/viasoft.elt:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.ELT-{{ version_without_build }}"
     restart: on-failure:10
     extra_hosts: *default-extra_hosts
     environment:
@@ -30,3 +30,4 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

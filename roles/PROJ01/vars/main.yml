@@ -5,11 +5,8 @@ services:
       name: Korp_Projetos_Gantt_Gateway
       type: postgres
     version:
-      unversioned: true
-
   Korp.Projetos.OrdensDeServico:
     db:
       name: Korp_Projetos_OrdensDeServico
       type: postgres
     version:
-      unversioned: true

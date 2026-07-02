@@ -18,28 +18,9 @@ networks:
       name: servicos
 
 services:
-  ADS01:
-    image: "{{ docker_account }}/viasoft.digital.assign-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "ADS01"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
   viasoft-assinatura-digital:
-    image: "{{ docker_account }}/viasoft.assinatura.digital:1.0.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Assinatura.Digital"
+    image: "{{ docker_account }}/viasoft.assinatura.digital:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Assinatura.Digital-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -53,3 +34,4 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-financeiro-dre:
-    image: "{{ docker_account }}/viasoft.financeiro.dre:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Financeiro.Dre"
+    image: "{{ docker_account }}/viasoft.financeiro.dre:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Financeiro.Dre-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
@@ -36,33 +36,14 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
   viasoft-financeiro-gateway:
-    image: "{{ docker_account }}/viasoft.financeiro.gateway:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Financeiro.Gateway"
+    image: "{{ docker_account }}/viasoft.financeiro.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Financeiro.Gateway-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
       - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
-  FIN63_W:
-    image: "{{ docker_account }}/viasoft.financeiro.core-frontend:1.2.x{{ docker_image_suffix }}"
-    container_name: "FIN63_W"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
