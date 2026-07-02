@@ -32,8 +32,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   SDK-APP-BUILDER:
     image: "{{ docker_account }}/sdk.app-builder-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -49,8 +47,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -68,8 +64,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
