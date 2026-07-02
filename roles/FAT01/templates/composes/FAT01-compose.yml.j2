@@ -30,6 +30,8 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -45,5 +47,7 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"      
