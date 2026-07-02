@@ -34,8 +34,6 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/:/app/data/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-email:
     image: "{{ docker_account }}/viasoft.email:1.4.x{{ docker_image_suffix }}"
@@ -54,8 +52,6 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/app/errors"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-welcomepage-dashboard:
     image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x{{ docker_image_suffix }}"
@@ -71,8 +67,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-systemupdate:
     image: "{{ docker_account }}/viasoft.systemupdate:1.2.x{{ docker_image_suffix }}"
@@ -89,8 +83,6 @@ services:
       - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   korp-atualizacaosistema:
     image: "{{ docker_account }}/korp.atualizacaosistema:1.0.x{{ docker_image_suffix }}"
@@ -106,5 +98,3 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
