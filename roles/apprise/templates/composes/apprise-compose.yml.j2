@@ -29,8 +29,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ dados_docker_dir_path }}/apprise/:/config"
     labels:
@@ -50,5 +48,3 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen

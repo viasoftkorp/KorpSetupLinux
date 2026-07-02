@@ -19,8 +19,6 @@ services:
       - {{ dados_docker_dir_path }}/temporal-elasticsearch:/usr/share/elasticsearch/data
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     expose:
       - 9200
     healthcheck:
@@ -51,8 +49,6 @@ services:
       - ES_VISIBILITY_INDEX=temporal_visibility_v1
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - {{ config_dir_path }}/temporalio/scripts:/scripts
     entrypoint: ["/bin/sh"]
@@ -79,8 +75,6 @@ services:
       - ES_VIS_INDEX=temporal_visibility_v1
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     expose:
       - 7233
     volumes:
@@ -105,8 +99,6 @@ services:
       - DEFAULT_NAMESPACE={{ ns }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - {{ config_dir_path }}/temporalio/scripts:/scripts
     entrypoint: ["/bin/sh"]

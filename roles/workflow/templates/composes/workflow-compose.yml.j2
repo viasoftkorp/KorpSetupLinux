@@ -32,8 +32,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
       
   viasoft-workflow-elsa:
     image: "{{ docker_account }}/viasoft.workflow.elsa:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -49,5 +47,3 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
