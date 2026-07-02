@@ -33,4 +33,5 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-integration-ecommerce/:/etc/korp/database/"
     networks:
       - servicos
-
+    dns_opt:
+      - single-request-reopen

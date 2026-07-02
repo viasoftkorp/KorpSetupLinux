@@ -34,6 +34,8 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-audittrail-client/:/app/data/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-email:
     image: "{{ docker_account }}/viasoft.email:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -52,21 +54,8 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-email/errors/:/app/errors"
     networks:
       - servicos
-
-  korp-legacy-authentication:
-    image: "{{ docker_account }}/korp.legacy.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Authentication-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-    networks:
-      - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-legacy-httpproxy:
     image: "{{ docker_account }}/viasoft.legacy.httpproxy:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -85,6 +74,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-welcomepage-dashboard:
     image: "{{ docker_account }}/viasoft.welcomepage.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -100,6 +91,8 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   viasoft-systemupdate:
     image: "{{ docker_account }}/viasoft.systemupdate:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -116,6 +109,8 @@ services:
       - "{{ korp_dir_path }}/atualizacao-sistema/:/etc/korp/atualizacao-sistema/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
 
   korp-atualizacaosistema:
     image: "{{ docker_account }}/korp.atualizacaosistema:1.0.x{{ docker_image_suffix }}"
@@ -131,4 +126,9 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+<<<<<<< HEAD
 
+=======
+    dns_opt:
+      - single-request-reopen
+>>>>>>> release/2024.2.0.x
