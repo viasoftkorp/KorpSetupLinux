@@ -19,7 +19,7 @@ networks:
 
 services:
   korp-integration-solidworks:
-    image: "korp/korp.integration.solidworks:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    image: "{{ docker_account }}/korp.integration.solidworks:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Korp.Integration.SolidWorks-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
@@ -33,3 +33,4 @@ services:
       - servicos
     dns_opt:
       - single-request-reopen
+

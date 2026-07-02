@@ -35,25 +35,6 @@ services:
     dns_opt:
       - single-request-reopen
 
-  DEV04:
-    image: "{{ docker_account }}/korp.appbuilder-frontend:1.0.x{{ docker_image_suffix }}"
-    container_name: "DEV04"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
   SDK-APP-BUILDER:
     image: "{{ docker_account }}/sdk.app-builder-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "SDK.APP-BUILDER-{{ version_without_build }}"
@@ -91,6 +72,7 @@ services:
       - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
 
 
 
