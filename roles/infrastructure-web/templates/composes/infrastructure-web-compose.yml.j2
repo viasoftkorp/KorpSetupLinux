@@ -206,23 +206,6 @@ services:
     dns_opt:
       - single-request-reopen
 
-  korp-legacy-authorization:
-    image: "{{ docker_account }}/korp.legacy.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "Korp.Legacy.Authorization-{{ version_without_build }}"
-    restart: always
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-
   viasoft-emailing:
     image: "{{ docker_account }}/viasoft.emailing:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Emailing-{{ version_without_build }}"
