@@ -19,8 +19,8 @@ networks:
 
 services:
   viasoft-audittrail-client:
-    image: "{{ docker_account }}/viasoft.audittrail.client:3.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Audittrail.Client"
+    image: "{{ docker_account }}/viasoft.audittrail.client:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Audittrail.Client-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -36,8 +36,8 @@ services:
       - servicos
 
   viasoft-email:
-    image: "{{ docker_account }}/viasoft.email:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.Email"
+    image: "{{ docker_account }}/viasoft.email:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.Email-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -54,8 +54,8 @@ services:
       - servicos
 
   viasoft-welcomepage-dashboard:
-    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:1.4.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.WelcomePage.Dashboard"
+    image: "{{ docker_account }}/viasoft.welcomepage.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.WelcomePage.Dashboard-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -69,8 +69,8 @@ services:
       - servicos
 
   viasoft-systemupdate:
-    image: "{{ docker_account }}/viasoft.systemupdate:1.2.x{{ docker_image_suffix }}"
-    container_name: "Viasoft.SystemUpdate"
+    image: "{{ docker_account }}/viasoft.systemupdate:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Viasoft.SystemUpdate-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:

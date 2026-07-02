@@ -19,8 +19,8 @@ networks:
 
 services:
   korp-logistica-estoqueposicao:
-    image: "korp/korp.logistica.estoqueposicao:1.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.EstoquePosicao"
+    image: "{{ docker_account }}/korp.logistica.estoqueposicao:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Logistica.EstoquePosicao-{{ version_without_build }}"
     restart: always
     extra_hosts: *default-extra_hosts
     environment:
@@ -32,3 +32,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+    dns_opt:
+      - single-request-reopen
+

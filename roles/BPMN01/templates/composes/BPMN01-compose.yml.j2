@@ -18,23 +18,6 @@ networks:
       name: servicos
 
 services:
-  BPMN01-2025-1-0:
-    image: "{{ docker_account }}/korp.projetos.bpmn-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
-    container_name: "BPMN01-{{ version_without_build }}"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-  
   korp-projetos-bpmn-gateway:
     image: "{{ docker_account }}/korp.projetos.bpmn.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Korp.Projetos.BPMN.Gateway-{{ version_without_build }}"
@@ -49,3 +32,4 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+

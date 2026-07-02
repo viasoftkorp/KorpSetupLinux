@@ -4,28 +4,24 @@ services:
       name: Viasoft_Relatorios
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Relatorios.Agendador:
     db:
       name: Viasoft_Relatorios_Agendador
       type: mssql
     version:
-      unversioned: true
 
   Viasoft.Reporting.PivotTable:
     db:
       name: Viasoft_Reporting_PivotTable
       type: mssql
     version:
-      unversioned: true
 
   Korp.Spreadsheet:
     db:
       name: Korp_Spreadsheet
       type: mssql
     version:
-      unversioned: true
     volumes_directories:
       - "{{ dados_docker_dir_path }}/REL01/spreadsheets/"
 
@@ -34,4 +30,3 @@ services:
       name: Korp_Analytics_IA
       type: postgres
     version:
-      unversioned: true

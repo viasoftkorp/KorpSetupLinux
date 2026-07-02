@@ -1,2 +1,4 @@
 /docs/output/
 .vscode/
+__pycache__/
+*.pyc
