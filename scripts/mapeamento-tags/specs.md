@@ -18,11 +18,15 @@ Branches padrão quando nenhum filtro é informado:
 - `release/2025.1.0.x`
 
 ## Processamento
-Para cada branch, localizar linhas que correspondam estritamente ao template:
+Para cada branch, localizar linhas que correspondam ao template de imagem versionada:
 
 ```yaml
 image: "{{ docker_account }}/SERVICE:TAG{{ docker_image_suffix }}"
 ```
+
+`TAG` pode ser:
+- **Estático:** ex. `1.0.x`, `3.0.x`
+- **Dinâmico:** `{{ version_without_build }}.x` — nesse caso, resolver `TAG` como `{versão_da_branch}.x` (ex.: branch `release/2024.2.0.x` → `2024.2.0.x`)
 
 Extrair apenas `TAG` por serviço. Primeira ocorrência encontrada prevalece.
 

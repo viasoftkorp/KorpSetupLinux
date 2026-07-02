@@ -15,18 +15,58 @@ const ALLOWED_VERSION_FOLDERS = ['2025.1.0', '2024.2.0'];
 const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 const DOCKER_ACCOUNT_IMAGE_PREFIX = '{{ docker_account }}';
-const IGNORED_IMAGE_NAMES = [
+const FIXED_KORP_ACCOUNT_PREFIX = 'korp/';
+const IGNORED_IMAGE_NAMES = ['korp.atualizacaosistema'];
+const KORP_MANAGED_IMAGE_BASE_PATTERN = /^(korp\.|viasoft\.)/;
+const YEAR_TAG_PREFIX_PATTERN = /^20\d{2}\.\d+\.\d+/;
+const LEGACY_NUMERIC_TAG_PATTERN = /^[0-9]+\.[0-9]+(\.[0-9]+)?(\.x)?/i;
+
+const FIXED_KORP_ACCOUNT_ERROR =
+  "Chave 'image' usa prefixo fixo 'korp/' — use '{{ docker_account }}/'";
+
+function getImageTag(image) {
+  const value = String(image || '');
+  const colonIndex = value.lastIndexOf(':');
+  if (colonIndex === -1) {
+    return '';
+  }
+  return value.slice(colonIndex + 1);
+}
+
+function usesFixedKorpAccount(image) {
+  return String(image || '').startsWith(FIXED_KORP_ACCOUNT_PREFIX);
+}
+
+function isLegacyNumericImageTag(imageTag) {
+  const tag = String(imageTag || '');
+  if (!tag) {
+    return false;
+  }
+
+  if (YEAR_TAG_PREFIX_PATTERN.test(tag)) {
+    return false;
+  }
+
+  return LEGACY_NUMERIC_TAG_PATTERN.test(tag);
+}
+
+function isKorpManagedImage(image) {
+  return KORP_MANAGED_IMAGE_BASE_PATTERN.test(getImageBaseName(image));
+}
+
+const FIXED_CONTAINER_NAME_IMAGE_BASES = new Set([
   'korp.legacy.frontend-router',
   'viasoft.loader',
-  'korp.atualizacaosistema',
-];
+]);
 
 function getImageBaseName(image) {
   let name = String(image);
 
-  const accountPrefix = `${DOCKER_ACCOUNT_IMAGE_PREFIX}/`;
-  if (name.startsWith(accountPrefix)) {
-    name = name.substring(accountPrefix.length);
+  const dockerAccountPrefix = `${DOCKER_ACCOUNT_IMAGE_PREFIX}/`;
+  if (name.startsWith(dockerAccountPrefix)) {
+    name = name.substring(dockerAccountPrefix.length);
+  } else if (name.startsWith(FIXED_KORP_ACCOUNT_PREFIX)) {
+    name = name.substring(FIXED_KORP_ACCOUNT_PREFIX.length);
   }
 
   const colonIndex = name.indexOf(':');
@@ -48,7 +88,10 @@ function isEligibleForValidation(serviceConfig) {
   }
 
   const imageStr = String(image);
-  if (!imageStr.startsWith(DOCKER_ACCOUNT_IMAGE_PREFIX)) {
+  const hasDockerAccount = imageStr.startsWith(`${DOCKER_ACCOUNT_IMAGE_PREFIX}/`);
+  const hasFixedKorpAccount = usesFixedKorpAccount(imageStr);
+
+  if (!hasDockerAccount && !hasFixedKorpAccount) {
     return false;
   }
 
@@ -56,7 +99,35 @@ function isEligibleForValidation(serviceConfig) {
     return false;
   }
 
+  if (hasFixedKorpAccount && !isKorpManagedImage(imageStr)) {
+    return false;
+  }
+
   return true;
+}
+
+function validateImageField(image, errors, { suffixPattern, suffixLabel }) {
+  if (image == null || image === '') {
+    errors.push("Chave 'image' ausente ou vazia");
+    return;
+  }
+
+  const imageStr = String(image);
+
+  if (usesFixedKorpAccount(imageStr)) {
+    errors.push(FIXED_KORP_ACCOUNT_ERROR);
+  }
+
+  if (!suffixPattern.test(imageStr)) {
+    errors.push(`Chave 'image' não termina com o padrão ${suffixLabel}`);
+  }
+
+  const imageTag = getImageTag(imageStr);
+  if (isLegacyNumericImageTag(imageTag)) {
+    errors.push(
+      `Chave 'image' usa tag legada '${imageTag}' — use padrão ano (ex.: {{ version_without_build }}.x ou 2025.1.0.x)`
+    );
+  }
 }
 
 function parseScalarValue(raw) {
@@ -248,17 +319,18 @@ function validateExclusiveService(serviceName, serviceConfig) {
 
   const errors = [];
 
-  if (image == null || image === '') {
-    errors.push("Chave 'image' ausente ou vazia");
-  } else if (!IMAGE_TAG_SUFFIX_PATTERN.test(String(image))) {
-    errors.push(
-      "Chave 'image' não termina com o padrão :{{ version_without_build }}.x{{ docker_image_suffix }}"
-    );
-  }
+  validateImageField(image, errors, {
+    suffixPattern: IMAGE_TAG_SUFFIX_PATTERN,
+    suffixLabel: ':{{ version_without_build }}.x{{ docker_image_suffix }}',
+  });
+
+  const imageBaseName = image != null ? getImageBaseName(image) : null;
+  const hasFixedContainerName =
+    imageBaseName != null && FIXED_CONTAINER_NAME_IMAGE_BASES.has(imageBaseName);
 
   if (containerName == null || containerName === '') {
     errors.push("Chave 'container_name' ausente ou vazia");
-  } else if (!String(containerName).endsWith(CONTAINER_NAME_SUFFIX)) {
+  } else if (!hasFixedContainerName && !String(containerName).endsWith(CONTAINER_NAME_SUFFIX)) {
     errors.push("Chave 'container_name' não possui o sufixo -{{ version_without_build }}");
   }
 
@@ -284,13 +356,11 @@ function validateNonExclusiveService(serviceName, serviceConfig, versionFolder) 
 
   const imagePattern = buildNonExclusiveImagePattern(versionFolder);
   const expectedImageSuffix = `:${versionFolder}.x{{ docker_image_suffix }}`;
-  if (image == null || image === '') {
-    errors.push("Chave 'image' ausente ou vazia");
-  } else if (!imagePattern.test(String(image))) {
-    errors.push(
-      `A image deveria terminar com '${expectedImageSuffix}' mas foi encontrado '${image}'`
-    );
-  }
+
+  validateImageField(image, errors, {
+    suffixPattern: imagePattern,
+    suffixLabel: expectedImageSuffix,
+  });
 
   const expectedContainerSuffix = `-${versionFolder}`;
   if (containerName == null || containerName === '') {
@@ -579,9 +649,17 @@ if (require.main === module) {
 module.exports = {
   extractServicesFromCompose,
   getImageBaseName,
+  getImageTag,
   isIgnoredImage,
   isEligibleForValidation,
+  usesFixedKorpAccount,
+  isLegacyNumericImageTag,
+  isKorpManagedImage,
   validateExclusiveService,
   validateNonExclusiveService,
+  validateImageField,
   scanServices,
+  FIXED_KORP_ACCOUNT_ERROR,
+  DOCKER_ACCOUNT_IMAGE_PREFIX,
+  FIXED_KORP_ACCOUNT_PREFIX,
 };

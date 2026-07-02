@@ -17,6 +17,25 @@ const UNVERSIONED_SERVICE_EXCEPTIONS = new Set([
 const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 
+const NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN =
+  /:(?:\{\{\s*version_without_build\s*\}\}|[^"'\s]+)\.x\{\{\s*docker_image_suffix\s*\}\}$/;
+
+function replaceNonExclusiveImageTagSuffix(value, versionFolder) {
+  const expectedSuffix = `:${versionFolder}.x{{ docker_image_suffix }}`;
+  let normalized = value.replace(/^korp\//, '{{ docker_account }}/');
+
+  if (normalized.endsWith(expectedSuffix)) {
+    return normalized === value ? null : normalized;
+  }
+
+  if (!NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN.test(normalized)) {
+    return normalized === value ? null : normalized;
+  }
+
+  const updated = normalized.replace(NON_EXCLUSIVE_IMAGE_TAG_SUFFIX_PATTERN, expectedSuffix);
+  return updated === value ? null : updated;
+}
+
 function versionToHyphen(version) {
   return version.replace(/\./g, '-');
 }
@@ -214,7 +233,8 @@ function fixExclusiveImageLine(line) {
       ? raw.slice(1, -1)
       : raw;
 
-  const fixed = value.replace(
+  let fixed = value.replace(/^korp\//, '{{ docker_account }}/');
+  fixed = fixed.replace(
     /:(?!\{\{\s*version_without_build\s*\}\})[^"'\s]+\.x\{\{\s*docker_image_suffix\s*\}\}/,
     ':{{ version_without_build }}.x{{ docker_image_suffix }}'
   );
@@ -273,10 +293,12 @@ function transformFrontendBlockForVersion(blockLines, serviceName, versionFolder
     }
 
     if (/^\s+image:/.test(line)) {
-      return line.replace(
-        /:[^"'\s]+\.x\{\{\s*docker_image_suffix\s*\}\}/,
-        `:${versionFolder}.x{{ docker_image_suffix }}`
-      );
+      const currentValue = parseScalarValue(line.replace(/^\s+image:\s*/, ''));
+      const updatedValue = replaceNonExclusiveImageTagSuffix(currentValue, versionFolder);
+      if (updatedValue != null && updatedValue !== currentValue) {
+        const indent = line.match(/^(\s+)/)[1];
+        return `${indent}image: "${updatedValue}"`;
+      }
     }
 
     if (/^\s+container_name:/.test(line)) {
@@ -305,7 +327,7 @@ function isNonExclusiveContainerNameError(errors) {
 }
 
 function isNonExclusiveImageError(errors) {
-  return errors.some((error) => error.startsWith('A image deveria terminar com'));
+  return errors.some((error) => error.startsWith("Chave 'image'"));
 }
 
 function isExclusiveContainerNameError(errors) {
@@ -315,9 +337,7 @@ function isExclusiveContainerNameError(errors) {
 }
 
 function isExclusiveImageError(errors) {
-  return errors.some((error) =>
-    error.includes("Chave 'image' não termina com o padrão :{{ version_without_build }}")
-  );
+  return errors.some((error) => error.startsWith("Chave 'image'"));
 }
 
 function loadReport() {
@@ -559,17 +579,9 @@ function applyInPlaceFixes(filePath, items, summary) {
     }
 
     if (isNonExclusiveImageError(item.errors) && item.version_folder) {
-      const imageFix = fixLineInBlock(blockLines, 'image', (value) => {
-        const expectedSuffix = `:${item.version_folder}.x{{ docker_image_suffix }}`;
-        if (value.endsWith(expectedSuffix)) {
-          return null;
-        }
-
-        return value.replace(
-          /:[^"'\s]+\.x\{\{\s*docker_image_suffix\s*\}\}$/,
-          expectedSuffix
-        );
-      });
+      const imageFix = fixLineInBlock(blockLines, 'image', (value) =>
+        replaceNonExclusiveImageTagSuffix(value, item.version_folder)
+      );
       blockLines = imageFix.lines;
       blockChanged = blockChanged || imageFix.changed;
     }
@@ -868,5 +880,6 @@ module.exports = {
   listRoleVarsYamlFiles,
   removeLegacyUnversionedFlags,
   removeUnversionedTrueFromVars,
+  replaceNonExclusiveImageTagSuffix,
   roleHasVersionedComposes,
 };

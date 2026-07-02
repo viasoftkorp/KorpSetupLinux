@@ -144,12 +144,26 @@ function chunkServicesForRegex(services, maxPatternLen = 6000) {
   return chunks;
 }
 
+function branchToVersionTag(branch) {
+  const match = String(branch).match(/(?:release\/)?(\d{4}\.\d+\.\d+)\.x$/);
+  return match ? `${match[1]}.x` : null;
+}
+
+function resolveExtractedTag(tag, branch) {
+  if (/^\{\{\s*version_without_build\s*\}\}$/.test(String(tag).trim())) {
+    return branchToVersionTag(branch) ?? tag;
+  }
+
+  return tag;
+}
+
 function buildExtractRegex(servicesChunk) {
   const alt = servicesChunk.map(escapeRegex).join('|');
   return new RegExp(
     `image:\\s*(['"])\\s*(?:\\{\\{\\s*docker_account\\s*\\}\\}|[^/\\s'"]+)\\s*/` +
       `(?<service>${alt}):` +
-      `(?<tag>[^'"\\{\\s]+)\\s*` +
+      `(?<tag>\\{\\{\\s*version_without_build\\s*\\}\\}|[^'"\\{\\s.]+)` +
+      `\\.x\\s*` +
       `\\{\\{\\s*docker_image_suffix\\s*\\}\\}\\s*\\1`
   );
 }
@@ -199,7 +213,7 @@ function parseGitGrepOutput(output) {
   return hits;
 }
 
-function grepBranchForServices(repoDir, branchRef, services, timeoutMs = 120000) {
+function grepBranchForServices(repoDir, branchRef, services, branchName, timeoutMs = 120000) {
   const found = new Map();
 
   for (const servicesChunk of chunkServicesForRegex(services)) {
@@ -236,7 +250,7 @@ function grepBranchForServices(repoDir, branchRef, services, timeoutMs = 120000)
 
       const { service, tag } = match.groups;
       if (!found.has(service)) {
-        found.set(service, tag);
+        found.set(service, resolveExtractedTag(tag, branchName));
       }
     }
   }
@@ -294,7 +308,7 @@ async function getServicesTags(repoDir, services, branches, maxWorkers) {
   const workers = resolveMaxWorkers(maxWorkers, resolved.length);
 
   await runWithConcurrency(resolved, async ({ branch, ref }) => {
-    const branchHits = grepBranchForServices(repoDir, ref, servicesNorm);
+    const branchHits = grepBranchForServices(repoDir, ref, servicesNorm, branch);
     for (const [service, tag] of Object.entries(branchHits)) {
       perService[service][branch] = tag;
     }
@@ -434,10 +448,12 @@ if (require.main === module) {
 
 module.exports = {
   DEFAULT_RELEASE_BRANCHES,
+  branchToVersionTag,
   buildExtractRegex,
   getServicesTags,
   grepBranchForServices,
   parseGitGrepOutput,
+  resolveExtractedTag,
   resolveTargetBranches,
   sortMapping,
 };
