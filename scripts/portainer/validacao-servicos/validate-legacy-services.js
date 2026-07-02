@@ -41,19 +41,21 @@ const LEGACY_TAG_PATTERNS = [
   /^[0-9]+\.[0-9]+(\.[0-9]+)?(\.x)?(-|$)/i,
 ];
 
-const { values: cli } = parseArgs({
-  options: {
-    url: { type: 'string', short: 'u' },
-    username: { type: 'string' },
-    password: { type: 'string' },
-    endpoint: { type: 'string', default: '2' },
-    scope: { type: 'string', default: '2024.2.0' },
-    output: { type: 'string', default: DEFAULT_OUTPUT },
-    'env-file': { type: 'string', default: DEFAULT_ENV_PATH },
-    'include-stopped': { type: 'boolean', default: true },
-    help: { type: 'boolean', short: 'h', default: false },
-  },
-});
+const cli = require.main === module
+  ? parseArgs({
+      options: {
+        url: { type: 'string', short: 'u' },
+        username: { type: 'string' },
+        password: { type: 'string' },
+        endpoint: { type: 'string', default: '2' },
+        scope: { type: 'string', default: '2024.2.0' },
+        output: { type: 'string', default: DEFAULT_OUTPUT },
+        'env-file': { type: 'string', default: DEFAULT_ENV_PATH },
+        'include-stopped': { type: 'boolean', default: true },
+        help: { type: 'boolean', short: 'h', default: false },
+      },
+    }).values
+  : {};
 
 function printHelp() {
   process.stdout.write(`Uso:
@@ -528,4 +530,12 @@ module.exports = {
   isYearBasedVersion,
   isLegacyImageTag,
   buildReport,
+  authenticate,
+  listContainers,
+  portainerRequest,
+  resolvePortainerUrl,
+  loadEnvFile,
+  normalizeContainerName,
+  IGNORED_CONTAINER_NAMES,
+  INFRA_CONTAINER_NAMES,
 };
