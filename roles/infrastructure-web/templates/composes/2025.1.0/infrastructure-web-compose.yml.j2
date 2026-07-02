@@ -32,8 +32,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   login-2025-1-0:
     image: "{{ docker_account }}/viasoft.authentication-frontend:2025.1.0.x{{ docker_image_suffix }}"
@@ -49,8 +47,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -72,8 +68,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   ADM01-2025-1-0:
     image: "{{ docker_account }}/viasoft.administration-frontend:2025.1.0.x{{ docker_image_suffix }}"
@@ -89,8 +83,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
@@ -108,8 +100,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 

@@ -30,8 +30,6 @@ services:
       - "{{ dados_docker_dir_path }}/minio-server/:/data"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
     # ports:
@@ -50,8 +48,6 @@ services:
       - "{{ dados_docker_dir_path }}/minio-server-new/:/data"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     labels:
       com.centurylinklabs.watchtower.enable: false
     # ports:
@@ -74,8 +70,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-tenantmanagement:
     image: "{{ docker_account }}/viasoft.tenantmanagement:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -93,8 +87,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-portal:
     image: "{{ docker_account }}/viasoft.portal:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -114,8 +106,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-authorization:
     image: "{{ docker_account }}/viasoft.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -133,8 +123,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-notification:
     image: "{{ docker_account }}/viasoft.notification:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -150,8 +138,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-administration:
     image: "{{ docker_account }}/viasoft.administration:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -169,8 +155,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-reporting-stimulsoft:
     image: "{{ docker_account }}/viasoft.reporting.stimulsoft:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -188,8 +172,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-reporting:
     image: "{{ docker_account }}/viasoft.reporting:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -207,8 +189,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   korp-legacy-administration:
     image: "{{ docker_account }}/korp.legacy.administration:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -224,8 +204,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-emailing:
     image: "{{ docker_account }}/viasoft.emailing:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -241,8 +219,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-emailing-emailtemplate:
     image: "{{ docker_account }}/viasoft.emailing.emailtemplate:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -258,8 +234,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-fileprovider:
     image: "{{ docker_account }}/viasoft.fileprovider:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -278,8 +252,6 @@ services:
       - "{{ dados_docker_dir_path }}/viasoft-fileprovider/:/app/FileProviderResource/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-dashboard:
     image: "{{ docker_account }}/viasoft.dashboard:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -295,8 +267,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-quickfilter:
     image: "{{ docker_account }}/viasoft.quickfilter:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -312,8 +282,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   viasoft-userprofile:
     image: "{{ docker_account }}/viasoft.userprofile:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -329,8 +297,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
   korp-documents-pdf:
     image: "{{ docker_account }}/korp.documents.pdf:{{ version_without_build }}.x{{ docker_image_suffix }}"
@@ -346,8 +312,6 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
 
 
 
