@@ -33,8 +33,6 @@ services:
       - "{{ dados_docker_dir_path }}/MOB02/reports/:/app/reports/"
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
   viasoft-vendas-mobile-sincronismo:
     image: "{{ docker_account }}/viasoft.vendas.mobile.sincronismo:{{ version_without_build }}.x{{ docker_image_suffix }}"
     container_name: "Viasoft.Vendas.Mobile.Sincronismo-{{ version_without_build }}"
@@ -47,8 +45,6 @@ services:
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
-    dns_opt:
-      - single-request-reopen
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
 
