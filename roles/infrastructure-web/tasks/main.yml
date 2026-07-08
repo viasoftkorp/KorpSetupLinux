@@ -51,7 +51,6 @@
   ansible.builtin.stat:
     path: "{{ playbook_dir }}/roles/infrastructure-web/templates/composes/{{ version_without_build }}/infrastructure-web-compose.yml.j2"
   register: versioned_frontend_compose
-  become: false
 
 - name: Configuração e transferência de compose versionado de frontends infrastructure-web
   ansible.builtin.template:
