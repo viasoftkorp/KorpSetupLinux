@@ -2,33 +2,19 @@
   "summary": {
     "total_roles_scanned": 69,
     "exclusive_services": {
-      "total_found": 149,
-      "valid": 148,
-      "invalid": 1
+      "total_found": 147,
+      "valid": 147,
+      "invalid": 0
     },
     "non_exclusive_services": {
-      "total_found": 82,
-      "valid": 82,
+      "total_found": 86,
+      "valid": 86,
       "invalid": 0
     }
   },
   "results": {
     "exclusive": {
-      "invalid_services": [
-        {
-          "role": "infrastructure-web",
-          "file_path": "roles/infrastructure-web/templates/composes/infrastructure-web-compose.yml.j2",
-          "errors": [
-            "Chave 'image' não termina com o padrão :{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "Chave 'container_name' não possui o sufixo -{{ version_without_build }}"
-          ],
-          "details": {
-            "service_name": "viasoft-core-hybridproxy",
-            "image": "{{ docker_account }}/viasoft.core.hybridproxy:1.0.x{{ docker_image_suffix }}",
-            "container_name": "Viasoft.Core.HybridProxy"
-          }
-        }
-      ],
+      "invalid_services": [],
       "valid_services": [
         {
           "role": "APS",
@@ -841,6 +827,15 @@
           }
         },
         {
+          "role": "estoque-posicao",
+          "file_path": "roles/estoque-posicao/templates/composes/estoque-posicao-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-estoqueposicao",
+            "image": "{{ docker_account }}/korp.logistica.estoqueposicao:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.EstoquePosicao-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "faturamento",
           "file_path": "roles/faturamento/templates/composes/faturamento-compose.yml.j2",
           "details": {
@@ -988,15 +983,6 @@
           "role": "infrastructure-desktop",
           "file_path": "roles/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2",
           "details": {
-            "service_name": "korp-legacy-authentication",
-            "image": "{{ docker_account }}/korp.legacy.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "container_name": "Korp.Legacy.Authentication-{{ version_without_build }}"
-          }
-        },
-        {
-          "role": "infrastructure-desktop",
-          "file_path": "roles/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2",
-          "details": {
             "service_name": "viasoft-legacy-httpproxy",
             "image": "{{ docker_account }}/viasoft.legacy.httpproxy:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Legacy.Httpproxy-{{ version_without_build }}"
@@ -1099,15 +1085,6 @@
             "service_name": "korp-legacy-administration",
             "image": "{{ docker_account }}/korp.legacy.administration:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Korp.Legacy.Administration-{{ version_without_build }}"
-          }
-        },
-        {
-          "role": "infrastructure-web",
-          "file_path": "roles/infrastructure-web/templates/composes/infrastructure-web-compose.yml.j2",
-          "details": {
-            "service_name": "korp-legacy-authorization",
-            "image": "{{ docker_account }}/korp.legacy.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "container_name": "Korp.Legacy.Authorization-{{ version_without_build }}"
           }
         },
         {
@@ -2058,6 +2035,36 @@
           }
         },
         {
+          "role": "infrastructure-desktop",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/infrastructure-desktop/templates/composes/2024.2.0/infrastructure-desktop-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authentication-2024-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authentication:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authentication-2024.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-desktop",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/infrastructure-desktop/templates/composes/2025.1.0/infrastructure-desktop-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authentication-2025-1-0",
+            "image": "{{ docker_account }}/korp.legacy.authentication:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authentication-2025.1.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2024.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authorization-2024-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authorization:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authorization-2024.2.0"
+          }
+        },
+        {
           "role": "infrastructure-web",
           "version_folder": "2024.2.0",
           "file_path": "roles/infrastructure-web/templates/composes/2024.2.0/infrastructure-web-compose.yml.j2",
@@ -2095,6 +2102,16 @@
             "service_name": "REL01-2024-2-0",
             "image": "{{ docker_account }}/viasoft.relatorios-frontend:2024.2.0.x{{ docker_image_suffix }}",
             "container_name": "REL01-2024.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.1.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authorization-2025-1-0",
+            "image": "{{ docker_account }}/korp.legacy.authorization:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authorization-2025.1.0"
           }
         },
         {

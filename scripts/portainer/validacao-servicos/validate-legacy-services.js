@@ -16,12 +16,13 @@ const VERSION_SUFFIX_PATTERN = /-(20\d{2}\.\d+\.\d+)$/;
 const YEAR_TAG_PREFIX_PATTERN = /^20\d{2}\.\d+\.\d+/;
 const APP_ID_PATTERN = /^[A-Z]{2,}[0-9][A-Z0-9_-]*$/;
 
-const IGNORED_IMAGE_BASES = new Set(['korp.atualizacaosistema']);
+const IGNORED_IMAGE_BASES = new Set(['korp.atualizacaosistema', 'viasoft.core.hybridproxy']);
 
 const IGNORED_CONTAINER_NAMES = new Set([
   'Korp.AtualizacaoSistema',
   'Korp.Legacy.Frontend-router',
   'Viasoft.Loader',
+  'Viasoft.Core.HybridProxy',
 ]);
 
 const INFRA_CONTAINER_NAMES = new Set([

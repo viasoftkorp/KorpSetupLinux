@@ -150,6 +150,7 @@ A checagem deve ser feita baseando-se no corpo do nome da imagem (removendo o pr
 
 **Imagens completamente ignoradas:**
 1. `korp.atualizacaosistema`
+2. `viasoft.core.hybridproxy`
 
 ## 9. Exceção Parcial: Container Name Fixo
 Serviços cujo `container_name` e chave YAML **não** variam com a versão, mas cuja **imagem** segue o padrão dinâmico `{{ version_without_build }}.x{{ docker_image_suffix }}`:

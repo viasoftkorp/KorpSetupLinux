@@ -9,7 +9,7 @@ Script Node.js que consulta a API do Portainer e identifica containers Korp/Vias
 | **Versionado válido** | Sufixo `-20XX.X.X` no nome **e** tag de imagem no padrão ano | `REL01-2024.2.0`, `Korp.Logistica.Picking-2024.1.0` |
 | **Legado (inválido)** | Sem sufixo de versão ano | `REL01`, `login`, `portal` |
 | **Legado (inválido)** | Tag de imagem numérica antiga | `1.0.x`, `2.0.x`, `3.0.x` |
-| **Exceção total** | Container e tag fixos | `Korp.AtualizacaoSistema` (`1.0.x`) |
+| **Exceção total** | Container e tag fixos | `Korp.AtualizacaoSistema` (`1.0.x`), `Viasoft.Core.HybridProxy` (`1.0.x`) |
 | **Exceção parcial** | `container_name` fixo, imagem versionada (`20XX.X.X.x`) | `Korp.Legacy.Frontend-router`, `Viasoft.Loader` |
 | **Ignorado** | Infra de terceiros | `nginx`, `postgres`, `rabbitmq`, `consul-server`, etc. |
 

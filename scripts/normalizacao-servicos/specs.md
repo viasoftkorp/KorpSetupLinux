@@ -58,6 +58,7 @@ Para roles versionadas, o script remove a flag legada `unversioned: true` de **t
 - **Exceção:** entradas em `delphi_services:` **não** sofrem remoção de `unversioned: true`.
 - **Exceção por serviço:** entradas em `services:` com a chave abaixo **mantêm** `unversioned: true` (equivalente à lista de imagens completamente ignoradas no validador):
   - `Korp.AtualizacaoSistema`
+  - `Viasoft.Core.HybridProxy`
 - **Exceção parcial (container name fixo):** `Korp.Legacy.Frontend-router` e `Viasoft.Loader` **não** recebem sufixo de versão no `container_name`; a imagem segue `{{ version_without_build }}.x{{ docker_image_suffix }}`.
 
 ---

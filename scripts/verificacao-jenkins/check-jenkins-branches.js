@@ -14,7 +14,7 @@ const DEFAULT_ENV_PATH = path.join(REPO_ROOT, '.env');
 const DEFAULT_OUTPUT = path.join(__dirname, 'report.json');
 
 const DOCKER_ACCOUNT_IMAGE_PREFIX = '{{ docker_account }}';
-const IGNORED_IMAGE_NAMES = new Set(['korp.atualizacaosistema']);
+const IGNORED_IMAGE_NAMES = new Set(['korp.atualizacaosistema', 'viasoft.core.hybridproxy']);
 
 const { values: cli } = parseArgs({
   options: {

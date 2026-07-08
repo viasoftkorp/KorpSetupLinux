@@ -12,6 +12,11 @@ const UNVERSIONED_SERVICE_EXCEPTIONS = new Set([
   'Korp.AtualizacaoSistema',
   'Korp.Legacy.Frontend-router',
   'Viasoft.Loader',
+  'Viasoft.Core.HybridProxy',
+]);
+
+const IGNORED_COMPOSE_SERVICE_KEYS = new Set([
+  'viasoft-core-hybridproxy',
 ]);
 
 const FRONTEND_STRATEGIC_ERROR =
@@ -548,6 +553,15 @@ function applyInPlaceFixes(filePath, items, summary) {
     const serviceName = item.details?.service_name;
     if (!serviceName) {
       summary.skipped.push({ file_path: filePath, reason: 'service_name ausente no report' });
+      continue;
+    }
+
+    if (IGNORED_COMPOSE_SERVICE_KEYS.has(serviceName)) {
+      summary.skipped.push({
+        file_path: filePath,
+        service_name: serviceName,
+        reason: 'Serviço ignorado (exceção de infraestrutura)',
+      });
       continue;
     }
 

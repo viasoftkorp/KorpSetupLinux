@@ -16,7 +16,7 @@ const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 const DOCKER_ACCOUNT_IMAGE_PREFIX = '{{ docker_account }}';
 const FIXED_KORP_ACCOUNT_PREFIX = 'korp/';
-const IGNORED_IMAGE_NAMES = ['korp.atualizacaosistema'];
+const IGNORED_IMAGE_NAMES = ['korp.atualizacaosistema', 'viasoft.core.hybridproxy'];
 const KORP_MANAGED_IMAGE_BASE_PATTERN = /^(korp\.|viasoft\.)/;
 const YEAR_TAG_PREFIX_PATTERN = /^20\d{2}\.\d+\.\d+/;
 const LEGACY_NUMERIC_TAG_PATTERN = /^[0-9]+\.[0-9]+(\.[0-9]+)?(\.x)?/i;
