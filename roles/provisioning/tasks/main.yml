@@ -49,6 +49,15 @@
     state: present
     reload: true
 
+- name: Configuração de cache ARP/neighbor
+  ansible.builtin.template:
+    dest: /etc/sysctl.d/99-arp-cache.conf
+    src: configs/99-arp-cache.conf.j2
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Aplicar sysctl
+
 - name: Criação de usuário de uso da korp no Linux
   ansible.builtin.user:
     name: "{{ linux_korp.user }}"

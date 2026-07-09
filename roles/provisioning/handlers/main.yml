@@ -1,3 +1,7 @@
+- name: Aplicar sysctl
+  ansible.builtin.command: sysctl --system
+  changed_when: true
+
 - name: Reinicio de Docker
   ansible.builtin.service:
     name: docker
