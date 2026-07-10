@@ -5,6 +5,11 @@
   vars:
     volume_path: "{{ dados_docker_dir_path }}/svix_redis"
 
+- name: Definição de sufixo do nome do banco de dados Svix
+  ansible.builtin.set_fact:
+    svix_db_name: "{{ svix_db_name }}{{ db_suffix_divider }}{{ db_suffix }}"
+  when: db_suffix != ""
+
 - name: Criação de banco de dados para SVIX
   ansible.builtin.include_role:
     name: utils

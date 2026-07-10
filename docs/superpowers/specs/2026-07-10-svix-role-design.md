@@ -23,7 +23,7 @@ Feedback da call (Kewin / Amos) e decisão de design: extrair Svix para uma **ro
 | Compose DEV05 | Apenas `korp-webhook` (+ frontends versionados existentes) |
 | Imagem Svix | `svix/svix-server:v1.84` (versão usada na nuvem) |
 | Porta 8071 | Sem `ports:` — apenas rede Docker `servicos` |
-| PostgreSQL | Compartilhado; DB `{{ full_db_prefix }}Svix` via `utils/create_db/postgres` (user `postgres.korp_user`) |
+| PostgreSQL | Compartilhado; DB `Svix` (+ `db_suffix` se houver) via `utils/create_db/postgres` (user `postgres.korp_user`) |
 | Redis | Container dedicado `redis_svix` no compose da role |
 | Secrets | Ansible Vault / inventário: `svix.jwt_secret`, `svix.main_secret` |
 | Whitelist | Substituir `172.17.0.0/16` por `{{ docker_servicos_network_ip_address_start \| default('172.18') }}.0.0/16`; manter `127.0.0.1/32` e `192.168.0.0/16` |
@@ -79,8 +79,10 @@ roles/DEV05/
 svix_image: "svix/svix-server:v1.84"
 svix_redis_image: "docker.io/redis:7-alpine"
 svix_port: "8071"
-svix_db_name: "{{ full_db_prefix }}Svix"
+svix_db_name: "Svix"
 ```
+
+O sufixo de banco segue o mesmo padrão de `vars_validation.yml`: se `db_suffix != ""`, a role faz `set_fact` de `svix_db_name` para `Svix{{ db_suffix_divider }}{{ db_suffix }}` antes do `create_db` e do template do compose.
 
 ### Ansible Vault — inventário encriptado (`/etc/korp/ansible/inventory.yml`)
 
@@ -109,9 +111,10 @@ No bloco `Definição dos valores de inventário` (construção de `shrink_inven
 ## Sequência de Tasks (`roles/svix/tasks/main.yml`)
 
 1. **Garantir diretório de volume Redis** — `{{ dados_docker_dir_path }}/svix_redis`
-2. **Criar database PostgreSQL** — `include_role: utils tasks_from: create_db/postgres` com `db_name: "{{ svix_db_name }}"`
-3. **Template `svix-compose.yml.j2`** → `{{ compose_dir_path }}/svix-compose.yml`
-4. **Subir compose** — `community.docker.docker_compose_v2` com `files: [svix-compose.yml]`
+2. **Aplicar `db_suffix`** — se `db_suffix != ""`, `svix_db_name = Svix{{ db_suffix_divider }}{{ db_suffix }}`
+3. **Criar database PostgreSQL** — `include_role: utils tasks_from: create_db/postgres` com `db_name: "{{ svix_db_name }}"`
+4. **Template `svix-compose.yml.j2`** → `{{ compose_dir_path }}/svix-compose.yml`
+5. **Subir compose** — `community.docker.docker_compose_v2` com `files: [svix-compose.yml]`
 
 ---
 
@@ -192,4 +195,4 @@ Sem `depends_on: svix` no compose do webhook: a ordem fica garantida pela depend
 3. Whitelist usa `docker_servicos_network_ip_address_start`.
 4. Instalação de DEV05 dispara a role `svix` via dependency.
 5. Compose DEV05 contém apenas o webhook (e frontends versionados).
-6. DB `{{ full_db_prefix }}Svix` é criado pela role `svix` via `create_db/postgres`.
+6. DB `Svix` (com `db_suffix` quando aplicável) é criado pela role `svix` via `create_db/postgres`.
