@@ -588,6 +588,10 @@
             'temporal': {
               'postgres_password': shrink_inventory.temporal.postgres_password | default(lookup('community.general.random_string', length=16, special=False)),
               'nginx_password': shrink_inventory.temporal.nginx_password | default(lookup('community.general.random_string', length=16, special=False))
+            },
+            'svix': {
+              'jwt_secret': shrink_inventory.svix.jwt_secret | default(lookup('community.general.random_string', length=32, special=False)),
+              'main_secret': shrink_inventory.svix.main_secret | default(lookup('community.general.random_string', length=32, special=False))
             }
           }, recursive=True) }}"
 

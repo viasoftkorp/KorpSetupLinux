@@ -1,0 +1,19 @@
+{
+  "Authorization": {
+    "Secret":"{{ secret }}"
+  },
+  "ServiceBus": {
+    "StorageConnectionString": "Server={{ postgres.address }},5432; Host={{ postgres.address }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server={{ postgres.address }},5432; Host={{ postgres.address }}; Port=5432; Database={{ service_vars.db.name }}; User Id={{ postgres.korp_user }}; Password={{ postgres.korp_password }};"
+  },
+  "EnableEnvironmentDependentConnectionString": "false",
+  "Provisioning": {
+    "EnableSchemaProvisioning": "false"
+  },
+  "Svix": {
+    "Secret": "{{ svix.jwt_secret }}",
+    "BaseUrl": "http://svix:8071/"
+  }
+}
