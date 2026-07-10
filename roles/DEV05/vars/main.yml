@@ -1,0 +1,5 @@
+services:
+  Korp.Webhook:
+    db:
+      name: Korp_Webhook
+      type: postgres

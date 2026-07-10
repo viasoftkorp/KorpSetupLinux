@@ -1,0 +1,39 @@
+version: "3.8"
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  redis_svix:
+    image: "{{ svix_redis_image }}"
+    container_name: "redis_svix"
+    command: "--save 60 500 --appendonly yes --appendfsync everysec"
+    volumes:
+      - "{{ dados_docker_dir_path }}/svix_redis/:/data"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 1s
+      retries: 600
+    networks:
+      - servicos
+
+  svix:
+    image: "{{ svix_image }}"
+    container_name: "svix"
+    depends_on:
+      redis_svix:
+        condition: service_healthy
+    environment:
+      SVIX_DB_DSN: "postgres://{{ postgres.korp_user }}:{{ postgres.korp_password }}@{{ postgres.address }}:5432/{{ svix_db_name }}"
+      SVIX_REDIS_DSN: "redis://redis_svix:6379"
+      SVIX_WHITELIST_SUBNETS: '["127.0.0.1/32","{{ docker_servicos_network_ip_address_start | default("172.18") }}.0.0/16","192.168.0.0/16"]'
+      SVIX_JWT_SECRET: "{{ svix.jwt_secret }}"
+      SVIX_MAIN_SECRET: "{{ svix.main_secret }}"
+      SVIX_WHITELABEL_HEADERS: true
+      SVIX_LOG_LEVEL: "info"
+      SVIX_PORT: "{{ svix_port }}"
+    networks:
+      - servicos
