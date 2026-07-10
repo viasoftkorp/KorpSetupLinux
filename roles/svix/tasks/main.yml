@@ -1,0 +1,28 @@
+- name: Garantia do diretório de volume do Redis Svix
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/ensure_volume_folder
+  vars:
+    volume_path: "{{ dados_docker_dir_path }}/svix_redis"
+
+- name: Criação de banco de dados para SVIX
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: create_db/postgres
+  vars:
+    db_name: "{{ svix_db_name }}"
+
+- name: Configuração e transferência do compose do Svix
+  ansible.builtin.template:
+    dest: "{{ compose_dir_path }}/svix-compose.yml"
+    src: composes/svix-compose.yml.j2
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+
+- name: Criação e inicialização do Svix
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir_path }}/"
+    env_files: ["{{ docker_env_file_path }}"]
+    files:
+      - svix-compose.yml
