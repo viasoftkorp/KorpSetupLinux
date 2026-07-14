@@ -6,7 +6,7 @@ const path = require('path');
 
 const REPORT_PATH = path.join(__dirname, '../validacao-servicos/report.json');
 const REPO_ROOT = path.resolve(__dirname, '../..');
-const ALLOWED_VERSION_FOLDERS = ['2025.1.0', '2024.2.0'];
+const ALLOWED_VERSION_FOLDERS = ['2025.2.0', '2025.1.0', '2024.2.0'];
 
 const UNVERSIONED_SERVICE_EXCEPTIONS = new Set([
   'Korp.AtualizacaoSistema',

@@ -32,3 +32,73 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+
+  login-2024-2-0:
+    image: "{{ docker_account }}/viasoft.authentication-frontend:2024.2.0.x{{ docker_image_suffix }}"
+    container_name: "login-2024.2.0"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  portal-2024-2-0:
+    image: "{{ docker_account }}/viasoft.portal-frontend:2024.2.0.x{{ docker_image_suffix }}"
+    container_name: "portal-2024.2.0"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    depends_on:
+      - viasoft-portal
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
+
+  ADM01-2024-2-0:
+    image: "{{ docker_account }}/viasoft.administration-frontend:2024.2.0.x{{ docker_image_suffix }}"
+    container_name: "ADM01-2024.2.0"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  REL01-2024-2-0:
+    image: "{{ docker_account }}/viasoft.relatorios-frontend:2024.2.0.x{{ docker_image_suffix }}"
+    container_name: "REL01-2024.2.0"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"

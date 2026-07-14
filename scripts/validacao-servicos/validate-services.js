@@ -11,7 +11,7 @@ const REPORT_PATH = path.join(__dirname, 'report.json');
 const IMAGE_TAG_SUFFIX_PATTERN =
   /:\{\{ version_without_build \}\}\.x\{\{ docker_image_suffix \}\}$/;
 const CONTAINER_NAME_SUFFIX = '-{{ version_without_build }}';
-const ALLOWED_VERSION_FOLDERS = ['2025.1.0', '2024.2.0'];
+const ALLOWED_VERSION_FOLDERS = ['2025.2.0', '2025.1.0', '2024.2.0'];
 const FRONTEND_STRATEGIC_ERROR =
   'Erro Estratégico: Serviços de Frontend não podem ser exclusivos. Mova este arquivo para as pastas de versão.';
 const DOCKER_ACCOUNT_IMAGE_PREFIX = '{{ docker_account }}';
@@ -176,8 +176,13 @@ function extractFieldFromBlock(blockLines, fieldName) {
   return null;
 }
 
+function isGitConflictMarker(line) {
+  return /^(<<<<<<<|=======|>>>>>>>)/.test(line.trim());
+}
+
 function extractServicesFromCompose(content) {
   const lines = content.replace(/\{%[\s\S]*?%\}/g, '').split('\n');
+  const hasMergeConflicts = lines.some((line) => isGitConflictMarker(line));
 
   let servicesLineIndex = -1;
   for (let i = 0; i < lines.length; i += 1) {
@@ -188,7 +193,7 @@ function extractServicesFromCompose(content) {
   }
 
   if (servicesLineIndex === -1) {
-    return { services: null, parseError: null };
+    return { services: null, parseError: null, hasMergeConflicts };
   }
 
   const servicesIndent = lines[servicesLineIndex].match(/^(\s*)/)[1].length;
@@ -197,7 +202,7 @@ function extractServicesFromCompose(content) {
   for (let i = servicesLineIndex + 1; i < lines.length; i += 1) {
     const line = lines[i];
     const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) {
+    if (!trimmed || trimmed.startsWith('#') || isGitConflictMarker(line)) {
       continue;
     }
 
@@ -213,7 +218,7 @@ function extractServicesFromCompose(content) {
   }
 
   if (serviceIndent == null) {
-    return { services: {}, parseError: null };
+    return { services: {}, parseError: null, hasMergeConflicts };
   }
 
   const propertyIndent = serviceIndent + 2;
@@ -237,7 +242,7 @@ function extractServicesFromCompose(content) {
     const line = lines[i];
     const trimmed = line.trim();
 
-    if (!trimmed || trimmed.startsWith('#')) {
+    if (!trimmed || trimmed.startsWith('#') || isGitConflictMarker(line)) {
       continue;
     }
 
@@ -263,7 +268,7 @@ function extractServicesFromCompose(content) {
   }
 
   flushService();
-  return { services, parseError: null };
+  return { services, parseError: null, hasMergeConflicts };
 }
 
 function getImageNameWithoutTag(image) {
@@ -382,14 +387,14 @@ function parseComposeFile(filePath) {
   const rawContent = fs.readFileSync(filePath, 'utf8');
 
   try {
-    const { services, parseError } = extractServicesFromCompose(rawContent);
+    const { services, parseError, hasMergeConflicts } = extractServicesFromCompose(rawContent);
     if (parseError) {
-      return { doc: null, parseError };
+      return { doc: null, parseError, hasMergeConflicts: false };
     }
 
-    return { doc: { services }, parseError: null };
+    return { doc: { services }, parseError: null, hasMergeConflicts: Boolean(hasMergeConflicts) };
   } catch (error) {
-    return { doc: null, parseError: error.message };
+    return { doc: null, parseError: error.message, hasMergeConflicts: false };
   }
 }
 
@@ -505,7 +510,7 @@ function scanExclusiveServices(roles) {
   for (const role of roles) {
     for (const filePath of listExclusiveComposeFiles(role)) {
       const relativePath = toRelativePath(filePath);
-      const { doc, parseError } = parseComposeFile(filePath);
+      const { doc, parseError, hasMergeConflicts } = parseComposeFile(filePath);
 
       if (parseError) {
         invalidServices.push({
@@ -515,6 +520,17 @@ function scanExclusiveServices(roles) {
           details: emptyServiceDetails(),
         });
         continue;
+      }
+
+      if (hasMergeConflicts) {
+        invalidServices.push({
+          role,
+          file_path: relativePath,
+          errors: [
+            'Arquivo contém marcadores de conflito de merge não resolvidos (<<<<<<< / ======= / >>>>>>>)',
+          ],
+          details: emptyServiceDetails(),
+        });
       }
 
       const services = doc?.services;
@@ -555,7 +571,7 @@ function scanNonExclusiveServices(roles) {
   for (const role of roles) {
     for (const { filePath, versionFolder } of listNonExclusiveComposeFiles(role)) {
       const relativePath = toRelativePath(filePath);
-      const { doc, parseError } = parseComposeFile(filePath);
+      const { doc, parseError, hasMergeConflicts } = parseComposeFile(filePath);
 
       if (parseError) {
         invalidServices.push({
@@ -566,6 +582,18 @@ function scanNonExclusiveServices(roles) {
           details: emptyServiceDetails(),
         });
         continue;
+      }
+
+      if (hasMergeConflicts) {
+        invalidServices.push({
+          role,
+          version_folder: versionFolder,
+          file_path: relativePath,
+          errors: [
+            'Arquivo contém marcadores de conflito de merge não resolvidos (<<<<<<< / ======= / >>>>>>>)',
+          ],
+          details: emptyServiceDetails(),
+        });
       }
 
       const services = doc?.services;

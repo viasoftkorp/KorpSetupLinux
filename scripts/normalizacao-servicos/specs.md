@@ -45,7 +45,7 @@ O script deve ler os arrays de erros de cada item inválido e aplicar a respecti
 
 ### Cenário B: Erros Estratégicos de Frontend (Na raiz de composes)
 - *Se o erro for:* `"Erro Estratégico: Serviços de Frontend não podem ser exclusivos..."`
-- *Ação:* O script deve **mover** o arquivo `.yml.j2` da raiz para dentro da pasta da versão correspondente (criar a pasta `2025.1.0` ou `2024.2.0` se não existirem dentro da role). 
+- *Ação:* O script deve **mover** o arquivo `.yml.j2` da raiz para dentro da pasta da versão correspondente (criar a pasta `2025.2.0`, `2025.1.0` ou `2024.2.0` se não existir dentro da role).
   - *Nota:* Como na raiz ele usava tags dinâmicas, ao mover para a pasta de versão, o script de correção deve ajustar a `image`, `container_name` e a chave do serviço para o padrão estático da pasta destino!
 
 ---
