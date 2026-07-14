@@ -58,7 +58,7 @@
           ansible.builtin.service:
             name: salt-minion
             state: restarted
-          when: first_try_result.status != 200
+          when: (first_try_result.status | default(0)) != 200
 
         - name: Teste para minion após reinicio
           ansible.builtin.uri:
@@ -67,12 +67,14 @@
               - 200
           retries: 5
           delay: 5
-          register: result
+          register: second_try_result
           ignore_errors: true
-          when: first_try_result.status != 200
+          when: (first_try_result.status | default(0)) != 200
 
         - name: Validação de resultado do teste
           ansible.builtin.fail:
-            msg: "Ocorreu um problema durante teste de conexão com o minion: {{ result }}"
-          when: result.status != 200
+            msg: "Ocorreu um problema durante teste de conexão com o minion: {{ second_try_result | default(first_try_result) }}"
+          when: >-
+            (first_try_result.status | default(0)) != 200 and
+            (second_try_result.status | default(0)) != 200
       when: not skip_salt_test | default(false)
