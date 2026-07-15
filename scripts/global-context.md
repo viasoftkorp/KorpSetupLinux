@@ -14,6 +14,7 @@ O objetivo é criar uma ferramenta de automação utilizando **Node.js (JavaScri
 - **Dependências Permitidas:** `fs` (nativo), `path` (nativo), e uma biblioteca de YAML (ex: `yaml` ou `js-yaml`).
   - *Nota de Engenharia:* Como os arquivos possuem sintaxe Jinja2 (ex: `{{ docker_account }}`), o script precisará tratar ou ignorar essas marcas de interpolação antes de realizar o parsing do YAML para evitar quebras de sintaxe.
 - **Escopo Inicial de Versões:** Focar estritamente nas versões atualmente em produção:
+  - `2025.2.0`
   - `2025.1.0`
   - `2024.2.0`
 
@@ -66,7 +67,7 @@ KorpSetupLinux/
 
 ## 5. Decisões Estratégicas de Arquitetura
 - **Regra de Frontend:** Todo e qualquer serviço cujo nome de imagem termine com o sufixo `-frontend` (ex: `viasoft.digital.assign-frontend`) **NÃO PODE** ser um Serviço Versionado Exclusivo. 
-- **Obrigatoriedade:** Serviços de frontend devem residir estritamente dentro das pastas de versão física (`2024.2.0/` ou `2025.1.0/`), seguindo a regra de Versionados Não Exclusivos.
+- **Obrigatoriedade:** Serviços de frontend devem residir estritamente dentro das pastas de versão física (`2024.2.0/`, `2025.1.0/` ou `2025.2.0/`), seguindo a regra de Versionados Não Exclusivos.
 
 ## 6. Remoção de Tags Legadas (Unversioned)
 - **Regra de Compose:** Nenhum Serviço Versionado (Exclusivo ou Não Exclusivo) pode conter a flag `unversioned: true` em seus arquivos de variáveis da role (`roles/[NOME_DA_ROLE]/vars/*.yml`).
