@@ -317,7 +317,7 @@ Conteúdo proposto (serviço **container**):
 
 **O campo `kind` é a camada de abstração que unifica o entregável.** A ferramenta da QA lê o relatório e despacha pelo `kind`: `container` → mecanismo Linux (troca de tag no compose); `delphi` → mecanismo Windows (Componente 4). O relatório de um Delphi carrega, no lugar de `imagem`/`tag`, o que o Windows precisa para buscar o binário (ex: caminho no share SMB) — formato a definir no Componente 4. Assim a QA informa uma lista única de PRs e a distinção container/Windows fica invisível para ela.
 
-O golang já publica em MinIO interno via `publishS3(..., "minio-internal", ...)` — o caminho existe.
+**Atenção — só o golang tem ferramenta de upload hoje.** O `publishS3(..., "minio-internal", ...)` existe **apenas** no `golang_jenkinsfile` (verificado: `csharp` e `frontend` não têm nenhuma referência a `publishS3`/`aws`/`mc`/`minio`). A escrita no bucket é **autenticada** (SigV4), então os jobs C# e frontend precisam de um mecanismo de upload que hoje não têm — seja adicionar `aws`/`mc` às imagens `jnlp-csharp-build` / `jnlp-frontend-build`, seja um helper `curl` + SigV4. **É trabalho de implementação do Componente 1 e vale escrever o upload como função compartilhada entre os três templates**, não copiar o do golang três vezes.
 
 ### 1.4 Parcels de frontend
 
@@ -425,14 +425,21 @@ Os templates v3 já publicam **binário Windows de PR**, que é quase certamente
 
 Ou seja, "PR → binário Windows numa pasta por ticket via SMB" já é padrão. O Delphi provavelmente reusa isso, e a role despacha o serviço `kind: delphi` para entregar/apontar esse binário na máquina Windows de QA.
 
-### Em aberto (parte deste projeto, não de outro)
+### Bloqueios — precisam ser resolvidos antes de iniciar o Componente 4
 
-- **Os dois Jenkinsfiles** (Delphi ERP e Delphi Nuvem Fiscal) — identificar os repositórios e confirmar, em cada um, como publica o binário de PR e emite o relatório (`kind: delphi` + caminho do artefato). Podem ter convenções diferentes.
-- **Topologia Windows do ambiente de QA:** existe uma máquina Windows por ambiente? É alcançável pela orquestração (WinRM/SMB)? Como o Delphi é atualizado nela hoje?
-- **Entrega e reset no Windows:** copiar o binário e reverter ao baseline — mecanismo depende das respostas acima.
-- **Ferramenta de input:** confirmar que é o mesmo fluxo de "informar PRs" (é o objetivo — entregável único), sem uma segunda ferramenta para o Windows.
+Delphi entra como **fase 2 deste projeto** (não como projeto à parte). Nenhum destes bloqueia a fase 1 (container); todos bloqueiam o início do desenvolvimento do Delphi:
 
-Enquanto isso não estiver definido, Delphi entra como **fase 2 deste projeto** (não como projeto à parte): o mecanismo Linux pode ser entregue antes, e o despacho por `kind` já deixa o encaixe pronto para quando o Componente 4 for implementado.
+| # | Bloqueio | Por que bloqueia |
+|---|---|---|
+| B1 | **Repositórios dos dois Jenkinsfiles não identificados** (Delphi ERP e Delphi Nuvem Fiscal) | Sem saber onde estão, não há o que alterar. É o equivalente ao Achado 1, duas vezes. |
+| B2 | **Convenção de build/tag/artefato de PR de cada Jenkinsfile** | Cada um pode publicar o binário de forma diferente (caminho, nome, layout); define o que a role vai buscar. |
+| B3 | **Topologia Windows do ambiente de QA** — existe uma máquina Windows por ambiente? Quantas? Como se relaciona com as 5 VMs Linux? | Sem saber o alvo, não há como entregar nem orquestrar. |
+| B4 | **Alcançabilidade e forma de entrega** — a máquina Windows é acessível pela orquestração (WinRM/SMB/outro)? Como o Delphi é atualizado nela **hoje** (baseline)? | Define o mecanismo de entrega e se dá para reusar o mesmo playbook. |
+| B5 | **Mecanismo de reset no Windows** — reverter um binário ao baseline não é recriar container | O reset (Componente 3) precisa cobrir Windows; depende de B3/B4. |
+| B6 | **Formato do relatório `kind: delphi`** — quais campos apontam o binário no lugar de `imagem`/`tag`, cobrindo as duas famílias | É o contrato entre os Jenkinsfiles Delphi e a role; sem ele o despacho não sabe o que fazer. |
+| B7 | **Ferramenta de input** — confirmar que é o mesmo fluxo "informar PRs", sem uma segunda ferramenta para o Windows | É o objetivo do entregável único; se divergir, muda o desenho da role. |
+
+O despacho por `kind` (Componente 1) já deixa o encaixe pronto: quando B1–B7 forem resolvidos, o Componente 4 se conecta sem mexer no mecanismo Linux.
 
 ---
 
