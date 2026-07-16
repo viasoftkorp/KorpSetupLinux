@@ -124,6 +124,8 @@ image: "korp/korp.compras.core:2025.1.0.x"
 | 24 | Leitura do bucket | **Anônima** na rede interna — mantém as VMs sem credencial e a role sem CLI (ver Componente 0) |
 | 25 | Serviços Delphi | **Dentro do entregável**, como 2º mecanismo (Windows) despachado por `kind` — fase 2, não projeto à parte (ver Componente 4) |
 | 26 | Famílias Delphi | **Duas**: Delphi do ERP e Delphi do Nuvem Fiscal — dois Jenkinsfiles distintos a alterar (ver Componente 4) |
+| 27 | Escrita do Jenkins no MinIO | Reusa a `MINIO_INTERNO_KEY`; policy dela ganha `PutObject` em `arn:aws:s3:::qa-prs/prs/*` (ver Componente 0) |
+| 28 | Upload do relatório em C#/frontend | Adicionar `aws`/`mc` às imagens `jnlp-csharp-build` / `jnlp-frontend-build` e reusar a lógica do golang (ver 1.3) |
 
 ---
 
@@ -181,8 +183,30 @@ Duas notas para quem mexer nisso depois:
 | 2 | Bucket | ✅ `qa-prs` criado |
 | 3 | Leitura anônima | ✅ **Aplicada e verificada** (ver abaixo) |
 | 4 | Lifecycle de expiração | ✅ Regra `expira-relatorios-pr-60d` — 60 dias sobre `prs/`, aplicada e lida de volta |
-| 5 | Escrita do Jenkins | ⬜ Autenticada, reusando a `MINIO_INTERNO_KEY` existente — falta garantir que ela tenha `PutObject` no bucket |
+| 5 | Escrita do Jenkins | ⬜ **Policy da `MINIO_INTERNO_KEY` precisa de 1 linha** — hoje só tem `PutObject` em `cdn-korp*`, não no `qa-prs` (ver abaixo) |
 | 6 | Região | ✅ `us-east-1` (`MINIO_INTERNO_REGION` no Jenkins) — o default do MinIO |
+
+**Policy da `MINIO_INTERNO_KEY` — delta necessário.** A chave que o Jenkins já usa **não** alcança o `qa-prs` (confirmado: policy atual só cobre `cdn-korp-development/*`, `cdn-korp-hmlg/*`, `cdn-korp/*`). Adicionar `arn:aws:s3:::qa-prs/prs/*` à mesma statement de `s3:PutObject`:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": [
+        "arn:aws:s3:::cdn-korp-development/*",
+        "arn:aws:s3:::cdn-korp-hmlg/*",
+        "arn:aws:s3:::cdn-korp/*",
+        "arn:aws:s3:::qa-prs/prs/*"
+      ]
+    }
+  ]
+}
+```
+
+Escopo `qa-prs/prs/*` (não `qa-prs/*`): a chave só escreve no prefixo dos relatórios. `PutObject` sobrescreve chave existente, então cobre o rebuild a cada push sem precisar de mais nada. É uma policy de **usuário/service account** no MinIO (aplicada no Console/`mc`), não a bucket policy do Componente 0.
 
 A bucket policy está versionada em `iac`, `local-infrastructure/ECS01/minio/qa-prs-bucket-policy.json`.
 
@@ -317,7 +341,9 @@ Conteúdo proposto (serviço **container**):
 
 **O campo `kind` é a camada de abstração que unifica o entregável.** A ferramenta da QA lê o relatório e despacha pelo `kind`: `container` → mecanismo Linux (troca de tag no compose); `delphi` → mecanismo Windows (Componente 4). O relatório de um Delphi carrega, no lugar de `imagem`/`tag`, o que o Windows precisa para buscar o binário (ex: caminho no share SMB) — formato a definir no Componente 4. Assim a QA informa uma lista única de PRs e a distinção container/Windows fica invisível para ela.
 
-**Atenção — só o golang tem ferramenta de upload hoje.** O `publishS3(..., "minio-internal", ...)` existe **apenas** no `golang_jenkinsfile` (verificado: `csharp` e `frontend` não têm nenhuma referência a `publishS3`/`aws`/`mc`/`minio`). A escrita no bucket é **autenticada** (SigV4), então os jobs C# e frontend precisam de um mecanismo de upload que hoje não têm — seja adicionar `aws`/`mc` às imagens `jnlp-csharp-build` / `jnlp-frontend-build`, seja um helper `curl` + SigV4. **É trabalho de implementação do Componente 1 e vale escrever o upload como função compartilhada entre os três templates**, não copiar o do golang três vezes.
+**Só o golang tem ferramenta de upload hoje — decisão: adicionar `aws`/`mc` às imagens.** O `publishS3(..., "minio-internal", ...)` existe **apenas** no `golang_jenkinsfile` (verificado: `csharp` e `frontend` não têm nenhuma referência a `publishS3`/`aws`/`mc`/`minio`). A escrita no bucket é **autenticada** (SigV4), e os jobs C# e frontend não têm com o que assinar.
+
+**Decidido:** incluir `aws`/`mc` nas imagens `jnlp-csharp-build` e `jnlp-frontend-build` e reusar a lógica do `publishS3` do golang. Vale extrair o upload como **função/estágio compartilhado** entre os três templates, não copiar três vezes. (Alternativa descartada: helper `curl`+SigV4, que evitaria mexer nas imagens.)
 
 ### 1.4 Parcels de frontend
 
