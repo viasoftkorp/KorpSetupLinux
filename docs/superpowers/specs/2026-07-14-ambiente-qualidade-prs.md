@@ -125,7 +125,7 @@ image: "korp/korp.compras.core:2025.1.0.x"
 | 25 | Serviços Delphi | **Dentro do entregável**, como 2º mecanismo (Windows) despachado por `kind` — fase 2, não projeto à parte (ver Componente 4) |
 | 26 | Famílias Delphi | **Duas**: Delphi do ERP e Delphi do Nuvem Fiscal — dois Jenkinsfiles distintos a alterar (ver Componente 4) |
 | 27 | Escrita do Jenkins no MinIO | Reusa a `MINIO_INTERNO_KEY`; policy dela ganha `PutObject` em `arn:aws:s3:::qa-prs/prs/*` (ver Componente 0) |
-| 28 | Upload do relatório em C#/frontend | Adicionar `aws`/`mc` às imagens `jnlp-csharp-build` / `jnlp-frontend-build` e reusar a lógica do golang (ver 1.3) |
+| 28 | Upload do relatório em C#/frontend | Adicionar `aws`/`mc` às imagens de build; **frontend = `jnlp-frontend.Dockerfile.1.1.x`** (verificado, o `1.0.x` é obsoleto), csharp = `.1.0.5` (aws comentado). golang já tem. Só v3 (ver 1.3) |
 
 ---
 
@@ -343,7 +343,19 @@ Conteúdo proposto (serviço **container**):
 
 **Só o golang tem ferramenta de upload hoje — decisão: adicionar `aws`/`mc` às imagens.** O `publishS3(..., "minio-internal", ...)` existe **apenas** no `golang_jenkinsfile` (verificado: `csharp` e `frontend` não têm nenhuma referência a `publishS3`/`aws`/`mc`/`minio`). A escrita no bucket é **autenticada** (SigV4), e os jobs C# e frontend não têm com o que assinar.
 
-**Decidido:** incluir `aws`/`mc` nas imagens `jnlp-csharp-build` e `jnlp-frontend-build` e reusar a lógica do `publishS3` do golang. Vale extrair o upload como **função/estágio compartilhado** entre os três templates, não copiar três vezes. (Alternativa descartada: helper `curl`+SigV4, que evitaria mexer nas imagens.)
+**Decidido:** incluir `aws`/`mc` nas imagens de build C#/frontend e reusar a lógica do `publishS3` do golang. Vale extrair o upload como **função/estágio compartilhado** entre os três templates, não copiar três vezes. (Alternativa descartada: helper `curl`+SigV4, que evitaria mexer nas imagens.)
+
+**Qual Dockerfile mexer — verificado (2026-07-16).** As imagens vivem em `korp-iac/Docker/jenkins`, versionadas por sufixo que casa com a `jnlpImageTag` do Jenkinsfile de cada serviço. Levantei a `jnlpImageTag` real em **137 Jenkinsfiles frontend** e **376 csharp**, nos branches `master`, `release/2025.1.0.x` e `release/2024.2.0.x` de logistica, vendas, producao, faturamento, projetos, sdk e compras:
+
+| Stack | Tag viva | Dockerfile a alterar | aws hoje | Ação |
+|---|---|---|---|---|
+| **frontend** | `1.1.x` (117 explícitos; 0 em `1.0.x`) | `frontend/jnlp-frontend.Dockerfile.1.1.x` | ❌ | adicionar aws/mc |
+| **csharp** | `1.0.5` (36) + `1.0.7` (5) | `jnlp-csharp.Dockerfile.1.0.5` | comentado | reativar/adicionar |
+| **golang** | default (nenhum fixa) | `jnlp-golang.Dockerfile` | ✅ | nenhuma |
+
+> ⚠️ **Armadilha do obsoleto:** a `jnlp-frontend.Dockerfile.1.0.x` **tem** aws, mas é a versão **morta** — nenhum serviço usa `1.0.x`. Concluir pela presença de aws no `1.0.x` levaria a não mexer no frontend, o que estaria errado. A tag viva é `1.1.x`, que **não** tem aws.
+
+**Pendências do csharp** (a confirmar antes de mexer): o bloco aws do `.1.0.5` está só comentado (descomentar basta); e a tag `1.0.7` (5 serviços) **não tem Dockerfile correspondente** no `korp-iac` — esclarecer se é buildada em outro lugar, se é a `jnlp-csharp.Dockerfile` sem sufixo, ou se está faltando.
 
 ### 1.4 Parcels de frontend
 
