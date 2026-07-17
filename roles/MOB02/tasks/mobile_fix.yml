@@ -10,13 +10,20 @@
   when: app_name in apps_map.versioned[item]
   loop: "{{ apps_map.versioned | list }}"
 
+- name: Checagem de compose versionado de {{ app_name }}
+  ansible.builtin.stat:
+    path: "{{ compose_dir_path }}/{{ item }}/{{ app_name }}-compose.yml"
+  register: mobile_compose_stat
+  loop: "{{ versions_with_mobile }}"
+
 - name: "Parada de containers versionados de {{ app_name }}"
   community.docker.docker_compose_v2:
-    project_src: "{{ compose_dir_path }}/{{ item }}"
+    project_src: "{{ compose_dir_path }}/{{ item.item }}"
     state: absent
     files:
       - "{{ app_name }}-compose.yml"
-  loop: "{{ versions_with_mobile }}"
+  loop: "{{ mobile_compose_stat.results }}"
+  when: item.stat.exists
 
 - name: "Remoção de arquivos de compose versionados de {{ app_name }}"
   ansible.builtin.file:
