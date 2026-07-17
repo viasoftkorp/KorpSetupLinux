@@ -1,14 +1,14 @@
 {
   "summary": {
-    "total_roles_scanned": 73,
+    "total_roles_scanned": 75,
     "exclusive_services": {
-      "total_found": 152,
-      "valid": 152,
+      "total_found": 157,
+      "valid": 157,
       "invalid": 0
     },
     "non_exclusive_services": {
-      "total_found": 132,
-      "valid": 132,
+      "total_found": 199,
+      "valid": 199,
       "invalid": 0
     }
   },
@@ -149,6 +149,15 @@
             "service_name": "SDK-APP-RENDERER",
             "image": "{{ docker_account }}/sdk.app-renderer-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "SDK.APP-RENDERER-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "DEV05",
+          "file_path": "roles/DEV05/templates/composes/DEV05-compose.yml.j2",
+          "details": {
+            "service_name": "korp-webhook",
+            "image": "{{ docker_account }}/korp.webhook:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Webhook-{{ version_without_build }}"
           }
         },
         {
@@ -530,6 +539,15 @@
           }
         },
         {
+          "role": "REL01",
+          "file_path": "roles/REL01/templates/composes/REL01-compose.yml.j2",
+          "details": {
+            "service_name": "korp-analytics-ia",
+            "image": "{{ docker_account }}/korp.analytics.ia:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Analytics.IA-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "TRAC01",
           "file_path": "roles/TRAC01/templates/composes/TRAC01-compose.yml.j2",
           "details": {
@@ -890,6 +908,15 @@
           }
         },
         {
+          "role": "estoque-posicao",
+          "file_path": "roles/estoque-posicao/templates/composes/estoque-posicao-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-estoqueposicao",
+            "image": "{{ docker_account }}/korp.logistica.estoqueposicao:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.EstoquePosicao-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "faturamento",
           "file_path": "roles/faturamento/templates/composes/faturamento-compose.yml.j2",
           "details": {
@@ -1007,6 +1034,33 @@
           }
         },
         {
+          "role": "indexador-moedas",
+          "file_path": "roles/indexador-moedas/templates/composes/indexador-moedas-compose.yml.j2",
+          "details": {
+            "service_name": "korp-financeiro-indexador-moedas",
+            "image": "{{ docker_account }}/korp.financeiro.indexador.moedas:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Financeiro.Indexador.Moedas-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "infrastructure",
+          "file_path": "roles/infrastructure/templates/composes/infrastructure-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-frontend-router",
+            "image": "{{ docker_account }}/korp.legacy.frontend-router:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Frontend-router"
+          }
+        },
+        {
+          "role": "infrastructure",
+          "file_path": "roles/infrastructure/templates/composes/infrastructure-compose.yml.j2",
+          "details": {
+            "service_name": "viasoft-loader",
+            "image": "{{ docker_account }}/viasoft.loader:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Viasoft.Loader"
+          }
+        },
+        {
           "role": "infrastructure-desktop",
           "file_path": "roles/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2",
           "details": {
@@ -1022,15 +1076,6 @@
             "service_name": "viasoft-email",
             "image": "{{ docker_account }}/viasoft.email:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Email-{{ version_without_build }}"
-          }
-        },
-        {
-          "role": "infrastructure-desktop",
-          "file_path": "roles/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2",
-          "details": {
-            "service_name": "korp-legacy-authentication",
-            "image": "{{ docker_account }}/korp.legacy.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "container_name": "Korp.Legacy.Authentication-{{ version_without_build }}"
           }
         },
         {
@@ -1130,15 +1175,6 @@
             "service_name": "korp-legacy-administration",
             "image": "{{ docker_account }}/korp.legacy.administration:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Korp.Legacy.Administration-{{ version_without_build }}"
-          }
-        },
-        {
-          "role": "infrastructure-web",
-          "file_path": "roles/infrastructure-web/templates/composes/infrastructure-web-compose.yml.j2",
-          "details": {
-            "service_name": "korp-legacy-authorization",
-            "image": "{{ docker_account }}/korp.legacy.authorization:{{ version_without_build }}.x{{ docker_image_suffix }}",
-            "container_name": "Korp.Legacy.Authorization-{{ version_without_build }}"
           }
         },
         {
@@ -1292,6 +1328,15 @@
             "service_name": "viasoft-qualidade-inspecao-background",
             "image": "{{ docker_account }}/viasoft.qualidade.inspecao.background:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Qualidade.Inspecao.Background-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "solidworks",
+          "file_path": "roles/solidworks/templates/composes/solidworks-compose.yml.j2",
+          "details": {
+            "service_name": "korp-integration-solidworks",
+            "image": "{{ docker_account }}/korp.integration.solidworks:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Integration.SolidWorks-{{ version_without_build }}"
           }
         },
         {
@@ -1461,12 +1506,32 @@
         },
         {
           "role": "BPMN01",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/BPMN01/templates/composes/2024.2.0/BPMN01-compose.yml.j2",
+          "details": {
+            "service_name": "BPMN01-2025-1-0-2024-2-0",
+            "image": "{{ docker_account }}/korp.projetos.bpmn-frontend:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "BPMN01-2025-1-0-2024.2.0"
+          }
+        },
+        {
+          "role": "BPMN01",
           "version_folder": "2025.1.0",
           "file_path": "roles/BPMN01/templates/composes/2025.1.0/BPMN01-compose.yml.j2",
           "details": {
             "service_name": "BPMN01-2025-1-0",
             "image": "{{ docker_account }}/korp.projetos.bpmn-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "BPMN01-2025.1.0"
+          }
+        },
+        {
+          "role": "BPMN01",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/BPMN01/templates/composes/2025.1.0/BPMN01-compose.yml.j2",
+          "details": {
+            "service_name": "BPMN01-2025-1-0-2025-1-0",
+            "image": "{{ docker_account }}/korp.projetos.bpmn-frontend:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "BPMN01-2025-1-0-2025.1.0"
           }
         },
         {
@@ -1490,6 +1555,16 @@
           }
         },
         {
+          "role": "CDP01",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/CDP01/templates/composes/2025.2.0/CDP01-compose.yml.j2",
+          "details": {
+            "service_name": "CDP01-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.vendas.custeioproduto-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "CDP01-2025.2.0"
+          }
+        },
+        {
           "role": "COM15_W",
           "version_folder": "2025.1.0",
           "file_path": "roles/COM15_W/templates/composes/2025.1.0/COM15_W-compose.yml.j2",
@@ -1497,6 +1572,16 @@
             "service_name": "COM15_W-2025-1-0",
             "image": "{{ docker_account }}/korp.compras.analises-compras-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "COM15_W-2025.1.0"
+          }
+        },
+        {
+          "role": "COM15_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/COM15_W/templates/composes/2025.2.0/COM15_W-compose.yml.j2",
+          "details": {
+            "service_name": "COM15_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.compras.analises-compras-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "COM15_W-2025.2.0"
           }
         },
         {
@@ -1517,6 +1602,16 @@
             "service_name": "CON21_W-2025-1-0",
             "image": "{{ docker_account }}/korp.contabilidade.conciliacaocontabil-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "CON21_W-2025.1.0"
+          }
+        },
+        {
+          "role": "CON21_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/CON21_W/templates/composes/2025.2.0/CON21_W-compose.yml.j2",
+          "details": {
+            "service_name": "CON21_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.contabilidade.conciliacaocontabil-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "CON21_W-2025.2.0"
           }
         },
         {
@@ -1557,6 +1652,26 @@
             "service_name": "DEV04-2025-1-0",
             "image": "{{ docker_account }}/korp.appbuilder-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "DEV04-2025.1.0"
+          }
+        },
+        {
+          "role": "DEV05",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/DEV05/templates/composes/2025.1.0/DEV05-compose.yml.j2",
+          "details": {
+            "service_name": "DEV05-2025-1-0",
+            "image": "{{ docker_account }}/korp.webhook-frontend:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "DEV05-2025.1.0"
+          }
+        },
+        {
+          "role": "DEV05",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/DEV05/templates/composes/2025.2.0/DEV05-compose.yml.j2",
+          "details": {
+            "service_name": "DEV05-2025-2-0",
+            "image": "{{ docker_account }}/korp.webhook-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "DEV05-2025.2.0"
           }
         },
         {
@@ -1620,6 +1735,36 @@
           }
         },
         {
+          "role": "ERP",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/ERP/templates/composes/2025.2.0/ERP-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-elt-2025-2-0",
+            "image": "{{ docker_account }}/korp.legacy.elt:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.ELT-2025.2.0"
+          }
+        },
+        {
+          "role": "ERP",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/ERP/templates/composes/2025.2.0/ERP-compose.yml.j2",
+          "details": {
+            "service_name": "viasoft-customer-portifolio-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.customer.portifolio:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Viasoft.Customer.Portifolio-2025.2.0"
+          }
+        },
+        {
+          "role": "ERP",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/ERP/templates/composes/2025.2.0/ERP-compose.yml.j2",
+          "details": {
+            "service_name": "SYNC01-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.erp.sync-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "SYNC01-2025.2.0"
+          }
+        },
+        {
           "role": "FAT02_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/FAT02_W/templates/composes/2024.2.0/FAT02_W-compose.yml.j2",
@@ -1640,6 +1785,16 @@
           }
         },
         {
+          "role": "FAT02_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/FAT02_W/templates/composes/2025.2.0/FAT02_W-compose.yml.j2",
+          "details": {
+            "service_name": "FAT02_W-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.faturamento.solicitacaofaturamento-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "FAT02_W-2025.2.0"
+          }
+        },
+        {
           "role": "FAT12",
           "version_folder": "2024.2.0",
           "file_path": "roles/FAT12/templates/composes/2024.2.0/FAT12-compose.yml.j2",
@@ -1657,6 +1812,16 @@
             "service_name": "FAT12-2025-1-0",
             "image": "{{ docker_account }}/viasoft.billing.cte-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "FAT12-2025.1.0"
+          }
+        },
+        {
+          "role": "FAT12",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/FAT12/templates/composes/2025.2.0/FAT12-compose.yml.j2",
+          "details": {
+            "service_name": "FAT12-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.billing.cte-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "FAT12-2025.2.0"
           }
         },
         {
@@ -1740,6 +1905,16 @@
           }
         },
         {
+          "role": "LOG01_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG01_W/templates/composes/2025.2.0/LOG01_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG01_W-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.logistica.produto-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG01_W-2025.2.0"
+          }
+        },
+        {
           "role": "LOG03_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/LOG03_W/templates/composes/2024.2.0/LOG03_W-compose.yml.j2",
@@ -1757,6 +1932,16 @@
             "service_name": "LOG03_W-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.requisicaocontraalmoxarifado-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "LOG03_W-2025.1.0"
+          }
+        },
+        {
+          "role": "LOG03_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG03_W/templates/composes/2025.2.0/LOG03_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG03_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.requisicaocontraalmoxarifado-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG03_W-2025.2.0"
           }
         },
         {
@@ -1800,6 +1985,26 @@
           }
         },
         {
+          "role": "LOG04_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG04_W/templates/composes/2025.2.0/LOG04_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-estoque-ajusteestoque-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.estoque.ajusteestoque:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Estoque.AjusteEstoque-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG04_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG04_W/templates/composes/2025.2.0/LOG04_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG04_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.estoque.ajusteestoque-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG04_W-2025.2.0"
+          }
+        },
+        {
           "role": "LOG05_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/LOG05_W/templates/composes/2024.2.0/LOG05_W-compose.yml.j2",
@@ -1837,6 +2042,26 @@
             "service_name": "LOG05_W-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.estoque.inventario-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "LOG05_W-2025.1.0"
+          }
+        },
+        {
+          "role": "LOG05_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG05_W/templates/composes/2025.2.0/LOG05_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-estoque-inventario-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.estoque.inventario:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Estoque.Inventario-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG05_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG05_W/templates/composes/2025.2.0/LOG05_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG05_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.estoque.inventario-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG05_W-2025.2.0"
           }
         },
         {
@@ -1980,6 +2205,76 @@
           }
         },
         {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-picking-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Picking-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistic-picking-analisedeestoque-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking.analisedeestoque:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Picking.AnaliseDeEstoque-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-picking-controlepedidos-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking.controlepedidos:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Picking.ControlePedidos-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-picking-faturamento-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking.faturamento:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Picking.Faturamento-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-picking-ordemproducao-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking.ordemproducao:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Picking.OrdemProducao-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "korp-faturamento-solicitacaodefaturamento-2025-2-0",
+            "image": "{{ docker_account }}/korp.faturamento.solicitacaodefaturamento:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Faturamento.SolicitacaoDeFaturamento-2025.2.0"
+          }
+        },
+        {
+          "role": "LOG102",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG102/templates/composes/2025.2.0/LOG102-compose.yml.j2",
+          "details": {
+            "service_name": "LOG102-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.picking-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG102-2025.2.0"
+          }
+        },
+        {
           "role": "LOG103",
           "version_folder": "2024.2.0",
           "file_path": "roles/LOG103/templates/composes/2024.2.0/LOG103-compose.yml.j2",
@@ -2000,6 +2295,16 @@
           }
         },
         {
+          "role": "LOG103",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG103/templates/composes/2025.2.0/LOG103-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-conferenciasaida-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.conferenciasaida:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.ConferenciaSaida-2025.2.0"
+          }
+        },
+        {
           "role": "LOG73_W",
           "version_folder": "2025.1.0",
           "file_path": "roles/LOG73_W/templates/composes/2025.1.0/LOG73_W-compose.yml.j2",
@@ -2007,6 +2312,16 @@
             "service_name": "LOG73_W-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.repacking-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "LOG73_W-2025.1.0"
+          }
+        },
+        {
+          "role": "LOG73_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/LOG73_W/templates/composes/2025.2.0/LOG73_W-compose.yml.j2",
+          "details": {
+            "service_name": "LOG73_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.repacking-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "LOG73_W-2025.2.0"
           }
         },
         {
@@ -2067,6 +2382,26 @@
             "service_name": "PCRG001-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.carga-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "PCRG001-2025.1.0"
+          }
+        },
+        {
+          "role": "PCRG001",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/PCRG001/templates/composes/2025.2.0/PCRG001-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-carga-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.carga:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.Carga-2025.2.0"
+          }
+        },
+        {
+          "role": "PCRG001",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/PCRG001/templates/composes/2025.2.0/PCRG001-compose.yml.j2",
+          "details": {
+            "service_name": "PCRG001-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.carga-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "PCRG001-2025.2.0"
           }
         },
         {
@@ -2150,6 +2485,26 @@
           }
         },
         {
+          "role": "PRO09",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/PRO09/templates/composes/2025.2.0/PRO09-compose.yml.j2",
+          "details": {
+            "service_name": "korp-producao-apontamento-2025-2-0",
+            "image": "{{ docker_account }}/korp.producao.apontamento:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Producao.Apontamento-2025.2.0"
+          }
+        },
+        {
+          "role": "PRO09",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/PRO09/templates/composes/2025.2.0/PRO09-compose.yml.j2",
+          "details": {
+            "service_name": "PRO09-2025-2-0",
+            "image": "{{ docker_account }}/korp.producao.apontamento-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "PRO09-2025.2.0"
+          }
+        },
+        {
           "role": "PROJ01",
           "version_folder": "2024.2.0",
           "file_path": "roles/PROJ01/templates/composes/2024.2.0/PROJ01-compose.yml.j2",
@@ -2161,12 +2516,32 @@
         },
         {
           "role": "PROJ01",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/PROJ01/templates/composes/2024.2.0/PROJ01-compose.yml.j2",
+          "details": {
+            "service_name": "PROJ01-2025-1-0-2024-2-0",
+            "image": "{{ docker_account }}/korp.projetos.gantt-frontend:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "PROJ01-2025-1-0-2024.2.0"
+          }
+        },
+        {
+          "role": "PROJ01",
           "version_folder": "2025.1.0",
           "file_path": "roles/PROJ01/templates/composes/2025.1.0/PROJ01-compose.yml.j2",
           "details": {
             "service_name": "PROJ01-2025-1-0",
             "image": "{{ docker_account }}/korp.projetos.gantt-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "PROJ01-2025.1.0"
+          }
+        },
+        {
+          "role": "PROJ01",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/PROJ01/templates/composes/2025.1.0/PROJ01-compose.yml.j2",
+          "details": {
+            "service_name": "PROJ01-2025-1-0-2025-1-0",
+            "image": "{{ docker_account }}/korp.projetos.gantt-frontend:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "PROJ01-2025-1-0-2025.1.0"
           }
         },
         {
@@ -2210,6 +2585,26 @@
           }
         },
         {
+          "role": "QUA01_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA01_W/templates/composes/2025.2.0/QUA01_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-qualidade-inspecaoentrada-2025-2-0",
+            "image": "{{ docker_account }}/korp.qualidade.inspecaoentrada:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Qualidade.InspecaoEntrada-2025.2.0"
+          }
+        },
+        {
+          "role": "QUA01_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA01_W/templates/composes/2025.2.0/QUA01_W-compose.yml.j2",
+          "details": {
+            "service_name": "QUA01_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.qualidade.inspecaoentrada-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "QUA01_W-2025.2.0"
+          }
+        },
+        {
           "role": "QUA02_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/QUA02_W/templates/composes/2024.2.0/QUA02_W-compose.yml.j2",
@@ -2250,6 +2645,26 @@
           }
         },
         {
+          "role": "QUA02_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA02_W/templates/composes/2025.2.0/QUA02_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-qualidade-inspecaosaida-2025-2-0",
+            "image": "{{ docker_account }}/korp.qualidade.inspecaosaida:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Qualidade.InspecaoSaida-2025.2.0"
+          }
+        },
+        {
+          "role": "QUA02_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA02_W/templates/composes/2025.2.0/QUA02_W-compose.yml.j2",
+          "details": {
+            "service_name": "QUA02_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.qualidade.inspecaosaida-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "QUA02_W-2025.2.0"
+          }
+        },
+        {
           "role": "QUA06_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/QUA06_W/templates/composes/2024.2.0/QUA06_W-compose.yml.j2",
@@ -2267,6 +2682,16 @@
             "service_name": "QUA06_W-2025-1-0",
             "image": "{{ docker_account }}/viasoft.qualidade.rnc-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "QUA06_W-2025.1.0"
+          }
+        },
+        {
+          "role": "QUA06_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA06_W/templates/composes/2025.2.0/QUA06_W-compose.yml.j2",
+          "details": {
+            "service_name": "QUA06_W-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.qualidade.rnc-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "QUA06_W-2025.2.0"
           }
         },
         {
@@ -2290,6 +2715,16 @@
           }
         },
         {
+          "role": "QUA37",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/QUA37/templates/composes/2025.2.0/QUA37-compose.yml.j2",
+          "details": {
+            "service_name": "QUA37-2025-2-0",
+            "image": "{{ docker_account }}/korp.qualidade.controletratamentotermico-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "QUA37-2025.2.0"
+          }
+        },
+        {
           "role": "RMA01_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/RMA01_W/templates/composes/2024.2.0/RMA01_W-compose.yml.j2",
@@ -2307,6 +2742,16 @@
             "service_name": "korp-rma-core-2025-1-0",
             "image": "{{ docker_account }}/korp.rma.core:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.RMA.Core-2025.1.0"
+          }
+        },
+        {
+          "role": "RMA01_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/RMA01_W/templates/composes/2025.2.0/RMA01_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-rma-core-2025-2-0",
+            "image": "{{ docker_account }}/korp.rma.core:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.RMA.Core-2025.2.0"
           }
         },
         {
@@ -2330,6 +2775,16 @@
           }
         },
         {
+          "role": "TRAC01",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/TRAC01/templates/composes/2025.2.0/TRAC01-compose.yml.j2",
+          "details": {
+            "service_name": "TRAC01-2025-2-0",
+            "image": "{{ docker_account }}/korp.sales.tracking-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "TRAC01-2025.2.0"
+          }
+        },
+        {
           "role": "VEN07_W",
           "version_folder": "2024.2.0",
           "file_path": "roles/VEN07_W/templates/composes/2024.2.0/VEN07_W-compose.yml.j2",
@@ -2347,6 +2802,16 @@
             "service_name": "VEN07_W-2025-1-0",
             "image": "{{ docker_account }}/viasoft.vendas.orcamento-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "VEN07_W-2025.1.0"
+          }
+        },
+        {
+          "role": "VEN07_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN07_W/templates/composes/2025.2.0/VEN07_W-compose.yml.j2",
+          "details": {
+            "service_name": "VEN07_W-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.vendas.orcamento-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "VEN07_W-2025.2.0"
           }
         },
         {
@@ -2370,6 +2835,16 @@
           }
         },
         {
+          "role": "VEN26",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN26/templates/composes/2025.2.0/VEN26-compose.yml.j2",
+          "details": {
+            "service_name": "VEN26-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.sales.crm.core-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "VEN26-2025.2.0"
+          }
+        },
+        {
           "role": "VEN27",
           "version_folder": "2024.2.0",
           "file_path": "roles/VEN27/templates/composes/2024.2.0/VEN27-compose.yml.j2",
@@ -2390,6 +2865,16 @@
           }
         },
         {
+          "role": "VEN27",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN27/templates/composes/2025.2.0/VEN27-compose.yml.j2",
+          "details": {
+            "service_name": "VEN27-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.sales.commercialproposal-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "VEN27-2025.2.0"
+          }
+        },
+        {
           "role": "VEN65",
           "version_folder": "2025.1.0",
           "file_path": "roles/VEN65/templates/composes/2025.1.0/VEN65-compose.yml.j2",
@@ -2407,6 +2892,26 @@
             "service_name": "korp-ecommerce-2025-1-0",
             "image": "{{ docker_account }}/korp.ecommerce:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.ECommerce-2025.1.0"
+          }
+        },
+        {
+          "role": "VEN65",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN65/templates/composes/2025.2.0/VEN65-compose.yml.j2",
+          "details": {
+            "service_name": "VEN65-2025-2-0",
+            "image": "{{ docker_account }}/korp.ecommerce-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "VEN65-2025.2.0"
+          }
+        },
+        {
+          "role": "VEN65",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN65/templates/composes/2025.2.0/VEN65-compose.yml.j2",
+          "details": {
+            "service_name": "korp-ecommerce-2025-2-0",
+            "image": "{{ docker_account }}/korp.ecommerce:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.ECommerce-2025.2.0"
           }
         },
         {
@@ -2450,6 +2955,26 @@
           }
         },
         {
+          "role": "VEN_WEB_01",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN_WEB_01/templates/composes/2025.2.0/VEN_WEB_01-compose.yml.j2",
+          "details": {
+            "service_name": "VEN_WEB_01-2025-2-0",
+            "image": "{{ docker_account }}/korp.vendas.automatizacaodefrete-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "VEN_WEB_01-2025.2.0"
+          }
+        },
+        {
+          "role": "VEN_WEB_01",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/VEN_WEB_01/templates/composes/2025.2.0/VEN_WEB_01-compose.yml.j2",
+          "details": {
+            "service_name": "korp-vendas-automatizacaodefrete-2025-2-0",
+            "image": "{{ docker_account }}/korp.vendas.automatizacaodefrete:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Vendas.AutomatizacaoDeFrete-2025.2.0"
+          }
+        },
+        {
           "role": "compras",
           "version_folder": "2024.2.0",
           "file_path": "roles/compras/templates/composes/2024.2.0/compras-compose.yml.j2",
@@ -2467,6 +2992,16 @@
             "service_name": "korp-compras-notafiscal-2025-1-0",
             "image": "{{ docker_account }}/korp.compras.notafiscal:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.Compras.NotaFiscal-2025.1.0"
+          }
+        },
+        {
+          "role": "compras",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/compras/templates/composes/2025.2.0/compras-compose.yml.j2",
+          "details": {
+            "service_name": "korp-compras-notafiscal-2025-2-0",
+            "image": "{{ docker_account }}/korp.compras.notafiscal:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Compras.NotaFiscal-2025.2.0"
           }
         },
         {
@@ -2510,6 +3045,26 @@
           }
         },
         {
+          "role": "engenharia",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/engenharia/templates/composes/2025.2.0/engenharia-compose.yml.j2",
+          "details": {
+            "service_name": "korp-engenharia-processo-2025-2-0",
+            "image": "{{ docker_account }}/korp.engenharia.processo:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Engenharia.Processo-2025.2.0"
+          }
+        },
+        {
+          "role": "engenharia",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/engenharia/templates/composes/2025.2.0/engenharia-compose.yml.j2",
+          "details": {
+            "service_name": "ENG50_W-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.engenharia.core-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "ENG50_W-2025.2.0"
+          }
+        },
+        {
           "role": "financeiro",
           "version_folder": "2024.2.0",
           "file_path": "roles/financeiro/templates/composes/2024.2.0/financeiro-compose.yml.j2",
@@ -2527,6 +3082,56 @@
             "service_name": "korp-financial-situation-2025-1-0",
             "image": "{{ docker_account }}/korp.financial.situation:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.Financial.Situation-2025.1.0"
+          }
+        },
+        {
+          "role": "financeiro",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/financeiro/templates/composes/2025.2.0/financeiro-compose.yml.j2",
+          "details": {
+            "service_name": "korp-financial-situation-2025-2-0",
+            "image": "{{ docker_account }}/korp.financial.situation:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Financial.Situation-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-desktop",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/infrastructure-desktop/templates/composes/2024.2.0/infrastructure-desktop-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authentication-2024-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authentication:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authentication-2024.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-desktop",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/infrastructure-desktop/templates/composes/2025.1.0/infrastructure-desktop-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authentication-2025-1-0",
+            "image": "{{ docker_account }}/korp.legacy.authentication:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authentication-2025.1.0"
+          }
+        },
+        {
+          "role": "infrastructure-desktop",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-desktop/templates/composes/2025.2.0/infrastructure-desktop-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authentication-2025-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authentication:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authentication-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2024.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2024.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authorization-2024-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authorization:2024.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authorization-2024.2.0"
           }
         },
         {
@@ -2574,6 +3179,16 @@
           "version_folder": "2025.1.0",
           "file_path": "roles/infrastructure-web/templates/composes/2025.1.0/infrastructure-web-compose.yml.j2",
           "details": {
+            "service_name": "korp-legacy-authorization-2025-1-0",
+            "image": "{{ docker_account }}/korp.legacy.authorization:2025.1.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authorization-2025.1.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.1.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.1.0/infrastructure-web-compose.yml.j2",
+          "details": {
             "service_name": "login-2025-1-0",
             "image": "{{ docker_account }}/viasoft.authentication-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "login-2025.1.0"
@@ -2607,6 +3222,56 @@
             "service_name": "REL01-2025-1-0",
             "image": "{{ docker_account }}/viasoft.relatorios-frontend:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "REL01-2025.1.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "korp-legacy-authorization-2025-2-0",
+            "image": "{{ docker_account }}/korp.legacy.authorization:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Legacy.Authorization-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "login-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.authentication-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "login-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "portal-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.portal-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "portal-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "ADM01-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.administration-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "ADM01-2025.2.0"
+          }
+        },
+        {
+          "role": "infrastructure-web",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/infrastructure-web/templates/composes/2025.2.0/infrastructure-web-compose.yml.j2",
+          "details": {
+            "service_name": "REL01-2025-2-0",
+            "image": "{{ docker_account }}/viasoft.relatorios-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "REL01-2025.2.0"
           }
         },
         {
@@ -2647,6 +3312,26 @@
             "service_name": "korp-logistica-saldoprodutos-2025-1-0",
             "image": "{{ docker_account }}/korp.logistica.saldoprodutos:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.Logistica.SaldoProdutos-2025.1.0"
+          }
+        },
+        {
+          "role": "logistica",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/logistica/templates/composes/2025.2.0/logistica-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistic-tracking-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistic.tracking:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistic.Tracking-2025.2.0"
+          }
+        },
+        {
+          "role": "logistica",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/logistica/templates/composes/2025.2.0/logistica-compose.yml.j2",
+          "details": {
+            "service_name": "korp-logistica-saldoprodutos-2025-2-0",
+            "image": "{{ docker_account }}/korp.logistica.saldoprodutos:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Logistica.SaldoProdutos-2025.2.0"
           }
         },
         {
@@ -2707,6 +3392,36 @@
             "service_name": "korp-vendas-listapreco-2025-1-0",
             "image": "{{ docker_account }}/korp.vendas.listapreco:2025.1.0.x{{ docker_image_suffix }}",
             "container_name": "Korp.Vendas.ListaPreco-2025.1.0"
+          }
+        },
+        {
+          "role": "vendas",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/vendas/templates/composes/2025.2.0/vendas-compose.yml.j2",
+          "details": {
+            "service_name": "korp-vendas-custoproduto-2025-2-0",
+            "image": "{{ docker_account }}/korp.vendas.custoproduto:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Vendas.CustoProduto-2025.2.0"
+          }
+        },
+        {
+          "role": "vendas",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/vendas/templates/composes/2025.2.0/vendas-compose.yml.j2",
+          "details": {
+            "service_name": "korp-sales-pricecontrol-2025-2-0",
+            "image": "{{ docker_account }}/korp.sales.pricecontrol:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Sales.PriceControl-2025.2.0"
+          }
+        },
+        {
+          "role": "vendas",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/vendas/templates/composes/2025.2.0/vendas-compose.yml.j2",
+          "details": {
+            "service_name": "korp-vendas-listapreco-2025-2-0",
+            "image": "{{ docker_account }}/korp.vendas.listapreco:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Vendas.ListaPreco-2025.2.0"
           }
         }
       ]

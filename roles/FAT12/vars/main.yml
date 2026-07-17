@@ -8,3 +8,4 @@ services:
     db:
       name: Viasoft_Billing_CTE_SEFAZ
       type: postgres
+    custom_kv_overwrite: ["ACBr"]

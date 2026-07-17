@@ -47,12 +47,47 @@
   loop_control:
     extended: true
 
+- name: Checagem de compose versionado de frontends infrastructure-web
+  ansible.builtin.set_fact:
+    versioned_frontend_compose_exists: >-
+      {{
+        lookup(
+          'ansible.builtin.fileglob',
+          playbook_dir ~ '/roles/infrastructure-web/templates/composes/' ~ version_without_build ~ '/*',
+          wantlist=True
+        ) | select('search', 'infrastructure-web-compose.yml.j2') | list | length > 0
+      }}
+
+- name: Criação de diretório de composes versionados infrastructure-web
+  ansible.builtin.file:
+    path: "{{ versioned_compose_dir_path }}/"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  when: versioned_frontend_compose_exists
+
+- name: Configuração e transferência de compose versionado de frontends infrastructure-web
+  ansible.builtin.template:
+    dest: "{{ versioned_compose_dir_path }}/infrastructure-web-compose.yml"
+    src: "{{ playbook_dir }}/roles/infrastructure-web/templates/composes/{{ version_without_build }}/infrastructure-web-compose.yml.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  when: versioned_frontend_compose_exists
+
 - name: Criação e inicialização de compose de infraestrutura WEB
   community.docker.docker_compose_v2:
     project_src: "{{ korp_dir_path }}/composes/"
     env_files: ["{{ docker_env_file_path }}"]
-    files:
-      - infrastructure-web-compose.yml
+    files: "{{ infrastructure_web_compose_files }}"
+  vars:
+    infrastructure_web_compose_files: >-
+      {{
+        ['infrastructure-web-compose.yml', version_without_build ~ '/infrastructure-web-compose.yml']
+        if versioned_frontend_compose_exists
+        else ['infrastructure-web-compose.yml']
+      }}
 
 - name: Remoção HybridProxy caso exista
   community.docker.docker_container:
