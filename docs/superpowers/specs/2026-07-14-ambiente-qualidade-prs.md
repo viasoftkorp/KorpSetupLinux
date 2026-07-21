@@ -125,7 +125,7 @@ image: "korp/korp.compras.core:2025.1.0.x"
 | 25 | Serviços Delphi | **Dentro do entregável**, como 2º mecanismo (Windows) despachado por `kind` — fase 2, não projeto à parte (ver Componente 4) |
 | 26 | Famílias Delphi | **Duas**: Delphi do ERP e Delphi do Nuvem Fiscal — dois Jenkinsfiles distintos a alterar (ver Componente 4) |
 | 27 | Escrita do Jenkins no MinIO | Reusa a `MINIO_INTERNO_KEY`; policy dela ganha `PutObject` em `arn:aws:s3:::qa-prs/prs/*` (ver Componente 0) |
-| 28 | Upload do relatório em C#/frontend | Adicionar aws às imagens. **frontend**: só `1.1.x` (117 svc, sem aws); `1.0.x` é o default (19 svc) e já tem. **csharp**: `.1.0.5`/`.1.0.7` descomentar aws (41 svc) **+ default `1.0.4` (335 svc, sem aws, sem Dockerfile — decisão pendente)**. **golang**: default `1.1.8` já tem. Só v3 (ver 1.3) |
+| 28 | Upload do relatório em C#/frontend | Adicionar aws às imagens (defaults: frontend `1.0.x`, golang `1.1.12`, csharp `1.0.6`). **frontend**: adicionar na `.1.1.x` (117 svc); `.1.0.x` (default, 19) já tem. **csharp**: adicionar na `.1.0.6` (default, 335 svc) + descomentar em `.1.0.5`/`.1.0.7` (41). **golang**: `.1.1.12` já tem. Só v3 (ver 1.3) |
 
 ---
 
@@ -345,27 +345,33 @@ Conteúdo proposto (serviço **container**):
 
 **Decidido:** incluir `aws`/`mc` nas imagens de build C#/frontend e reusar a lógica do `publishS3` do golang. Vale extrair o upload como **função/estágio compartilhado** entre os três templates, não copiar três vezes. (Alternativa descartada: helper `curl`+SigV4, que evitaria mexer nas imagens.)
 
-**Qual Dockerfile mexer — verificado (2026-07-16).** As imagens vivem no repo `iac` (GitHub `viasoftkorp/iac`), em `korp-iac/Docker/jenkins/` (pasta `korp-iac` **dentro** do repo `iac` — não confundir com o clone standalone `korp-iac`), versionadas por sufixo que casa com a `jnlpImageTag` de cada serviço. **Quando o serviço não declara `jnlpImageTag`, o gerador aplica um default por buildType** — `viasoft.jenkins/services/jenkinsfile_generator/utils_v3.go:277` (`resolveJnlpImageTagV3`): frontend→`1.0.x`, golang→`1.1.8`, csharp→`1.0.4`.
+**Qual Dockerfile mexer — verificado (2026-07-21).** Fontes usadas (todas reconfirmadas após limpeza de repos obsoletos): defaults do gerador em **`sdk/viasoft.jenkins`** (`services/jenkinsfile_generator/utils_v3.go`, `resolveJnlpImageTagV3`); Dockerfiles em **`iac`**, `korp-iac/Docker/jenkins/`; aws de fato na **imagem publicada** (DockerHub). Quando o serviço não declara `jnlpImageTag`, o gerador aplica um default por buildType:
 
-Cruzei três fontes: a `jnlpImageTag` real em **137 Jenkinsfiles frontend** e **376 csharp** (branches `master`, `release/2025.1.0.x`, `release/2024.2.0.x` de logistica, vendas, producao, faturamento, projetos, sdk, compras), o default do gerador, e o **aws de fato presente na imagem publicada** (lido do config no DockerHub):
+| buildType | default (v3, fonte atual) |
+|---|---|
+| frontend | `1.0.x` |
+| golang | `1.1.12` |
+| csharp | `1.0.6` |
+
+Cruzando com a `jnlpImageTag` real de **137 Jenkinsfiles frontend** e **376 csharp** (branches `master`, `release/2025.1.0.x`, `release/2024.2.0.x` de logistica, vendas, producao, faturamento, projetos, sdk, compras) e o aws presente em cada imagem:
 
 | Stack | Tag | Serviços | aws na imagem | Dockerfile | Ação |
 |---|---|---|---|---|---|
-| **frontend** | `1.1.x` (explícito) | 117 | ❌ | `frontend/jnlp-frontend.Dockerfile.1.1.x` | **adicionar aws** |
+| **frontend** | `1.1.x` (explícito) | 117 | ❌ | `frontend/jnlp-frontend.Dockerfile.1.1.x` (sem bloco aws) | **adicionar aws** |
 | frontend | `1.0.x` (**default**) | 19 | ✅ | `frontend/jnlp-frontend.Dockerfile.1.0.x` | nenhuma |
-| **csharp** | `1.0.4` (**default**) | **335** | ❌ | **não existe na pasta** (dotnet 6, build nov/24) | ver bloco abaixo ⚠️ |
-| csharp | `1.0.5` (explícito) | 36 | ❌ | `jnlp-csharp.Dockerfile.1.0.5` (aws comentado) | descomentar aws |
-| csharp | `1.0.7` (explícito) | 5 | ❌ | `jnlp-csharp.Dockerfile.1.0.7` (aws comentado) | descomentar aws |
-| csharp | `1.0.6` | 0 | ❌ | `jnlp-csharp.Dockerfile.1.0.6` | — (não usada) |
-| **golang** | `1.1.8` (**default**) | 108 (todos) | ✅ | — | nenhuma |
+| **csharp** | `1.0.6` (**default**) | **335** | ❌ | `jnlp-csharp.Dockerfile.1.0.6` (dotnet 6, sem bloco aws) | **adicionar aws** |
+| **csharp** | `1.0.5` (explícito) | 36 | ❌ | `jnlp-csharp.Dockerfile.1.0.5` (aws comentado) | descomentar aws |
+| **csharp** | `1.0.7` (explícito) | 5 | ❌ | `jnlp-csharp.Dockerfile.1.0.7` (aws comentado) | descomentar aws |
+| **golang** | `1.1.12` (**default**) | 108 (todos) | ✅ | — | nenhuma |
 
-> ⚠️ **Duas correções de análise minhas — o default muda tudo.** (1) A `1.0.x` do frontend **não** é obsoleta: é o **default**, usada pelos 19 serviços sem pin, e **tem** aws. A que falta aws é a `1.1.x`, fixada explicitamente por 117. (2) Anomalia: a `1.1.x` (build abr/2024) é mais **antiga** que a `1.0.x` (nov/2024) e não tem aws — o número maior não é o mais novo.
+**Resumo da ação (item 2):**
+- **frontend:** adicionar aws na `.1.1.x` (117 svc). A `.1.0.x` (default, 19 svc) já tem — não é obsoleta, é o default.
+- **csharp:** as **três** tags vivas precisam de aws — `.1.0.6` (default, 335 svc → **adicionar**, bloco ausente), `.1.0.5` e `.1.0.7` (→ **descomentar**, 36+5 svc).
+- **golang:** nada — default `1.1.12` já tem aws (verificado, build jun/2025).
 
-**⚠️ Problema do csharp default `1.0.4` (335 serviços = 89%).** A imagem que a **maioria** dos serviços csharp usa **não tem aws**, é dotnet 6, foi buildada em nov/2024 e **não tem Dockerfile na pasta** (lá só há `.1.0.5`, `.1.0.6`, `.1.0.7`). Descomentar aws em `.1.0.5`/`.1.0.7` cobre só 41 serviços; os 335 do default ficariam sem o upload do relatório. Precisa de decisão — duas saídas:
-> - **(a)** recuperar/recriar o Dockerfile da `1.0.4` e adicionar aws (mantém dotnet 6);
-> - **(b)** mudar o default do csharp no gerador (`utils_v3.go:286`, hoje `1.0.4`) para uma tag mantida (ex: `1.0.7`) com aws — migra os 335 de uma vez, **mas** muda dotnet 6 → 10, o que pode quebrar serviços que dependem de dotnet 6.
+> **Nota de proveniência.** Uma versão anterior deste bloco dizia default csharp `1.0.4` / golang `1.1.8` e um "problema de Dockerfile faltante" — **estava errado**, lido de um clone `viasoft.jenkins` obsoleto (depois apagado). O fonte atual é `sdk/viasoft.jenkins`; o default csharp é `1.0.6`, que **tem** Dockerfile (a `.1.0.6`). Não há Dockerfile faltante nem decisão pendente sobre o `1.0.4`.
 
-**Comparação `1.0.5` × `1.0.7` (DockerHub, sem baixar).** Confirmam-se como fontes das tags e diferem só no .NET SDK: `1.0.5` = `dotnet-sdk-10.0` (sem pin, dez/2025); `1.0.7` = `dotnet-sdk-10.0=10.0.301` (jul/2026). Nenhuma tem aws. A `1.0.6` (sem-sufixo renomeada) é dotnet 6, sem serviço a usar.
+**Comparação `1.0.5` × `1.0.7` (DockerHub, sem baixar).** Diferem só no .NET SDK: `1.0.5` = `dotnet-sdk-10.0` (sem pin, dez/2025); `1.0.7` = `dotnet-sdk-10.0=10.0.301` (jul/2026). Nenhuma tem aws. A `1.0.6` (default) é dotnet 6.
 
 ### 1.4 Parcels de frontend
 
