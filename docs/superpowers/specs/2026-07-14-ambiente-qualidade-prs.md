@@ -366,11 +366,11 @@ Mapeamento Dockerfile ↔ tag — os Dockerfiles vivem no repo **`iac`** (GitHub
 |---|---|---|---|
 | `jnlp-csharp.Dockerfile.1.0.5` | `dotnet-sdk-10.0` (sem pin) | DockerHub `1.0.5` (36 serviços) | comentado |
 | `jnlp-csharp.Dockerfile.1.0.7` | `dotnet-sdk-10.0=10.0.301` | DockerHub `1.0.7` (5 serviços) | comentado |
-| `jnlp-csharp.Dockerfile` (sem sufixo) | `dotnet-sdk-6.0` | legada — **nem** 1.0.5 **nem** 1.0.7 | — |
+| `jnlp-csharp.Dockerfile` (sem sufixo) | `dotnet-sdk-6.0` | DockerHub `1.0.6` (dotnet 6) — **0 serviços** a fixam | — |
 
-As **duas tags vivas** (`.1.0.5` e `.1.0.7`) têm Dockerfile próprio, ambos com o bloco aws **comentado** — verificado. O `10.0.301` pinado no `.1.0.7` bate exatamente com a imagem publicada, confirmando que é a fonte dela.
+As **duas tags vivas** (`.1.0.5` e `.1.0.7`) têm Dockerfile próprio, ambos com o bloco aws **comentado** — verificado. O `10.0.301` pinado no `.1.0.7` bate exatamente com a imagem publicada, confirmando que é a fonte dela. A sem-sufixo é a fonte da `1.0.6` (dotnet 6, verificado no DockerHub), que **nenhum** dos 376 serviços pesquisados fixa.
 
-**Ação csharp:** descomentar o bloco aws nas **duas** Dockerfiles (`.1.0.5` e `.1.0.7`), já que ambas as tags estão em uso (36 + 5 serviços). A sem-sufixo (dotnet 6) é legada e não entra.
+**Ação csharp:** descomentar o bloco aws nas **duas** Dockerfiles vivas (`.1.0.5` e `.1.0.7`), já que ambas as tags estão em uso (36 + 5 serviços). A sem-sufixo (`1.0.6`, dotnet 6) fica fora — nenhum serviço a usa; só entraria se algum passar a fixar `1.0.6`.
 
 ### 1.4 Parcels de frontend
 
