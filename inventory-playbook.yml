@@ -48,6 +48,7 @@
         api_gateway: ""
       configure_api_gateway_dns: false # variavel pode ser alterada pelo setup.sh obrigando a configuração do DNS api-gateway.
       https_port: ""
+      http_use_secure_only_tls_protocols: false
       external_reverse_proxy: false
       use_servergc: false
       expose_postgres: false
@@ -573,6 +574,7 @@
               'api_gateway': shrink_inventory.dns.api_gateway | default (dns_api_gateway, true)
             },
             'https_port': shrink_inventory.https_port | default (https_port) | string,
+            'http_use_secure_only_tls_protocols': shrink_inventory.http_use_secure_only_tls_protocols | default (custom_setup_info.http_use_secure_only_tls_protocols | bool),
             'reverse_proxy': {
               'external': reverse_proxy.external | default (custom_setup_info.external_reverse_proxy),
               'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),

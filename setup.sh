@@ -38,6 +38,7 @@ create_random_string() {
 #   configure_api_gateway_dns=<bool> - OPCIONAL, padrão false - Caso true obriga a configuração de dns_api_gateway no inventário
 ## HTTPS
 #   https_port="<port>" - OPCIONAL - porta usada para conectar ao portal local por https, padrão '443'
+#   http_use_secure_only_tls_protocols=<bool> - OPCIONAL, padrão false - Restringe o Nginx a TLSv1.2 e TLSv1.3
 ## Proxy reverso
 #   external_reverse_proxy=<bool> - OPCIONAL - Habilita o proxy reverso para ser feito fora do servidor de Linux
 ## Porta Postgres
@@ -210,6 +211,7 @@ cat > /tmp/vars.json <<EOF
     },
     "configure_api_gateway_dns": "$configure_api_gateway_dns",
     "https_port": "$https_port",
+    "http_use_secure_only_tls_protocols": "$http_use_secure_only_tls_protocols",
     "external_reverse_proxy": "$external_reverse_proxy",
     "use_servergc": "$use_servergc",
     "expose_postgres": "$expose_postgres"
