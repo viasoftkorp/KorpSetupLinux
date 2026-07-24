@@ -56,7 +56,7 @@ Jenkins (um job por serviço) ──▶ detecta alteração em <servico>/ ──
                                         │ com alteração
                                         ├──▶ push  korp/<servico>:<versao>.x-pr<N>
                                         └──▶ relatório  minio-interno.korp.com.br
-                                                   prs/<N>/<servico>.json
+                                                   prs/<repo>/<N>/<servico>.json
                                                           │
 Qualidade ──▶ VM ──▶ role de PRs (prs=123,456) ───────────┘
                           │
@@ -104,7 +104,7 @@ image: "korp/korp.compras.core:2025.1.0.x"
 | 4 | Baseline | Suffix vazio: `korp/korp.compras.core:2025.1.0.x` |
 | 5 | Reset | Role dedicada: apaga os overrides e volta ao baseline |
 | 6 | VMs | 5, idênticas inicialmente |
-| 7 | Input da Qualidade | **Lista de PRs** (não a tarefa) |
+| 7 | Input da Qualidade | **Lista de PRs por link completo do GitHub** (`https://github.com/viasoftkorp/<repo>/pull/<N>`) — o playbook extrai `<repo>`+`<N>` e lê `prs/<repo>/<N>/`. Link resolve a ambiguidade do nº de PR (Achado 3) e é o que a QA copia do navegador. Não a tarefa |
 | 8 | Onde mora o código | Roles novas no `KorpSetupLinux`, só para ambientes internos |
 | 9 | Versão da tag no build | O Jenkins resolve |
 | 10 | Forma de aplicar | **Arquivo de override**, uma pasta por PR |
@@ -244,18 +244,18 @@ Com leitura anônima, nada disso existe: a role dispensa credencial **e** CLI.
 ### Como a role lê o bucket
 
 ```yaml
-- ansible.builtin.uri:                                    # listar os serviços do PR
-    url: "https://minio-interno-api.korp.com.br/qa-prs/?list-type=2&prefix=prs/123/"
+- ansible.builtin.uri:                                    # listar os serviços do PR compras#123
+    url: "https://minio-interno-api.korp.com.br/qa-prs/?list-type=2&prefix=prs/compras/123/"
     return_content: true
 
 - ansible.builtin.uri:                                    # ler um relatório
-    url: "https://minio-interno-api.korp.com.br/qa-prs/prs/123/korp.compras.core.json"
+    url: "https://minio-interno-api.korp.com.br/qa-prs/prs/compras/123/korp.compras.core.json"
     return_content: true
 ```
 
-Sem `mc`, sem `aws`, sem boto3, sem collection nova, sem tocar no `setup.sh`. A listagem devolve XML (ListObjectsV2 não tem saída JSON) — o parse é detalhe de implementação da role.
+Sem `mc`, sem `aws`, sem boto3, sem collection nova, sem tocar no `setup.sh`. A listagem devolve XML (ListObjectsV2 não tem saída JSON) — o parse é detalhe de implementação da role. O `<repo>` e o `<N>` vêm do que a QA informou (ver decisão 7).
 
-**O que fica exposto na rede interna:** repositório, branch, ticket, serviço, imagem, tag, commit e build. Nenhum segredo.
+**O que fica exposto na rede interna:** repositório, branch, serviço, imagem, tag, commit e build. Nenhum segredo.
 
 O item 4 cobre só o acúmulo dos **relatórios**. O acúmulo de **tags no DockerHub** (decisão 1, tag imutável) é risco separado e segue sem dono.
 
@@ -310,12 +310,14 @@ O caminho `arm=false` **já é exercitado hoje** pelos jobs configurados sem ARM
 Após o push, cada job escreve **seu próprio arquivo** no bucket do MinIO interno (endpoint da API — ver Componente 0):
 
 ```text
-prs/<N>/<servico>.json
+prs/<repo>/<N>/<servico>.json
 ```
 
-O nome do arquivo é o **nome do repositório da imagem** (`korp.compras.core`, `sdk.flow-parcel`), não o nome do serviço no Jenkins — é ele que a role vai casar contra os composes.
+`<repo>` = `GITHUB_REPOSITORY_NAME` (ex: `compras`), `<N>` = número do PR, `<servico>` = **nome do repositório da imagem** (`korp.compras.core`, `sdk.flow-parcel`), não o nome do serviço no Jenkins — é ele que a role vai casar contra os composes.
 
-Um arquivo por (PR, serviço): cada job escreve só o seu, então não há coordenação nem race entre jobs concorrentes do mesmo PR. Um job de frontend pode emitir **vários** arquivos — um do app e um por parcel (ver 1.4) — e continua sendo dono exclusivo de todos eles. A role descobre os serviços do PR listando `prs/<N>/` (`ListObjects`). Cada build **sobrescreve** o arquivo do seu serviço, então o relatório sempre aponta para o build mais recente.
+**Por que `<repo>` na chave:** número de PR é único **por repositório**, então `compras#123` e `vendas#123` colidiriam em `prs/123/`. Incluir o repo (`prs/compras/123/` × `prs/vendas/123/`) elimina a colisão (ver Achado 3).
+
+Um arquivo por (PR, serviço): cada job escreve só o seu, então não há coordenação nem race entre jobs concorrentes do mesmo PR. Um job de frontend pode emitir **vários** arquivos — um do app e um por parcel (ver 1.4) — e continua sendo dono exclusivo de todos eles. A role descobre os serviços do PR listando `prs/<repo>/<N>/` (`ListObjects`). Cada build **sobrescreve** o arquivo do seu serviço, então o relatório sempre aponta para o build mais recente.
 
 Com a tag imutável (decisão 1), **o relatório deixa de ser conveniência e vira obrigatório**: o `BUILD_NUMBER` é inadivinhável, então não há como montar a tag na mão — o relatório é a única fonte da verdade.
 
@@ -325,9 +327,8 @@ Conteúdo proposto (serviço **container**):
 {
   "kind": "container",
   "pr": 123,
-  "repositorio": "viasoftkorp/korp.compras",
+  "repositorio": "compras",
   "branch": "DEVO-6592-ajuste-x",
-  "ticket": "DEVO-6592",
   "servico": "korp.compras.core",
   "imagem": "korp/korp.compras.core",
   "tag": "2025.1.0.42-pr123",
@@ -337,7 +338,7 @@ Conteúdo proposto (serviço **container**):
 }
 ```
 
-`repositorio`, `ticket` e `versao` não são consumidos pela role no MVP, mas tornam o relatório legível e destravam a evolução "informar a tarefa" (Achado 4) sem mudar o contrato.
+`repositorio` (= `GITHUB_REPOSITORY_NAME`, ex: `compras`) compõe a chave (ver abaixo) e `versao` é legibilidade. O campo `ticket` foi **removido**: não era requisito nem consumido, e era o único que exigia regex — o `Matcher` não-serializável causava `NotSerializableException` no Jenkins. Se o ticket for necessário no futuro, é derivável do `branch`.
 
 **O campo `kind` é a camada de abstração que unifica o entregável.** A ferramenta da QA lê o relatório e despacha pelo `kind`: `container` → mecanismo Linux (troca de tag no compose); `delphi` → mecanismo Windows (Componente 4). O relatório de um Delphi carrega, no lugar de `imagem`/`tag`, o que o Windows precisa para buscar o binário (ex: caminho no share SMB) — formato a definir no Componente 4. Assim a QA informa uma lista única de PRs e a distinção container/Windows fica invisível para ela.
 
@@ -524,9 +525,11 @@ if (env.CHANGE_ID) {
 
 Um job por serviço, cada um filtrando o próprio diretório: o conjunto de jobs que efetivamente buildam num PR **já é** a lista de serviços afetados. É por isso que o relatório sai de graça — quem escreve é o job que buildou, e ele só chega lá se tinha alteração.
 
-### Achado 3 — `-pr<N>` não identifica um PR globalmente
+### Achado 3 — `-pr<N>` não identifica um PR globalmente — ✅ RESOLVIDO
 
-Número de PR é único **por repositório**: `korp.compras#123` e `korp.vendas#123` coexistem e geram a mesma tag `2025.1.0.x-pr123` — em imagens diferentes, então não há colisão no DockerHub. Mas o relatório em `prs/<N>/` **junta os dois** na mesma pasta, e aplicar `123` aplicaria serviços dos dois PRs. Risco aceito no MVP (ver decisão 16); o campo `repositorio` no relatório deixa o diagnóstico óbvio se acontecer.
+Número de PR é único **por repositório**: `korp.compras#123` e `korp.vendas#123` coexistem e geram a mesma tag `2025.1.0.42-pr123` — em imagens diferentes, então não há colisão no DockerHub. Mas o relatório, gravado em `prs/<N>/`, juntaria os dois na mesma pasta, e aplicar `123` aplicaria serviços dos dois PRs.
+
+**Resolvido:** a chave do relatório inclui o repositório — `prs/<repo>/<N>/<servico>.json` — e a QA informa o PR **qualificado pelo repo** (link completo do GitHub, ver decisão 7). Assim `compras#123` e `vendas#123` nunca se cruzam. (Esteve arquivado como risco aceito no MVP; foi uma decisão errada — é bug de correção, não risco cosmético.)
 
 ### Achado 4 — O ticket já é extraído da branch
 
@@ -546,7 +549,6 @@ Número de PR é único **por repositório**: `korp.compras#123` e `korp.vendas#
 | Proliferação de tags no DockerHub | Tag imutável (decisão 1): cada push de cada PR cria uma tag permanente, e as camadas antigas deixam de ser coletadas. Sem política de retenção nesta versão |
 | Novo push não chega sozinho ao ambiente | O ambiente fica pinado no build aplicado; pegar o commit novo exige re-executar a role |
 | Validação de versão (PR × VM) | PR de `release/2024.2.0.x` numa VM 2025.1.0 não encontra serviço — falha ou no-op, sem mensagem dedicada |
-| Colisão de nº de PR entre repositórios | Aplicar `123` pode trazer serviços de outro repositório (Achado 3) |
 | Dois PRs no mesmo serviço | O último vence, em silêncio |
 | Execução em cliente final | Sem trava |
 | Alocação PR × VM | Dois testadores podem colidir na mesma VM |
