@@ -52,6 +52,7 @@ docker_image_suffix="";
 db_suffix="";
 dns_api=""; dns_frontend=""; dns_cdn=""; dns_api_gateway="";
 https_port="";
+http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
 

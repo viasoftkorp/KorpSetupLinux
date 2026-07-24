@@ -465,6 +465,11 @@
         https_port: "{{ custom_setup_info.https_port }}"
       when: custom_setup_info.https_port != ''
 
+    - name: Definição de http_use_secure_only_tls_protocols
+      ansible.builtin.set_fact:
+        http_use_secure_only_tls_protocols: "{{ custom_setup_info.http_use_secure_only_tls_protocols | bool }}"
+      when: custom_setup_info.http_use_secure_only_tls_protocols | default('') | length > 0
+
     - name: Definição de nova senha aleatória para postgres
       ansible.builtin.set_fact:
         postgres_new_pass: "{{ lookup('community.general.random_string', length=16, special=False) }}"
@@ -573,7 +578,7 @@
               'api_gateway': shrink_inventory.dns.api_gateway | default (dns_api_gateway, true)
             },
             'https_port': shrink_inventory.https_port | default (https_port) | string,
-            'http_use_secure_only_tls_protocols': shrink_inventory.http_use_secure_only_tls_protocols | default (custom_setup_info.http_use_secure_only_tls_protocols | bool),
+            'http_use_secure_only_tls_protocols': http_use_secure_only_tls_protocols | default (shrink_inventory.http_use_secure_only_tls_protocols | default (false)),
             'reverse_proxy': {
               'external': reverse_proxy.external | default (custom_setup_info.external_reverse_proxy),
               'use_local_for_containers': reverse_proxy.use_local_for_containers | default (true),
