@@ -57,6 +57,19 @@
         owner: "{{ linux_korp.user }}"
         group: root
 
+    - name: Configuração de ssl_conf do nginx
+      ansible.builtin.template:
+        dest: "{{ config_dir_path }}/nginx/ssl_conf"
+        src: "configs/nginx/ssl_conf.j2"
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0644'
+      register: nginx_ssl_conf_status
+
+    - name: Reinício do container nginx
+      ansible.builtin.import_tasks: nginx_restart.yml
+      when: nginx_ssl_conf_status.changed
+
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:
         dest: "{{ config_dir_path }}/nginx/{{ item }}"
@@ -65,8 +78,8 @@
         group: root
         mode: '0644'
       loop:
-        - "ssl_conf"
         - "default_conf"
+
     - name: Configuração e transferência de arquivos de nginx
       ansible.builtin.template:
         dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
