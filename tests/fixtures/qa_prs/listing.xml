@@ -1,0 +1,5 @@
+<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <IsTruncated>false</IsTruncated>
+  <Contents><Key>prs/compras/123/korp.compras.core.json</Key></Contents>
+  <Contents><Key>prs/compras/999/outro.json</Key></Contents>
+</ListBucketResult>
