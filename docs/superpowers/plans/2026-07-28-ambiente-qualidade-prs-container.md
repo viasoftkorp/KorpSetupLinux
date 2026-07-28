@@ -529,15 +529,17 @@ Implement these rules in pure Python:
 1. Validate policy against ask, replace, keep and fail.
 2. Group existing owners and incoming targets by identity.
 3. Same numeric pr is a refresh, not a conflict; active overrides only persist korp.pr=<N>, so the existing owner is displayed as #<N>.
-4. Different pr_key is a conflict containing current and incoming.
-5. For ask, require one decision per target_id; missing/invalid input becomes abort.
-6. If any decision is abort, or policy is fail with conflicts, return may_mutate=False and no writes/deletes/compose_runs.
-7. keep removes only the incoming conflict from apply_targets.
-8. replace records removal from the current override and accepts the incoming target.
-9. Group accepted targets by override_path and compose run identity.
-10. compose_runs contains project_src, files=[compose_file, relative override path] and the unique service keys in services.
-11. Build writes by removing replaced service keys from old override dictionaries and merging accepted targets.
-12. Delete an old override file if its services dictionary becomes empty.
+4. Different numeric pr is a conflict containing current and incoming.
+5. Evaluate candidates in input order. The simulated owner advances only when a candidate is accepted; keep leaves the current owner unchanged.
+6. For ask, require one decision per conflicting target_id; missing/invalid input becomes abort.
+7. If any decision is abort, or policy is fail with conflicts, return may_mutate=False and no writes/deletes/compose_runs.
+8. keep removes only the incoming conflict from apply_targets.
+9. replace transfers ownership to the incoming target. When replacing a persisted owner, record its service removal; when replacing a candidate accepted earlier in the same batch, supersede that candidate without writing its override.
+10. Keep accepted targets indexed by identity so the final plan contains at most one owner for each service.
+11. Group final accepted targets by override_path and compose run identity.
+12. compose_runs contains project_src, files=[compose_file, relative override path] and the unique service keys in services.
+13. Build writes by removing replaced service keys from old override dictionaries and merging accepted targets.
+14. Delete an old override file if its services dictionary becomes empty.
 
 Implement the public functions with this control flow:
 
@@ -565,12 +567,17 @@ def resolve_application(targets, active_owners, policy, decisions=None):
     conflicts = detect_conflicts(targets, active_owners)
     if policy == "fail" and conflicts:
         return empty_plan(conflicts)
-    accepted, skipped, removals = [], [], []
-    conflict_by_target = {item["target_id"]: item for item in conflicts}
+    accepted_by_identity, skipped, removals = {}, [], []
+    owners = {
+        identity: {"owner": owner, "persisted": True}
+        for identity, owner in active_owners.items()
+    }
     for target in targets:
-        conflict = conflict_by_target.get(target["target_id"])
+        state = owners.get(target["identity"])
+        conflict = state and state["owner"]["pr"] != target["pr"]
         if not conflict:
-            accepted.append(target)
+            accepted_by_identity[target["identity"]] = target
+            owners[target["identity"]] = {"owner": target, "persisted": False}
             continue
         decision = policy if policy != "ask" else decisions.get(target["target_id"], "abort")
         if decision == "abort":
@@ -580,19 +587,29 @@ def resolve_application(targets, active_owners, policy, decisions=None):
             continue
         if decision != "replace":
             return empty_plan(conflicts)
-        removals.append({
-            "path": conflict["current"]["override_path"],
-            "service_key": target["service_key"],
-        })
-        accepted.append(target)
-    return build_mutation_plan(accepted, skipped, removals, conflicts, active_owners)
+        if state["persisted"]:
+            removals.append({
+                "path": state["owner"]["override_path"],
+                "service_key": target["service_key"],
+            })
+        else:
+            accepted_by_identity.pop(target["identity"], None)
+        accepted_by_identity[target["identity"]] = target
+        owners[target["identity"]] = {"owner": target, "persisted": False}
+    return build_mutation_plan(
+        list(accepted_by_identity.values()),
+        skipped,
+        removals,
+        conflicts,
+        active_owners,
+    )
 ~~~
 
-empty_plan always returns may_mutate false and empty mutation lists. build_mutation_plan performs rules 9–12 above without filesystem access, using deep copies of the supplied override content. Register qa_pr_index_active_overrides, qa_pr_detect_conflicts and qa_pr_resolve_application in FilterModule.
+empty_plan always returns may_mutate false and empty mutation lists. build_mutation_plan performs rules 11–14 above without filesystem access, using deep copies of the supplied override content. Register qa_pr_index_active_overrides, qa_pr_detect_conflicts and qa_pr_resolve_application in FilterModule.
 
 - [ ] **Step 4: Add mutation-shape tests**
 
-Assert that replace of the only service deletes the old file; replace when the old file has another service rewrites it; multiple accepted services for the same PR/AppId produce one write and one compose run with two service keys.
+Assert that replace of the only service deletes the old file; replace when the old file has another service rewrites it; multiple accepted services for the same PR/AppId produce one write and one compose run with two service keys. Add a batch test with two incoming PRs for the same identity and mixed replace/keep decisions, proving that only the simulated final owner is written.
 
 - [ ] **Step 5: Run all unit tests**
 
