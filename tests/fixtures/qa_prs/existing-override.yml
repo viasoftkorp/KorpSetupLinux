@@ -1,0 +1,9 @@
+services:
+  wms-core:
+    image: korp/wms-core:pr579
+    labels:
+      korp.pr: "579"
+  wms-gateway:
+    image: korp/wms-gateway:pr579
+    labels:
+      korp.pr: "579"
