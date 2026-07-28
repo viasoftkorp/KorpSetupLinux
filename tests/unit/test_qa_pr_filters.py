@@ -93,3 +93,53 @@ class ReportParsingTests(unittest.TestCase):
                 123,
                 "prs/compras/123/KorpCadastrosService.json",
             )
+
+
+class BuildTargetsTests(unittest.TestCase):
+    def test_finds_service_by_image_and_keeps_yaml_service_key(self):
+        reports = [{
+            "pr_key": "compras#123",
+            "repositorio": "compras",
+            "pr": 123,
+            "servico": "korp.compras.core",
+            "imagem": "korp/korp.compras.core",
+            "tag": "2025.1.0.42-pr123",
+            "desired_image": "korp/korp.compras.core:2025.1.0.42-pr123",
+        }]
+        compose_files = [{
+            "path": "/etc/korp/composes/compras-compose.yml",
+            "content": {
+                "services": {
+                    "korp-compras-core": {
+                        "image": "korp/korp.compras.core:2025.1.0.x"
+                    }
+                }
+            },
+        }]
+        targets = filters.build_targets(reports, compose_files)
+        self.assertEqual(targets[0]["service_key"], "korp-compras-core")
+        self.assertEqual(targets[0]["project_src"], "/etc/korp/composes")
+        self.assertEqual(
+            targets[0]["override_path"],
+            "/etc/korp/composes/pr-overrides/pr123/compras-compose.yml",
+        )
+
+    def test_rejects_service_not_found_or_duplicated(self):
+        report = {
+            "pr_key": "compras#123",
+            "repositorio": "compras",
+            "pr": 123,
+            "servico": "korp.compras.core",
+            "imagem": "korp/korp.compras.core",
+            "tag": "2025.1.0.42-pr123",
+            "desired_image": "korp/korp.compras.core:2025.1.0.42-pr123",
+        }
+        with self.assertRaises(ValueError):
+            filters.build_targets([report], [])
+        duplicate = [
+            {"path": f"/tmp/{name}-compose.yml",
+             "content": {"services": {"core": {"image": "korp/korp.compras.core:base"}}}}
+            for name in ("a", "b")
+        ]
+        with self.assertRaises(ValueError):
+            filters.build_targets([report], duplicate)

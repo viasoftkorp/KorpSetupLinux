@@ -1,5 +1,6 @@
 import json
 import re
+from pathlib import PurePosixPath
 from xml.etree import ElementTree
 
 _PR_LINK = re.compile(
@@ -62,10 +63,48 @@ def load_report(json_text, expected_repo, expected_pr, expected_key):
     return report
 
 
+def build_targets(reports, compose_files):
+    targets = []
+    for report in reports:
+        matches = []
+        for compose in compose_files:
+            services = (compose.get("content") or {}).get("services") or {}
+            for service_key, config in services.items():
+                image = config.get("image") if isinstance(config, dict) else None
+                if isinstance(image, str) and image.rsplit(":", 1)[0] == report["imagem"]:
+                    matches.append((compose["path"], service_key))
+        if len(matches) != 1:
+            raise ValueError(
+                f"Esperado um compose para {report['imagem']}; encontrados {len(matches)}"
+            )
+        compose_path, service_key = matches[0]
+        compose = PurePosixPath(compose_path)
+        project_src = str(compose.parent)
+        identity = f"{project_src}|{compose.name}|{service_key}"
+        target_id = f"{report['pr_key']}|{identity}"
+        targets.append({
+            "target_id": target_id,
+            "identity": identity,
+            "pr_key": report["pr_key"],
+            "repo": report["repositorio"],
+            "pr": report["pr"],
+            "service": report["servico"],
+            "service_key": service_key,
+            "desired_image": report["desired_image"],
+            "project_src": project_src,
+            "compose_file": compose.name,
+            "override_path": (
+                f"{project_src}/pr-overrides/pr{report['pr']}/{compose.name}"
+            ),
+        })
+    return targets
+
+
 class FilterModule:
     def filters(self):
         return {
             "qa_pr_normalize_links": normalize_pr_links,
             "qa_pr_parse_minio_listing": parse_minio_listing,
             "qa_pr_load_report": load_report,
+            "qa_pr_build_targets": build_targets,
         }
