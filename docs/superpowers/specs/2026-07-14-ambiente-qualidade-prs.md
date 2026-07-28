@@ -58,7 +58,7 @@ Jenkins (um job por serviço) ──▶ detecta alteração em <servico>/ ──
                                         └──▶ relatório  minio-interno.korp.com.br
                                                    prs/<repo>/<N>/<servico>.json
                                                           │
-Qualidade ──▶ VM ──▶ role de PRs (prs=123,456) ───────────┘
+Qualidade ──▶ VM ──▶ role de PRs (links dos PRs) ─────────┘
                           │
                           ├──▶ lê o relatório de cada PR  → serviços + tags
                           ├──▶ localiza o serviço nos composes renderizados
@@ -114,8 +114,8 @@ image: "korp/korp.compras.core:2025.1.0.x"
 | 14 | Descoberta pela Qualidade | Label `korp.pr=<N>` no container, visível/filtrável no Portainer |
 | 15 | PR mergeado | Fora de escopo — o reset resolve |
 | 16 | Validação de versão (PR × VM) | Não valida |
-| 17 | Estado do incremental | Não há — o ambiente é auto-descritivo pelo label |
-| 18 | Dois PRs no mesmo serviço | Não detecta; o último aplicado vence |
+| 17 | Estado do incremental | Não há arquivo de estado separado — os overrides em disco são a fonte para detectar o que está aplicado, e o ambiente continua auto-descritivo pelo label |
+| 18 | Dois PRs no mesmo serviço | **Detecta antes de qualquer mutação.** Por padrão pergunta se deve substituir, manter o atual ou abortar tudo; automação pode definir `pr_conflict_policy=replace`, `keep` ou `fail` |
 | 19 | Guarda contra rodar em cliente | Não bloqueia |
 | 20 | Alocação PR × VM | Ignorada |
 | 21 | Baseline após reset | Pode se mover (puxa a `.x` mais recente) |
@@ -394,12 +394,29 @@ Existem exatamente **3** em todo o setup: `sdk.app-builder-parcel` e `sdk.app-re
 
 ## Componente 2 — Role de aplicação de PRs
 
-Entrada: lista de PRs (ex: `prs=123,456`).
+Entrada: lista de PRs por link completo do GitHub (ex: `prs=https://github.com/viasoftkorp/compras/pull/123,https://github.com/viasoftkorp/vendas/pull/456`).
 
 Para cada PR, para cada serviço do relatório:
 
 1. **Localizar o serviço.** Varrer os composes renderizados (`/etc/korp/composes/*.yml` e `/etc/korp/composes/<versao>/*.yml`) procurando a chave de serviço cujo `image:` case com `korp/<servico>:`. Isso devolve de uma vez o arquivo, o `<AppId>`, o `project_src` correto e a chave YAML do serviço — sem precisar de tabela de mapeamento.
-2. **Escrever o override** em `pr-overrides/pr<N>/<AppId>-compose.yml`:
+2. **Fazer o preflight de conflitos.** Ler os overrides existentes no mesmo `project_src` e comparar pela identidade `<project_src> + <compose base> + <chave YAML do serviço>`. Os casos são:
+
+   - mesmo Compose, serviços diferentes: coexistem sem conflito;
+   - mesmo PR reaplicado no mesmo serviço: atualiza normalmente;
+   - PR diferente no mesmo serviço: conflito.
+
+   Todos os conflitos são resolvidos antes da primeira alteração em arquivo ou container. A variável `pr_conflict_policy` controla o comportamento:
+
+   | Valor | Comportamento |
+   |---|---|
+   | `ask` (default) | Para cada conflito, mostra PR atual × PR novo e pergunta se deve `replace`, `keep` ou `abort` |
+   | `replace` | Substitui todos os serviços conflitantes pelo PR novo, sem perguntar |
+   | `keep` | Mantém os serviços atuais e ignora somente os serviços conflitantes do PR novo |
+   | `fail` | Encerra mostrando todos os conflitos, sem alterar o ambiente |
+
+   Em `ask`, `abort`, entrada inválida ou ausência de terminal encerram toda a execução sem mutação parcial. Ao substituir, a role remove o serviço do override anterior; se o arquivo ou a pasta ficarem vazios, remove-os também.
+
+3. **Escrever o override** em `pr-overrides/pr<N>/<AppId>-compose.yml`:
 
 ```yaml
 services:
@@ -411,7 +428,7 @@ services:
 
 A tag vem do relatório — a role não a monta. Como ela muda a cada build, o override muda junto, e o Compose recria o container sem precisar de política de pull.
 
-3. **Subir**, reusando a invocação do setup:
+4. **Subir somente os serviços afetados**, reusando o mesmo `project_src`, env e arquivos da invocação do setup:
 
 ```yaml
 - community.docker.docker_compose_v2:
@@ -420,7 +437,11 @@ A tag vem do relatório — a role não a monta. Como ela muda a cada build, o o
     files:
       - "{{ id }}-compose.yml"                       # base renderizada
       - "pr-overrides/pr123/{{ id }}-compose.yml"    # override
+    services:
+      - "korp-compras-core-2025-1-0"                 # chave YAML localizada no passo 1
 ```
+
+Restringir `services` é o que preserva o incremental quando PRs diferentes afetam serviços diferentes do mesmo Compose. Sem essa restrição, aplicar `base + override novo` faria o Compose comparar os demais serviços com o baseline e poderia desfazer overrides já ativos.
 
 ### Por que essa invocação e não outra
 
@@ -431,6 +452,16 @@ O ponto delicado era subir o container sem o Compose tratar os containers dos ou
 | Overrides moram **dentro** de `/etc/korp/composes/` | `files` é relativo a `project_src`; caminho externo obrigaria a mudar `project_src` e, com ele, o project name |
 | A role **não pode** ligar `remove_orphans` | O default `false` é o que impede o setup de derrubar os outros apps hoje |
 | Serviço versionado usa `project_src: {{ versioned_compose_dir_path }}/` | É outro projeto Compose; o override vai na pasta da versão |
+| Aplicação informa `services` | Impede que um PR novo devolva ao baseline outro serviço do mesmo Compose que já está rodando um PR |
+
+### Casos mínimos de teste da aplicação
+
+- dois PRs em serviços diferentes do mesmo Compose coexistem;
+- reaplicar o mesmo PR atualiza a tag sem conflito;
+- PRs diferentes no mesmo serviço exercitam `ask`, `replace`, `keep` e `fail`;
+- `abort` e `fail` não alteram arquivos nem containers;
+- `replace` remove o serviço do override anterior e apaga arquivo/pasta que ficarem vazios;
+- um PR com vários serviços e uma parcel gera e aplica todos os overrides esperados.
 
 ---
 
@@ -549,7 +580,6 @@ Número de PR é único **por repositório**: `korp.compras#123` e `korp.vendas#
 | Proliferação de tags no DockerHub | Tag imutável (decisão 1): cada push de cada PR cria uma tag permanente, e as camadas antigas deixam de ser coletadas. Sem política de retenção nesta versão |
 | Novo push não chega sozinho ao ambiente | O ambiente fica pinado no build aplicado; pegar o commit novo exige re-executar a role |
 | Validação de versão (PR × VM) | PR de `release/2024.2.0.x` numa VM 2025.1.0 não encontra serviço — falha ou no-op, sem mensagem dedicada |
-| Dois PRs no mesmo serviço | O último vence, em silêncio |
 | Execução em cliente final | Sem trava |
 | Alocação PR × VM | Dois testadores podem colidir na mesma VM |
 | Schema de banco sujo após reset | Migration de PR não desfaz |
@@ -559,6 +589,6 @@ Número de PR é único **por repositório**: `korp.compras#123` e `korp.vendas#
 
 ## Pontos em aberto (implementação)
 
-- **Como a role é acionada.** O repositório já tem playbooks auxiliares na raiz (`disk-playbook.yml`, `self_signed_renew-playbook.yml`). Seguir essa convenção — `ansible-playbook pr-playbook.yml -e "prs=123,456"` — mantém o `setup.sh` (base, usado em cliente) intocado; adicionar parâmetro ao `setup.sh` o contaminaria.
+- **Como a role é acionada.** O repositório já tem playbooks auxiliares na raiz (`disk-playbook.yml`, `self_signed_renew-playbook.yml`). Seguir essa convenção — `ansible-playbook pr-playbook.yml -e "prs=https://github.com/viasoftkorp/compras/pull/123"` — mantém o `setup.sh` (base, usado em cliente) intocado; adicionar parâmetro ao `setup.sh` o contaminaria.
 - **MinIO:** ver checklist do Componente 0.
 - **Nome das roles** e dos playbooks.
