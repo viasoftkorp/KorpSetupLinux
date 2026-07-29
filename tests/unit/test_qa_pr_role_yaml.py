@@ -6,6 +6,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 ROLE = ROOT / "roles/qa_pr_apply"
+PLAYBOOK = ROOT / "pr-playbook.yml"
 DEFAULT_FILE = ROLE / "defaults/main.yml"
 TASK_FILES = (
     "main.yml",
@@ -74,6 +75,28 @@ class QaPrRoleYamlTests(unittest.TestCase):
         for filename in TASK_FILES:
             with self.subTest(filename=filename):
                 self.assertIsInstance(load_tasks(filename), list)
+
+    def test_apply_playbook_is_local_privileged_and_role_only(self):
+        plays = load_yaml(PLAYBOOK)
+        self.assertEqual(len(plays), 1)
+        play = plays[0]
+
+        self.assertEqual(play["hosts"], "127.0.0.1")
+        self.assertEqual(play["connection"], "local")
+        self.assertIs(play["become"], True)
+        self.assertEqual(play["become_user"], "{{ linux_korp.user }}")
+        self.assertEqual(
+            play["vars"]["ansible_become_password"],
+            "{{ linux_korp.password }}",
+        )
+        self.assertEqual(play["roles"], ["qa_pr_apply"])
+        self.assertNotIn("ansible.builtin.import_playbook", play)
+
+        bootstrap_text = (ROOT / "setup.sh").read_text()
+        main_text = (ROOT / "main.yml").read_text()
+        for filename in ("pr-playbook.yml", "pr-reset-playbook.yml"):
+            self.assertNotIn(filename, bootstrap_text)
+            self.assertNotIn(filename, main_text)
 
     def test_defaults_expose_minio_and_conflict_interfaces(self):
         defaults = load_yaml(DEFAULT_FILE)
