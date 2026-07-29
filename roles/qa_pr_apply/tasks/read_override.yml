@@ -1,0 +1,39 @@
+---
+- name: Encontrar overrides existentes do projeto
+  ansible.builtin.find:
+    paths: "{{ qa_pr_project_src }}/pr-overrides"
+    patterns:
+      - "*-compose.yml"
+    recurse: true
+    file_type: file
+  register: qa_pr_found_overrides
+
+- name: Ler overrides encontrados
+  ansible.builtin.slurp:
+    src: "{{ qa_pr_override_file.path }}"
+  loop: "{{ qa_pr_found_overrides.files }}"
+  loop_control:
+    loop_var: qa_pr_override_file
+    label: "{{ qa_pr_override_file.path }}"
+  register: qa_pr_slurped_overrides
+
+- name: Acumular overrides separadamente
+  ansible.builtin.set_fact:
+    qa_pr_override_files: >-
+      {{
+        qa_pr_override_files
+        + [
+            {
+              "path": qa_pr_slurped_override.qa_pr_override_file.path,
+              "content": (
+                qa_pr_slurped_override.content
+                | b64decode
+                | from_yaml
+              )
+            }
+          ]
+      }}
+  loop: "{{ qa_pr_slurped_overrides.results }}"
+  loop_control:
+    loop_var: qa_pr_slurped_override
+    label: "{{ qa_pr_slurped_override.qa_pr_override_file.path }}"

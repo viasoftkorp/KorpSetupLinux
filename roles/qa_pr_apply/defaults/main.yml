@@ -1,0 +1,9 @@
+---
+qa_pr_minio_api: "https://minio-interno-api.korp.com.br"
+qa_pr_minio_bucket: "qa-prs"
+qa_pr_github_organization: "viasoftkorp"
+pr_conflict_policy: "ask"
+qa_pr_reports: []
+qa_pr_compose_files: []
+qa_pr_override_files: []
+qa_pr_conflict_decisions: {}

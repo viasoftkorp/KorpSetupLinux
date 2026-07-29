@@ -1,0 +1,67 @@
+---
+- name: Recalcular conflitos com as decisões já coletadas
+  ansible.builtin.set_fact:
+    qa_pr_prompt_conflicts: >-
+      {{
+        qa_pr_targets
+        | qa_pr_detect_conflicts(
+            qa_pr_active_owners,
+            qa_pr_conflict_decisions
+          )
+      }}
+
+- name: Identificar conflito pendente do alvo atual
+  ansible.builtin.set_fact:
+    qa_pr_pending_conflict: >-
+      {{
+        (qa_pr_prompt_conflicts | last)
+        if (
+          qa_pr_prompt_conflicts | length > 0
+          and (qa_pr_prompt_conflicts | last).target_id
+              == qa_pr_prompt_target.target_id
+          and (qa_pr_prompt_conflicts | last).target_id
+              not in qa_pr_conflict_decisions
+        )
+        else {}
+      }}
+
+- name: Solicitar decisão para o conflito pendente
+  ansible.builtin.pause:
+    prompt: >-
+      Conflito de PR:
+      atual={{ qa_pr_pending_conflict.current.pr_key }},
+      novo={{ qa_pr_pending_conflict.incoming.pr_key }},
+      serviço={{ qa_pr_pending_conflict.incoming.service }},
+      compose={{ qa_pr_pending_conflict.incoming.compose_file }}.
+      Informe replace ou keep; qualquer outra resposta aborta
+  register: qa_pr_conflict_prompt
+  when: >-
+    qa_pr_pending_conflict.target_id | default("")
+    == qa_pr_prompt_target.target_id
+
+- name: Armazenar decisão normalizada do conflito
+  ansible.builtin.set_fact:
+    qa_pr_conflict_decisions: >-
+      {{
+        qa_pr_conflict_decisions
+        | combine(
+            {
+              qa_pr_prompt_target.target_id: (
+                qa_pr_conflict_prompt.user_input
+                | default('abort')
+                | lower
+                | trim
+              )
+              if (
+                qa_pr_conflict_prompt.user_input
+                | default('abort')
+                | lower
+                | trim
+              ) in ['replace', 'keep']
+              else 'abort'
+            }
+          )
+      }}
+  when: >-
+    qa_pr_pending_conflict.target_id | default("")
+    == qa_pr_prompt_target.target_id

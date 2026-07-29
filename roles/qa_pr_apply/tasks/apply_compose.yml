@@ -1,0 +1,8 @@
+---
+- name: Aplicar somente os serviços alterados pelo PR
+  community.docker.docker_compose_v2:
+    project_src: "{{ qa_pr_compose_run.project_src }}/"
+    env_files:
+      - "{{ docker_env_file_path }}"
+    files: "{{ qa_pr_compose_run.files }}"
+    services: "{{ qa_pr_compose_run.services }}"
