@@ -7,6 +7,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 ROLE = ROOT / "roles/qa_pr_apply"
 PLAYBOOK = ROOT / "pr-playbook.yml"
+ANSIBLE_LINT_CONFIG = ROOT / ".ansible-lint"
 DEFAULT_FILE = ROLE / "defaults/main.yml"
 TASK_FILES = (
     "main.yml",
@@ -97,6 +98,21 @@ class QaPrRoleYamlTests(unittest.TestCase):
         for filename in ("pr-playbook.yml", "pr-reset-playbook.yml"):
             self.assertNotIn(filename, bootstrap_text)
             self.assertNotIn(filename, main_text)
+
+    def test_ansible_lint_has_only_the_qa_pr_exception_and_context(self):
+        config = load_yaml(ANSIBLE_LINT_CONFIG)
+
+        self.assertEqual(
+            config["skip_list"],
+            ["var-naming[no-role-prefix]"],
+        )
+        self.assertEqual(
+            config["extra_vars"],
+            {
+                "compose_dir_path": "/tmp/qa-pr-composes",
+                "versioned_compose_dir_path": "/tmp/qa-pr-versioned-composes",
+            },
+        )
 
     def test_defaults_expose_minio_and_conflict_interfaces(self):
         defaults = load_yaml(DEFAULT_FILE)
