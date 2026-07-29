@@ -1,3 +1,4 @@
+from copy import deepcopy
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import json
@@ -84,6 +85,18 @@ class MinioParsingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             filters.parse_minio_listing(xml_text, "prs/compras/123/")
 
+    def test_listing_rejects_nested_json_objects(self):
+        xml_text = """
+        <ListBucketResult>
+          <IsTruncated>false</IsTruncated>
+          <Contents><Key>prs/repo-a/123/service.json</Key></Contents>
+          <Contents><Key>prs/repo-a/123/nested/other.json</Key></Contents>
+        </ListBucketResult>
+        """
+        self.assertEqual(
+            filters.parse_minio_listing(xml_text, "prs/repo-a/123/"),
+            ["prs/repo-a/123/service.json"],
+        )
 
 class ReportParsingTests(unittest.TestCase):
     def test_validates_container_report_against_object_key(self):
@@ -181,7 +194,7 @@ class ConflictPlanningTests(unittest.TestCase):
         )
         self.active = {
             self.current["identity"]: {
-                "pr_key": "#579",
+                "pr_key": "logistica#579",
                 "pr": 579,
                 "override_path": self.current["override_path"],
                 "service_key": "wms-core",
@@ -200,6 +213,35 @@ class ConflictPlanningTests(unittest.TestCase):
             [self.current], self.active, policy="fail"
         )
         self.assertEqual(plan["conflicts"], [])
+
+    def test_same_number_from_different_repositories_conflicts(self):
+        current = target("repo-a#123", 123, "wms-core")
+        incoming = target("repo-b#123", 123, "wms-core")
+        conflicts = filters.detect_conflicts([current, incoming], {})
+        self.assertEqual(
+            [conflict["target_id"] for conflict in conflicts],
+            [incoming["target_id"]],
+        )
+
+    def test_repo_qualified_refresh_does_not_conflict(self):
+        incoming = target("repo-a#123", 123, "wms-core")
+        owner = {**incoming, "pr_key": "repo-a#123"}
+        self.assertEqual(
+            filters.detect_conflicts(
+                [incoming], {incoming["identity"]: owner}
+            ),
+            [],
+        )
+
+    def test_legacy_numeric_owner_conflicts_conservatively(self):
+        incoming = target("repo-a#123", 123, "wms-core")
+        owner = {**incoming, "pr_key": "#123"}
+        self.assertEqual(
+            len(filters.detect_conflicts(
+                [incoming], {incoming["identity"]: owner}
+            )),
+            1,
+        )
 
     def test_fail_and_abort_produce_no_mutations(self):
         for policy, decisions in (
@@ -337,6 +379,25 @@ class MutationShapeTests(unittest.TestCase):
             active[core_identity]["override_content"], override_file["content"]
         )
 
+    def test_indexes_repo_qualified_owner(self):
+        content = deepcopy(self.current_content)
+        content["services"]["wms-core"]["labels"]["korp.repositorio"] = (
+            "logistica"
+        )
+        active, _ = self.active_owners(content)
+        identity = "/etc/korp/composes|logistica-compose.yml|wms-core"
+        self.assertEqual(active[identity]["pr_key"], "logistica#579")
+
+    def test_rejects_invalid_repository_label(self):
+        content = deepcopy(self.current_content)
+        content["services"]["wms-core"]["labels"]["korp.repositorio"] = (
+            "repo/invalido"
+        )
+        with self.assertRaisesRegex(
+            ValueError, "Label korp.repositorio inválida"
+        ):
+            self.active_owners(content)
+
     def test_rejects_duplicate_persisted_owner_identity(self):
         override_files = [
             {
@@ -415,7 +476,10 @@ class MutationShapeTests(unittest.TestCase):
                     "services": {
                         "wms-core": {
                             "image": "korp/wms-core:pr580",
-                            "labels": {"korp.pr": "580"},
+                            "labels": {
+                                "korp.pr": "580",
+                                "korp.repositorio": "logistica",
+                            },
                         }
                     }
                 },
@@ -449,11 +513,17 @@ class MutationShapeTests(unittest.TestCase):
                     "services": {
                         "wms-core": {
                             "image": "korp/wms-core:pr580",
-                            "labels": {"korp.pr": "580"},
+                            "labels": {
+                                "korp.pr": "580",
+                                "korp.repositorio": "logistica",
+                            },
                         },
                         "wms-gateway": {
                             "image": "korp/wms-gateway:pr580",
-                            "labels": {"korp.pr": "580"},
+                            "labels": {
+                                "korp.pr": "580",
+                                "korp.repositorio": "logistica",
+                            },
                         },
                     }
                 },

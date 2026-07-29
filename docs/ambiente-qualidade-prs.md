@@ -69,6 +69,7 @@ O reset descobre os composes afetados, confirma que cada compose base ainda exis
 ## Riscos aceitos no MVP
 
 - Divergência de versão: o fluxo não garante que a versão declarada pelo relatório do PR corresponda à versão base instalada no ambiente.
-- Execução de clientes: o playbook recria o serviço alvo via compose; efeitos de inicialização ou clientes executados pelo contêiner continuam sendo responsabilidade do próprio serviço.
+- Não há trava automática contra executar estes playbooks privilegiados em ambiente de cliente final; confirme o host antes da execução.
+- A aplicação pode inicializar serviços e executar seus efeitos de startup.
 - Schema sujo: migrações, dados e outras alterações persistidas fora do compose não são revertidas pela troca de imagem nem pelo reset.
 - Sem refresh automático: cada novo push exige aguardar a publicação e reaplicar manualmente o PR.

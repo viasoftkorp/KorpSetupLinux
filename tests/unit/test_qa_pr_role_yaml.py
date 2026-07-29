@@ -9,6 +9,7 @@ ROLE = ROOT / "roles/qa_pr_apply"
 PLAYBOOK = ROOT / "pr-playbook.yml"
 ANSIBLE_LINT_CONFIG = ROOT / ".ansible-lint"
 DEFAULT_FILE = ROLE / "defaults/main.yml"
+OPERATIONS_GUIDE = ROOT / "docs/ambiente-qualidade-prs.md"
 TASK_FILES = (
     "main.yml",
     "load_pr.yml",
@@ -189,6 +190,9 @@ class QaPrRoleYamlTests(unittest.TestCase):
         self.assertIn("qa_pr_minio_prefix", listing_args["url"])
         self.assertIn("qa_pr_report_key", object_args["url"])
         self.assertIn("qa_pr_parse_minio_listing", scalar_text(load_pr_tasks))
+        self.assertIn(
+            "qa_pr_report_key | urlencode", object_args["url"]
+        )
         self.assertIn("qa_pr_load_report", scalar_text(load_report_tasks))
         self.assertIn("qa_pr_reports", scalar_text(load_report_tasks))
 
@@ -378,6 +382,12 @@ class QaPrRoleYamlTests(unittest.TestCase):
         for forbidden in ("mc ", "aws ", "boto3", "setup.sh"):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, text)
+
+    def test_operations_guide_warns_about_final_customer_environments(self):
+        self.assertIn(
+            "ambiente de cliente final",
+            OPERATIONS_GUIDE.read_text(),
+        )
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ _PR_LINK = re.compile(
     r"^https://github[.]com/(?P<org>[A-Za-z0-9_.-]+)/"
     r"(?P<repo>[A-Za-z0-9_.-]+)/pull/(?P<pr>[1-9][0-9]*)/?$"
 )
+_REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+$")
 _OVERRIDE_PATH = re.compile(
     r"^(?P<project_src>.+)/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
     r"(?P<compose_file>[^/]+)$"
@@ -39,11 +40,14 @@ def parse_minio_listing(xml_text, prefix):
     truncated = next((node.text for node in root.iter() if node.tag.endswith("IsTruncated")), "false")
     if str(truncated).lower() == "true":
         raise ValueError(f"Listagem truncada para {prefix}; paginação não implementada")
-    keys = [
-        node.text for node in root.iter()
-        if node.tag.endswith("Key") and node.text
-        and node.text.startswith(prefix) and node.text.endswith(".json")
-    ]
+    keys = []
+    for node in root.iter():
+        key = node.text
+        if not node.tag.endswith("Key") or not key or not key.startswith(prefix):
+            continue
+        suffix = key[len(prefix):]
+        if suffix and "/" not in suffix and suffix.endswith(".json"):
+            keys.append(key)
     return sorted(set(keys))
 
 
@@ -136,13 +140,22 @@ def index_active_overrides(override_files):
                 raise ValueError(
                     f"PR do caminho diverge da label em {override_path}"
                 )
+            raw_repo = labels.get("korp.repositorio")
+            if raw_repo is None:
+                pr_key = f"#{pr}"
+            elif not isinstance(raw_repo, str) or not _REPOSITORY.fullmatch(raw_repo):
+                raise ValueError(
+                    f"Label korp.repositorio inválida em {override_path}: {raw_repo!r}"
+                )
+            else:
+                pr_key = f"{raw_repo}#{pr}"
             identity = f"{project_src}|{compose_file}|{service_key}"
             if identity in owners:
                 raise ValueError(f"Mais de um override ativo para {identity}")
 
             owners[identity] = {
                 "identity": identity,
-                "pr_key": f"#{pr}",
+                "pr_key": pr_key,
                 "pr": pr,
                 "override_path": override_path,
                 "override_content": deepcopy(content),
@@ -160,7 +173,7 @@ def detect_conflicts(targets, active_owners, decisions=None):
     decisions = decisions or {}
     for target in targets:
         current = owners.get(target["identity"])
-        if current and current["pr"] != target["pr"]:
+        if current and current["pr_key"] != target["pr_key"]:
             conflicts.append({
                 "target_id": target["target_id"],
                 "identity": target["identity"],
@@ -217,7 +230,10 @@ def _build_mutation_plan(
         services = content.setdefault("services", {})
         services[target["service_key"]] = {
             "image": target["desired_image"],
-            "labels": {"korp.pr": str(target["pr"])},
+            "labels": {
+                "korp.pr": str(target["pr"]),
+                "korp.repositorio": target["repo"],
+            },
         }
         modified_paths[path] = None
 
@@ -289,7 +305,7 @@ def resolve_application(targets, active_owners, policy, decisions=None):
     }
     for target in targets:
         state = owners.get(target["identity"])
-        conflict = state and state["owner"]["pr"] != target["pr"]
+        conflict = state and state["owner"]["pr_key"] != target["pr_key"]
         if not conflict:
             persisted_owner = state.get("persisted_owner") if state else None
             accepted_by_identity[target["identity"]] = target
