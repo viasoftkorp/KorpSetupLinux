@@ -8,6 +8,10 @@ _PR_LINK = re.compile(
     r"^https://github[.]com/(?P<org>[A-Za-z0-9_.-]+)/"
     r"(?P<repo>[A-Za-z0-9_.-]+)/pull/(?P<pr>[1-9][0-9]*)/?$"
 )
+_OVERRIDE_PATH = re.compile(
+    r"^(?P<project_src>.+)/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
+    r"(?P<compose_file>[^/]+)$"
+)
 _REQUIRED_CONTAINER_FIELDS = {
     "kind", "pr", "repositorio", "branch", "servico",
     "imagem", "tag", "versao", "commit", "build",
@@ -103,13 +107,14 @@ def build_targets(reports, compose_files):
 
 def index_active_overrides(override_files):
     owners = {}
-    marker = "/pr-overrides/"
     for override_file in override_files:
         override_path = str(PurePosixPath(override_file["path"]))
-        if marker not in override_path:
-            raise ValueError(f"Override fora de pr-overrides: {override_path}")
-        project_src, relative_path = override_path.split(marker, 1)
-        compose_file = PurePosixPath(relative_path).name
+        match = _OVERRIDE_PATH.fullmatch(override_path)
+        if not match:
+            raise ValueError(f"Caminho de override inválido: {override_path}")
+        project_src = match.group("project_src")
+        compose_file = match.group("compose_file")
+        path_pr = int(match.group("pr"))
         content = override_file.get("content") or {}
         services = content.get("services") or {}
         for service_key, config in services.items():
@@ -123,6 +128,14 @@ def index_active_overrides(override_files):
                 raise ValueError(
                     f"Label korp.pr inválida em {override_path}: {raw_pr!r}"
                 ) from error
+            if pr <= 0:
+                raise ValueError(
+                    f"Label korp.pr inválida em {override_path}: {raw_pr!r}"
+                )
+            if pr != path_pr:
+                raise ValueError(
+                    f"PR do caminho diverge da label em {override_path}"
+                )
             identity = f"{project_src}|{compose_file}|{service_key}"
             if identity in owners:
                 raise ValueError(f"Mais de um override ativo para {identity}")
@@ -140,9 +153,11 @@ def index_active_overrides(override_files):
     return owners
 
 
-def detect_conflicts(targets, active_owners):
+def detect_conflicts(targets, active_owners, decisions=None):
     conflicts = []
     owners = dict(active_owners)
+    interactive = decisions is not None
+    decisions = decisions or {}
     for target in targets:
         current = owners.get(target["identity"])
         if current and current["pr"] != target["pr"]:
@@ -152,6 +167,15 @@ def detect_conflicts(targets, active_owners):
                 "current": current,
                 "incoming": target,
             })
+            if interactive:
+                if target["target_id"] not in decisions:
+                    break
+                decision = decisions[target["target_id"]]
+                if decision == "replace":
+                    owners[target["identity"]] = target
+                elif decision != "keep":
+                    break
+            continue
         owners[target["identity"]] = target
     return conflicts
 
@@ -241,7 +265,17 @@ def resolve_application(targets, active_owners, policy, decisions=None):
     if policy not in {"ask", "replace", "keep", "fail"}:
         raise ValueError(f"Política de conflito inválida: {policy}")
     decisions = decisions or {}
-    conflicts = detect_conflicts(targets, active_owners)
+    if policy == "ask":
+        conflicts = detect_conflicts(targets, active_owners, decisions)
+    elif policy in {"replace", "keep"}:
+        policy_decisions = {
+            target["target_id"]: policy for target in targets
+        }
+        conflicts = detect_conflicts(
+            targets, active_owners, policy_decisions
+        )
+    else:
+        conflicts = detect_conflicts(targets, active_owners)
     if policy == "fail" and conflicts:
         return _empty_plan(conflicts)
     accepted_by_identity, skipped, removals = {}, [], []

@@ -233,6 +233,73 @@ class ConflictPlanningTests(unittest.TestCase):
         )
         self.assertEqual(plan["apply_targets"], [self.incoming])
 
+    def test_two_argument_detection_uses_keep_at_collisions(self):
+        conflicts = filters.detect_conflicts(
+            [self.incoming, self.current], self.active
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in conflicts],
+            [self.incoming["target_id"]],
+        )
+
+    def test_explicit_empty_decisions_stops_at_first_unresolved_conflict(self):
+        later = target("logistica#581", 581, "wms-core")
+        conflicts = filters.detect_conflicts(
+            [self.incoming, later], self.active, {}
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in conflicts],
+            [self.incoming["target_id"]],
+        )
+
+    def test_explicit_keep_preserves_owner_for_following_refresh(self):
+        conflicts = filters.detect_conflicts(
+            [self.incoming, self.current],
+            self.active,
+            {self.incoming["target_id"]: "keep"},
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in conflicts],
+            [self.incoming["target_id"]],
+        )
+
+    def test_explicit_replace_reveals_next_real_conflict(self):
+        conflicts = filters.detect_conflicts(
+            [self.incoming, self.current],
+            self.active,
+            {self.incoming["target_id"]: "replace"},
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in conflicts],
+            [self.incoming["target_id"], self.current["target_id"]],
+        )
+        self.assertEqual(conflicts[1]["current"], self.incoming)
+
+    def test_plan_conflicts_follow_ask_replay(self):
+        keep_plan = filters.resolve_application(
+            [self.incoming, self.current],
+            self.active,
+            policy="ask",
+            decisions={self.incoming["target_id"]: "keep"},
+        )
+        replace_plan = filters.resolve_application(
+            [self.incoming, self.current],
+            self.active,
+            policy="ask",
+            decisions={
+                self.incoming["target_id"]: "replace",
+                self.current["target_id"]: "keep",
+            },
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in keep_plan["conflicts"]],
+            [self.incoming["target_id"]],
+        )
+        self.assertEqual(
+            [conflict["target_id"] for conflict in replace_plan["conflicts"]],
+            [self.incoming["target_id"], self.current["target_id"]],
+        )
+
 
 class MutationShapeTests(unittest.TestCase):
     def setUp(self):
@@ -287,6 +354,45 @@ class MutationShapeTests(unittest.TestCase):
         ]
         with self.assertRaisesRegex(ValueError, "Mais de um override ativo"):
             filters.index_active_overrides(override_files)
+
+    def test_rejects_noncanonical_override_paths(self):
+        paths = (
+            "/etc/korp/composes/pr-overrides/logistica-compose.yml",
+            "/etc/korp/composes/pr-overrides/pr0/logistica-compose.yml",
+            "/etc/korp/composes/pr-overrides/pr579/nested/logistica-compose.yml",
+        )
+        for path in paths:
+            with self.subTest(path=path), self.assertRaisesRegex(
+                ValueError, "Caminho de override inválido"
+            ):
+                filters.index_active_overrides([{
+                    "path": path,
+                    "content": self.current_content,
+                }])
+
+    def test_rejects_nonpositive_pr_label(self):
+        override_file = {
+            "path": "/etc/korp/composes/pr-overrides/pr1/logistica-compose.yml",
+            "content": {
+                "services": {
+                    "wms-core": {"labels": {"korp.pr": "0"}}
+                }
+            },
+        }
+        with self.assertRaisesRegex(ValueError, "Label korp.pr inválida"):
+            filters.index_active_overrides([override_file])
+
+    def test_rejects_override_path_pr_different_from_label(self):
+        override_file = {
+            "path": "/etc/korp/composes/pr-overrides/pr580/logistica-compose.yml",
+            "content": {
+                "services": {
+                    "wms-core": {"labels": {"korp.pr": "579"}}
+                }
+            },
+        }
+        with self.assertRaisesRegex(ValueError, "PR do caminho diverge"):
+            filters.index_active_overrides([override_file])
 
     def test_replace_of_only_service_deletes_old_override(self):
         current_content = {
