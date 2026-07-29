@@ -1,3 +1,5 @@
 dependencies:
   - role: faturamento
   - role: temporal
+  - role: VEN27
+  - role: carga-inicial
