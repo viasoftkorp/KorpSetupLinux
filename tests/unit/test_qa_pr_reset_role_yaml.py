@@ -108,10 +108,7 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
         self.assertEqual(len(slurp_tasks), 1)
         self.assertEqual(len(run_tasks), 1)
         self.assertEqual(find_tasks[0]["ansible.builtin.find"]["recurse"], True)
-        self.assertEqual(
-            find_tasks[0]["ansible.builtin.find"]["patterns"],
-            ["*-compose.yml"],
-        )
+        self.assertNotIn("patterns", find_tasks[0]["ansible.builtin.find"])
         self.assertIn("/pr-overrides", scalar_text(find_tasks[0]))
         self.assertIn("qa_pr_reset_found_overrides.files", scalar_text(slurp_tasks[0]))
         self.assertIn("qa_pr_reset_override.path", scalar_text(slurp_tasks[0]))

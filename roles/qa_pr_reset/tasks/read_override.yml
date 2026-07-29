@@ -2,8 +2,6 @@
 - name: Encontrar overrides existentes do projeto
   ansible.builtin.find:
     paths: "{{ qa_pr_reset_project_src }}/pr-overrides"
-    patterns:
-      - "*-compose.yml"
     recurse: true
     file_type: file
   register: qa_pr_reset_found_overrides
