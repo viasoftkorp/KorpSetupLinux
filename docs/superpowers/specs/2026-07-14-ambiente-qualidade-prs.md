@@ -416,6 +416,8 @@ Para cada PR, para cada serviço do relatório:
 
    Em `ask`, `abort`, entrada inválida ou ausência de terminal encerram toda a execução sem mutação parcial. Ao substituir, a role remove o serviço do override anterior; se o arquivo ou a pasta ficarem vazios, remove-os também.
 
+   Quando a mesma execução recebe mais de um candidato para a mesma identidade, o preflight de `ask` é iterativo e segue a ordem de entrada: simula as decisões já coletadas, identifica o próximo conflito real, pergunta e recalcula o owner antes de continuar. Coletar decisões não altera arquivos nem containers. O plano de execução só é construído depois que não resta conflito sem decisão; assim, `keep` preserva o owner corrente e `replace` transfere o owner sem criar prompts falsos ou omitir conflitos condicionais.
+
 3. **Escrever o override** em `pr-overrides/pr<N>/<AppId>-compose.yml`:
 
 ```yaml

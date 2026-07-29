@@ -443,7 +443,7 @@ git commit -m "DEVO-6789 - Localiza servicos de PR nos composes"
 - Consumes: targets da Task 2.
 - Consumes: override_files list[{"path": str, "content": dict}].
 - Produces: index_active_overrides(override_files) -> dict por identity.
-- Produces: detect_conflicts(targets, active_owners) -> list[dict].
+- Produces: detect_conflicts(targets, active_owners, decisions=None) -> list[dict].
 - Produces: resolve_application(targets, active_owners, policy, decisions={}) -> execution plan.
 - Execution plan keys: apply_targets, skipped_targets, remove_services, writes, deletes e compose_runs.
 
@@ -530,23 +530,28 @@ Implement these rules in pure Python:
 2. Group existing owners and incoming targets by identity.
 3. Same numeric pr is a refresh, not a conflict; active overrides only persist korp.pr=<N>, so the existing owner is displayed as #<N>.
 4. Different numeric pr is a conflict containing current and incoming.
-5. Evaluate candidates in input order. The simulated owner advances only when a candidate is accepted; keep leaves the current owner unchanged.
-6. For ask, require one decision per conflicting target_id; missing/invalid input becomes abort.
-7. If any decision is abort, or policy is fail with conflicts, return may_mutate=False and no writes/deletes/compose_runs.
-8. keep removes only the incoming conflict from apply_targets.
-9. replace transfers ownership to the incoming target. When replacing a persisted owner, record its service removal; when replacing a candidate accepted earlier in the same batch, supersede that candidate without writing its override.
-10. Keep accepted targets indexed by identity so the final plan contains at most one owner for each service.
-11. Group final accepted targets by override_path and compose run identity.
-12. compose_runs contains project_src, files=[compose_file, relative override path] and the unique service keys in services.
-13. Build writes by removing replaced service keys from old override dictionaries and merging accepted targets.
-14. Delete an old override file if its services dictionary becomes empty.
+5. Validate every persisted override path as exactly `<project_src>/pr-overrides/pr<N>/<compose_file>` and require `<N>` to be positive and equal to the `korp.pr` label.
+6. Evaluate candidates in input order. The simulated owner advances only when a candidate is accepted; keep leaves the current owner unchanged.
+7. With `decisions=None`, detect all conflicts using keep semantics at collision points; this preserves the two-argument call for fail/reporting.
+8. With an explicit decisions dict, replay decisions in order and stop after appending the first unresolved, abort or invalid conflict. This exposes exactly the next prompt without mutating the environment.
+9. For ask, require one decision per conflicting target_id; missing/invalid input becomes abort in the final plan.
+10. If any decision is abort, or policy is fail with conflicts, return may_mutate=False and no writes/deletes/compose_runs.
+11. keep removes only the incoming conflict from apply_targets.
+12. replace transfers ownership to the incoming target. When replacing a persisted owner, record its service removal; when replacing a candidate accepted earlier in the same batch, supersede that candidate without writing its override.
+13. Keep accepted targets indexed by identity so the final plan contains at most one owner for each service.
+14. Group final accepted targets by override_path and compose run identity.
+15. compose_runs contains project_src, files=[compose_file, relative override path] and the unique service keys in services.
+16. Build writes by removing replaced service keys from old override dictionaries and merging accepted targets.
+17. Delete an old override file if its services dictionary becomes empty.
 
 Implement the public functions with this control flow:
 
 ~~~python
-def detect_conflicts(targets, active_owners):
+def detect_conflicts(targets, active_owners, decisions=None):
     conflicts = []
     owners = dict(active_owners)
+    interactive = decisions is not None
+    decisions = decisions or {}
     for target in targets:
         current = owners.get(target["identity"])
         if current and current["pr"] != target["pr"]:
@@ -556,6 +561,15 @@ def detect_conflicts(targets, active_owners):
                 "current": current,
                 "incoming": target,
             })
+            if interactive:
+                if target["target_id"] not in decisions:
+                    break
+                decision = decisions[target["target_id"]]
+                if decision == "replace":
+                    owners[target["identity"]] = target
+                elif decision != "keep":
+                    break
+            continue
         owners[target["identity"]] = target
     return conflicts
 
@@ -564,7 +578,13 @@ def resolve_application(targets, active_owners, policy, decisions=None):
     if policy not in {"ask", "replace", "keep", "fail"}:
         raise ValueError(f"Política de conflito inválida: {policy}")
     decisions = decisions or {}
-    conflicts = detect_conflicts(targets, active_owners)
+    if policy == "ask":
+        conflicts = detect_conflicts(targets, active_owners, decisions)
+    elif policy in {"replace", "keep"}:
+        policy_decisions = {target["target_id"]: policy for target in targets}
+        conflicts = detect_conflicts(targets, active_owners, policy_decisions)
+    else:
+        conflicts = detect_conflicts(targets, active_owners)
     if policy == "fail" and conflicts:
         return empty_plan(conflicts)
     accepted_by_identity, skipped, removals = {}, [], []
@@ -605,11 +625,11 @@ def resolve_application(targets, active_owners, policy, decisions=None):
     )
 ~~~
 
-empty_plan always returns may_mutate false and empty mutation lists. build_mutation_plan performs rules 11–14 above without filesystem access, using deep copies of the supplied override content. Register qa_pr_index_active_overrides, qa_pr_detect_conflicts and qa_pr_resolve_application in FilterModule.
+empty_plan always returns may_mutate false and empty mutation lists. build_mutation_plan performs rules 14–17 above without filesystem access, using deep copies of the supplied override content. Register qa_pr_index_active_overrides, qa_pr_detect_conflicts and qa_pr_resolve_application in FilterModule.
 
 - [ ] **Step 4: Add mutation-shape tests**
 
-Assert that replace of the only service deletes the old file; replace when the old file has another service rewrites it; multiple accepted services for the same PR/AppId produce one write and one compose run with two service keys. Add a batch test with two incoming PRs for the same identity and mixed replace/keep decisions, proving that only the simulated final owner is written.
+Assert that replace of the only service deletes the old file; replace when the old file has another service rewrites it; multiple accepted services for the same PR/AppId produce one write and one compose run with two service keys. Add a batch test with two incoming PRs for the same identity and mixed replace/keep decisions, proving that only the simulated final owner is written. Add focused tests proving that explicit decisions reveal only the next real conflict after replay, that keep/replace change the following collision correctly, and that malformed `pr-overrides/pr<N>/` paths or a path/label mismatch are rejected.
 
 - [ ] **Step 5: Run all unit tests**
 
@@ -709,13 +729,14 @@ Search override roots with recurse=true only under each project_src/pr-overrides
 main.yml must:
 
 1. Build targets and active owners.
-2. Detect conflicts.
-3. For ask, include prompt_conflict.yml once per conflict and store replace, keep or abort by target_id.
-4. Build the final execution plan.
-5. Fail with the conflict summary when may_mutate is false.
-6. Only after that task, execute deletes, writes and Compose runs.
+2. For ask, iterate over targets in input order. Before each possible prompt, call qa_pr_detect_conflicts with the decisions collected so far.
+3. The detector returns decided conflicts plus at most the next unresolved conflict. Prompt only when that unresolved conflict belongs to the current target, then store replace, keep or abort by target_id.
+4. Recalculate after every stored decision; `keep` leaves the simulated owner in place and `replace` advances it.
+5. Build the final execution plan only after the target loop finishes.
+6. Fail with the conflict summary when may_mutate is false.
+7. Only after that task, execute deletes, writes and Compose runs.
 
-prompt_conflict.yml must show current pr_key, incoming pr_key, service and compose. Normalize user_input with lower/trim and treat anything outside replace/keep as abort.
+prompt_conflict.yml must recalculate the pending conflict from all targets, active owners and qa_pr_conflict_decisions, show current pr_key, incoming pr_key, service and compose only for the current unresolved target, and store the answer. Normalize user_input with lower/trim and treat anything outside replace/keep as abort. No file, copy or Compose task may run inside this iterative loop.
 
 - [ ] **Step 6: Write overrides and apply targeted services**
 
