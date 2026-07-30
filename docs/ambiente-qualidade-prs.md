@@ -11,6 +11,32 @@ Este fluxo aplica, em um servidor de qualidade já configurado, as imagens publi
 
 > Atenção: `qa_pr_minio_api` deve apontar para o host da API do MinIO, não para a interface web/console. O playbook faz leituras HTTPS anônimas nesse endpoint e valida o certificado TLS.
 
+## Fluxo recomendado para o QA
+
+Instale o atalho uma vez, a partir do checkout do KorpSetupLinux:
+
+```bash
+./qa-pr install
+qa-pr doctor
+```
+
+No uso diário:
+
+```bash
+# Aplicar ou atualizar uma imagem de PR
+qa-pr apply https://github.com/viasoftkorp/repositorio/pull/123
+
+# Conferir overrides e contêineres ativos
+qa-pr status
+
+# Remover todos os PRs e voltar aos composes base
+qa-pr reset
+```
+
+Em um conflito, o modo padrão pergunta se deve `replace`, `keep` ou `abort`.
+Também é possível decidir previamente com `--replace`, `--keep` ou `--fail`.
+Os logs ficam em `~/.local/state/korp-qa-pr`.
+
 ## Aplicar PRs
 
 Informe URLs completas de PRs da organização `viasoftkorp`. Para uma lista CSV:

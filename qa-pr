@@ -1,0 +1,248 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+script_path="$(readlink -f "${BASH_SOURCE[0]}")"
+repo_dir="${QA_PR_REPO_DIR:-$(dirname "$script_path")}"
+inventory="${QA_PR_INVENTORY:-/etc/korp/ansible/inventory.yml}"
+vault_id="${QA_PR_VAULT_ID:-/etc/korp/ansible/.vault_key}"
+compose_root="${QA_PR_COMPOSE_ROOT:-/etc/korp/composes}"
+minio_api="${QA_PR_MINIO_API:-https://minio-interno-api.korp.com.br}"
+log_dir="${QA_PR_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/korp-qa-pr}"
+sudo_command="${QA_PR_SUDO-sudo}"
+install_path="${QA_PR_INSTALL_PATH:-/usr/local/bin/qa-pr}"
+
+usage() {
+  cat <<'EOF'
+Uso:
+  qa-pr doctor
+  qa-pr apply <URL_DO_PR> [URL_DO_PR...] [--ask|--fail|--keep|--replace]
+  qa-pr status
+  qa-pr reset [--yes]
+  qa-pr install
+
+Exemplos:
+  qa-pr apply https://github.com/viasoftkorp/sdk/pull/330
+  qa-pr apply https://github.com/viasoftkorp/sdk/pull/330 --replace
+  qa-pr status
+  qa-pr reset
+EOF
+}
+
+die() {
+  echo "Erro: $*" >&2
+  exit 1
+}
+
+run_privileged() {
+  if [[ -n "$sudo_command" ]]; then
+    "$sudo_command" "$@"
+  else
+    "$@"
+  fi
+}
+
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || die "comando obrigatório não encontrado: $1"
+}
+
+require_runtime() {
+  require_command ansible-playbook
+  [[ -r "$inventory" ]] || die "inventário não encontrado ou sem leitura: $inventory"
+  [[ -r "$vault_id" ]] || die "chave do vault não encontrada ou sem leitura: $vault_id"
+  [[ -f "$repo_dir/pr-playbook.yml" ]] || die "pr-playbook.yml não encontrado em $repo_dir"
+  [[ -f "$repo_dir/pr-reset-playbook.yml" ]] || die "pr-reset-playbook.yml não encontrado em $repo_dir"
+}
+
+run_playbook() {
+  local playbook="$1"
+  shift
+  local timestamp log_file exit_code
+
+  mkdir -p "$log_dir"
+  timestamp="$(date '+%Y%m%d-%H%M%S')"
+  log_file="$log_dir/${playbook%.yml}-$timestamp.log"
+  echo "Log: $log_file"
+
+  set +e
+  ansible-playbook \
+    -i "$inventory" \
+    --vault-id "$vault_id" \
+    "$repo_dir/$playbook" \
+    "$@" 2>&1 | tee "$log_file"
+  exit_code="${PIPESTATUS[0]}"
+  set -e
+  return "$exit_code"
+}
+
+doctor() {
+  local failed=0
+  local command
+
+  echo "Host: $(hostname)"
+  echo "Repositório: $repo_dir"
+  if command -v git >/dev/null 2>&1 && git -C "$repo_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "Branch: $(git -C "$repo_dir" branch --show-current) ($(git -C "$repo_dir" rev-parse --short HEAD))"
+  fi
+
+  for command in ansible-playbook ansible-galaxy curl docker; do
+    if command -v "$command" >/dev/null 2>&1; then
+      echo "[ok] $command"
+    else
+      echo "[falha] comando ausente: $command" >&2
+      failed=1
+    fi
+  done
+
+  for command in "$inventory" "$vault_id" "$repo_dir/pr-playbook.yml" "$repo_dir/pr-reset-playbook.yml"; do
+    if [[ -r "$command" ]]; then
+      echo "[ok] $command"
+    else
+      echo "[falha] arquivo ausente ou sem leitura: $command" >&2
+      failed=1
+    fi
+  done
+
+  if command -v ansible-galaxy >/dev/null 2>&1 &&
+    ansible-galaxy collection list community.docker >/dev/null 2>&1; then
+    echo "[ok] collection community.docker"
+  else
+    echo "[falha] collection community.docker indisponível" >&2
+    failed=1
+  fi
+
+  if command -v docker >/dev/null 2>&1 &&
+    run_privileged docker compose version >/dev/null 2>&1 &&
+    run_privileged docker info >/dev/null 2>&1; then
+    echo "[ok] Docker e Compose"
+  else
+    echo "[falha] Docker/Compose indisponível" >&2
+    failed=1
+  fi
+
+  if command -v curl >/dev/null 2>&1 &&
+    curl --fail --silent --show-error \
+      "$minio_api/qa-prs/?list-type=2&max-keys=1" >/dev/null; then
+    echo "[ok] API MinIO"
+  else
+    echo "[falha] API MinIO inacessível: $minio_api" >&2
+    failed=1
+  fi
+
+  if ((failed)); then
+    die "ambiente incompleto"
+  fi
+  echo "Ambiente pronto."
+}
+
+apply_prs() {
+  local policy="ask"
+  local argument
+  local -a urls=()
+
+  for argument in "$@"; do
+    case "$argument" in
+      --ask) policy="ask" ;;
+      --fail) policy="fail" ;;
+      --keep) policy="keep" ;;
+      --replace) policy="replace" ;;
+      --*) die "opção desconhecida: $argument" ;;
+      *)
+        if [[ ! "$argument" =~ ^https://github\.com/viasoftkorp/[A-Za-z0-9._-]+/pull/[0-9]+/?$ ]]; then
+          die "URL de PR inválida: $argument"
+        fi
+        urls+=("$argument")
+        ;;
+    esac
+  done
+
+  ((${#urls[@]} > 0)) || die "informe ao menos uma URL de PR"
+  require_runtime
+
+  local joined
+  joined="$(IFS=,; echo "${urls[*]}")"
+  echo "Host alvo: $(hostname)"
+  echo "PRs: $joined"
+  echo "Política de conflito: $policy"
+  run_playbook pr-playbook.yml \
+    -e "prs=$joined" \
+    -e "pr_conflict_policy=$policy"
+}
+
+status_prs() {
+  local override_output container_output
+  require_command docker
+
+  echo "Overrides ativos:"
+  override_output="$(
+    run_privileged find "$compose_root" \
+      -path '*/pr-overrides/*' \
+      -type f \
+      -name '*-compose.yml' \
+      -print 2>/dev/null | sort
+  )"
+  if [[ -n "$override_output" ]]; then
+    echo "$override_output"
+  else
+    echo "(nenhum)"
+  fi
+
+  echo
+  echo "Contêineres de PR (nome|imagem|pr|repositório|status):"
+  container_output="$(
+    run_privileged docker ps -a \
+      --filter label=korp.pr \
+      --format '{{.Names}}|{{.Image}}|{{.Label "korp.pr"}}|{{.Label "korp.repositorio"}}|{{.Status}}'
+  )"
+  if [[ -n "$container_output" ]]; then
+    echo "$container_output"
+  else
+    echo "(nenhum)"
+  fi
+}
+
+reset_prs() {
+  local confirmed=0
+
+  case "${1:-}" in
+    "") ;;
+    --yes) confirmed=1 ;;
+    *) die "uso: qa-pr reset [--yes]" ;;
+  esac
+
+  if ((!confirmed)); then
+    echo "Este comando removerá todos os overrides de PR e reaplicará os composes base."
+    read -r -p "Digite RESET para continuar: " answer
+    if [[ "$answer" != "RESET" ]]; then
+      echo "Reset cancelado."
+      return 2
+    fi
+  fi
+
+  require_runtime
+  echo "Host alvo: $(hostname)"
+  run_playbook pr-reset-playbook.yml
+}
+
+install_cli() {
+  run_privileged ln -sfn "$script_path" "$install_path"
+  echo "qa-pr instalado em $install_path"
+}
+
+main() {
+  local command="${1:-help}"
+  if (($# > 0)); then
+    shift
+  fi
+
+  case "$command" in
+    doctor) (($# == 0)) || die "uso: qa-pr doctor"; doctor ;;
+    apply) apply_prs "$@" ;;
+    status) (($# == 0)) || die "uso: qa-pr status"; status_prs ;;
+    reset) reset_prs "$@" ;;
+    install) (($# == 0)) || die "uso: qa-pr install"; install_cli ;;
+    help|-h|--help) usage ;;
+    *) usage >&2; die "comando desconhecido: $command" ;;
+  esac
+}
+
+main "$@"
