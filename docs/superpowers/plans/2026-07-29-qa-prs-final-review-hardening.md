@@ -17,6 +17,7 @@
 - Comparar ownership por `<repositorio>#<N>`; owner legado `#<N>` conflita com qualquer PR repo-qualified.
 - Resolver todos os conflitos antes de qualquer mutação.
 - Reset deve provar parse, schema, arquivo base regular e Compose válido antes da primeira deleção.
+- O plugin canônico deve existir somente em `filter_plugins/qa_pr_filters.py`, compartilhado pelos dois playbooks.
 - Não usar `remove_orphans`, não alterar `setup.sh`, `main.yml`, Delphi ou manifests de dependência.
 - Manter a exceção de lint existente fora do escopo deste hardening.
 
@@ -195,7 +196,7 @@ git commit -m "DEVO-6789 - Qualifica ownership por repositorio"
 ### Task 2: Preflight completo antes do reset
 
 **Files:**
-- Modify: `roles/qa_pr_apply/filter_plugins/qa_pr_filters.py`
+- Move: `roles/qa_pr_apply/filter_plugins/qa_pr_filters.py` → `filter_plugins/qa_pr_filters.py`
 - Modify: `roles/qa_pr_reset/tasks/main.yml`
 - Modify: `roles/qa_pr_reset/tasks/read_override.yml`
 - Modify: `tests/unit/test_qa_pr_filters.py`
@@ -203,7 +204,7 @@ git commit -m "DEVO-6789 - Qualifica ownership por repositorio"
 
 **Interfaces:**
 - Consumes: lista `qa_pr_reset_override_files` com `path` e conteúdo YAML convertido.
-- Uses: `qa_pr_index_active_overrides` como validação pura de path/schema/labels.
+- Uses: `qa_pr_index_active_overrides` do plugin compartilhado como validação pura de path/schema/labels.
 - Produces: `qa_pr_reset_runs` únicos e validados antes da deleção.
 - Side effect preflight: `docker_compose_v2` com `check_mode: true`; não altera containers.
 
@@ -267,7 +268,40 @@ python3 -m unittest \
 Expected: falhas por schema permissivo, ausência da coleção parseada, ausência
 de `stat.isreg` e ausência do Compose check mode antes da deleção.
 
-- [ ] **Step 3: Fortalecer a validação pura**
+- [ ] **Step 3: Provar RED de carregamento e compartilhar o plugin**
+
+Antes da movimentação, executar pela raiz:
+
+```bash
+source /tmp/devo-6789-ansible/bin/activate
+ANSIBLE_COLLECTIONS_PATH=/tmp/devo-6789-collections \
+  ansible localhost -i 'localhost,' -c local \
+  -m ansible.builtin.debug \
+  -a 'msg={{ [] | qa_pr_index_active_overrides }}'
+```
+
+Expected RED: falha `Could not load "qa_pr_index_active_overrides"` porque o
+plugin ainda é privado de `qa_pr_apply`.
+
+Mover a implementação única:
+
+```bash
+mkdir -p filter_plugins
+git mv \
+  roles/qa_pr_apply/filter_plugins/qa_pr_filters.py \
+  filter_plugins/qa_pr_filters.py
+```
+
+Atualizar `PLUGIN_PATH` em `tests/unit/test_qa_pr_filters.py` para:
+
+```python
+PLUGIN_PATH = ROOT / "filter_plugins/qa_pr_filters.py"
+```
+
+Repetir o comando Ansible. Expected GREEN: exit 0 e mensagem `{}`. Não
+criar cópia, wrapper ou import entre roles.
+
+- [ ] **Step 4: Fortalecer a validação pura**
 
 Em `index_active_overrides`, exigir:
 
@@ -289,7 +323,7 @@ Restringir `_OVERRIDE_PATH` a um arquivo direto terminado em
 `-compose.yml`. Manter as validações de PR positivo, igualdade path/label,
 repositório opcional e owner duplicado.
 
-- [ ] **Step 4: Acumular e validar overrides no reset**
+- [ ] **Step 5: Acumular e validar overrides no reset**
 
 Inicializar em `main.yml`:
 
@@ -323,7 +357,7 @@ Depois de todos os includes de leitura e antes do `stat`, executar:
       {{ qa_pr_reset_override_files | qa_pr_index_active_overrides }}
 ```
 
-- [ ] **Step 5: Provar baseline executável antes da deleção**
+- [ ] **Step 6: Provar baseline executável antes da deleção**
 
 No assert de base, exigir:
 
@@ -352,7 +386,7 @@ Antes da task que remove as raízes, adicionar:
 Qualquer erro do módulo deve interromper o play antes da primeira task
 `state: absent`.
 
-- [ ] **Step 6: Executar GREEN e gates integrados**
+- [ ] **Step 7: Executar GREEN e gates integrados**
 
 Run:
 
@@ -368,6 +402,7 @@ export ANSIBLE_COLLECTIONS_PATH=/tmp/devo-6789-collections
 /tmp/devo-6789-ansible/bin/ansible-playbook \
   -i '127.0.0.1,' --syntax-check pr-reset-playbook.yml
 /tmp/devo-6789-ansible/bin/ansible-lint \
+  filter_plugins \
   roles/qa_pr_apply roles/qa_pr_reset \
   pr-playbook.yml pr-reset-playbook.yml
 git diff --check
@@ -375,10 +410,11 @@ git diff --check
 
 Expected: todos os comandos exit 0, sem warnings de lint ou syntax-check.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add \
+  filter_plugins/qa_pr_filters.py \
   roles/qa_pr_apply/filter_plugins/qa_pr_filters.py \
   roles/qa_pr_reset/tasks/main.yml \
   roles/qa_pr_reset/tasks/read_override.yml \
