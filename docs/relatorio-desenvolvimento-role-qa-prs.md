@@ -118,15 +118,17 @@ Decisões de segurança e consistência:
 - a chave do objeto é codificada antes da leitura;
 - o relatório é validado contra repositório, PR e nome do arquivo;
 - nesta fase, somente `kind: container` é aceito;
-- a imagem precisa ser `korp/<servico>`;
+- a imagem precisa ser `korp/<servico>` nos relatórios legados ou
+  `harbor.korp.com.br/qa-prs/<servico>` nos relatórios novos;
 - a tag é consumida do relatório, nunca reconstruída pela role.
 
 Após validar o relatório, a role consulta a mesma tag em
 `harbor.korp.com.br/qa-prs/<servico>`. Quando o artefato existe, essa passa a
-ser a imagem desejada. Um `404` indica build anterior à adoção do Harbor e
-aciona fallback para `korp/<servico>:<tag>` no DockerHub. Outros erros do
-Harbor interrompem a execução; indisponibilidade não é confundida com ausência
-de uma imagem legada.
+ser a imagem desejada. Um `404` aciona fallback para
+`korp/<servico>:<tag>` no DockerHub apenas se o relatório também for legado.
+Se um relatório novo declarar Harbor e o artefato estiver ausente, a execução
+falha. Outros erros do Harbor também interrompem a execução; indisponibilidade
+não é confundida com ausência de uma imagem legada.
 
 Campos obrigatórios do relatório:
 
@@ -496,7 +498,7 @@ container + Delphi imaginado no documento original.
 
 Na branch:
 
-- 71 testes unitários e estruturais aprovados;
+- 73 testes unitários e estruturais aprovados;
 - `bash -n qa-pr` aprovado;
 - syntax check dos dois playbooks aprovado;
 - `ansible-lint` aprovado com perfil `production`, sem falhas ou avisos;

@@ -51,7 +51,14 @@ def parse_minio_listing(xml_text, prefix):
     return sorted(set(keys))
 
 
-def load_report(json_text, expected_repo, expected_pr, expected_key):
+def load_report(
+    json_text,
+    expected_repo,
+    expected_pr,
+    expected_key,
+    harbor_registry="harbor.korp.com.br",
+    harbor_project="qa-prs",
+):
     report = json.loads(json_text)
     missing = _REQUIRED_CONTAINER_FIELDS - set(report)
     if missing:
@@ -59,15 +66,20 @@ def load_report(json_text, expected_repo, expected_pr, expected_key):
     if report["kind"] != "container":
         raise ValueError(f"kind ainda não suportado nesta fase: {report['kind']}")
     expected_service = expected_key.rsplit("/", 1)[-1][:-5]
+    registry = str(harbor_registry).strip().strip("/")
+    project = str(harbor_project).strip().strip("/")
+    dockerhub_image = f"korp/{report['servico']}"
+    harbor_image = f"{registry}/{project}/{report['servico']}"
     if (
         report["repositorio"] != expected_repo
         or report["pr"] != expected_pr
         or report["servico"] != expected_service
-        or report["imagem"] != f"korp/{report['servico']}"
+        or report["imagem"] not in {dockerhub_image, harbor_image}
     ):
         raise ValueError(f"Relatório inconsistente com {expected_key}")
     report = dict(report)
     report["pr_key"] = f"{expected_repo}#{expected_pr}"
+    report["compose_image"] = dockerhub_image
     report["desired_image"] = f"{report['imagem']}:{report['tag']}"
     return report
 
@@ -82,18 +94,25 @@ def resolve_registry_image(
         raise ValueError(
             f"Status inesperado ao consultar artefato no Harbor: {harbor_status}"
         )
+    registry = str(harbor_registry).strip().strip("/")
+    project = str(harbor_project).strip().strip("/")
+    if not registry or not project:
+        raise ValueError("Registry e projeto do Harbor são obrigatórios")
+    harbor_image = f"{registry}/{project}/{report['servico']}"
+    dockerhub_image = f"korp/{report['servico']}"
     resolved = dict(report)
     if harbor_status == 200:
-        registry = str(harbor_registry).strip().strip("/")
-        project = str(harbor_project).strip().strip("/")
-        if not registry or not project:
-            raise ValueError("Registry e projeto do Harbor são obrigatórios")
         resolved["desired_image"] = (
-            f"{registry}/{project}/{report['servico']}:{report['tag']}"
+            f"{harbor_image}:{report['tag']}"
         )
         resolved["image_registry"] = "harbor"
     else:
-        resolved["desired_image"] = f"{report['imagem']}:{report['tag']}"
+        if report["imagem"] != dockerhub_image:
+            raise ValueError(
+                "Relatório declara Harbor, mas o artefato não foi encontrado: "
+                f"{harbor_image}:{report['tag']}"
+            )
+        resolved["desired_image"] = f"{dockerhub_image}:{report['tag']}"
         resolved["image_registry"] = "dockerhub"
     return resolved
 
@@ -102,15 +121,16 @@ def build_targets(reports, compose_files):
     targets = []
     for report in reports:
         matches = []
+        compose_image = report.get("compose_image", report["imagem"])
         for compose in compose_files:
             services = (compose.get("content") or {}).get("services") or {}
             for service_key, config in services.items():
                 image = config.get("image") if isinstance(config, dict) else None
-                if isinstance(image, str) and image.rsplit(":", 1)[0] == report["imagem"]:
+                if isinstance(image, str) and image.rsplit(":", 1)[0] == compose_image:
                     matches.append((compose["path"], service_key))
         if len(matches) != 1:
             raise ValueError(
-                f"Esperado um compose para {report['imagem']}; encontrados {len(matches)}"
+                f"Esperado um compose para {compose_image}; encontrados {len(matches)}"
             )
         compose_path, service_key = matches[0]
         compose = PurePosixPath(compose_path)

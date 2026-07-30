@@ -18,7 +18,9 @@
         | qa_pr_load_report(
             qa_pr_link.repo,
             qa_pr_link.pr,
-            qa_pr_report_key
+            qa_pr_report_key,
+            qa_pr_harbor_registry,
+            qa_pr_harbor_project
           )
       }}
 

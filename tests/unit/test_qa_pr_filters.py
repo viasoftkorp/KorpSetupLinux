@@ -151,6 +151,27 @@ class ReportParsingTests(unittest.TestCase):
             "prs/compras/123/korp.compras.core.json",
         )
         self.assertEqual(report["desired_image"], "korp/korp.compras.core:2025.1.0.42-pr123")
+        self.assertEqual(report["compose_image"], "korp/korp.compras.core")
+
+    def test_accepts_report_that_already_points_to_harbor(self):
+        payload = json.loads(
+            (ROOT / "tests/fixtures/qa_prs/korp.compras.core.json").read_text()
+        )
+        payload["imagem"] = "harbor.korp.com.br/qa-prs/korp.compras.core"
+
+        report = filters.load_report(
+            json.dumps(payload),
+            "compras",
+            123,
+            "prs/compras/123/korp.compras.core.json",
+        )
+
+        self.assertEqual(report["compose_image"], "korp/korp.compras.core")
+        self.assertEqual(
+            report["desired_image"],
+            "harbor.korp.com.br/qa-prs/korp.compras.core:"
+            "2025.1.0.42-pr123",
+        )
 
     def test_rejects_kind_not_implemented_in_phase_one(self):
         raw = json.dumps({
@@ -185,8 +206,10 @@ class RegistryResolutionTests(unittest.TestCase):
         )
 
     def test_prefers_harbor_when_artifact_exists(self):
+        harbor_report = dict(self.report)
+        harbor_report["imagem"] = "harbor.korp.com.br/qa-prs/korp.compras.core"
         resolved = filters.resolve_registry_image(
-            self.report,
+            harbor_report,
             200,
             "harbor.korp.com.br",
             "qa-prs",
@@ -221,6 +244,18 @@ class RegistryResolutionTests(unittest.TestCase):
                 "qa-prs",
             )
 
+    def test_does_not_fallback_when_new_report_points_to_missing_harbor_tag(self):
+        harbor_report = dict(self.report)
+        harbor_report["imagem"] = "harbor.korp.com.br/qa-prs/korp.compras.core"
+
+        with self.assertRaisesRegex(ValueError, "declara Harbor"):
+            filters.resolve_registry_image(
+                harbor_report,
+                404,
+                "harbor.korp.com.br",
+                "qa-prs",
+            )
+
 
 class BuildTargetsTests(unittest.TestCase):
     def test_finds_service_by_image_and_keeps_yaml_service_key(self):
@@ -229,9 +264,10 @@ class BuildTargetsTests(unittest.TestCase):
             "repositorio": "compras",
             "pr": 123,
             "servico": "korp.compras.core",
-            "imagem": "korp/korp.compras.core",
+            "imagem": "harbor.korp.com.br/qa-prs/korp.compras.core",
+            "compose_image": "korp/korp.compras.core",
             "tag": "2025.1.0.42-pr123",
-            "desired_image": "korp/korp.compras.core:2025.1.0.42-pr123",
+            "desired_image": "harbor.korp.com.br/qa-prs/korp.compras.core:2025.1.0.42-pr123",
         }]
         compose_files = [{
             "path": "/etc/korp/composes/compras-compose.yml",
