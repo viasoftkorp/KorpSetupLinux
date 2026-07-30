@@ -4,7 +4,7 @@
 
 **Goal:** Corrigir ownership repo-qualified, validação de chaves MinIO e preflight destrutivo do reset sem alterar a interface operacional do MVP.
 
-**Architecture:** O filtro Python continua sendo a fonte pura de validação e planejamento. Overrides novos persistem repositório e número, enquanto overrides legados permanecem legíveis e conflitam conservadoramente. A role de reset reutiliza a validação pura e executa um Compose check mode completo antes de qualquer deleção.
+**Architecture:** O filtro Python continua sendo a fonte pura de validação e planejamento. A implementação única vive em `filter_plugins/` e `ansible.cfg` declara sua descoberta para playbooks e CLI ad-hoc. Overrides novos persistem repositório e número, enquanto overrides legados permanecem legíveis e conflitam conservadoramente. A role de reset reutiliza a validação pura e executa um Compose check mode completo antes de qualquer deleção.
 
 **Tech Stack:** Python 3 `unittest`, filtros Ansible, YAML/PyYAML, `community.docker.docker_compose_v2`, ansible-core 2.18, ansible-lint.
 
@@ -18,6 +18,8 @@
 - Resolver todos os conflitos antes de qualquer mutação.
 - Reset deve provar parse, schema, arquivo base regular e Compose válido antes da primeira deleção.
 - O plugin canônico deve existir somente em `filter_plugins/qa_pr_filters.py`, compartilhado pelos dois playbooks.
+- `ansible.cfg` deve declarar `[defaults] filter_plugins = ./filter_plugins`
+  para o CLI ad-hoc e os playbooks descobrirem a mesma implementação.
 - Não usar `remove_orphans`, não alterar `setup.sh`, `main.yml`, Delphi ou manifests de dependência.
 - Manter a exceção de lint existente fora do escopo deste hardening.
 
@@ -197,6 +199,7 @@ git commit -m "DEVO-6789 - Qualifica ownership por repositorio"
 
 **Files:**
 - Move: `roles/qa_pr_apply/filter_plugins/qa_pr_filters.py` → `filter_plugins/qa_pr_filters.py`
+- Create: `ansible.cfg`
 - Modify: `roles/qa_pr_reset/tasks/main.yml`
 - Modify: `roles/qa_pr_reset/tasks/read_override.yml`
 - Modify: `tests/unit/test_qa_pr_filters.py`
@@ -296,6 +299,15 @@ Atualizar `PLUGIN_PATH` em `tests/unit/test_qa_pr_filters.py` para:
 
 ```python
 PLUGIN_PATH = ROOT / "filter_plugins/qa_pr_filters.py"
+```
+
+Adicionar uma regressão comportamental que execute o CLI Ansible pela raiz,
+remova `ANSIBLE_CONFIG` e `ANSIBLE_FILTER_PLUGINS` do ambiente e exija exit
+`0` com mensagem `{}`. Criar:
+
+```ini
+[defaults]
+filter_plugins = ./filter_plugins
 ```
 
 Repetir o comando Ansible. Expected GREEN: exit 0 e mensagem `{}`. Não
@@ -402,6 +414,7 @@ export ANSIBLE_COLLECTIONS_PATH=/tmp/devo-6789-collections
 /tmp/devo-6789-ansible/bin/ansible-playbook \
   -i '127.0.0.1,' --syntax-check pr-reset-playbook.yml
 /tmp/devo-6789-ansible/bin/ansible-lint \
+  ansible.cfg \
   filter_plugins \
   roles/qa_pr_apply roles/qa_pr_reset \
   pr-playbook.yml pr-reset-playbook.yml
@@ -414,6 +427,9 @@ Expected: todos os comandos exit 0, sem warnings de lint ou syntax-check.
 
 ```bash
 git add \
+  ansible.cfg \
+  docs/superpowers/plans/2026-07-29-qa-prs-final-review-hardening.md \
+  docs/superpowers/specs/2026-07-29-qa-prs-final-review-hardening-design.md \
   filter_plugins/qa_pr_filters.py \
   roles/qa_pr_apply/filter_plugins/qa_pr_filters.py \
   roles/qa_pr_reset/tasks/main.yml \

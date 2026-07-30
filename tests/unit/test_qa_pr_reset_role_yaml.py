@@ -90,6 +90,17 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
             for index, task in enumerate(tasks)
             if task.get("ansible.builtin.include_tasks") == "read_override.yml"
         )
+        validate_override_index = next(
+            (
+                index
+                for index, task in enumerate(tasks)
+                if (
+                    "ansible.builtin.set_fact" in task
+                    and "qa_pr_index_active_overrides" in scalar_text(task)
+                )
+            ),
+            len(tasks),
+        )
         stat_index = next(
             index
             for index, task in enumerate(tasks)
@@ -100,6 +111,14 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
             for index, task in enumerate(tasks)
             if "ansible.builtin.assert" in task
             and "qa_pr_reset_base_file.stat.exists" in scalar_text(task)
+        )
+        compose_check_index = next(
+            (
+                index
+                for index, task in enumerate(tasks)
+                if "community.docker.docker_compose_v2" in task
+            ),
+            len(tasks),
         )
         delete_index = next(
             index
@@ -112,15 +131,45 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
             if task.get("ansible.builtin.include_tasks") == "reset_compose.yml"
         )
 
-        self.assertLess(read_index, stat_index)
+        base_assert = tasks[assert_index]["ansible.builtin.assert"]
+        base_assert_checks_exists_and_isreg = all(
+            expression in base_assert["that"]
+            for expression in (
+                "qa_pr_reset_base_file.stat.exists | bool",
+                "qa_pr_reset_base_file.stat.isreg | bool",
+            )
+        )
+        compose_check_task = (
+            tasks[compose_check_index]
+            if compose_check_index < len(tasks)
+            else {}
+        )
+        compose_check_module = compose_check_task.get(
+            "community.docker.docker_compose_v2", {}
+        )
+
+        self.assertLess(read_index, validate_override_index)
+        self.assertLess(validate_override_index, stat_index)
         self.assertLess(stat_index, assert_index)
-        self.assertLess(assert_index, delete_index)
+        self.assertLess(assert_index, compose_check_index)
+        self.assertLess(compose_check_index, delete_index)
         self.assertLess(delete_index, reset_index)
+        self.assertTrue(base_assert_checks_exists_and_isreg)
+        self.assertTrue(compose_check_task["check_mode"])
+        self.assertEqual(
+            compose_check_module["files"],
+            ["{{ qa_pr_reset_run.compose_file }}"],
+        )
 
     def test_override_read_builds_unique_base_compose_runs(self):
         tasks = load_tasks("read_override.yml")
         find_tasks = module_tasks(tasks, "ansible.builtin.find")
         slurp_tasks = module_tasks(tasks, "ansible.builtin.slurp")
+        override_file_tasks = [
+            task
+            for task in module_tasks(tasks, "ansible.builtin.set_fact")
+            if "qa_pr_reset_override_files" in scalar_text(task)
+        ]
         run_tasks = [
             task
             for task in module_tasks(tasks, "ansible.builtin.set_fact")
@@ -129,19 +178,29 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
 
         self.assertEqual(len(find_tasks), 1)
         self.assertEqual(len(slurp_tasks), 1)
+        self.assertEqual(len(override_file_tasks), 1)
         self.assertEqual(len(run_tasks), 1)
         self.assertEqual(find_tasks[0]["ansible.builtin.find"]["recurse"], True)
         self.assertNotIn("patterns", find_tasks[0]["ansible.builtin.find"])
         self.assertIn("/pr-overrides", scalar_text(find_tasks[0]))
-        self.assertIn("qa_pr_reset_found_overrides.files", scalar_text(slurp_tasks[0]))
+        self.assertIn(
+            "qa_pr_reset_found_overrides.files", scalar_text(slurp_tasks[0])
+        )
         self.assertIn("qa_pr_reset_override.path", scalar_text(slurp_tasks[0]))
+
+        override_file_text = scalar_text(override_file_tasks[0])
+        self.assertIn("qa_pr_reset_slurped_override.content", override_file_text)
+        self.assertIn("b64decode", override_file_text)
+        self.assertIn("from_yaml", override_file_text)
 
         run_text = scalar_text(run_tasks[0])
         self.assertIn("qa_pr_reset_project_src", run_text)
         self.assertIn("basename", run_text)
         self.assertIn("project_src", run_text)
         self.assertIn("compose_file", run_text)
-        self.assertIn("not in qa_pr_reset_runs", scalar_text(run_tasks[0].get("when")))
+        self.assertIn(
+            "not in qa_pr_reset_runs", scalar_text(run_tasks[0].get("when"))
+        )
 
     def test_main_removes_only_the_two_override_roots(self):
         tasks = load_tasks("main.yml")
@@ -202,8 +261,14 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
             initialization["ansible.builtin.set_fact"]["qa_pr_reset_runs"], []
         )
         self.assertIn("qa_pr_reset_runs", scalar_text(reset_task["loop"]))
-        self.assertFalse(
-            module_names(main_tasks) & {"community.docker.docker_compose_v2"}
+        compose_check_tasks = [
+            task
+            for task in main_tasks
+            if "community.docker.docker_compose_v2" in task
+        ]
+        self.assertEqual(len(compose_check_tasks), 1)
+        self.assertIn(
+            "qa_pr_reset_runs", scalar_text(compose_check_tasks[0]["loop"])
         )
 
 

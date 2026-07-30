@@ -15,6 +15,25 @@
     label: "{{ qa_pr_reset_override.path }}"
   register: qa_pr_reset_slurped_overrides
 
+- name: Acumular overrides para validação conjunta
+  ansible.builtin.set_fact:
+    qa_pr_reset_override_files: >-
+      {{
+        qa_pr_reset_override_files
+        + [
+            {
+              'path': qa_pr_reset_slurped_override.qa_pr_reset_override.path,
+              'content': (
+                qa_pr_reset_slurped_override.content | b64decode | from_yaml
+              )
+            }
+          ]
+      }}
+  loop: "{{ qa_pr_reset_slurped_overrides.results }}"
+  loop_control:
+    loop_var: qa_pr_reset_slurped_override
+    label: "{{ qa_pr_reset_slurped_override.qa_pr_reset_override.path }}"
+
 - name: Acumular composes base afetados sem duplicação
   ansible.builtin.set_fact:
     qa_pr_reset_runs: >-

@@ -2,10 +2,12 @@ from copy import deepcopy
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import json
+import os
+import subprocess
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-PLUGIN_PATH = ROOT / "roles/qa_pr_apply/filter_plugins/qa_pr_filters.py"
+PLUGIN_PATH = ROOT / "filter_plugins/qa_pr_filters.py"
 spec = spec_from_file_location("qa_pr_filters", PLUGIN_PATH)
 filters = module_from_spec(spec)
 spec.loader.exec_module(filters)
@@ -32,6 +34,41 @@ def target(
         "compose_file": compose_file,
         "override_path": f"{project_src}/pr-overrides/pr{pr}/{compose_file}",
     }
+
+
+class PluginDiscoveryTests(unittest.TestCase):
+    def test_root_config_loads_shared_filter_for_ad_hoc_ansible(self):
+        environment = os.environ.copy()
+        environment.pop("ANSIBLE_CONFIG", None)
+        environment.pop("ANSIBLE_FILTER_PLUGINS", None)
+        environment["ANSIBLE_COLLECTIONS_PATH"] = (
+            "/tmp/devo-6789-collections"
+        )
+        result = subprocess.run(
+            [
+                "/tmp/devo-6789-ansible/bin/ansible",
+                "localhost",
+                "-i",
+                "localhost,",
+                "-c",
+                "local",
+                "-m",
+                "ansible.builtin.debug",
+                "-a",
+                "msg={{ [] | qa_pr_index_active_overrides }}",
+            ],
+            cwd=ROOT,
+            env=environment,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(
+            result.returncode,
+            0,
+            result.stdout + result.stderr,
+        )
+        self.assertIn('"msg": {}', result.stdout)
 
 
 class NormalizePrLinksTests(unittest.TestCase):
@@ -388,6 +425,58 @@ class MutationShapeTests(unittest.TestCase):
         identity = "/etc/korp/composes|logistica-compose.yml|wms-core"
         self.assertEqual(active[identity]["pr_key"], "logistica#579")
 
+    def test_indexes_valid_legacy_owner_without_repository_label(self):
+        active = filters.index_active_overrides([{
+            "path": "/srv/pr-overrides/pr123/app-compose.yml",
+            "content": {
+                "services": {
+                    "api": {
+                        "image": "korp/api:pr123",
+                        "labels": {"korp.pr": "123"},
+                    }
+                }
+            },
+        }])
+        identity = "/srv|app-compose.yml|api"
+        self.assertEqual(active[identity]["pr_key"], "#123")
+
+    def test_rejects_invalid_override_schema(self):
+        invalid_overrides = [
+            {
+                "path": "/srv/pr-overrides/pr123/app-compose.yml",
+                "content": [],
+            },
+            {
+                "path": "/srv/pr-overrides/pr123/app-compose.yml",
+                "content": {"services": {}},
+            },
+            {
+                "path": "/srv/pr-overrides/pr123/app-compose.yml",
+                "content": {
+                    "services": {
+                        "api": {"labels": {"korp.pr": "123"}}
+                    }
+                },
+            },
+            {
+                "path": (
+                    "/srv/pr-overrides/pr123/nested/app-compose.yml"
+                ),
+                "content": {
+                    "services": {
+                        "api": {
+                            "image": "korp/api:pr123",
+                            "labels": {"korp.pr": "123"},
+                        }
+                    }
+                },
+            },
+        ]
+        for override_file in invalid_overrides:
+            with self.subTest(override_file=override_file):
+                with self.assertRaises(ValueError):
+                    filters.index_active_overrides([override_file])
+
     def test_rejects_invalid_repository_label(self):
         content = deepcopy(self.current_content)
         content["services"]["wms-core"]["labels"]["korp.repositorio"] = (
@@ -407,7 +496,10 @@ class MutationShapeTests(unittest.TestCase):
                 ),
                 "content": {
                     "services": {
-                        "wms-core": {"labels": {"korp.pr": str(pr)}}
+                        "wms-core": {
+                            "image": f"korp/wms-core:pr{pr}",
+                            "labels": {"korp.pr": str(pr)},
+                        }
                     }
                 },
             }
@@ -421,6 +513,7 @@ class MutationShapeTests(unittest.TestCase):
             "/etc/korp/composes/pr-overrides/logistica-compose.yml",
             "/etc/korp/composes/pr-overrides/pr0/logistica-compose.yml",
             "/etc/korp/composes/pr-overrides/pr579/nested/logistica-compose.yml",
+            "/etc/korp/composes/pr-overrides/pr579/logistica.yml",
         )
         for path in paths:
             with self.subTest(path=path), self.assertRaisesRegex(
@@ -436,7 +529,10 @@ class MutationShapeTests(unittest.TestCase):
             "path": "/etc/korp/composes/pr-overrides/pr1/logistica-compose.yml",
             "content": {
                 "services": {
-                    "wms-core": {"labels": {"korp.pr": "0"}}
+                    "wms-core": {
+                        "image": "korp/wms-core:pr1",
+                        "labels": {"korp.pr": "0"},
+                    }
                 }
             },
         }
@@ -448,7 +544,10 @@ class MutationShapeTests(unittest.TestCase):
             "path": "/etc/korp/composes/pr-overrides/pr580/logistica-compose.yml",
             "content": {
                 "services": {
-                    "wms-core": {"labels": {"korp.pr": "579"}}
+                    "wms-core": {
+                        "image": "korp/wms-core:pr579",
+                        "labels": {"korp.pr": "579"},
+                    }
                 }
             },
         }

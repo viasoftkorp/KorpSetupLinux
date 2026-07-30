@@ -11,7 +11,7 @@ _PR_LINK = re.compile(
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+$")
 _OVERRIDE_PATH = re.compile(
     r"^(?P<project_src>.+)/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
-    r"(?P<compose_file>[^/]+)$"
+    r"(?P<compose_file>[^/]+-compose[.]yml)$"
 )
 _REQUIRED_CONTAINER_FIELDS = {
     "kind", "pr", "repositorio", "branch", "servico",
@@ -119,11 +119,27 @@ def index_active_overrides(override_files):
         project_src = match.group("project_src")
         compose_file = match.group("compose_file")
         path_pr = int(match.group("pr"))
-        content = override_file.get("content") or {}
-        services = content.get("services") or {}
+        content = override_file.get("content")
+        if not isinstance(content, dict):
+            raise ValueError(f"Override YAML inválido em {override_path}")
+        services = content.get("services")
+        if not isinstance(services, dict) or not services:
+            raise ValueError(f"Override sem services em {override_path}")
         for service_key, config in services.items():
-            labels = config.get("labels") if isinstance(config, dict) else {}
-            raw_pr = (labels or {}).get("korp.pr")
+            if not isinstance(config, dict):
+                raise ValueError(
+                    f"Serviço inválido em {override_path}: {service_key}"
+                )
+            if not isinstance(config.get("image"), str) or not config["image"]:
+                raise ValueError(
+                    f"Imagem inválida em {override_path}: {service_key}"
+                )
+            if not isinstance(config.get("labels"), dict):
+                raise ValueError(
+                    f"Labels inválidas em {override_path}: {service_key}"
+                )
+            labels = config["labels"]
+            raw_pr = labels.get("korp.pr")
             if raw_pr is None:
                 continue
             try:

@@ -48,6 +48,9 @@ reaplicados.
 
 - O plugin deixa de ser privado da role `qa_pr_apply` e passa a existir
   somente em `filter_plugins/qa_pr_filters.py`, na raiz do projeto.
+- `ansible.cfg`, na raiz, declara `[defaults]` e
+  `filter_plugins = ./filter_plugins`, tornando a implementação única
+  descobrível também pelo CLI Ansible ad-hoc executado nesse diretório.
 - Os playbooks `pr-playbook.yml` e `pr-reset-playbook.yml`, executados pela
   raiz do projeto, carregam a mesma implementação de filtros.
 - Não haverá cópia, wrapper ou import entre roles; isso evita divergência
@@ -55,7 +58,7 @@ reaplicados.
 - Os testes Python passam a importar o plugin pelo caminho compartilhado.
 - O aceite inclui uma execução Ansible focada que prove que
   `qa_pr_reset` resolve `qa_pr_index_active_overrides` sem carregar
-  `qa_pr_apply`.
+  `qa_pr_apply` e sem depender de `ANSIBLE_FILTER_PLUGINS`.
 
 ## MinIO e documentação
 
@@ -89,5 +92,7 @@ reaplicados.
   deleção.
 - Regressões para caminho/conteúdo de override inválidos e compose base não
   regular.
+- Regressão executável do CLI Ansible para a descoberta do plugin compartilhado
+  pela configuração raiz.
 - Suíte unitária completa, dois syntax-checks e lint literal devem sair zero.
 
