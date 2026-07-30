@@ -189,6 +189,7 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
         self.assertIn("qa_pr_reset_override.path", scalar_text(slurp_tasks[0]))
 
         override_file_text = scalar_text(override_file_tasks[0])
+        self.assertIn("qa_pr_reset_project_src", override_file_text)
         self.assertIn("qa_pr_reset_slurped_override.content", override_file_text)
         self.assertIn("b64decode", override_file_text)
         self.assertIn("from_yaml", override_file_text)

@@ -10,7 +10,7 @@ _PR_LINK = re.compile(
 )
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+$")
 _OVERRIDE_PATH = re.compile(
-    r"^(?P<project_src>.+)/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
+    r"^.+/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
     r"(?P<compose_file>[^/]+-compose[.]yml)$"
 )
 _REQUIRED_CONTAINER_FIELDS = {
@@ -112,13 +112,20 @@ def build_targets(reports, compose_files):
 def index_active_overrides(override_files):
     owners = {}
     for override_file in override_files:
-        override_path = str(PurePosixPath(override_file["path"]))
+        override_path = str(override_file["path"])
+        project_src = override_file.get("project_src")
+        if not isinstance(project_src, str) or not project_src:
+            raise ValueError(f"Project src inválido em {override_path}")
         match = _OVERRIDE_PATH.fullmatch(override_path)
         if not match:
             raise ValueError(f"Caminho de override inválido: {override_path}")
-        project_src = match.group("project_src")
         compose_file = match.group("compose_file")
         path_pr = int(match.group("pr"))
+        expected_path = (
+            f"{project_src}/pr-overrides/pr{path_pr}/{compose_file}"
+        )
+        if override_path != expected_path:
+            raise ValueError(f"Caminho de override inválido: {override_path}")
         content = override_file.get("content")
         if not isinstance(content, dict):
             raise ValueError(f"Override YAML inválido em {override_path}")
@@ -140,8 +147,6 @@ def index_active_overrides(override_files):
                 )
             labels = config["labels"]
             raw_pr = labels.get("korp.pr")
-            if raw_pr is None:
-                continue
             try:
                 pr = int(raw_pr)
             except (TypeError, ValueError) as error:

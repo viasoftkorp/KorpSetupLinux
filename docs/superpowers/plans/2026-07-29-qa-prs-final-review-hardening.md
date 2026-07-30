@@ -16,7 +16,7 @@
 - Adicionar `korp.repositorio` sem incluir o repositório no caminho.
 - Comparar ownership por `<repositorio>#<N>`; owner legado `#<N>` conflita com qualquer PR repo-qualified.
 - Resolver todos os conflitos antes de qualquer mutação.
-- Reset deve provar parse, schema, arquivo base regular e Compose válido antes da primeira deleção.
+- Reset deve provar parse, schema, `project_src` conhecido, path literal, arquivo base regular e Compose válido antes da primeira deleção.
 - O plugin canônico deve existir somente em `filter_plugins/qa_pr_filters.py`, compartilhado pelos dois playbooks.
 - `ansible.cfg` deve declarar `[defaults] filter_plugins = ./filter_plugins`
   para o CLI ad-hoc e os playbooks descobrirem a mesma implementação.
@@ -206,7 +206,7 @@ git commit -m "DEVO-6789 - Qualifica ownership por repositorio"
 - Modify: `tests/unit/test_qa_pr_reset_role_yaml.py`
 
 **Interfaces:**
-- Consumes: lista `qa_pr_reset_override_files` com `path` e conteúdo YAML convertido.
+- Consumes: lista `qa_pr_reset_override_files` com `project_src`, `path` e conteúdo YAML convertido.
 - Uses: `qa_pr_index_active_overrides` do plugin compartilhado como validação pura de path/schema/labels.
 - Produces: `qa_pr_reset_runs` únicos e validados antes da deleção.
 - Side effect preflight: `docker_compose_v2` com `check_mode: true`; não altera containers.
@@ -332,8 +332,10 @@ if not isinstance(config.get("labels"), dict):
 ```
 
 Restringir `_OVERRIDE_PATH` a um arquivo direto terminado em
-`-compose.yml`. Manter as validações de PR positivo, igualdade path/label,
-repositório opcional e owner duplicado.
+`-compose.yml`. Exigir `project_src` explícito e comparar `path` com a string
+literal `<project_src>/pr-overrides/pr<N>/<compose_file>`, sem inferir a raiz
+pelo path. Manter as validações de PR positivo, igualdade path/label,
+repositório opcional e owner duplicado; somente `korp.repositorio` pode faltar.
 
 - [ ] **Step 5: Acumular e validar overrides no reset**
 
@@ -343,7 +345,8 @@ Inicializar em `main.yml`:
 qa_pr_reset_override_files: []
 ```
 
-Em `read_override.yml`, após o `slurp`, acumular:
+Nos dois `read_override.yml`, acumular o `project_src` já conhecido pela
+respectiva task. No reset, após o `slurp`, acumular:
 
 ```yaml
 qa_pr_reset_override_files: >-
@@ -351,6 +354,7 @@ qa_pr_reset_override_files: >-
     qa_pr_reset_override_files
     + [
         {
+          'project_src': qa_pr_reset_project_src,
           'path': qa_pr_reset_slurped_override.qa_pr_reset_override.path,
           'content': (
             qa_pr_reset_slurped_override.content | b64decode | from_yaml
@@ -403,12 +407,12 @@ Qualquer erro do módulo deve interromper o play antes da primeira task
 Run:
 
 ```bash
+source /tmp/devo-6789-ansible/bin/activate
+export ANSIBLE_COLLECTIONS_PATH=/tmp/devo-6789-collections
 python3 -m unittest \
   tests.unit.test_qa_pr_filters \
   tests.unit.test_qa_pr_reset_role_yaml -v
 python3 -m unittest discover -s tests/unit -v
-source /tmp/devo-6789-ansible/bin/activate
-export ANSIBLE_COLLECTIONS_PATH=/tmp/devo-6789-collections
 /tmp/devo-6789-ansible/bin/ansible-playbook \
   -i '127.0.0.1,' --syntax-check pr-playbook.yml
 /tmp/devo-6789-ansible/bin/ansible-playbook \

@@ -24,6 +24,7 @@
         qa_pr_override_files
         + [
             {
+              "project_src": qa_pr_project_src,
               "path": qa_pr_slurped_override.qa_pr_override_file.path,
               "content": (
                 qa_pr_slurped_override.content

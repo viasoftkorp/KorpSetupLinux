@@ -252,6 +252,17 @@ class QaPrRoleYamlTests(unittest.TestCase):
         self.assertIn("qa_pr_override_files", scalar_text(override_tasks))
         self.assertNotIn("qa_pr_compose_files", scalar_text(override_tasks))
         self.assertIn("qa_pr_override_file.path", scalar_text(override_tasks))
+        override_accumulator = next(
+            task
+            for task in module_tasks(
+                override_tasks, "ansible.builtin.set_fact"
+            )
+            if "qa_pr_override_files" in scalar_text(task)
+        )
+        self.assertIn(
+            "qa_pr_project_src",
+            scalar_text(override_accumulator["ansible.builtin.set_fact"]),
+        )
         self.assertNotIn(
             "qa_pr_slurped_override.item", scalar_text(override_tasks)
         )
@@ -384,10 +395,12 @@ class QaPrRoleYamlTests(unittest.TestCase):
                 self.assertNotIn(forbidden, text)
 
     def test_operations_guide_warns_about_final_customer_environments(self):
-        self.assertIn(
-            "ambiente de cliente final",
-            OPERATIONS_GUIDE.read_text(),
-        )
+        guide = OPERATIONS_GUIDE.read_text()
+        self.assertIn("ambiente de cliente final", guide)
+        self.assertIn("`<repositorio>#<N>`", guide)
+        self.assertIn("`korp.pr`", guide)
+        self.assertIn("`korp.repositorio`", guide)
+        self.assertIn("repositórios diferentes", guide)
 
 
 if __name__ == "__main__":

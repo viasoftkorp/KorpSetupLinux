@@ -28,12 +28,14 @@ apenas nos pontos explicitamente corrigidos abaixo.
 Antes de remover qualquer raiz `pr-overrides`, a role de reset deve:
 
 1. descobrir e ler todos os arquivos regulares das duas raízes;
-2. converter cada conteúdo YAML e falhar em conteúdo inválido;
-3. exigir caminho direto e canônico
-   `<project_src>/pr-overrides/pr<N>/<compose_file>`;
+2. converter cada conteúdo YAML, transportar o `project_src` conhecido pela
+   task de leitura e falhar em conteúdo ou raiz inválidos;
+3. exigir igualdade literal com o caminho direto e canônico
+   `<project_src>/pr-overrides/pr<N>/<compose_file>`, sem inferir a raiz pelo
+   próprio path;
 4. validar `services` não vazio, configurações de serviço, `image`,
-   `korp.pr`, correspondência do número com o caminho e, quando presente,
-   `korp.repositorio`;
+   `korp.pr` obrigatório, correspondência do número com o caminho e, quando
+   presente, `korp.repositorio` legado-opcional;
 5. derivar execuções únicas por `project_src + compose_file`;
 6. exigir que cada compose base exista e seja arquivo regular;
 7. validar cada compose base com o mesmo `project_src`, env file e arquivo
@@ -93,6 +95,6 @@ reaplicados.
 - Regressões para caminho/conteúdo de override inválidos e compose base não
   regular.
 - Regressão executável do CLI Ansible para a descoberta do plugin compartilhado
-  pela configuração raiz.
+  pela configuração raiz, com o venv Ansible ativado antes da suíte.
 - Suíte unitária completa, dois syntax-checks e lint literal devem sair zero.
 

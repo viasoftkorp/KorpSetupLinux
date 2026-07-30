@@ -3,6 +3,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import json
 import os
+import shutil
 import subprocess
 import unittest
 
@@ -38,6 +39,11 @@ def target(
 
 class PluginDiscoveryTests(unittest.TestCase):
     def test_root_config_loads_shared_filter_for_ad_hoc_ansible(self):
+        ansible_binary = shutil.which("ansible")
+        self.assertIsNotNone(
+            ansible_binary,
+            "Ative o ambiente Ansible antes de executar os testes",
+        )
         environment = os.environ.copy()
         environment.pop("ANSIBLE_CONFIG", None)
         environment.pop("ANSIBLE_FILTER_PLUGINS", None)
@@ -46,7 +52,7 @@ class PluginDiscoveryTests(unittest.TestCase):
         )
         result = subprocess.run(
             [
-                "/tmp/devo-6789-ansible/bin/ansible",
+                ansible_binary,
                 "localhost",
                 "-i",
                 "localhost,",
@@ -400,6 +406,7 @@ class MutationShapeTests(unittest.TestCase):
 
     def active_owners(self, content=None):
         override_file = {
+            "project_src": "/etc/korp/composes",
             "path": self.old_path,
             "content": content or self.current_content,
         }
@@ -427,6 +434,7 @@ class MutationShapeTests(unittest.TestCase):
 
     def test_indexes_valid_legacy_owner_without_repository_label(self):
         active = filters.index_active_overrides([{
+            "project_src": "/srv",
             "path": "/srv/pr-overrides/pr123/app-compose.yml",
             "content": {
                 "services": {
@@ -440,17 +448,70 @@ class MutationShapeTests(unittest.TestCase):
         identity = "/srv|app-compose.yml|api"
         self.assertEqual(active[identity]["pr_key"], "#123")
 
+    def test_rejects_service_without_pr_label(self):
+        content = deepcopy(self.current_content)
+        del content["services"]["wms-core"]["labels"]["korp.pr"]
+        with self.assertRaisesRegex(ValueError, "Label korp.pr inválida"):
+            self.active_owners(content)
+
+    def test_rejects_repeated_override_root_for_expected_project(self):
+        override_file = {
+            "project_src": "/srv",
+            "path": (
+                "/srv/pr-overrides/pr1/pr-overrides/"
+                "pr123/app-compose.yml"
+            ),
+            "content": {
+                "services": {
+                    "api": {
+                        "image": "korp/api:pr123",
+                        "labels": {"korp.pr": "123"},
+                    }
+                }
+            },
+        }
+        with self.assertRaisesRegex(ValueError, "Caminho de override inválido"):
+            filters.index_active_overrides([override_file])
+
+    def test_rejects_missing_or_mismatched_project_src(self):
+        content = {
+            "services": {
+                "api": {
+                    "image": "korp/api:pr123",
+                    "labels": {"korp.pr": "123"},
+                }
+            }
+        }
+        invalid_overrides = [
+            {
+                "path": "/srv/pr-overrides/pr123/app-compose.yml",
+                "content": content,
+            },
+            {
+                "project_src": "/srv/other",
+                "path": "/srv/pr-overrides/pr123/app-compose.yml",
+                "content": content,
+            },
+        ]
+        for override_file in invalid_overrides:
+            with self.subTest(override_file=override_file):
+                with self.assertRaises(ValueError):
+                    filters.index_active_overrides([override_file])
+
     def test_rejects_invalid_override_schema(self):
         invalid_overrides = [
             {
+                "project_src": "/srv",
                 "path": "/srv/pr-overrides/pr123/app-compose.yml",
                 "content": [],
             },
             {
+                "project_src": "/srv",
                 "path": "/srv/pr-overrides/pr123/app-compose.yml",
                 "content": {"services": {}},
             },
             {
+                "project_src": "/srv",
                 "path": "/srv/pr-overrides/pr123/app-compose.yml",
                 "content": {
                     "services": {
@@ -459,6 +520,7 @@ class MutationShapeTests(unittest.TestCase):
                 },
             },
             {
+                "project_src": "/srv",
                 "path": (
                     "/srv/pr-overrides/pr123/nested/app-compose.yml"
                 ),
@@ -490,6 +552,7 @@ class MutationShapeTests(unittest.TestCase):
     def test_rejects_duplicate_persisted_owner_identity(self):
         override_files = [
             {
+                "project_src": "/etc/korp/composes",
                 "path": (
                     f"/etc/korp/composes/pr-overrides/pr{pr}/"
                     "logistica-compose.yml"
@@ -520,12 +583,14 @@ class MutationShapeTests(unittest.TestCase):
                 ValueError, "Caminho de override inválido"
             ):
                 filters.index_active_overrides([{
+                    "project_src": "/etc/korp/composes",
                     "path": path,
                     "content": self.current_content,
                 }])
 
     def test_rejects_nonpositive_pr_label(self):
         override_file = {
+            "project_src": "/etc/korp/composes",
             "path": "/etc/korp/composes/pr-overrides/pr1/logistica-compose.yml",
             "content": {
                 "services": {
@@ -541,6 +606,7 @@ class MutationShapeTests(unittest.TestCase):
 
     def test_rejects_override_path_pr_different_from_label(self):
         override_file = {
+            "project_src": "/etc/korp/composes",
             "path": "/etc/korp/composes/pr-overrides/pr580/logistica-compose.yml",
             "content": {
                 "services": {

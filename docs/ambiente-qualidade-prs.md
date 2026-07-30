@@ -25,11 +25,11 @@ Para uma lista JSON:
 ansible-playbook pr-playbook.yml -e '{"prs":["https://github.com/viasoftkorp/repositorio-a/pull/123","https://github.com/viasoftkorp/repositorio-b/pull/456"]}'
 ```
 
-O playbook consulta os relatórios JSON no bucket `qa-prs`, localiza o serviço pelo repositório da imagem nos composes base e cria um override somente para o serviço alvo. O contêiner aplicado recebe a label `korp.pr` com o número do PR, que identifica no Portainer qual PR é o proprietário ativo.
+O playbook consulta os relatórios JSON no bucket `qa-prs`, localiza o serviço pelo repositório da imagem nos composes base e cria um override somente para o serviço alvo. O contêiner aplicado recebe as labels `korp.pr` com o número e `korp.repositorio` com o repositório; juntas, elas formam o ownership `<repositorio>#<N>` exibido no preflight.
 
 ### Conflitos
 
-Há conflito quando outro número de PR já controla a mesma identidade de serviço: diretório do projeto, arquivo de compose e chave do serviço. Não há conflito ao reaplicar o mesmo número de PR, nem quando PRs afetam serviços diferentes, ainda que estejam no mesmo compose.
+Há conflito quando outro ownership já controla a mesma identidade de serviço: diretório do projeto, arquivo de compose e chave do serviço. PRs de repositórios diferentes com o mesmo número conflitam. Não há conflito ao reaplicar o mesmo `<repositorio>#<N>`, nem quando PRs afetam serviços diferentes, ainda que estejam no mesmo compose.
 
 A política padrão é `ask`:
 
