@@ -44,6 +44,19 @@ Qualquer falha encerra o play antes da primeira deleção. Somente depois de
 todo o preflight as duas raízes são removidas e os composes base afetados são
 reaplicados.
 
+## Plugin compartilhado
+
+- O plugin deixa de ser privado da role `qa_pr_apply` e passa a existir
+  somente em `filter_plugins/qa_pr_filters.py`, na raiz do projeto.
+- Os playbooks `pr-playbook.yml` e `pr-reset-playbook.yml`, executados pela
+  raiz do projeto, carregam a mesma implementação de filtros.
+- Não haverá cópia, wrapper ou import entre roles; isso evita divergência
+  entre validação de aplicação e de reset.
+- Os testes Python passam a importar o plugin pelo caminho compartilhado.
+- O aceite inclui uma execução Ansible focada que prove que
+  `qa_pr_reset` resolve `qa_pr_index_active_overrides` sem carregar
+  `qa_pr_apply`.
+
 ## MinIO e documentação
 
 - A listagem aceita somente chaves diretas no formato
