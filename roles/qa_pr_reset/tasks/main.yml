@@ -6,15 +6,15 @@
     qa_pr_reset_compose_roots: >-
       {{
         [compose_dir_path, versioned_compose_dir_path]
+        | map('regex_replace', '/+$', '')
         | unique
         | list
       }}
     qa_pr_reset_override_roots: >-
       {{
-        [
-          compose_dir_path ~ '/pr-overrides',
-          versioned_compose_dir_path ~ '/pr-overrides'
-        ]
+        [compose_dir_path, versioned_compose_dir_path]
+        | map('regex_replace', '/+$', '')
+        | map('regex_replace', '$', '/pr-overrides')
         | unique
         | list
       }}

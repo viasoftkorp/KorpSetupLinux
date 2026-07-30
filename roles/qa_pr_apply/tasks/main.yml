@@ -24,6 +24,7 @@
     qa_pr_compose_roots: >-
       {{
         [compose_dir_path, versioned_compose_dir_path]
+        | map('regex_replace', '/+$', '')
         | unique
         | list
       }}

@@ -216,6 +216,7 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
         roots_text = scalar_text(tasks)
         self.assertIn("compose_dir_path", roots_text)
         self.assertIn("versioned_compose_dir_path", roots_text)
+        self.assertGreaterEqual(roots_text.count("regex_replace"), 3)
         self.assertIn("/pr-overrides", roots_text)
         self.assertNotIn("qa_pr_reset_override.path", scalar_text(deletion))
 
