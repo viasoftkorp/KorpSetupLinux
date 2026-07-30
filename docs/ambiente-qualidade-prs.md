@@ -8,6 +8,7 @@ Este fluxo aplica, em um servidor de qualidade já configurado, as imagens publi
 - garanta que o inventário e as variáveis usuais, inclusive `linux_korp`, estejam disponíveis;
 - garanta acesso ao Docker e aos diretórios de compose configurados;
 - valide que o host resolve e confia no certificado de `https://minio-interno-api.korp.com.br`.
+- valide acesso ao registry e à API de `https://harbor.korp.com.br`.
 
 > Atenção: `qa_pr_minio_api` deve apontar para o host da API do MinIO, não para a interface web/console. O playbook faz leituras HTTPS anônimas nesse endpoint e valida o certificado TLS.
 
@@ -51,7 +52,9 @@ Para uma lista JSON:
 ansible-playbook pr-playbook.yml -e '{"prs":["https://github.com/viasoftkorp/repositorio-a/pull/123","https://github.com/viasoftkorp/repositorio-b/pull/456"]}'
 ```
 
-O playbook consulta os relatórios JSON no bucket `qa-prs`, localiza o serviço pelo repositório da imagem nos composes base e cria um override somente para o serviço alvo. O contêiner aplicado recebe as labels `korp.pr` com o número e `korp.repositorio` com o repositório; juntas, elas formam o ownership `<repositorio>#<N>` exibido no preflight.
+O playbook consulta os relatórios JSON no bucket `qa-prs`, localiza o serviço pelo repositório da imagem nos composes base e cria um override somente para o serviço alvo. Para cada relatório, consulta primeiro a tag em `harbor.korp.com.br/qa-prs/<serviço>`. Se a API do Harbor responder `404`, usa como fallback a imagem `korp/<serviço>` informada no relatório, preservando builds anteriores à adoção do Harbor. Erros de acesso ao Harbor não acionam fallback: a execução falha para não mascarar indisponibilidade do registry.
+
+O contêiner aplicado recebe as labels `korp.pr` com o número e `korp.repositorio` com o repositório; juntas, elas formam o ownership `<repositorio>#<N>` exibido no preflight.
 
 ### Conflitos
 

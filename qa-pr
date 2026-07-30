@@ -7,6 +7,7 @@ inventory="${QA_PR_INVENTORY:-/etc/korp/ansible/inventory.yml}"
 vault_id="${QA_PR_VAULT_ID:-/etc/korp/ansible/.vault_key}"
 compose_root="${QA_PR_COMPOSE_ROOT:-/etc/korp/composes}"
 minio_api="${QA_PR_MINIO_API:-https://minio-interno-api.korp.com.br}"
+harbor_api="${QA_PR_HARBOR_API:-https://harbor.korp.com.br/api/v2.0}"
 log_dir="${QA_PR_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/korp-qa-pr}"
 sudo_command="${QA_PR_SUDO-sudo}"
 install_path="${QA_PR_INSTALL_PATH:-/usr/local/bin/qa-pr}"
@@ -125,6 +126,15 @@ doctor() {
     echo "[ok] API MinIO"
   else
     echo "[falha] API MinIO inacessível: $minio_api" >&2
+    failed=1
+  fi
+
+  if command -v curl >/dev/null 2>&1 &&
+    curl --fail --silent --show-error \
+      "$harbor_api/projects/qa-prs" >/dev/null; then
+    echo "[ok] API Harbor"
+  else
+    echo "[falha] API Harbor inacessível: $harbor_api" >&2
     failed=1
   fi
 

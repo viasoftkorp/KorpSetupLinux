@@ -174,6 +174,54 @@ class ReportParsingTests(unittest.TestCase):
             )
 
 
+class RegistryResolutionTests(unittest.TestCase):
+    def setUp(self):
+        raw = (ROOT / "tests/fixtures/qa_prs/korp.compras.core.json").read_text()
+        self.report = filters.load_report(
+            raw,
+            "compras",
+            123,
+            "prs/compras/123/korp.compras.core.json",
+        )
+
+    def test_prefers_harbor_when_artifact_exists(self):
+        resolved = filters.resolve_registry_image(
+            self.report,
+            200,
+            "harbor.korp.com.br",
+            "qa-prs",
+        )
+
+        self.assertEqual(
+            resolved["desired_image"],
+            "harbor.korp.com.br/qa-prs/korp.compras.core:"
+            "2025.1.0.42-pr123",
+        )
+        self.assertEqual(resolved["image_registry"], "harbor")
+
+    def test_falls_back_to_report_image_only_when_harbor_returns_404(self):
+        resolved = filters.resolve_registry_image(
+            self.report,
+            404,
+            "harbor.korp.com.br",
+            "qa-prs",
+        )
+
+        self.assertEqual(
+            resolved["desired_image"],
+            "korp/korp.compras.core:2025.1.0.42-pr123",
+        )
+        self.assertEqual(resolved["image_registry"], "dockerhub")
+
+        with self.assertRaises(ValueError):
+            filters.resolve_registry_image(
+                self.report,
+                503,
+                "harbor.korp.com.br",
+                "qa-prs",
+            )
+
+
 class BuildTargetsTests(unittest.TestCase):
     def test_finds_service_by_image_and_keeps_yaml_service_key(self):
         reports = [{

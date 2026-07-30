@@ -72,6 +72,32 @@ def load_report(json_text, expected_repo, expected_pr, expected_key):
     return report
 
 
+def resolve_registry_image(
+    report,
+    harbor_status,
+    harbor_registry="harbor.korp.com.br",
+    harbor_project="qa-prs",
+):
+    if harbor_status not in {200, 404}:
+        raise ValueError(
+            f"Status inesperado ao consultar artefato no Harbor: {harbor_status}"
+        )
+    resolved = dict(report)
+    if harbor_status == 200:
+        registry = str(harbor_registry).strip().strip("/")
+        project = str(harbor_project).strip().strip("/")
+        if not registry or not project:
+            raise ValueError("Registry e projeto do Harbor são obrigatórios")
+        resolved["desired_image"] = (
+            f"{registry}/{project}/{report['servico']}:{report['tag']}"
+        )
+        resolved["image_registry"] = "harbor"
+    else:
+        resolved["desired_image"] = f"{report['imagem']}:{report['tag']}"
+        resolved["image_registry"] = "dockerhub"
+    return resolved
+
+
 def build_targets(reports, compose_files):
     targets = []
     for report in reports:
@@ -374,6 +400,7 @@ class FilterModule:
             "qa_pr_normalize_links": normalize_pr_links,
             "qa_pr_parse_minio_listing": parse_minio_listing,
             "qa_pr_load_report": load_report,
+            "qa_pr_resolve_registry_image": resolve_registry_image,
             "qa_pr_build_targets": build_targets,
             "qa_pr_index_active_overrides": index_active_overrides,
             "qa_pr_detect_conflicts": detect_conflicts,

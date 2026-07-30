@@ -1,6 +1,9 @@
 ---
 qa_pr_minio_api: "https://minio-interno-api.korp.com.br"
 qa_pr_minio_bucket: "qa-prs"
+qa_pr_harbor_api: "https://harbor.korp.com.br/api/v2.0"
+qa_pr_harbor_registry: "harbor.korp.com.br"
+qa_pr_harbor_project: "qa-prs"
 qa_pr_github_organization: "viasoftkorp"
 pr_conflict_policy: "ask"
 qa_pr_reports: []

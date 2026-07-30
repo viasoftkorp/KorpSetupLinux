@@ -120,6 +120,7 @@ class QaPrCliTests(unittest.TestCase):
 
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertIn("Ambiente pronto", result.stdout)
+        self.assertIn("[ok] API Harbor", result.stdout)
         self.assertFalse(self.calls.exists())
 
 

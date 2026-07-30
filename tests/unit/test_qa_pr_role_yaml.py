@@ -122,6 +122,15 @@ class QaPrRoleYamlTests(unittest.TestCase):
             "https://minio-interno-api.korp.com.br",
         )
         self.assertEqual(defaults["qa_pr_minio_bucket"], "qa-prs")
+        self.assertEqual(
+            defaults["qa_pr_harbor_api"],
+            "https://harbor.korp.com.br/api/v2.0",
+        )
+        self.assertEqual(
+            defaults["qa_pr_harbor_registry"],
+            "harbor.korp.com.br",
+        )
+        self.assertEqual(defaults["qa_pr_harbor_project"], "qa-prs")
         self.assertEqual(defaults["pr_conflict_policy"], "ask")
         self.assertEqual(defaults["qa_pr_reports"], [])
         self.assertEqual(defaults["qa_pr_compose_files"], [])
@@ -171,9 +180,20 @@ class QaPrRoleYamlTests(unittest.TestCase):
         load_pr_tasks = load_tasks("load_pr.yml")
         load_report_tasks = load_tasks("load_report.yml")
         listing = module_tasks(load_pr_tasks, "ansible.builtin.uri")
-        objects = module_tasks(load_report_tasks, "ansible.builtin.uri")
+        report_requests = module_tasks(
+            load_report_tasks, "ansible.builtin.uri"
+        )
+        objects = [
+            task for task in report_requests
+            if task.get("register") == "qa_pr_minio_report"
+        ]
+        harbor = [
+            task for task in report_requests
+            if task.get("register") == "qa_pr_harbor_artifact"
+        ]
         self.assertEqual(len(listing), 1)
         self.assertEqual(len(objects), 1)
+        self.assertEqual(len(harbor), 1)
 
         listing_args = listing[0]["ansible.builtin.uri"]
         object_args = objects[0]["ansible.builtin.uri"]
@@ -193,7 +213,30 @@ class QaPrRoleYamlTests(unittest.TestCase):
         self.assertIn(
             "qa_pr_report_key | urlencode", object_args["url"]
         )
+        harbor_args = harbor[0]["ansible.builtin.uri"]
+        self.assertEqual(harbor_args["method"], "GET")
+        self.assertIs(harbor_args["validate_certs"], True)
+        self.assertEqual(harbor_args["status_code"], [200, 404])
+        self.assertTrue(
+            str(harbor_args["url"]).startswith("{{ qa_pr_harbor_api }}")
+        )
+        self.assertIn("qa_pr_harbor_project | urlencode", harbor_args["url"])
+        self.assertIn(
+            "qa_pr_loaded_report.servico | urlencode",
+            harbor_args["url"],
+        )
+        self.assertIn(
+            "qa_pr_loaded_report.tag | urlencode",
+            harbor_args["url"],
+        )
+        self.assertNotIn("headers", harbor_args)
+        self.assertNotIn("url_username", harbor_args)
+        self.assertNotIn("url_password", harbor_args)
         self.assertIn("qa_pr_load_report", scalar_text(load_report_tasks))
+        self.assertIn(
+            "qa_pr_resolve_registry_image",
+            scalar_text(load_report_tasks),
+        )
         self.assertIn("qa_pr_reports", scalar_text(load_report_tasks))
 
         report_includes = module_tasks(
