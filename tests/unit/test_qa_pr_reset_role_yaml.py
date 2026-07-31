@@ -203,8 +203,16 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
             "not in qa_pr_reset_runs", scalar_text(run_tasks[0].get("when"))
         )
 
-    def test_main_removes_only_the_two_override_roots(self):
+    def test_main_discovers_and_removes_all_installed_override_roots(self):
         tasks = load_tasks("main.yml")
+        discoveries = module_tasks(tasks, "ansible.builtin.find")
+        self.assertEqual(len(discoveries), 1)
+        discovery = discoveries[0]["ansible.builtin.find"]
+        self.assertEqual(discovery["paths"], "{{ compose_dir_path }}")
+        self.assertEqual(discovery["patterns"], ["pr-overrides"])
+        self.assertEqual(discovery["file_type"], "directory")
+        self.assertTrue(discovery["recurse"])
+
         deletions = module_tasks(tasks, "ansible.builtin.file")
         self.assertEqual(len(deletions), 1)
         deletion = deletions[0]
@@ -215,8 +223,9 @@ class QaPrResetRoleYamlTests(unittest.TestCase):
         self.assertIn("qa_pr_reset_override_roots", scalar_text(deletion["loop"]))
         roots_text = scalar_text(tasks)
         self.assertIn("compose_dir_path", roots_text)
-        self.assertIn("versioned_compose_dir_path", roots_text)
-        self.assertGreaterEqual(roots_text.count("regex_replace"), 3)
+        self.assertIn("qa_pr_reset_found_override_roots.files", roots_text)
+        self.assertNotIn("versioned_compose_dir_path", roots_text)
+        self.assertGreaterEqual(roots_text.count("regex_replace"), 2)
         self.assertIn("/pr-overrides", roots_text)
         self.assertNotIn("qa_pr_reset_override.path", scalar_text(deletion))
 

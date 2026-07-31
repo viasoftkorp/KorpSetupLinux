@@ -1,20 +1,30 @@
 ---
+- name: Encontrar raízes de overrides de PR instaladas
+  ansible.builtin.find:
+    paths: "{{ compose_dir_path }}"
+    patterns:
+      - pr-overrides
+    file_type: directory
+    recurse: true
+  register: qa_pr_reset_found_override_roots
+
 - name: Inicializar reset dos overrides de PR
   ansible.builtin.set_fact:
     qa_pr_reset_runs: []
     qa_pr_reset_override_files: []
     qa_pr_reset_compose_roots: >-
       {{
-        [compose_dir_path, versioned_compose_dir_path]
-        | map('regex_replace', '/+$', '')
+        qa_pr_reset_found_override_roots.files
+        | map(attribute='path')
+        | map('regex_replace', '/pr-overrides/?$', '')
         | unique
         | list
       }}
     qa_pr_reset_override_roots: >-
       {{
-        [compose_dir_path, versioned_compose_dir_path]
+        qa_pr_reset_found_override_roots.files
+        | map(attribute='path')
         | map('regex_replace', '/+$', '')
-        | map('regex_replace', '$', '/pr-overrides')
         | unique
         | list
       }}
