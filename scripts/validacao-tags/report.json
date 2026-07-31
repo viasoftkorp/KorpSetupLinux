@@ -1,0 +1,5544 @@
+{
+  "timestamp": "2026-07-31T18:22:03.083Z",
+  "resumo": {
+    "total_descobertos": 228,
+    "total_analisados": 224,
+    "sem_job_jenkins": 4,
+    "consistentes": 224,
+    "inconsistentes": 0,
+    "com_tag_github": 224,
+    "sem_tag_github": 0,
+    "com_janelas_ausentes": 0
+  },
+  "servicos": [
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.analytics.ia",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.api.gateway.compras",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.api.gateway.estoque",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "korp.api.gateway.estruturaproduto",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.15"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.16"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "korp.api.gateway.faturamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.22",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "fiscal",
+      "servico_bitbucket": "korp.api.gateway.fiscal",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.api.gateway.logistica",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.16"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.api.gateway.pessoas",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.13"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.14"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "korp.api.gateway.producao",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.18",
+        "janela_2024.2.0.x": "2024.2.0.20"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.api.gateway.projetos",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.api.gateway.vendas",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.27",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.appbuilder",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.9",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.10",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.appbuilder-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.27",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.28",
+        "janela_2024.2.0.x": "2024.2.0.28"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.compras.analises-compras-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.20",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.compras.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.42",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.compras.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.compras.notafiscal",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.configuracoes.campospadroes",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.2",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "contabilidade",
+      "servico_bitbucket": "korp.contabilidade.conciliacaocontabil",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "contabilidade",
+      "servico_bitbucket": "korp.contabilidade.conciliacaocontabil-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.documents.pdf",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.ecommerce",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.8",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.ecommerce-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.13",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "korp.engenharia.processo",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.14",
+        "janela_2024.2.0.x": "2024.2.0.14"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "korp.faturamento.dfe.integracao",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.28",
+        "janela_2024.2.0.x": "2024.2.0.28"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "korp.faturamento.solicitacaodefaturamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "korp.financeiro.indexador.moedas",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "korp.financial.situation",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "fiscal",
+      "servico_bitbucket": "korp.fiscal.dapi",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "fiscal",
+      "servico_bitbucket": "korp.fiscal.dot",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.flow",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.14",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.15"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.flow-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.85",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.86",
+        "janela_2024.2.0.x": "2024.2.0.86"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "korp.integration.solidworks",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.50",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.51",
+        "janela_2024.2.0.x": "2024.2.0.51"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.legacy.administration",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.legacy.authentication",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.6.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.legacy.authorization",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.legacy.cargainicial",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.192",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.legacy.compras",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "korp.legacy.compras.entradanota",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.6",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "power-bi",
+      "servico_bitbucket": "korp.legacy.elt",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.41",
+        "janela_2024.2.0.x": "2024.2.0.41"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "korp.legacy.faturamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "korp.legacy.financeiro",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.legacy.frontend-router",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.6",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.legacy.vendas",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.36"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.18",
+        "janela_2024.2.0.x": "2024.2.0.38"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistic.tracking",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.0",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.carga",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.19"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.carga-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.conferenciasaida",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.estoque.ajusteestoque",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.14"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.estoque.ajusteestoque-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.estoque.inventario",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.15"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.estoque.inventario-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.estoqueposicao",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.4",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.73",
+        "janela_2024.2.0.x": "2024.2.0.280"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.104",
+        "janela_2024.2.0.x": "2024.2.0.311"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.60",
+        "janela_2024.2.0.x": "2024.2.0.244"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.80",
+        "janela_2024.2.0.x": "2024.2.0.271"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking.analisedeestoque",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.17",
+        "janela_2024.2.0.x": "2024.2.0.68"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking.controlepedidos",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.17",
+        "janela_2024.2.0.x": "2024.2.0.66"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.20",
+        "janela_2024.2.0.x": "2024.2.0.69"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking.faturamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.27"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.32"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.picking.ordemproducao",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.18"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.20"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.repacking-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.repacking.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.repacking.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.10",
+        "janela_2024.2.0.x": "2024.2.0.910"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.saldoprodutos",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.29"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.33",
+        "janela_2024.2.0.x": "2024.2.0.31"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.wms.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.148",
+        "janela_2024.2.0.x": "2024.2.0.650"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.196",
+        "janela_2024.2.0.x": "2024.2.0.720"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "korp.logistica.wms.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.24",
+        "janela_2024.2.0.x": "2024.2.0.100"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.31",
+        "janela_2024.2.0.x": "2024.2.0.87"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.mobile",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "korp.producao.apontamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.37",
+        "janela_2024.2.0.x": "2024.2.0.210"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.72",
+        "janela_2024.2.0.x": "2024.2.0.246"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "korp.producao.apontamento-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.34",
+        "janela_2024.2.0.x": "2024.2.0.120"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.63",
+        "janela_2024.2.0.x": "2024.2.0.148"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "korp.producao.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.37",
+        "janela_2024.2.0.x": "2024.2.0.92"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.74",
+        "janela_2024.2.0.x": "2024.2.0.128"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "korp.producao.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.18"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.25",
+        "janela_2024.2.0.x": "2024.2.0.31"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.projetos.bpmn-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.22",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.25",
+        "janela_2024.2.0.x": "2024.2.0.25"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.projetos.bpmn.gateway",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.14",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.17",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.projetos.gantt-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.277",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.303",
+        "janela_2024.2.0.x": "2024.2.0.303"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.projetos.gantt.gateway",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.92",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.372",
+        "janela_2024.2.0.x": "2024.2.0.372"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "korp.projetos.ordensdeservico",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.36",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.41",
+        "janela_2024.2.0.x": "2024.2.0.41"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "korp.qualidade.controletratamentotermico-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "korp.qualidade.inspecaoentrada",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.10",
+        "janela_2024.2.0.x": "2024.2.0.11"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "korp.qualidade.inspecaoentrada-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "korp.qualidade.inspecaosaida",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.40"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "korp.qualidade.inspecaosaida-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.11"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "rma",
+      "servico_bitbucket": "korp.rma.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.sales.pricecontrol",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.sales.tracking",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.152",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.sales.tracking-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.20",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.sales.tracking.gateway",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.31",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.spreadsheet",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.26",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.27",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.vendas.automatizacaodefrete",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.vendas.automatizacaodefrete-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.vendas.clientes",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.vendas.custoproduto",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "korp.vendas.listapreco",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.webhook",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.21",
+        "janela_2024.2.0.x": "2024.2.0.18"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "korp.webhook-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "contabilidade",
+      "servico_bitbucket": "viasoft.accounting",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.administration",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.5.4",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.administration-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "6.5.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.apprise.proxy",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.1",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.approval",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.6",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.approval.web-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.0",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.assinatura.digital",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.28",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.29",
+        "janela_2024.2.0.x": "2024.2.0.29"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.audittrail.client",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.2.11",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.authentication",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.6.33",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.34",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.authentication-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.0.2",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.authorization",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.4.2",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.billing.cte",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.billing.cte-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.billing.cte.sefaz",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.billing.nfe",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "compras",
+      "servico_bitbucket": "viasoft.compras.planilhaspreco",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.contabil.core-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.1",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "contabilidade",
+      "servico_bitbucket": "viasoft.contabil.dre",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.2",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.contabil.gateway",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.0",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.customer.portifolio",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.1.0",
+        "2022.2.0",
+        "2022.3.0",
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.dashboard",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.4.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.digital.assign-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.28",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.15"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.email",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.4.13",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.14",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.emailing",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.emailing.emailtemplate",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "viasoft.engenharia.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "viasoft.engenharia.core-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "viasoft.engenharia.custoorcamento",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "engenharia",
+      "servico_bitbucket": "viasoft.engenharia.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "erp-core",
+      "servico_bitbucket": "viasoft.erp.acl.messaging",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.71",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "viasoft.erp.activities",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.30",
+        "janela_2024.2.0.x": "2024.2.0.210"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.49",
+        "janela_2024.2.0.x": "2024.2.0.211"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "erp-core",
+      "servico_bitbucket": "viasoft.erp.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.erp.person",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.24"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.16",
+        "janela_2024.2.0.x": "2024.2.0.25"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.erp.person-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.0.13",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.erp.person.preregistration",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.erp.person.preregistration-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.0.5",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1000",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "erp-core",
+      "servico_bitbucket": "viasoft.erp.sync",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "erp-core",
+      "servico_bitbucket": "viasoft.erp.sync-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.23",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.39",
+        "janela_2024.2.0.x": "2024.2.0.39"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.notafiscal.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.19"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.20"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.notafiscal.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.48"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.16",
+        "janela_2024.2.0.x": "2024.2.0.20"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.30",
+        "janela_2024.2.0.x": "2024.2.0.427"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.41",
+        "janela_2024.2.0.x": "2024.2.0.121"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.28"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "faturamento",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.readmodel",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.42"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.46"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.fileprovider",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.5.20",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.21",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financeiro.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financeiro.core-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.0",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financeiro.dre",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.5",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financeiro.gateway",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.1",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financialaccounting.accountsreceivable",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "financeiro",
+      "servico_bitbucket": "viasoft.financialaccounting.installment",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.11"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "fiscal",
+      "servico_bitbucket": "viasoft.fiscal.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.geolocation",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.1",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.integration.ecommerce",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.17",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.18",
+        "janela_2024.2.0.x": "2024.2.0.18"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.legacy.logistica",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "erp-core",
+      "servico_bitbucket": "viasoft.legacy.parametros",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.loader",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.1",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.ajusteestoque.background",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.0",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.estoque",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.38",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.40",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.inventario.background",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.10",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.produto-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.11"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.produto.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.10",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.produto.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistica.saldo",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.19",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.20",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistics.preregistration",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistics.preregistration-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.1.8",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "logistica",
+      "servico_bitbucket": "viasoft.logistics.products",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.16"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.messagebird",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.4",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.notification",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.6",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.objectstorage.client",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.5.6",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.organizationalstructuremanagement",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.portal",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.8.21",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.portal-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.1.7",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "viasoft.production.aps",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.8",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "viasoft.production.aps-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.5",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "viasoft.production.aps.dataimporting",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.5",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "viasoft.production.aps.distribution",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.1.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "producao",
+      "servico_bitbucket": "viasoft.production.aps.simulation",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.7",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "projetos",
+      "servico_bitbucket": "viasoft.projetos.core",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.90",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.100",
+        "janela_2024.2.0.x": "2024.2.0.100"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "viasoft.qualidade.inspecao.background",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.10",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "viasoft.qualidade.rnc-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "viasoft.qualidade.rnc.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "qualidade",
+      "servico_bitbucket": "viasoft.qualidade.rnc.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.quickfilter",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.15",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.16",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.relatorios",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.4.18",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.19",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.relatorios-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.2.38",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.39",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.relatorios.agendador",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.reporting",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.5.10",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.reporting.pivottable",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.35",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.36",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.reporting.stimulsoft",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.11",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.commercialproposal-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.56",
+        "janela_2024.2.0.x": "2024.2.0.261"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.82",
+        "janela_2024.2.0.x": "2024.2.0.286"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.104",
+        "janela_2024.2.0.x": "2024.2.0.352"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.145",
+        "janela_2024.2.0.x": "2024.2.0.390"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.43"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.31",
+        "janela_2024.2.0.x": "2024.2.0.54"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.sync",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.25",
+        "janela_2024.2.0.x": "2024.2.0.58"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.35",
+        "janela_2024.2.0.x": "2024.2.0.66"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.23"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.26"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.accounts",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.2.98",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.101",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.activities",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.1.10",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.core",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.1.55",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.56",
+        "janela_2024.2.0.x": "2024.2.0.56"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.core-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.0.49",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.53",
+        "janela_2024.2.0.x": "2024.2.0.4"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.goals",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.5",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.leads",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.2.16",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.17",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.nps",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.1.9",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.10",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.opportunities",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.8"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.9"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.qualification",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "4.1.4",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.reporting",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "3.1.7",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.crm.sync",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.0",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.16",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.customerportfolio",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.customers",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.32"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.18",
+        "janela_2024.2.0.x": "2024.2.0.37"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.discount",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.10"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.sales.pricelist",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.22"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.8",
+        "janela_2024.2.0.x": "2024.2.0.25"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.systemupdate",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.3",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "fiscal",
+      "servico_bitbucket": "viasoft.taxmanagement",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "2.1.11",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.tenantmanagement",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.3.12",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.14",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.userprofile",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.5.4",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.7"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.3",
+        "janela_2024.2.0.x": "2024.2.0.17"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.5",
+        "janela_2024.2.0.x": "2024.2.0.20"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.6",
+        "janela_2024.2.0.x": "2024.2.0.5"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.7",
+        "janela_2024.2.0.x": "2024.2.0.6"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.1",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.mobile.configuracao",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.11",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.12",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.mobile.configuracao-frontend",
+      "categoria": "nao-versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.2.10",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não encontrada"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.mobile.sincronismo",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.2",
+        "janela_2024.2.0.x": "2024.2.0.2"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.4",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.orcamento-frontend",
+      "categoria": "versionados",
+      "tipo_servico": "frontend",
+      "tem_tag_github": true,
+      "exclusive_only": false,
+      "compose_versions": [
+        "2022.4.0",
+        "2023.1.0",
+        "2023.2.0",
+        "2023.3.0",
+        "2023.4.0",
+        "2024.1.0",
+        "2024.2.0",
+        "2025.1.0",
+        "2025.2.0"
+      ],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.52"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.20",
+        "janela_2024.2.0.x": "2024.2.0.58"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.orcamento.core",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.11",
+        "janela_2024.2.0.x": "2024.2.0.77"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.17",
+        "janela_2024.2.0.x": "2024.2.0.85"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "vendas",
+      "servico_bitbucket": "viasoft.vendas.orcamento.gateway",
+      "categoria": "versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x",
+        "2024.2.0.x"
+      ],
+      "referencia_bitbucket": {
+        "janela_2025.1.0.x": "2025.1.0.9",
+        "janela_2024.2.0.x": "2024.2.0.41"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.15",
+        "janela_2024.2.0.x": "2024.2.0.45"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.welcomepage.dashboard",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.4.18",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.19",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.workflow.elsa",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.0.113",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.113",
+        "janela_2024.2.0.x": "2024.2.0.1"
+      },
+      "consistente": true
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "viasoft.workflow.orchestrator",
+      "categoria": "nao-versionados",
+      "tipo_servico": "backend",
+      "tem_tag_github": true,
+      "exclusive_only": true,
+      "compose_versions": [],
+      "janelas_esperadas": [
+        "2025.1.0.x"
+      ],
+      "referencia_bitbucket": {
+        "ultima_tag_absoluta": "1.6.91",
+        "janela_2025.1.0.x": "Não encontrada",
+        "janela_2024.2.0.x": "Não aplicável"
+      },
+      "referencia_github": {
+        "janela_2025.1.0.x": "2025.1.0.99",
+        "janela_2024.2.0.x": "2024.2.0.3"
+      },
+      "consistente": true
+    }
+  ],
+  "servicos_sem_tag_no_github": [],
+  "servicos_com_janelas_ausentes": [],
+  "servicos_sem_job_jenkins": [
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "sdk.app-builder-parcel",
+      "tipo_servico": "backend",
+      "motivo": "jenkins_404"
+    },
+    {
+      "dominio_github": "sdk",
+      "servico_bitbucket": "sdk.app-renderer-parcel",
+      "tipo_servico": "backend",
+      "motivo": "jenkins_404"
+    },
+    {
+      "dominio_github": "flow",
+      "servico_bitbucket": "sdk.flow-parcel",
+      "tipo_servico": "backend",
+      "motivo": "jenkins_404"
+    },
+    {
+      "dominio_github": "analytics",
+      "servico_bitbucket": "viasoft.elt",
+      "tipo_servico": "backend",
+      "motivo": "jenkins_404"
+    }
+  ]
+}

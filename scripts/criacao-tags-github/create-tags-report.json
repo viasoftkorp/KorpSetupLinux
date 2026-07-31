@@ -1,0 +1,3790 @@
+{
+  "timestamp": "2026-07-31T13:52:38.013Z",
+  "dry_run": true,
+  "input": "/home/korp/Documentos/dev/KorpSetupLinux/scripts/validacao-tags/report.json",
+  "resumo": {
+    "total_entrada_sem_tag": 168,
+    "total_elegiveis": 168,
+    "processados": 168,
+    "ignorados_jenkins": 0,
+    "tags_criadas": 215,
+    "erros": 42
+  },
+  "servicos_processados": [
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.api.gateway.estoque",
+      "jenkins_job": "Korp.Api.Gateway.Estoque",
+      "tags_planejadas": [
+        "korp.api.gateway.estoque-2025.1.0.6",
+        "korp.api.gateway.estoque-2024.2.0.8"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.estoque-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.estoque-2024.2.0.8",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "korp.api.gateway.estruturaproduto",
+      "jenkins_job": "Korp.Api.Gateway.Estruturaproduto",
+      "tags_planejadas": [
+        "korp.api.gateway.estruturaproduto-2025.1.0.5",
+        "korp.api.gateway.estruturaproduto-2024.2.0.16"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.estruturaproduto-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.estruturaproduto-2024.2.0.16",
+          "branch": "release/2024.2.0.x",
+          "sha": "6fd5c06850e4e391859dd519b63f6f9cdd7360db",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "korp.api.gateway.faturamento",
+      "jenkins_job": "Korp.Api.Gateway.Faturamento",
+      "tags_planejadas": [
+        "korp.api.gateway.faturamento-2025.1.0.3",
+        "korp.api.gateway.faturamento-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.faturamento-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.faturamento-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.api.gateway.logistica",
+      "jenkins_job": "Korp.Api.Gateway.Logistica",
+      "tags_planejadas": [
+        "korp.api.gateway.logistica-2025.1.0.8",
+        "korp.api.gateway.logistica-2024.2.0.17"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.logistica-2025.1.0.8",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.logistica-2024.2.0.17",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.api.gateway.pessoas",
+      "jenkins_job": "Korp.Api.Gateway.Pessoas",
+      "tags_planejadas": [
+        "korp.api.gateway.pessoas-2025.1.0.9",
+        "korp.api.gateway.pessoas-2024.2.0.14"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.api.gateway.pessoas-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "korp.api.gateway.pessoas-2024.2.0.14",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "korp.api.gateway.producao",
+      "jenkins_job": "Korp.Api.Gateway.Producao",
+      "tags_planejadas": [
+        "korp.api.gateway.producao-2025.1.0.7",
+        "korp.api.gateway.producao-2024.2.0.18"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.producao-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.producao-2024.2.0.18",
+          "branch": "release/2024.2.0.x",
+          "sha": "46a067403a3328fb3db0a566cce476bad0ce81dc",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.api.gateway.vendas",
+      "jenkins_job": "Korp.Api.Gateway.Vendas",
+      "tags_planejadas": [
+        "korp.api.gateway.vendas-2025.1.0.5",
+        "korp.api.gateway.vendas-2024.2.0.18"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.api.gateway.vendas-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.api.gateway.vendas-2024.2.0.18",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "korp.compras.core",
+      "jenkins_job": "Korp.Compras.Core",
+      "tags_planejadas": [
+        "korp.compras.core-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.compras.core-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "korp.compras.gateway",
+      "jenkins_job": "Korp.Compras.Gateway",
+      "tags_planejadas": [
+        "korp.compras.gateway-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.compras.gateway-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "korp.compras.notafiscal",
+      "jenkins_job": "Korp.Compras.Notafiscal",
+      "tags_planejadas": [
+        "korp.compras.notafiscal-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.compras.notafiscal-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.configuracoes.campospadroes",
+      "jenkins_job": "Korp.Configuracoes.Campospadroes",
+      "tags_planejadas": [
+        "korp.configuracoes.campospadroes-2025.1.0.3"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.configuracoes.campospadroes-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "contabil",
+      "dominio_original": "ac",
+      "servico_bitbucket": "korp.contabilidade.conciliacaocontabil",
+      "jenkins_job": "Korp.Contabilidade.Conciliacaocontabil",
+      "tags_planejadas": [
+        "korp.contabilidade.conciliacaocontabil-2025.1.0.2"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.contabilidade.conciliacaocontabil-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "contabil",
+      "dominio_original": "ac",
+      "servico_bitbucket": "korp.contabilidade.conciliacaocontabil-frontend",
+      "jenkins_job": "Korp.Contabilidade.Conciliacaocontabil-Frontend",
+      "tags_planejadas": [
+        "korp.contabilidade.conciliacaocontabil-frontend-2025.1.0.2",
+        "korp.contabilidade.conciliacaocontabil-frontend-2024.2.0.2"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.contabilidade.conciliacaocontabil-frontend-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "korp.contabilidade.conciliacaocontabil-frontend-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "sdk",
+      "dominio_original": "sdk",
+      "servico_bitbucket": "korp.ecommerce",
+      "jenkins_job": "Korp.Ecommerce",
+      "tags_planejadas": [
+        "korp.ecommerce-2025.1.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.ecommerce-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "7ed84a18464407356751f1c045499b4adab9275d",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "korp.engenharia.processo",
+      "jenkins_job": "Korp.Engenharia.Processo",
+      "tags_planejadas": [
+        "korp.engenharia.processo-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.engenharia.processo-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "korp.faturamento.solicitacaodefaturamento",
+      "jenkins_job": "Korp.Faturamento.Solicitacaodefaturamento",
+      "tags_planejadas": [
+        "korp.faturamento.solicitacaodefaturamento-2025.1.0.7",
+        "korp.faturamento.solicitacaodefaturamento-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.faturamento.solicitacaodefaturamento-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.faturamento.solicitacaodefaturamento-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "korp.financeiro.indexador.moedas",
+      "jenkins_job": "Korp.Financeiro.Indexador.Moedas",
+      "tags_planejadas": [
+        "korp.financeiro.indexador.moedas-2025.1.0.4"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.financeiro.indexador.moedas-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "korp.financial.situation",
+      "jenkins_job": "Korp.Financial.Situation",
+      "tags_planejadas": [
+        "korp.financial.situation-2025.1.0.4",
+        "korp.financial.situation-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.financial.situation-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.financial.situation-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "2a4c6fe031e5895763a14e954450567b54e75f96",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "fiscal",
+      "dominio_original": "tm",
+      "servico_bitbucket": "korp.fiscal.dapi",
+      "jenkins_job": "Korp.Fiscal.Dapi",
+      "tags_planejadas": [
+        "korp.fiscal.dapi-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.fiscal.dapi-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "c3fa729582d65d8813f99ccf170d39933b5cb7f6",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "fiscal",
+      "dominio_original": "tm",
+      "servico_bitbucket": "korp.fiscal.dot",
+      "jenkins_job": "Korp.Fiscal.Dot",
+      "tags_planejadas": [
+        "korp.fiscal.dot-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.fiscal.dot-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "c3fa729582d65d8813f99ccf170d39933b5cb7f6",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "infrastructure",
+      "dominio_original": "in",
+      "servico_bitbucket": "korp.integration.solidworks",
+      "jenkins_job": "Korp.Integration.Solidworks",
+      "tags_planejadas": [
+        "korp.integration.solidworks-2025.1.0.51"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.integration.solidworks-2025.1.0.51",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "korp.legacy.compras",
+      "jenkins_job": "Korp.Legacy.Compras",
+      "tags_planejadas": [
+        "korp.legacy.compras-2025.1.0.2",
+        "korp.legacy.compras-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.compras-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.legacy.compras-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "522f4bd3f10033c81022c230e3be80f8b7ad7d1e",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "korp.legacy.compras.entradanota",
+      "jenkins_job": "Korp.Legacy.Compras.Entradanota",
+      "tags_planejadas": [
+        "korp.legacy.compras.entradanota-2025.1.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.compras.entradanota-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "analytics",
+      "dominio_original": "pow",
+      "servico_bitbucket": "korp.legacy.elt",
+      "jenkins_job": "Korp.Legacy.Elt",
+      "tags_planejadas": [
+        "korp.legacy.elt-2025.1.0.12",
+        "korp.legacy.elt-2024.2.0.10"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.elt-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "09386e773502ea4eaeff094afa7445cee8a378d1",
+          "dry_run": true
+        }
+      ],
+      "erros": [
+        {
+          "tag": "korp.legacy.elt-2024.2.0.10",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "korp.legacy.faturamento",
+      "jenkins_job": "Korp.Legacy.Faturamento",
+      "tags_planejadas": [
+        "korp.legacy.faturamento-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.faturamento-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "korp.legacy.financeiro",
+      "jenkins_job": "Korp.Legacy.Financeiro",
+      "tags_planejadas": [
+        "korp.legacy.financeiro-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.financeiro-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.legacy.vendas",
+      "jenkins_job": "Korp.Legacy.Vendas",
+      "tags_planejadas": [
+        "korp.legacy.vendas-2025.1.0.16",
+        "korp.legacy.vendas-2024.2.0.37"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.legacy.vendas-2025.1.0.16",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.legacy.vendas-2024.2.0.37",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistic.tracking",
+      "jenkins_job": "Korp.Logistic.Tracking",
+      "tags_planejadas": [
+        "korp.logistic.tracking-2025.1.0.1",
+        "korp.logistic.tracking-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistic.tracking-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistic.tracking-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.carga",
+      "jenkins_job": "Korp.Logistica.Carga",
+      "tags_planejadas": [
+        "korp.logistica.carga-2025.1.0.5",
+        "korp.logistica.carga-2024.2.0.20"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.carga-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.carga-2024.2.0.20",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.carga-frontend",
+      "jenkins_job": "Korp.Logistica.Carga-Frontend",
+      "tags_planejadas": [
+        "korp.logistica.carga-frontend-2025.1.0.3",
+        "korp.logistica.carga-frontend-2024.2.0.5"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.carga-frontend-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.carga-frontend-2024.2.0.5",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.conferenciasaida",
+      "jenkins_job": "Korp.Logistica.Conferenciasaida",
+      "tags_planejadas": [
+        "korp.logistica.conferenciasaida-2025.1.0.4",
+        "korp.logistica.conferenciasaida-2024.2.0.8"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.conferenciasaida-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.conferenciasaida-2024.2.0.8",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.estoque.ajusteestoque",
+      "jenkins_job": "Korp.Logistica.Estoque.Ajusteestoque",
+      "tags_planejadas": [
+        "korp.logistica.estoque.ajusteestoque-2025.1.0.5",
+        "korp.logistica.estoque.ajusteestoque-2024.2.0.15"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.estoque.ajusteestoque-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.estoque.ajusteestoque-2024.2.0.15",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.estoque.ajusteestoque-frontend",
+      "jenkins_job": "Korp.Logistica.Estoque.Ajusteestoque-Frontend",
+      "tags_planejadas": [
+        "korp.logistica.estoque.ajusteestoque-frontend-2025.1.0.5",
+        "korp.logistica.estoque.ajusteestoque-frontend-2024.2.0.8"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.estoque.ajusteestoque-frontend-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.estoque.ajusteestoque-frontend-2024.2.0.8",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.estoque.inventario",
+      "jenkins_job": "Korp.Logistica.Estoque.Inventario",
+      "tags_planejadas": [
+        "korp.logistica.estoque.inventario-2025.1.0.3",
+        "korp.logistica.estoque.inventario-2024.2.0.3"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.estoque.inventario-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.estoque.inventario-2024.2.0.3",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.estoque.inventario-frontend",
+      "jenkins_job": "Korp.Logistica.Estoque.Inventario-Frontend",
+      "tags_planejadas": [
+        "korp.logistica.estoque.inventario-frontend-2025.1.0.5",
+        "korp.logistica.estoque.inventario-frontend-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.estoque.inventario-frontend-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.estoque.inventario-frontend-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.estoqueposicao",
+      "jenkins_job": "Korp.Logistica.Estoqueposicao",
+      "tags_planejadas": [
+        "korp.logistica.estoqueposicao-2025.1.0.5"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.estoqueposicao-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking",
+      "jenkins_job": "Korp.Logistica.Picking",
+      "tags_planejadas": [
+        "korp.logistica.picking-2025.1.0.74",
+        "korp.logistica.picking-2024.2.0.281"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking-2025.1.0.74",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking-2024.2.0.281",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking-frontend",
+      "jenkins_job": "Korp.Logistica.Picking-Frontend",
+      "tags_planejadas": [
+        "korp.logistica.picking-frontend-2025.1.0.61",
+        "korp.logistica.picking-frontend-2024.2.0.245"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking-frontend-2025.1.0.61",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking-frontend-2024.2.0.245",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking.analisedeestoque",
+      "jenkins_job": "Korp.Logistica.Picking.Analisedeestoque",
+      "tags_planejadas": [
+        "korp.logistica.picking.analisedeestoque-2025.1.0.18",
+        "korp.logistica.picking.analisedeestoque-2024.2.0.69"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking.analisedeestoque-2025.1.0.18",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking.analisedeestoque-2024.2.0.69",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking.controlepedidos",
+      "jenkins_job": "Korp.Logistica.Picking.Controlepedidos",
+      "tags_planejadas": [
+        "korp.logistica.picking.controlepedidos-2025.1.0.18",
+        "korp.logistica.picking.controlepedidos-2024.2.0.67"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking.controlepedidos-2025.1.0.18",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking.controlepedidos-2024.2.0.67",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking.faturamento",
+      "jenkins_job": "Korp.Logistica.Picking.Faturamento",
+      "tags_planejadas": [
+        "korp.logistica.picking.faturamento-2025.1.0.10",
+        "korp.logistica.picking.faturamento-2024.2.0.28"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking.faturamento-2025.1.0.10",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking.faturamento-2024.2.0.28",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.picking.ordemproducao",
+      "jenkins_job": "Korp.Logistica.Picking.Ordemproducao",
+      "tags_planejadas": [
+        "korp.logistica.picking.ordemproducao-2025.1.0.10",
+        "korp.logistica.picking.ordemproducao-2024.2.0.19"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.picking.ordemproducao-2025.1.0.10",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.picking.ordemproducao-2024.2.0.19",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado-frontend",
+      "jenkins_job": "Korp.Logistica.Requisicaocontraalmoxarifado-Frontend",
+      "tags_planejadas": [
+        "korp.logistica.requisicaocontraalmoxarifado-frontend-2025.1.0.6",
+        "korp.logistica.requisicaocontraalmoxarifado-frontend-2024.2.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado-frontend-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado-frontend-2024.2.0.6",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado.core",
+      "jenkins_job": "Korp.Logistica.Requisicaocontraalmoxarifado.Core",
+      "tags_planejadas": [
+        "korp.logistica.requisicaocontraalmoxarifado.core-2025.1.0.7",
+        "korp.logistica.requisicaocontraalmoxarifado.core-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado.core-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado.core-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.requisicaocontraalmoxarifado.gateway",
+      "jenkins_job": "Korp.Logistica.Requisicaocontraalmoxarifado.Gateway",
+      "tags_planejadas": [
+        "korp.logistica.requisicaocontraalmoxarifado.gateway-2025.1.0.4",
+        "korp.logistica.requisicaocontraalmoxarifado.gateway-2024.2.0.4"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado.gateway-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.requisicaocontraalmoxarifado.gateway-2024.2.0.4",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.saldoprodutos",
+      "jenkins_job": "Korp.Logistica.Saldoprodutos",
+      "tags_planejadas": [
+        "korp.logistica.saldoprodutos-2025.1.0.7",
+        "korp.logistica.saldoprodutos-2024.2.0.30"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.saldoprodutos-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.saldoprodutos-2024.2.0.30",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.wms.core",
+      "jenkins_job": "Korp.Logistica.Wms.Core",
+      "tags_planejadas": [
+        "korp.logistica.wms.core-2025.1.0.149",
+        "korp.logistica.wms.core-2024.2.0.651"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.wms.core-2025.1.0.149",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.wms.core-2024.2.0.651",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "korp.logistica.wms.gateway",
+      "jenkins_job": "Korp.Logistica.Wms.Gateway",
+      "tags_planejadas": [
+        "korp.logistica.wms.gateway-2025.1.0.25",
+        "korp.logistica.wms.gateway-2024.2.0.101"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.logistica.wms.gateway-2025.1.0.25",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.logistica.wms.gateway-2024.2.0.101",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "mobile",
+      "dominio_original": "mc",
+      "servico_bitbucket": "korp.mobile",
+      "jenkins_job": "Korp.Mobile",
+      "tags_planejadas": [
+        "korp.mobile-2025.1.0.1"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.mobile-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "korp.producao.apontamento",
+      "jenkins_job": "Korp.Producao.Apontamento",
+      "tags_planejadas": [
+        "korp.producao.apontamento-2025.1.0.38",
+        "korp.producao.apontamento-2024.2.0.211"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.producao.apontamento-2025.1.0.38",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.producao.apontamento-2024.2.0.211",
+          "branch": "release/2024.2.0.x",
+          "sha": "46a067403a3328fb3db0a566cce476bad0ce81dc",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "korp.producao.apontamento-frontend",
+      "jenkins_job": "Korp.Producao.Apontamento-Frontend",
+      "tags_planejadas": [
+        "korp.producao.apontamento-frontend-2025.1.0.35",
+        "korp.producao.apontamento-frontend-2024.2.0.121"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.producao.apontamento-frontend-2025.1.0.35",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.producao.apontamento-frontend-2024.2.0.121",
+          "branch": "release/2024.2.0.x",
+          "sha": "46a067403a3328fb3db0a566cce476bad0ce81dc",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "korp.producao.core",
+      "jenkins_job": "Korp.Producao.Core",
+      "tags_planejadas": [
+        "korp.producao.core-2025.1.0.38",
+        "korp.producao.core-2024.2.0.93"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.producao.core-2025.1.0.38",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.producao.core-2024.2.0.93",
+          "branch": "release/2024.2.0.x",
+          "sha": "46a067403a3328fb3db0a566cce476bad0ce81dc",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "korp.producao.gateway",
+      "jenkins_job": "Korp.Producao.Gateway",
+      "tags_planejadas": [
+        "korp.producao.gateway-2025.1.0.12",
+        "korp.producao.gateway-2024.2.0.19"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.producao.gateway-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.producao.gateway-2024.2.0.19",
+          "branch": "release/2024.2.0.x",
+          "sha": "46a067403a3328fb3db0a566cce476bad0ce81dc",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.projetos.bpmn-frontend",
+      "jenkins_job": "Korp.Projetos.Bpmn-Frontend",
+      "tags_planejadas": [
+        "korp.projetos.bpmn-frontend-2025.1.0.23"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.projetos.bpmn-frontend-2025.1.0.23",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.projetos.bpmn.gateway",
+      "jenkins_job": "Korp.Projetos.Bpmn.Gateway",
+      "tags_planejadas": [
+        "korp.projetos.bpmn.gateway-2025.1.0.15"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.projetos.bpmn.gateway-2025.1.0.15",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.projetos.gantt-frontend",
+      "jenkins_job": "Korp.Projetos.Gantt-Frontend",
+      "tags_planejadas": [
+        "korp.projetos.gantt-frontend-2025.1.0.278"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.projetos.gantt-frontend-2025.1.0.278",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.projetos.gantt.gateway",
+      "jenkins_job": "Korp.Projetos.Gantt.Gateway",
+      "tags_planejadas": [
+        "korp.projetos.gantt.gateway-2025.1.0.93"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.projetos.gantt.gateway-2025.1.0.93",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "korp.projetos.ordensdeservico",
+      "jenkins_job": "Korp.Projetos.Ordensdeservico",
+      "tags_planejadas": [
+        "korp.projetos.ordensdeservico-2025.1.0.37"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "korp.projetos.ordensdeservico-2025.1.0.37",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qa",
+      "servico_bitbucket": "korp.qualidade.controletratamentotermico-frontend",
+      "jenkins_job": "Korp.Qualidade.Controletratamentotermico-Frontend",
+      "tags_planejadas": [
+        "korp.qualidade.controletratamentotermico-frontend-2025.1.0.9",
+        "korp.qualidade.controletratamentotermico-frontend-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.qualidade.controletratamentotermico-frontend-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.qualidade.controletratamentotermico-frontend-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qm",
+      "servico_bitbucket": "korp.qualidade.inspecaoentrada",
+      "jenkins_job": "Korp.Qualidade.Inspecaoentrada",
+      "tags_planejadas": [
+        "korp.qualidade.inspecaoentrada-2025.1.0.10",
+        "korp.qualidade.inspecaoentrada-2024.2.0.10"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.qualidade.inspecaoentrada-2025.1.0.10",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.qualidade.inspecaoentrada-2024.2.0.10",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qm",
+      "servico_bitbucket": "korp.qualidade.inspecaoentrada-frontend",
+      "jenkins_job": "Korp.Qualidade.Inspecaoentrada-Frontend",
+      "tags_planejadas": [
+        "korp.qualidade.inspecaoentrada-frontend-2025.1.0.7",
+        "korp.qualidade.inspecaoentrada-frontend-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.qualidade.inspecaoentrada-frontend-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.qualidade.inspecaoentrada-frontend-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qm",
+      "servico_bitbucket": "korp.qualidade.inspecaosaida",
+      "jenkins_job": "Korp.Qualidade.Inspecaosaida",
+      "tags_planejadas": [
+        "korp.qualidade.inspecaosaida-2025.1.0.13",
+        "korp.qualidade.inspecaosaida-2024.2.0.41"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.qualidade.inspecaosaida-2025.1.0.13",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.qualidade.inspecaosaida-2024.2.0.41",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qm",
+      "servico_bitbucket": "korp.qualidade.inspecaosaida-frontend",
+      "jenkins_job": "Korp.Qualidade.Inspecaosaida-Frontend",
+      "tags_planejadas": [
+        "korp.qualidade.inspecaosaida-frontend-2025.1.0.6",
+        "korp.qualidade.inspecaosaida-frontend-2024.2.0.12"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.qualidade.inspecaosaida-frontend-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.qualidade.inspecaosaida-frontend-2024.2.0.12",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.sales.pricecontrol",
+      "jenkins_job": "Korp.Sales.Pricecontrol",
+      "tags_planejadas": [
+        "korp.sales.pricecontrol-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.sales.pricecontrol-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.sales.tracking",
+      "jenkins_job": "Korp.Sales.Tracking",
+      "tags_planejadas": [
+        "korp.sales.tracking-2025.1.0.153"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.sales.tracking-2025.1.0.153",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.sales.tracking-frontend",
+      "jenkins_job": "Korp.Sales.Tracking-Frontend",
+      "tags_planejadas": [
+        "korp.sales.tracking-frontend-2025.1.0.21"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.sales.tracking-frontend-2025.1.0.21",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.sales.tracking.gateway",
+      "jenkins_job": "Korp.Sales.Tracking.Gateway",
+      "tags_planejadas": [
+        "korp.sales.tracking.gateway-2025.1.0.32"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.sales.tracking.gateway-2025.1.0.32",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.vendas.automatizacaodefrete",
+      "jenkins_job": "Korp.Vendas.Automatizacaodefrete",
+      "tags_planejadas": [
+        "korp.vendas.automatizacaodefrete-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.vendas.automatizacaodefrete-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.vendas.automatizacaodefrete-frontend",
+      "jenkins_job": "Korp.Vendas.Automatizacaodefrete-Frontend",
+      "tags_planejadas": [
+        "korp.vendas.automatizacaodefrete-frontend-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.vendas.automatizacaodefrete-frontend-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.vendas.clientes",
+      "jenkins_job": "Korp.Vendas.Clientes",
+      "tags_planejadas": [
+        "korp.vendas.clientes-2025.1.0.2",
+        "korp.vendas.clientes-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.vendas.clientes-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "korp.vendas.clientes-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.vendas.custoproduto",
+      "jenkins_job": "Korp.Vendas.Custoproduto",
+      "tags_planejadas": [
+        "korp.vendas.custoproduto-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.vendas.custoproduto-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "korp.vendas.listapreco",
+      "jenkins_job": "Korp.Vendas.Listapreco",
+      "tags_planejadas": [
+        "korp.vendas.listapreco-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "korp.vendas.listapreco-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "contabil",
+      "dominio_original": "ac",
+      "servico_bitbucket": "viasoft.accounting",
+      "jenkins_job": "Viasoft.Accounting",
+      "tags_planejadas": [
+        "viasoft.accounting-2025.1.0.3",
+        "viasoft.accounting-2024.2.0.4"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.accounting-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.accounting-2024.2.0.4",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.approval",
+      "jenkins_job": "Viasoft.Approval",
+      "tags_planejadas": [
+        "viasoft.approval-2025.1.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.approval-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.audittrail.client",
+      "jenkins_job": "Viasoft.Audittrail.Client",
+      "tags_planejadas": [
+        "viasoft.audittrail.client-2025.1.0.12"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.audittrail.client-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.billing.cte",
+      "jenkins_job": "Viasoft.Billing.Cte",
+      "tags_planejadas": [
+        "viasoft.billing.cte-2025.1.0.2",
+        "viasoft.billing.cte-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.billing.cte-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.billing.cte-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.billing.cte-frontend",
+      "jenkins_job": "Viasoft.Billing.Cte-Frontend",
+      "tags_planejadas": [
+        "viasoft.billing.cte-frontend-2025.1.0.2",
+        "viasoft.billing.cte-frontend-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.billing.cte-frontend-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.billing.cte-frontend-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.billing.cte.sefaz",
+      "jenkins_job": "Viasoft.Billing.Cte.Sefaz",
+      "tags_planejadas": [
+        "viasoft.billing.cte.sefaz-2025.1.0.2",
+        "viasoft.billing.cte.sefaz-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.billing.cte.sefaz-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.billing.cte.sefaz-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.billing.nfe",
+      "jenkins_job": "Viasoft.Billing.Nfe",
+      "tags_planejadas": [
+        "viasoft.billing.nfe-2025.1.0.5",
+        "viasoft.billing.nfe-2024.2.0.18"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.billing.nfe-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.billing.nfe-2024.2.0.18",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "compras",
+      "dominio_original": "pur",
+      "servico_bitbucket": "viasoft.compras.planilhaspreco",
+      "jenkins_job": "Viasoft.Compras.Planilhaspreco",
+      "tags_planejadas": [
+        "viasoft.compras.planilhaspreco-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.compras.planilhaspreco-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "fa7f436bc0827c417ffd7196fcc339f0e09223fa",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.contabil.core-frontend",
+      "jenkins_job": "Viasoft.Contabil.Core-Frontend",
+      "tags_planejadas": [
+        "viasoft.contabil.core-frontend-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.contabil.core-frontend-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "contabil",
+      "dominio_original": "ac",
+      "servico_bitbucket": "viasoft.contabil.dre",
+      "jenkins_job": "Viasoft.Contabil.Dre",
+      "tags_planejadas": [
+        "viasoft.contabil.dre-2025.1.0.3"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.contabil.dre-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.contabil.gateway",
+      "jenkins_job": "Viasoft.Contabil.Gateway",
+      "tags_planejadas": [
+        "viasoft.contabil.gateway-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.contabil.gateway-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.customer.portifolio",
+      "jenkins_job": "Viasoft.Customer.Portifolio",
+      "tags_planejadas": [
+        "viasoft.customer.portifolio-2025.1.0.3",
+        "viasoft.customer.portifolio-2024.2.0.6"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.customer.portifolio-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.customer.portifolio-2024.2.0.6",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.email",
+      "jenkins_job": "Viasoft.Email",
+      "tags_planejadas": [
+        "viasoft.email-2025.1.0.14"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.email-2025.1.0.14",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "viasoft.engenharia.core",
+      "jenkins_job": "Viasoft.Engenharia.Core",
+      "tags_planejadas": [
+        "viasoft.engenharia.core-2025.1.0.5",
+        "viasoft.engenharia.core-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.engenharia.core-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.engenharia.core-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "6fd5c06850e4e391859dd519b63f6f9cdd7360db",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "viasoft.engenharia.core-frontend",
+      "jenkins_job": "Viasoft.Engenharia.Core-Frontend",
+      "tags_planejadas": [
+        "viasoft.engenharia.core-frontend-2025.1.0.3",
+        "viasoft.engenharia.core-frontend-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.engenharia.core-frontend-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.engenharia.core-frontend-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "6fd5c06850e4e391859dd519b63f6f9cdd7360db",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "viasoft.engenharia.custoorcamento",
+      "jenkins_job": "Viasoft.Engenharia.Custoorcamento",
+      "tags_planejadas": [
+        "viasoft.engenharia.custoorcamento-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.engenharia.custoorcamento-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "engenharia",
+      "dominio_original": "en",
+      "servico_bitbucket": "viasoft.engenharia.gateway",
+      "jenkins_job": "Viasoft.Engenharia.Gateway",
+      "tags_planejadas": [
+        "viasoft.engenharia.gateway-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.engenharia.gateway-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "cb082e1877ac1b750bef7dd68797a4b9661d0e82",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.acl.messaging",
+      "jenkins_job": "Viasoft.Erp.Acl.Messaging",
+      "tags_planejadas": [
+        "viasoft.erp.acl.messaging-2025.1.0.72"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.acl.messaging-2025.1.0.72",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.activities",
+      "jenkins_job": "Viasoft.Erp.Activities",
+      "tags_planejadas": [
+        "viasoft.erp.activities-2025.1.0.31",
+        "viasoft.erp.activities-2024.2.0.211"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.activities-2025.1.0.31",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.erp.activities-2024.2.0.211",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.core",
+      "jenkins_job": "Viasoft.Erp.Core",
+      "tags_planejadas": [
+        "viasoft.erp.core-2025.1.0.3",
+        "viasoft.erp.core-2024.2.0.5"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.core-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.erp.core-2024.2.0.5",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.person",
+      "jenkins_job": "Viasoft.Erp.Person",
+      "tags_planejadas": [
+        "viasoft.erp.person-2025.1.0.7",
+        "viasoft.erp.person-2024.2.0.25"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.person-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.erp.person-2024.2.0.25",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.person-frontend",
+      "jenkins_job": "Viasoft.Erp.Person-Frontend",
+      "tags_planejadas": [
+        "viasoft.erp.person-frontend-2025.1.0.14"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.person-frontend-2025.1.0.14",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.person.preregistration",
+      "jenkins_job": "Viasoft.Erp.Person.Preregistration",
+      "tags_planejadas": [
+        "viasoft.erp.person.preregistration-2025.1.0.2"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.person.preregistration-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.person.preregistration-frontend",
+      "jenkins_job": "Viasoft.Erp.Person.Preregistration-Frontend",
+      "tags_planejadas": [
+        "viasoft.erp.person.preregistration-frontend-2025.1.0.6"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.person.preregistration-frontend-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.sync",
+      "jenkins_job": "Viasoft.Erp.Sync",
+      "tags_planejadas": [
+        "viasoft.erp.sync-2025.1.0.4",
+        "viasoft.erp.sync-2024.2.0.5"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.sync-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.erp.sync-2024.2.0.5",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.erp.sync-frontend",
+      "jenkins_job": "Viasoft.Erp.Sync-Frontend",
+      "tags_planejadas": [
+        "viasoft.erp.sync-frontend-2025.1.0.2"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.erp.sync-frontend-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.core",
+      "jenkins_job": "Viasoft.Faturamento.Core",
+      "tags_planejadas": [
+        "viasoft.faturamento.core-2025.1.0.24"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.core-2025.1.0.24",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.notafiscal.core",
+      "jenkins_job": "Viasoft.Faturamento.Notafiscal.Core",
+      "tags_planejadas": [
+        "viasoft.faturamento.notafiscal.core-2025.1.0.9",
+        "viasoft.faturamento.notafiscal.core-2024.2.0.20"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.notafiscal.core-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.notafiscal.core-2024.2.0.20",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.notafiscal.gateway",
+      "jenkins_job": "Viasoft.Faturamento.Notafiscal.Gateway",
+      "tags_planejadas": [
+        "viasoft.faturamento.notafiscal.gateway-2025.1.0.9",
+        "viasoft.faturamento.notafiscal.gateway-2024.2.0.5"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.notafiscal.gateway-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.notafiscal.gateway-2024.2.0.5",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento-frontend",
+      "jenkins_job": "Viasoft.Faturamento.Solicitacaofaturamento-Frontend",
+      "tags_planejadas": [
+        "viasoft.faturamento.solicitacaofaturamento-frontend-2025.1.0.13",
+        "viasoft.faturamento.solicitacaofaturamento-frontend-2024.2.0.18"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento-frontend-2025.1.0.13",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento-frontend-2024.2.0.18",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.core",
+      "jenkins_job": "Viasoft.Faturamento.Solicitacaofaturamento.Core",
+      "tags_planejadas": [
+        "viasoft.faturamento.solicitacaofaturamento.core-2025.1.0.31",
+        "viasoft.faturamento.solicitacaofaturamento.core-2024.2.0.428"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.core-2025.1.0.31",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.core-2024.2.0.428",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.gateway",
+      "jenkins_job": "Viasoft.Faturamento.Solicitacaofaturamento.Gateway",
+      "tags_planejadas": [
+        "viasoft.faturamento.solicitacaofaturamento.gateway-2025.1.0.13",
+        "viasoft.faturamento.solicitacaofaturamento.gateway-2024.2.0.29"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.gateway-2025.1.0.13",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.gateway-2024.2.0.29",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "faturamento",
+      "dominio_original": "bil",
+      "servico_bitbucket": "viasoft.faturamento.solicitacaofaturamento.readmodel",
+      "jenkins_job": "Viasoft.Faturamento.Solicitacaofaturamento.Readmodel",
+      "tags_planejadas": [
+        "viasoft.faturamento.solicitacaofaturamento.readmodel-2025.1.0.13",
+        "viasoft.faturamento.solicitacaofaturamento.readmodel-2024.2.0.43"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.readmodel-2025.1.0.13",
+          "branch": "release/2025.1.0.x",
+          "sha": "e561f883384cc50373f790aec1985da30a5513af",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.faturamento.solicitacaofaturamento.readmodel-2024.2.0.43",
+          "branch": "release/2024.2.0.x",
+          "sha": "7755351b9c8e6740fdf27b3157d6f3cd94ff7b40",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financeiro.core",
+      "jenkins_job": "Viasoft.Financeiro.Core",
+      "tags_planejadas": [
+        "viasoft.financeiro.core-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financeiro.core-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financeiro.core-frontend",
+      "jenkins_job": "Viasoft.Financeiro.Core-Frontend",
+      "tags_planejadas": [
+        "viasoft.financeiro.core-frontend-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financeiro.core-frontend-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financeiro.dre",
+      "jenkins_job": "Viasoft.Financeiro.Dre",
+      "tags_planejadas": [
+        "viasoft.financeiro.dre-2025.1.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financeiro.dre-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financeiro.gateway",
+      "jenkins_job": "Viasoft.Financeiro.Gateway",
+      "tags_planejadas": [
+        "viasoft.financeiro.gateway-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financeiro.gateway-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financialaccounting.accountsreceivable",
+      "jenkins_job": "Viasoft.Financialaccounting.Accountsreceivable",
+      "tags_planejadas": [
+        "viasoft.financialaccounting.accountsreceivable-2025.1.0.2",
+        "viasoft.financialaccounting.accountsreceivable-2024.2.0.3"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financialaccounting.accountsreceivable-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.financialaccounting.accountsreceivable-2024.2.0.3",
+          "branch": "release/2024.2.0.x",
+          "sha": "2a4c6fe031e5895763a14e954450567b54e75f96",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "financeiro",
+      "dominio_original": "fa",
+      "servico_bitbucket": "viasoft.financialaccounting.installment",
+      "jenkins_job": "Viasoft.Financialaccounting.Installment",
+      "tags_planejadas": [
+        "viasoft.financialaccounting.installment-2025.1.0.4",
+        "viasoft.financialaccounting.installment-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.financialaccounting.installment-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "dd6d1eb6ac52592e6c1e928676c24cf870e7f91f",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.financialaccounting.installment-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "2a4c6fe031e5895763a14e954450567b54e75f96",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "fiscal",
+      "dominio_original": "tm",
+      "servico_bitbucket": "viasoft.fiscal.core",
+      "jenkins_job": "Viasoft.Fiscal.Core",
+      "tags_planejadas": [
+        "viasoft.fiscal.core-2025.1.0.3",
+        "viasoft.fiscal.core-2024.2.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.fiscal.core-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "c3fa729582d65d8813f99ccf170d39933b5cb7f6",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.fiscal.core-2024.2.0.2",
+          "branch": "release/2024.2.0.x",
+          "sha": "02a7accaba48b068684198c1fb26f0f4d9bf5b8b",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "infrastructure",
+      "dominio_original": "in",
+      "servico_bitbucket": "viasoft.integration.ecommerce",
+      "jenkins_job": "Viasoft.Integration.Ecommerce",
+      "tags_planejadas": [
+        "viasoft.integration.ecommerce-2025.1.0.18"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.integration.ecommerce-2025.1.0.18",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.legacy.logistica",
+      "jenkins_job": "Viasoft.Legacy.Logistica",
+      "tags_planejadas": [
+        "viasoft.legacy.logistica-2025.1.0.6",
+        "viasoft.legacy.logistica-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.legacy.logistica-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.legacy.logistica-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.legacy.parametros",
+      "jenkins_job": "Viasoft.Legacy.Parametros",
+      "tags_planejadas": [
+        "viasoft.legacy.parametros-2025.1.0.2",
+        "viasoft.legacy.parametros-2024.2.0.8"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.legacy.parametros-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        },
+        {
+          "tag": "viasoft.legacy.parametros-2024.2.0.8",
+          "branch": "release/2024.2.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.ajusteestoque.background",
+      "jenkins_job": "Viasoft.Logistica.Ajusteestoque.Background",
+      "tags_planejadas": [
+        "viasoft.logistica.ajusteestoque.background-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.ajusteestoque.background-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.estoque",
+      "jenkins_job": "Viasoft.Logistica.Estoque",
+      "tags_planejadas": [
+        "viasoft.logistica.estoque-2025.1.0.39"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.estoque-2025.1.0.39",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.inventario.background",
+      "jenkins_job": "Viasoft.Logistica.Inventario.Background",
+      "tags_planejadas": [
+        "viasoft.logistica.inventario.background-2025.1.0.11"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.inventario.background-2025.1.0.11",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.produto-frontend",
+      "jenkins_job": "Viasoft.Logistica.Produto-Frontend",
+      "tags_planejadas": [
+        "viasoft.logistica.produto-frontend-2025.1.0.12",
+        "viasoft.logistica.produto-frontend-2024.2.0.12"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.produto-frontend-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.logistica.produto-frontend-2024.2.0.12",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.produto.core",
+      "jenkins_job": "Viasoft.Logistica.Produto.Core",
+      "tags_planejadas": [
+        "viasoft.logistica.produto.core-2025.1.0.11",
+        "viasoft.logistica.produto.core-2024.2.0.11"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.produto.core-2025.1.0.11",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.logistica.produto.core-2024.2.0.11",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.produto.gateway",
+      "jenkins_job": "Viasoft.Logistica.Produto.Gateway",
+      "tags_planejadas": [
+        "viasoft.logistica.produto.gateway-2025.1.0.12",
+        "viasoft.logistica.produto.gateway-2024.2.0.11"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.produto.gateway-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.logistica.produto.gateway-2024.2.0.11",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistica.saldo",
+      "jenkins_job": "Viasoft.Logistica.Saldo",
+      "tags_planejadas": [
+        "viasoft.logistica.saldo-2025.1.0.20"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistica.saldo-2025.1.0.20",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistics.preregistration",
+      "jenkins_job": "Viasoft.Logistics.Preregistration",
+      "tags_planejadas": [
+        "viasoft.logistics.preregistration-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistics.preregistration-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistics.preregistration-frontend",
+      "jenkins_job": "Viasoft.Logistics.Preregistration-Frontend",
+      "tags_planejadas": [
+        "viasoft.logistics.preregistration-frontend-2025.1.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistics.preregistration-frontend-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "logistica",
+      "dominio_original": "log",
+      "servico_bitbucket": "viasoft.logistics.products",
+      "jenkins_job": "Viasoft.Logistics.Products",
+      "tags_planejadas": [
+        "viasoft.logistics.products-2025.1.0.6",
+        "viasoft.logistics.products-2024.2.0.17"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.logistics.products-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "2f94194327f61b79b5f41d2c292a8c1681cec0ff",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.logistics.products-2024.2.0.17",
+          "branch": "release/2024.2.0.x",
+          "sha": "266bb00e0ab4616f98d261509146e2ce42f4fe11",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.messagebird",
+      "jenkins_job": "Viasoft.Messagebird",
+      "tags_planejadas": [
+        "viasoft.messagebird-2025.1.0.5"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.messagebird-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "viasoft.production.aps",
+      "jenkins_job": "Viasoft.Production.Aps",
+      "tags_planejadas": [
+        "viasoft.production.aps-2025.1.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.production.aps-2025.1.0.9",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "viasoft.production.aps-frontend",
+      "jenkins_job": "Viasoft.Production.Aps-Frontend",
+      "tags_planejadas": [
+        "viasoft.production.aps-frontend-2025.1.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.production.aps-frontend-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "viasoft.production.aps.dataimporting",
+      "jenkins_job": "Viasoft.Production.Aps.Dataimporting",
+      "tags_planejadas": [
+        "viasoft.production.aps.dataimporting-2025.1.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.production.aps.dataimporting-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "viasoft.production.aps.distribution",
+      "jenkins_job": "Viasoft.Production.Aps.Distribution",
+      "tags_planejadas": [
+        "viasoft.production.aps.distribution-2025.1.0.4"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.production.aps.distribution-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "producao",
+      "dominio_original": "prod",
+      "servico_bitbucket": "viasoft.production.aps.simulation",
+      "jenkins_job": "Viasoft.Production.Aps.Simulation",
+      "tags_planejadas": [
+        "viasoft.production.aps.simulation-2025.1.0.8"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.production.aps.simulation-2025.1.0.8",
+          "branch": "release/2025.1.0.x",
+          "sha": "47457be47f35a556cf8df7cf430677c64b2c7069",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.projetos.core",
+      "jenkins_job": "Viasoft.Projetos.Core",
+      "tags_planejadas": [
+        "viasoft.projetos.core-2025.1.0.91"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.projetos.core-2025.1.0.91",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qa",
+      "servico_bitbucket": "viasoft.qualidade.inspecao.background",
+      "jenkins_job": "Viasoft.Qualidade.Inspecao.Background",
+      "tags_planejadas": [
+        "viasoft.qualidade.inspecao.background-2025.1.0.11"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.qualidade.inspecao.background-2025.1.0.11",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qa",
+      "servico_bitbucket": "viasoft.qualidade.rnc-frontend",
+      "jenkins_job": "Viasoft.Qualidade.Rnc-Frontend",
+      "tags_planejadas": [
+        "viasoft.qualidade.rnc-frontend-2025.1.0.6",
+        "viasoft.qualidade.rnc-frontend-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.qualidade.rnc-frontend-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.qualidade.rnc-frontend-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qa",
+      "servico_bitbucket": "viasoft.qualidade.rnc.core",
+      "jenkins_job": "Viasoft.Qualidade.Rnc.Core",
+      "tags_planejadas": [
+        "viasoft.qualidade.rnc.core-2025.1.0.6",
+        "viasoft.qualidade.rnc.core-2024.2.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.qualidade.rnc.core-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.qualidade.rnc.core-2024.2.0.6",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "qualidade",
+      "dominio_original": "qa",
+      "servico_bitbucket": "viasoft.qualidade.rnc.gateway",
+      "jenkins_job": "Viasoft.Qualidade.Rnc.Gateway",
+      "tags_planejadas": [
+        "viasoft.qualidade.rnc.gateway-2025.1.0.6",
+        "viasoft.qualidade.rnc.gateway-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.qualidade.rnc.gateway-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "1c529d60949399114290a23199c605b1517e9b9e",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.qualidade.rnc.gateway-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "beb8ae964f06164867d412b0511dcb0210e15214",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.commercialproposal-frontend",
+      "jenkins_job": "Viasoft.Sales.Commercialproposal-Frontend",
+      "tags_planejadas": [
+        "viasoft.sales.commercialproposal-frontend-2025.1.0.57",
+        "viasoft.sales.commercialproposal-frontend-2024.2.0.262"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.commercialproposal-frontend-2025.1.0.57",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.commercialproposal-frontend-2024.2.0.262",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.core",
+      "jenkins_job": "Viasoft.Sales.Commercialproposal.Core",
+      "tags_planejadas": [
+        "viasoft.sales.commercialproposal.core-2025.1.0.105",
+        "viasoft.sales.commercialproposal.core-2024.2.0.353"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.commercialproposal.core-2025.1.0.105",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.commercialproposal.core-2024.2.0.353",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.gateway",
+      "jenkins_job": "Viasoft.Sales.Commercialproposal.Gateway",
+      "tags_planejadas": [
+        "viasoft.sales.commercialproposal.gateway-2025.1.0.12",
+        "viasoft.sales.commercialproposal.gateway-2024.2.0.44"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.commercialproposal.gateway-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.commercialproposal.gateway-2024.2.0.44",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.commercialproposal.sync",
+      "jenkins_job": "Viasoft.Sales.Commercialproposal.Sync",
+      "tags_planejadas": [
+        "viasoft.sales.commercialproposal.sync-2025.1.0.26",
+        "viasoft.sales.commercialproposal.sync-2024.2.0.59"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.commercialproposal.sync-2025.1.0.26",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.commercialproposal.sync-2024.2.0.59",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.core",
+      "jenkins_job": "Viasoft.Sales.Core",
+      "tags_planejadas": [
+        "viasoft.sales.core-2025.1.0.6",
+        "viasoft.sales.core-2024.2.0.24"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.core-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.core-2024.2.0.24",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.accounts",
+      "jenkins_job": "Viasoft.Sales.Crm.Accounts",
+      "tags_planejadas": [
+        "viasoft.sales.crm.accounts-2025.1.0.99"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.accounts-2025.1.0.99",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.activities",
+      "jenkins_job": "Viasoft.Sales.Crm.Activities",
+      "tags_planejadas": [
+        "viasoft.sales.crm.activities-2025.1.0.11"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.activities-2025.1.0.11",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.core",
+      "jenkins_job": "Viasoft.Sales.Crm.Core",
+      "tags_planejadas": [
+        "viasoft.sales.crm.core-2025.1.0.56"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.core-2025.1.0.56",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.core-frontend",
+      "jenkins_job": "Viasoft.Sales.Crm.Core-Frontend",
+      "tags_planejadas": [
+        "viasoft.sales.crm.core-frontend-2025.1.0.50"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.core-frontend-2025.1.0.50",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.goals",
+      "jenkins_job": "Viasoft.Sales.Crm.Goals",
+      "tags_planejadas": [
+        "viasoft.sales.crm.goals-2025.1.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.goals-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.leads",
+      "jenkins_job": "Viasoft.Sales.Crm.Leads",
+      "tags_planejadas": [
+        "viasoft.sales.crm.leads-2025.1.0.17"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.leads-2025.1.0.17",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.nps",
+      "jenkins_job": "Viasoft.Sales.Crm.Nps",
+      "tags_planejadas": [
+        "viasoft.sales.crm.nps-2025.1.0.10"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.nps-2025.1.0.10",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.opportunities",
+      "jenkins_job": "Viasoft.Sales.Crm.Opportunities",
+      "tags_planejadas": [
+        "viasoft.sales.crm.opportunities-2025.1.0.5",
+        "viasoft.sales.crm.opportunities-2024.2.0.9"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.opportunities-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.crm.opportunities-2024.2.0.9",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.qualification",
+      "jenkins_job": "Viasoft.Sales.Crm.Qualification",
+      "tags_planejadas": [
+        "viasoft.sales.crm.qualification-2025.1.0.5"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.qualification-2025.1.0.5",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.reporting",
+      "jenkins_job": "Viasoft.Sales.Crm.Reporting",
+      "tags_planejadas": [
+        "viasoft.sales.crm.reporting-2025.1.0.8"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.reporting-2025.1.0.8",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.crm.sync",
+      "jenkins_job": "Viasoft.Sales.Crm.Sync",
+      "tags_planejadas": [
+        "viasoft.sales.crm.sync-2025.1.0.1"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.crm.sync-2025.1.0.1",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.customerportfolio",
+      "jenkins_job": "Viasoft.Sales.Customerportfolio",
+      "tags_planejadas": [
+        "viasoft.sales.customerportfolio-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.customerportfolio-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.customers",
+      "jenkins_job": "Viasoft.Sales.Customers",
+      "tags_planejadas": [
+        "viasoft.sales.customers-2025.1.0.13",
+        "viasoft.sales.customers-2024.2.0.33"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.customers-2025.1.0.13",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.customers-2024.2.0.33",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.discount",
+      "jenkins_job": "Viasoft.Sales.Discount",
+      "tags_planejadas": [
+        "viasoft.sales.discount-2025.1.0.3",
+        "viasoft.sales.discount-2024.2.0.3"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.discount-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.discount-2024.2.0.3",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.sales.pricelist",
+      "jenkins_job": "Viasoft.Sales.Pricelist",
+      "tags_planejadas": [
+        "viasoft.sales.pricelist-2025.1.0.6",
+        "viasoft.sales.pricelist-2024.2.0.23"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.sales.pricelist-2025.1.0.6",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.sales.pricelist-2024.2.0.23",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "erp",
+      "dominio_original": "erp",
+      "servico_bitbucket": "viasoft.systemupdate",
+      "jenkins_job": "Viasoft.Systemupdate",
+      "tags_planejadas": [
+        "viasoft.systemupdate-2025.1.0.4"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.systemupdate-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "fiscal",
+      "dominio_original": "tm",
+      "servico_bitbucket": "viasoft.taxmanagement",
+      "jenkins_job": "Viasoft.Taxmanagement",
+      "tags_planejadas": [
+        "viasoft.taxmanagement-2025.1.0.12"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.taxmanagement-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "c3fa729582d65d8813f99ccf170d39933b5cb7f6",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.core",
+      "jenkins_job": "Viasoft.Vendas.Core",
+      "tags_planejadas": [
+        "viasoft.vendas.core-2025.1.0.4",
+        "viasoft.vendas.core-2024.2.0.7"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.core-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.core-2024.2.0.7",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto",
+      "jenkins_job": "Viasoft.Vendas.Custeioproduto",
+      "tags_planejadas": [
+        "viasoft.vendas.custeioproduto-2025.1.0.4",
+        "viasoft.vendas.custeioproduto-2024.2.0.18"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.custeioproduto-2025.1.0.4",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.custeioproduto-2024.2.0.18",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto-frontend",
+      "jenkins_job": "Viasoft.Vendas.Custeioproduto-Frontend",
+      "tags_planejadas": [
+        "viasoft.vendas.custeioproduto-frontend-2025.1.0.7",
+        "viasoft.vendas.custeioproduto-frontend-2024.2.0.6"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.custeioproduto-frontend-2025.1.0.7",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.custeioproduto-frontend-2024.2.0.6",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.custeioproduto.gateway",
+      "jenkins_job": "Viasoft.Vendas.Custeioproduto.Gateway",
+      "tags_planejadas": [
+        "viasoft.vendas.custeioproduto.gateway-2025.1.0.2"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.custeioproduto.gateway-2025.1.0.2",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "erro",
+      "dominio_github": "mobile",
+      "dominio_original": "mc",
+      "servico_bitbucket": "viasoft.vendas.mobile.configuracao",
+      "jenkins_job": "Viasoft.Vendas.Mobile.Configuracao",
+      "tags_planejadas": [
+        "viasoft.vendas.mobile.configuracao-2025.1.0.12"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.vendas.mobile.configuracao-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "erro",
+      "dominio_github": "mobile",
+      "dominio_original": "mc",
+      "servico_bitbucket": "viasoft.vendas.mobile.configuracao-frontend",
+      "jenkins_job": "Viasoft.Vendas.Mobile.Configuracao-Frontend",
+      "tags_planejadas": [
+        "viasoft.vendas.mobile.configuracao-frontend-2025.1.0.11"
+      ],
+      "tags_criadas": [],
+      "erros": [
+        {
+          "tag": "viasoft.vendas.mobile.configuracao-frontend-2025.1.0.11",
+          "branch": "release/2025.1.0.x",
+          "error": "branch_not_found"
+        }
+      ]
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.mobile.sincronismo",
+      "jenkins_job": "Viasoft.Vendas.Mobile.Sincronismo",
+      "tags_planejadas": [
+        "viasoft.vendas.mobile.sincronismo-2025.1.0.3",
+        "viasoft.vendas.mobile.sincronismo-2024.2.0.3"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.mobile.sincronismo-2025.1.0.3",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.mobile.sincronismo-2024.2.0.3",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.orcamento-frontend",
+      "jenkins_job": "Viasoft.Vendas.Orcamento-Frontend",
+      "tags_planejadas": [
+        "viasoft.vendas.orcamento-frontend-2025.1.0.16",
+        "viasoft.vendas.orcamento-frontend-2024.2.0.53"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.orcamento-frontend-2025.1.0.16",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.orcamento-frontend-2024.2.0.53",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.orcamento.core",
+      "jenkins_job": "Viasoft.Vendas.Orcamento.Core",
+      "tags_planejadas": [
+        "viasoft.vendas.orcamento.core-2025.1.0.12",
+        "viasoft.vendas.orcamento.core-2024.2.0.78"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.orcamento.core-2025.1.0.12",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.orcamento.core-2024.2.0.78",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    },
+    {
+      "status": "processado",
+      "dominio_github": "vendas",
+      "dominio_original": "sal",
+      "servico_bitbucket": "viasoft.vendas.orcamento.gateway",
+      "jenkins_job": "Viasoft.Vendas.Orcamento.Gateway",
+      "tags_planejadas": [
+        "viasoft.vendas.orcamento.gateway-2025.1.0.10",
+        "viasoft.vendas.orcamento.gateway-2024.2.0.42"
+      ],
+      "tags_criadas": [
+        {
+          "tag": "viasoft.vendas.orcamento.gateway-2025.1.0.10",
+          "branch": "release/2025.1.0.x",
+          "sha": "8154a86b2589abf4a770f8c1c46cc2996c519c13",
+          "dry_run": true
+        },
+        {
+          "tag": "viasoft.vendas.orcamento.gateway-2024.2.0.42",
+          "branch": "release/2024.2.0.x",
+          "sha": "592706eee360c5f8138b9802ac8608620c991630",
+          "dry_run": true
+        }
+      ],
+      "erros": []
+    }
+  ],
+  "servicos_ignorados": []
+}
