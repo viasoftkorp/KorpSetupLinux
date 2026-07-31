@@ -9,6 +9,7 @@ _PR_LINK = re.compile(
     r"(?P<repo>[A-Za-z0-9_.-]+)/pull/(?P<pr>[1-9][0-9]*)/?$"
 )
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+$")
+_VERSION = re.compile(r"^[0-9]+[.][0-9]+[.][0-9]+$")
 _OVERRIDE_PATH = re.compile(
     r"^.+/pr-overrides/pr(?P<pr>[1-9][0-9]*)/"
     r"(?P<compose_file>[^/]+-compose[.]yml)$"
@@ -115,6 +116,23 @@ def resolve_registry_image(
         resolved["desired_image"] = f"{dockerhub_image}:{report['tag']}"
         resolved["image_registry"] = "dockerhub"
     return resolved
+
+
+def select_report_version(reports):
+    if not reports:
+        raise ValueError("Nenhum relatório disponível para selecionar a versão")
+    versions = set()
+    for report in reports:
+        version = str(report.get("versao", "")).strip()
+        if not _VERSION.fullmatch(version):
+            raise ValueError(f"Versão inválida no relatório: {version!r}")
+        versions.add(version)
+    if len(versions) != 1:
+        raise ValueError(
+            "Os relatórios apontam para versões diferentes: "
+            f"{sorted(versions)}. Execute os PRs separadamente."
+        )
+    return next(iter(versions))
 
 
 def build_targets(reports, compose_files):
@@ -421,6 +439,7 @@ class FilterModule:
             "qa_pr_parse_minio_listing": parse_minio_listing,
             "qa_pr_load_report": load_report,
             "qa_pr_resolve_registry_image": resolve_registry_image,
+            "qa_pr_select_report_version": select_report_version,
             "qa_pr_build_targets": build_targets,
             "qa_pr_index_active_overrides": index_active_overrides,
             "qa_pr_detect_conflicts": detect_conflicts,

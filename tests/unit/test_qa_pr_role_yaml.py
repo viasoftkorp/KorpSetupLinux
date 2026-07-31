@@ -312,7 +312,9 @@ class QaPrRoleYamlTests(unittest.TestCase):
 
         main_text = scalar_text(load_tasks("main.yml"))
         self.assertIn("compose_dir_path", main_text)
-        self.assertIn("versioned_compose_dir_path", main_text)
+        self.assertIn("qa_pr_select_report_version", main_text)
+        self.assertIn("qa_pr_selected_version", main_text)
+        self.assertIn("qa_pr_versioned_compose_dir", main_text)
         self.assertIn("regex_replace", main_text)
         self.assertIn("qa_pr_build_targets", main_text)
         self.assertIn("qa_pr_compose_files", main_text)

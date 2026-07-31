@@ -21,13 +21,6 @@
     qa_pr_compose_files: []
     qa_pr_override_files: []
     qa_pr_conflict_decisions: {}
-    qa_pr_compose_roots: >-
-      {{
-        [compose_dir_path, versioned_compose_dir_path]
-        | map('regex_replace', '/+$', '')
-        | unique
-        | list
-      }}
 
 - name: Carregar relatórios dos PRs
   ansible.builtin.include_tasks: load_pr.yml
@@ -35,6 +28,50 @@
   loop_control:
     loop_var: qa_pr_link
     label: "{{ qa_pr_link.key }}"
+
+- name: Selecionar versão informada pelos relatórios
+  ansible.builtin.set_fact:
+    qa_pr_selected_version: >-
+      {{
+        qa_pr_reports
+        | qa_pr_select_report_version
+      }}
+
+- name: Definir diretórios de compose da versão selecionada
+  ansible.builtin.set_fact:
+    qa_pr_versioned_compose_dir: >-
+      {{
+        compose_dir_path
+        | regex_replace('/+$', '')
+      }}/{{ qa_pr_selected_version }}
+    qa_pr_compose_roots: >-
+      {{
+        [
+          compose_dir_path,
+          (
+            (compose_dir_path | regex_replace('/+$', ''))
+            ~ '/'
+            ~ qa_pr_selected_version
+          )
+        ]
+        | map('regex_replace', '/+$', '')
+        | unique
+        | list
+      }}
+
+- name: Verificar instalação da versão selecionada
+  ansible.builtin.stat:
+    path: "{{ qa_pr_versioned_compose_dir }}"
+  register: qa_pr_versioned_compose_dir_stat
+
+- name: Exigir instalação da versão selecionada
+  ansible.builtin.assert:
+    that:
+      - qa_pr_versioned_compose_dir_stat.stat.exists
+      - qa_pr_versioned_compose_dir_stat.stat.isdir
+    fail_msg: >-
+      A versão {{ qa_pr_selected_version }} informada pelos relatórios
+      não está instalada em {{ qa_pr_versioned_compose_dir }}.
 
 - name: Ler composes base
   ansible.builtin.include_tasks: read_compose.yml

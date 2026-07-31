@@ -257,6 +257,34 @@ class RegistryResolutionTests(unittest.TestCase):
             )
 
 
+class ReportVersionTests(unittest.TestCase):
+    def test_selects_the_single_report_version(self):
+        reports = [
+            {"versao": "2025.1.0"},
+            {"versao": "2025.1.0"},
+        ]
+
+        self.assertEqual(
+            "2025.1.0",
+            filters.select_report_version(reports),
+        )
+
+    def test_rejects_reports_from_different_versions(self):
+        reports = [
+            {"versao": "2024.2.0"},
+            {"versao": "2025.1.0"},
+        ]
+
+        with self.assertRaisesRegex(ValueError, "versões diferentes"):
+            filters.select_report_version(reports)
+
+    def test_rejects_unsafe_or_missing_version(self):
+        for reports in ([], [{"versao": "../2025.1.0"}], [{}]):
+            with self.subTest(reports=reports):
+                with self.assertRaises(ValueError):
+                    filters.select_report_version(reports)
+
+
 class BuildTargetsTests(unittest.TestCase):
     def test_finds_service_by_image_and_keeps_yaml_service_key(self):
         reports = [{
