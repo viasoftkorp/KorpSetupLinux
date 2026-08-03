@@ -17,18 +17,16 @@ networks:
     external:
       name: servicos
 
-services:
-  VEN65-2025-2-0:
-    image: "{{ docker_account }}/korp.ecommerce-frontend:2025.2.0.x{{ docker_image_suffix }}"
-    container_name: "VEN65-2025.2.0"
+services: 
+  korp-ecommerce:
+    image: "{{ docker_account }}/korp.ecommerce:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Ecommerce-{{ version_without_build }}"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
-      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
-      - CDN_URL={{ frontend.endpoints.cdn_url }}
-      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - URL_CONSUL=http://consul-server:8500
       - CERT_FILE_PATH={{ containers_cert_path }}
     networks:
       - servicos
