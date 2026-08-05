@@ -1,5 +1,9 @@
 listen 443 ssl;
 
+{% if http_use_secure_only_tls_protocols %}
+ssl_protocols TLSv1.2 TLSv1.3;
+{% endif %}
+
 {% if certs.certbot_automated.certificate %}
 ssl_certificate /etc/nginx/certs/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem;
 ssl_certificate_key /etc/nginx/certs/letsencrypt/live/{{ certbot_cert_name }}/privkey.pem;

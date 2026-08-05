@@ -27,7 +27,7 @@ services:
       redis_svix:
         condition: service_healthy
     environment:
-      SVIX_DB_DSN: "postgres://{{ postgres.korp_user }}:{{ postgres.korp_password }}@{{ postgres.address }}:5432/{{ svix_db_name }}"
+      SVIX_DB_DSN: "postgres://{{ postgres.korp_user }}:{{ postgres.korp_password }}@{{ postgres_container_name }}:5432/{{ svix_db_name }}"
       SVIX_REDIS_DSN: "redis://redis_svix:6379"
       SVIX_WHITELIST_SUBNETS: '["127.0.0.1/32","{{ docker_servicos_network_ip_address_start | default("172.18") }}.0.0/16","192.168.0.0/16"]'
       SVIX_JWT_SECRET: "{{ svix.jwt_secret }}"
