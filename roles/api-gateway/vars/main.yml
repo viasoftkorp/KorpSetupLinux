@@ -15,6 +15,7 @@ services:
 
     Korp.API.Gateway.Compras:
         db:
+            name: Korp_API_Gateway_Compras
             type: mssql
 
     Korp.API.Gateway.Projetos:
