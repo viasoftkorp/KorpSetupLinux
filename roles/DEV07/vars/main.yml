@@ -1,0 +1,7 @@
+services:
+  Korp.Implantacao.Core:
+    db:
+      name: Korp_Implantacao_Core
+      type: mssql
+
+  Korp.Implantacao.Gateway:
