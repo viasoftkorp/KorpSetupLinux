@@ -1,0 +1,9 @@
+dependencies:
+  - role: temporal
+  - role: logistica
+  - role: PES00
+  - role: vendas
+  - role: financeiro
+  - role: fiscal
+  - role: contabil
+  
