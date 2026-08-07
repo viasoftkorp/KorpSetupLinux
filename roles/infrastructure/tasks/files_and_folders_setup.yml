@@ -199,6 +199,6 @@
     group: root
     mode: '0644'
     content: |
-      unversioned:
-      versioned:
+      unversioned: []
+      versioned: {}
   when: not installed_apps_file.stat.exists
