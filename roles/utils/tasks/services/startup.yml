@@ -15,3 +15,9 @@
     - has_exclusive_services
     - version_without_build is version(latest_installed_version, '<')
     - id in temp_apps_map.versioned[latest_installed_version]
+    - >-
+      not (
+        id == 'LOG03_W'
+        and (skip_log03_w_legacy_dependencies | default(false) | bool)
+        and version_without_build == '2024.2.0'
+      )
