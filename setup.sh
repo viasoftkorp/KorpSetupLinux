@@ -21,6 +21,7 @@ create_random_string() {
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
+#   skip_log03_w_legacy_dependencies=<bool> - OPCIONAL, padrão false. Ignora dependências compartilhadas somente na instalação retroativa da LOG03_W 2024.2.
 #   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
 #
 ##### variaveis salvas no inventário:
@@ -55,6 +56,7 @@ https_port="";
 http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
+skip_log03_w_legacy_dependencies=false;
 
 ini_file_path="./setup_config.ini"
 
@@ -257,6 +259,7 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "apps":['$apps'],
     "removed_version": "'$removed_version'",
     "skip_salt_test": '$skip_salt_test',
+    "skip_log03_w_legacy_dependencies": '$skip_log03_w_legacy_dependencies',
     "should_update_rabbitmq": '$should_update_rabbitmq'
   }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
