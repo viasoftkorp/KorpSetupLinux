@@ -69,6 +69,22 @@
             - install
             - install-only
 
+        # Uma instalação retroativa do frontend LOG03_W em 2024.2 não deve
+        # reinstalar as dependências compartilhadas que já pertencem a uma
+        # versão posterior. Isso acionaria a proteção contra downgrade das
+        # roles exclusivas, embora o compose versionado do frontend seja
+        # compatível com a coexistência de versões.
+        - name: Identificação de dependências reutilizáveis da LOG03_W 2024.2
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/log03_w_legacy_dependencies.yml
+          when:
+            - "'LOG03_W' in (apps_to_install | default([]))"
+            - version_without_build == '2024.2.0'
+          tags:
+            - install
+            - install-only
+
         # task utiliza parâmetros passados por --extra-vars='{"apps":[<app1>,<app2>,...]}'
         - name: Instalação de apps
           ansible.builtin.include_role:

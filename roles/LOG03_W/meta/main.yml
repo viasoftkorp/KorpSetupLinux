@@ -1,6 +1,11 @@
 dependencies:
   - role: LOG102
+    when: "'LOG102' not in (log03_w_reused_dependencies | default([]))"
   - role: campos-padroes
+    when: "'campos-padroes' not in (log03_w_reused_dependencies | default([]))"
   - role: contabil
+    when: "'contabil' not in (log03_w_reused_dependencies | default([]))"
   - role: logistica
+    when: "'logistica' not in (log03_w_reused_dependencies | default([]))"
   - role: financeiro
+    when: "'financeiro' not in (log03_w_reused_dependencies | default([]))"

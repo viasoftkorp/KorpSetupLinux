@@ -1,0 +1,16 @@
+---
+# Em instalações retroativas da LOG03_W, mantemos as dependências já
+# registradas em versões posteriores. Assim, o frontend 2024.2 é instalado
+# sem tentar fazer downgrade de roles compartilhadas/exclusivas.
+- name: Leitura dos aplicativos instalados para a LOG03_W 2024.2
+  ansible.builtin.set_fact:
+    log03_w_apps_map: "{{ lookup('file', config_dir_path + '/installed_apps.yml') | from_yaml }}"
+    log03_w_reused_dependencies: []
+
+- name: Identificação de dependências em versões posteriores
+  ansible.builtin.set_fact:
+    log03_w_reused_dependencies: "{{ log03_w_reused_dependencies + item.value }}"
+  loop: "{{ (log03_w_apps_map.versioned | default({}, true)) | dict2items }}"
+  when:
+    - item.key is version(version_without_build, '>')
+    - item.value is iterable
