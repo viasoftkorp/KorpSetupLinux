@@ -1,0 +1,36 @@
+---
+- name: Definir prefixo do relatório do PR
+  ansible.builtin.set_fact:
+    qa_pr_minio_prefix: "prs/{{ qa_pr_link.repo }}/{{ qa_pr_link.pr }}/"
+
+- name: Listar relatórios do PR no MinIO
+  ansible.builtin.uri:
+    url: >-
+      {{ qa_pr_minio_api }}/{{ qa_pr_minio_bucket }}/?list-type=2&prefix={{ qa_pr_minio_prefix }}
+    method: GET
+    return_content: true
+    validate_certs: true
+  register: qa_pr_minio_listing
+
+- name: Interpretar listagem do MinIO
+  ansible.builtin.set_fact:
+    qa_pr_minio_keys: >-
+      {{
+        qa_pr_minio_listing.content
+        | qa_pr_parse_minio_listing(qa_pr_minio_prefix)
+      }}
+
+- name: Exigir ao menos um relatório JSON para o PR
+  ansible.builtin.assert:
+    that:
+      - qa_pr_minio_keys | length > 0
+    fail_msg: >-
+      Nenhum relatório JSON encontrado no MinIO para
+      {{ qa_pr_link.key }} em {{ qa_pr_minio_prefix }}.
+
+- name: Carregar objetos de relatório do PR
+  ansible.builtin.include_tasks: load_report.yml
+  loop: "{{ qa_pr_minio_keys }}"
+  loop_control:
+    loop_var: qa_pr_report_key
+    label: "{{ qa_pr_report_key }}"

@@ -4,6 +4,8 @@
 
 Setup destinado para a configuração e manutenção de servidores linux, feito utilizando a ferramenta [Ansible](https://docs.ansible.com/ansible/latest/index.html#).
 
+Para operar imagens de PRs no ambiente de qualidade, consulte o [guia de aplicação e reset](docs/ambiente-qualidade-prs.md).
+
 ---
 
 ## Adição de serviço

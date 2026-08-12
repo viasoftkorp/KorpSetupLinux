@@ -1,0 +1,64 @@
+---
+- name: Ler relatório do MinIO
+  ansible.builtin.uri:
+    url: >-
+      {{ qa_pr_minio_api }}/{{ qa_pr_minio_bucket }}/{{
+        qa_pr_report_key | urlencode
+      }}
+    method: GET
+    return_content: true
+    validate_certs: true
+  register: qa_pr_minio_report
+
+- name: Validar relatório
+  ansible.builtin.set_fact:
+    qa_pr_loaded_report: >-
+      {{
+        qa_pr_minio_report.content
+        | qa_pr_load_report(
+            qa_pr_link.repo,
+            qa_pr_link.pr,
+            qa_pr_report_key,
+            qa_pr_harbor_registry,
+            qa_pr_harbor_project
+          )
+      }}
+
+- name: Consultar imagem do relatório no Harbor
+  ansible.builtin.uri:
+    url: >-
+      {{ qa_pr_harbor_api }}/projects/{{
+        qa_pr_harbor_project | urlencode
+      }}/repositories/{{
+        qa_pr_loaded_report.servico | urlencode
+      }}/artifacts/{{
+        qa_pr_loaded_report.tag | urlencode
+      }}
+    method: GET
+    validate_certs: true
+    status_code:
+      - 200
+      - 404
+  register: qa_pr_harbor_artifact
+
+- name: Resolver origem e acumular relatório
+  ansible.builtin.set_fact:
+    qa_pr_reports: >-
+      {{
+        qa_pr_reports
+        + [
+            qa_pr_loaded_report
+            | qa_pr_resolve_registry_image(
+                qa_pr_harbor_artifact.status,
+                qa_pr_harbor_registry,
+                qa_pr_harbor_project
+              )
+          ]
+      }}
+
+- name: Informar origem da imagem do PR
+  ansible.builtin.debug:
+    msg: >-
+      {{ (qa_pr_reports | last).desired_image }}
+      selecionada via
+      {{ (qa_pr_reports | last).image_registry }}.

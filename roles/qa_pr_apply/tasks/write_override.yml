@@ -1,0 +1,16 @@
+---
+- name: Criar diretório pai do override
+  ansible.builtin.file:
+    path: "{{ qa_pr_override_write.path | dirname }}"
+    state: directory
+    mode: "0755"
+
+- name: Gravar override do plano
+  ansible.builtin.copy:
+    dest: "{{ qa_pr_override_write.path }}"
+    content: >-
+      {{
+        qa_pr_override_write.content
+        | to_nice_yaml(indent=2, sort_keys=false)
+      }}
+    mode: "0644"

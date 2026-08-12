@@ -1,0 +1,3 @@
+services:
+  korp-compras-core:
+    image: korp/korp.compras.core:2025.1.0.x
