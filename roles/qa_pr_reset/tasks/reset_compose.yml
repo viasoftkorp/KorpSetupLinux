@@ -1,0 +1,8 @@
+---
+- name: Reaplicar compose base sem overrides de PR
+  community.docker.docker_compose_v2:
+    project_src: "{{ qa_pr_reset_run.project_src }}/"
+    env_files:
+      - "{{ docker_env_file_path }}"
+    files:
+      - "{{ qa_pr_reset_run.compose_file }}"

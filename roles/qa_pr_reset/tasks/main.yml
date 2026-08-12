@@ -1,0 +1,101 @@
+---
+- name: Encontrar raízes de overrides de PR instaladas
+  ansible.builtin.find:
+    paths: "{{ compose_dir_path }}"
+    patterns:
+      - pr-overrides
+    file_type: directory
+    recurse: true
+  register: qa_pr_reset_found_override_roots
+
+- name: Inicializar reset dos overrides de PR
+  ansible.builtin.set_fact:
+    qa_pr_reset_runs: []
+    qa_pr_reset_override_files: []
+    qa_pr_reset_compose_roots: >-
+      {{
+        qa_pr_reset_found_override_roots.files
+        | map(attribute='path')
+        | map('regex_replace', '/pr-overrides/?$', '')
+        | unique
+        | list
+      }}
+    qa_pr_reset_override_roots: >-
+      {{
+        qa_pr_reset_found_override_roots.files
+        | map(attribute='path')
+        | map('regex_replace', '/+$', '')
+        | unique
+        | list
+      }}
+
+- name: Ler overrides de PR antes da remoção
+  ansible.builtin.include_tasks: read_override.yml
+  loop: "{{ qa_pr_reset_compose_roots }}"
+  loop_control:
+    loop_var: qa_pr_reset_project_src
+    label: "{{ qa_pr_reset_project_src }}"
+
+- name: Validar todos os overrides antes do reset
+  ansible.builtin.set_fact:
+    qa_pr_reset_active_owners: >-
+      {{ qa_pr_reset_override_files | qa_pr_index_active_overrides }}
+
+- name: Verificar composes base afetados
+  ansible.builtin.stat:
+    path: "{{ qa_pr_reset_run.project_src }}/{{ qa_pr_reset_run.compose_file }}"
+  loop: "{{ qa_pr_reset_runs }}"
+  loop_control:
+    loop_var: qa_pr_reset_run
+    label: >-
+      {{ qa_pr_reset_run.project_src }}/{{ qa_pr_reset_run.compose_file }}
+  register: qa_pr_reset_base_files
+
+- name: Impedir remoção sem compose base
+  ansible.builtin.assert:
+    that:
+      - qa_pr_reset_base_file.stat.exists | bool
+      - qa_pr_reset_base_file.stat.isreg | bool
+    fail_msg: >-
+      Compose base não encontrado para reset:
+      {{ qa_pr_reset_base_file.qa_pr_reset_run.project_src }}/{{
+        qa_pr_reset_base_file.qa_pr_reset_run.compose_file
+      }}
+  loop: "{{ qa_pr_reset_base_files.results }}"
+  loop_control:
+    loop_var: qa_pr_reset_base_file
+    label: >-
+      {{ qa_pr_reset_base_file.qa_pr_reset_run.project_src }}/{{
+        qa_pr_reset_base_file.qa_pr_reset_run.compose_file
+      }}
+
+- name: Validar composes base antes de remover overrides
+  community.docker.docker_compose_v2:
+    project_src: "{{ qa_pr_reset_run.project_src }}/"
+    env_files:
+      - "{{ docker_env_file_path }}"
+    files:
+      - "{{ qa_pr_reset_run.compose_file }}"
+  check_mode: true
+  loop: "{{ qa_pr_reset_runs }}"
+  loop_control:
+    loop_var: qa_pr_reset_run
+    label: >-
+      {{ qa_pr_reset_run.project_src }}/{{ qa_pr_reset_run.compose_file }}
+
+- name: Remover somente as raízes de overrides de PR
+  ansible.builtin.file:
+    path: "{{ qa_pr_reset_override_root }}"
+    state: absent
+  loop: "{{ qa_pr_reset_override_roots }}"
+  loop_control:
+    loop_var: qa_pr_reset_override_root
+    label: "{{ qa_pr_reset_override_root }}"
+
+- name: Reaplicar composes base afetados
+  ansible.builtin.include_tasks: reset_compose.yml
+  loop: "{{ qa_pr_reset_runs }}"
+  loop_control:
+    loop_var: qa_pr_reset_run
+    label: >-
+      {{ qa_pr_reset_run.project_src }}/{{ qa_pr_reset_run.compose_file }}

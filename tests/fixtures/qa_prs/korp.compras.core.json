@@ -1,0 +1,12 @@
+{
+  "kind": "container",
+  "pr": 123,
+  "repositorio": "compras",
+  "branch": "DEVO-6789-ajuste",
+  "servico": "korp.compras.core",
+  "imagem": "korp/korp.compras.core",
+  "tag": "2025.1.0.42-pr123",
+  "versao": "2025.1.0",
+  "commit": "abc1234",
+  "build": 42
+}

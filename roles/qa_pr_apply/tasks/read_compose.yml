@@ -1,0 +1,39 @@
+---
+- name: Encontrar composes base no diretório
+  ansible.builtin.find:
+    paths: "{{ qa_pr_compose_root }}"
+    patterns:
+      - "*-compose.yml"
+    recurse: false
+    file_type: file
+  register: qa_pr_found_composes
+
+- name: Ler composes base encontrados
+  ansible.builtin.slurp:
+    src: "{{ qa_pr_compose_file.path }}"
+  loop: "{{ qa_pr_found_composes.files }}"
+  loop_control:
+    loop_var: qa_pr_compose_file
+    label: "{{ qa_pr_compose_file.path }}"
+  register: qa_pr_slurped_composes
+
+- name: Acumular composes base
+  ansible.builtin.set_fact:
+    qa_pr_compose_files: >-
+      {{
+        qa_pr_compose_files
+        + [
+            {
+              "path": qa_pr_slurped_compose.qa_pr_compose_file.path,
+              "content": (
+                qa_pr_slurped_compose.content
+                | b64decode
+                | from_yaml
+              )
+            }
+          ]
+      }}
+  loop: "{{ qa_pr_slurped_composes.results }}"
+  loop_control:
+    loop_var: qa_pr_slurped_compose
+    label: "{{ qa_pr_slurped_compose.qa_pr_compose_file.path }}"

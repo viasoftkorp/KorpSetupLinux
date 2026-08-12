@@ -4,3 +4,11 @@ warn_list:  # or 'skip_list' to silence them completely
   - ignore-errors
   - meta-no-info
   - role-name
+
+skip_list:
+  # As roles qa_pr_apply/qa_pr_reset compartilham a interface qa_pr_*.
+  - var-naming[no-role-prefix]
+
+extra_vars:
+  compose_dir_path: /tmp/qa-pr-composes
+  versioned_compose_dir_path: /tmp/qa-pr-versioned-composes

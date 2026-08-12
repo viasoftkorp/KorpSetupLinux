@@ -1,0 +1,152 @@
+---
+- name: Normalizar links de PRs
+  ansible.builtin.set_fact:
+    qa_pr_links: >-
+      {{
+        prs
+        | qa_pr_normalize_links(qa_pr_github_organization)
+      }}
+
+- name: Validar política de conflitos
+  ansible.builtin.assert:
+    that:
+      - pr_conflict_policy in ["ask", "replace", "keep", "fail"]
+    fail_msg: >-
+      Política de conflito inválida: {{ pr_conflict_policy }}.
+      Use ask, replace, keep ou fail.
+
+- name: Inicializar preflight de aplicação de PRs
+  ansible.builtin.set_fact:
+    qa_pr_reports: []
+    qa_pr_compose_files: []
+    qa_pr_override_files: []
+    qa_pr_conflict_decisions: {}
+
+- name: Carregar relatórios dos PRs
+  ansible.builtin.include_tasks: load_pr.yml
+  loop: "{{ qa_pr_links }}"
+  loop_control:
+    loop_var: qa_pr_link
+    label: "{{ qa_pr_link.key }}"
+
+- name: Selecionar versão informada pelos relatórios
+  ansible.builtin.set_fact:
+    qa_pr_selected_version: >-
+      {{
+        qa_pr_reports
+        | qa_pr_select_report_version
+      }}
+
+- name: Definir diretórios de compose da versão selecionada
+  ansible.builtin.set_fact:
+    qa_pr_versioned_compose_dir: >-
+      {{
+        compose_dir_path
+        | regex_replace('/+$', '')
+      }}/{{ qa_pr_selected_version }}
+    qa_pr_compose_roots: >-
+      {{
+        [
+          compose_dir_path,
+          (
+            (compose_dir_path | regex_replace('/+$', ''))
+            ~ '/'
+            ~ qa_pr_selected_version
+          )
+        ]
+        | map('regex_replace', '/+$', '')
+        | unique
+        | list
+      }}
+
+- name: Verificar instalação da versão selecionada
+  ansible.builtin.stat:
+    path: "{{ qa_pr_versioned_compose_dir }}"
+  register: qa_pr_versioned_compose_dir_stat
+
+- name: Exigir instalação da versão selecionada
+  ansible.builtin.assert:
+    that:
+      - qa_pr_versioned_compose_dir_stat.stat.exists
+      - qa_pr_versioned_compose_dir_stat.stat.isdir
+    fail_msg: >-
+      A versão {{ qa_pr_selected_version }} informada pelos relatórios
+      não está instalada em {{ qa_pr_versioned_compose_dir }}.
+
+- name: Ler composes base
+  ansible.builtin.include_tasks: read_compose.yml
+  loop: "{{ qa_pr_compose_roots }}"
+  loop_control:
+    loop_var: qa_pr_compose_root
+    label: "{{ qa_pr_compose_root }}"
+
+- name: Ler overrides existentes separadamente
+  ansible.builtin.include_tasks: read_override.yml
+  loop: "{{ qa_pr_compose_roots }}"
+  loop_control:
+    loop_var: qa_pr_project_src
+    label: "{{ qa_pr_project_src }}"
+
+- name: Construir alvos e proprietários ativos
+  ansible.builtin.set_fact:
+    qa_pr_targets: >-
+      {{
+        qa_pr_reports
+        | qa_pr_build_targets(qa_pr_compose_files)
+      }}
+    qa_pr_active_owners: >-
+      {{
+        qa_pr_override_files
+        | qa_pr_index_active_overrides
+      }}
+
+- name: Resolver conflitos interativos em ordem
+  ansible.builtin.include_tasks: prompt_conflict.yml
+  loop: "{{ qa_pr_targets }}"
+  loop_control:
+    loop_var: qa_pr_prompt_target
+    label: "{{ qa_pr_prompt_target.target_id }}"
+  when: pr_conflict_policy == "ask"
+
+- name: Construir plano final de execução
+  ansible.builtin.set_fact:
+    qa_pr_execution_plan: >-
+      {{
+        qa_pr_targets
+        | qa_pr_resolve_application(
+            qa_pr_active_owners,
+            pr_conflict_policy,
+            qa_pr_conflict_decisions
+          )
+      }}
+
+- name: Impedir mutações quando o preflight não autorizar
+  ansible.builtin.assert:
+    that:
+      - qa_pr_execution_plan.may_mutate | bool
+    fail_msg: >-
+      Aplicação de PRs abortada por conflitos:
+      {{ qa_pr_execution_plan.conflicts | to_nice_json }}
+
+- name: Excluir overrides esvaziados pelo plano
+  ansible.builtin.file:
+    path: "{{ qa_pr_override_delete }}"
+    state: absent
+  loop: "{{ qa_pr_execution_plan.deletes }}"
+  loop_control:
+    loop_var: qa_pr_override_delete
+    label: "{{ qa_pr_override_delete }}"
+
+- name: Gravar overrides definidos pelo plano
+  ansible.builtin.include_tasks: write_override.yml
+  loop: "{{ qa_pr_execution_plan.writes }}"
+  loop_control:
+    loop_var: qa_pr_override_write
+    label: "{{ qa_pr_override_write.path }}"
+
+- name: Aplicar serviços definidos pelo plano
+  ansible.builtin.include_tasks: apply_compose.yml
+  loop: "{{ qa_pr_execution_plan.compose_runs }}"
+  loop_control:
+    loop_var: qa_pr_compose_run
+    label: "{{ qa_pr_compose_run.project_src }}"
