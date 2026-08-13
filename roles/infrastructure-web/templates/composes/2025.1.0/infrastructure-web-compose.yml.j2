@@ -55,8 +55,6 @@ services:
     container_name: "portal-2025.1.0"
     restart: unless-stopped
     extra_hosts: *default-extra_hosts
-    depends_on:
-      - viasoft-portal
     environment:
       - ON_PREMISE_MODE=true
       - USE_SERVERGC=$USE_SERVERGC
