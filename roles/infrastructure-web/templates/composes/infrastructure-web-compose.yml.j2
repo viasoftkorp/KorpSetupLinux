@@ -308,3 +308,48 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+
+  # login e portal carregam antes da autenticação, quando ainda não há tenant e portanto não há
+  # versão de ambiente para escolher. Por isso são exclusivos: uma única versão por instalação.
+  # O nome do serviço é fixo para que o compose substitua o container no upgrade, em vez de
+  # acumular um container por versão.
+  login:
+    image: "{{ docker_account }}/viasoft.authentication-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "login-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      servicos:
+        # o Korp.Legacy.Frontend-router resolve o container como <identificador>-<major com hifens>
+        aliases:
+          - "login-{{ version_without_build | replace('.', '-') }}"
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  portal-frontend:
+    image: "{{ docker_account }}/viasoft.portal-frontend:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "portal-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    depends_on:
+      - viasoft-portal
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
+      - CDN_URL={{ frontend.endpoints.cdn_url }}
+      - FRONTEND_URL={{ frontend.endpoints.frontend_url }}
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      servicos:
+        aliases:
+          - "portal-{{ version_without_build | replace('.', '-') }}"
