@@ -32,6 +32,12 @@ config_dir_path: "{{ korp_dir_path }}/configs"
 versioned_compose_dir_path: "{{ compose_dir_path }}/{{ version_without_build }}"
 docker_env_file_path: "{{ compose_dir_path }}/.env"
 
+# Reconcilia containers criados por formatos antigos de compose antes do up.
+# Pode ser desabilitado apenas como contorno operacional durante diagnóstico.
+compose_migration_enabled: true
+compose_migration_validation_retries: 10
+compose_migration_validation_delay: 3
+
 certs_directory: "{{ korp_dir_path }}/certs"
 cert_privatekey_path: "{{ certs_directory }}/cert.key" 
 cert_crt_path: "{{ certs_directory }}/cert.crt"
