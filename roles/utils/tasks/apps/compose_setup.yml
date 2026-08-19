@@ -25,7 +25,7 @@
   when: has_unversioned_services or has_exclusive_services
 
 - name: "Criação e inicialização de {{ id }}-compose - versionado"
-  ansible.builtin.include_tasks: reconciled_compose_up.yml
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconciled_compose_up.yml"
   vars:
     compose_reconcile_project_src: "{{ versioned_compose_dir_path }}"
     compose_reconcile_project_name: "{{ version_without_build | replace('.', '') }}"
@@ -36,7 +36,7 @@
   when: has_versioned_services
 
 - name: Criação e inicialização de {{ id }}-compose - não versionado"
-  ansible.builtin.include_tasks: reconciled_compose_up.yml
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconciled_compose_up.yml"
   vars:
     compose_reconcile_project_src: "{{ compose_dir_path }}"
     compose_reconcile_project_name: composes
