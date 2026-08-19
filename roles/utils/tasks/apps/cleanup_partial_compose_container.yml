@@ -1,0 +1,44 @@
+- name: Inspeção da recriação parcial {{ compose_cleanup_partial_name }}
+  community.docker.docker_container_info:
+    name: "{{ compose_cleanup_partial_name }}"
+  register: compose_cleanup_partial
+
+- name: Validação da recriação parcial {{ compose_cleanup_partial_name }}
+  ansible.builtin.assert:
+    that:
+      - compose_cleanup_target.exists | default(false)
+      - compose_cleanup_target.container.State.Running | default(false)
+      - >-
+        ((compose_cleanup_target.container.State.Health | default({})).Status
+        | default('healthy')) == 'healthy'
+      - >-
+        ((compose_cleanup_target.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+      - >-
+        ((compose_cleanup_target.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+      - compose_cleanup_partial.exists | default(false)
+      - not (compose_cleanup_partial.container.State.Running | default(false))
+      - >-
+        (compose_cleanup_partial.container.Config.Image | default('')
+        | docker_image_repository) == compose_cleanup_target_image_base
+      - >-
+        ((compose_cleanup_partial.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) | length > 0
+      - >-
+        ((compose_cleanup_partial.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) | length > 0
+      - >-
+        not (compose_cleanup_partial.container.Mounts | default([])
+        | has_anonymous_volume)
+    fail_msg: >-
+      O container temporário {{ compose_cleanup_partial_name }} não pôde ser associado com
+      segurança a {{ compose_cleanup_target_name }}. Nenhuma remoção foi realizada.
+
+- name: Remoção da recriação parcial validada {{ compose_cleanup_partial_name }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - rm
+      - -f
+      - "{{ compose_cleanup_partial_name }}"

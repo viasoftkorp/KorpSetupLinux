@@ -11,6 +11,7 @@
     test_project_src: "{{ playbook_dir }}"
     test_container_name: devo7182-compose-migration-test
     test_backup_name: devo7182-compose-migration-test-legacy-compose-migration
+    test_partial_name: 0123456789ab_devo7182-compose-migration-test
     cleanup_legacy_name: devo7182-cleanup-test
     cleanup_target_name: devo7182-cleanup-test-2025.1.0
     unsafe_container_name: devo7182-unsafe-test
@@ -79,6 +80,36 @@
           ansible.builtin.assert:
             that:
               - not residual_backup.exists
+
+        - name: Simulação de recriação parcial deixada pelo Compose
+          community.docker.docker_container:
+            name: "{{ test_partial_name }}"
+            image: nginx:alpine
+            state: stopped
+            labels:
+              com.docker.compose.project: devo7182-old
+              com.docker.compose.service: service.with.dots
+
+        - name: Reconciliação do estado parcial
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/reconciled_compose_up
+          vars:
+            compose_reconcile_project_src: "{{ test_project_src }}"
+            compose_reconcile_project_name: devo7182-new
+            compose_reconcile_env_files: []
+            compose_reconcile_files:
+              - new-compose.yml
+
+        - name: Inspeção da recriação parcial
+          community.docker.docker_container_info:
+            name: "{{ test_partial_name }}"
+          register: removed_partial_container
+
+        - name: Validação da limpeza da recriação parcial
+          ansible.builtin.assert:
+            that:
+              - not removed_partial_container.exists
 
         - name: Criação do par legado com nome não versionado
           community.docker.docker_compose_v2:
@@ -215,6 +246,7 @@
           loop:
             - "{{ test_container_name }}"
             - "{{ test_backup_name }}"
+            - "{{ test_partial_name }}"
             - "{{ cleanup_legacy_name }}"
             - "{{ cleanup_target_name }}"
             - "{{ unsafe_container_name }}"
