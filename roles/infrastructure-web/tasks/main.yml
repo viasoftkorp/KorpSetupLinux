@@ -76,18 +76,31 @@
     mode: '0644'
   when: versioned_frontend_compose_exists
 
-- name: Criação e inicialização de compose de infraestrutura WEB
-  community.docker.docker_compose_v2:
-    project_src: "{{ korp_dir_path }}/composes/"
-    env_files: ["{{ docker_env_file_path }}"]
-    files: "{{ infrastructure_web_compose_files }}"
+- name: Criação e inicialização do compose principal de infrastructure-web
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: apps/reconciled_compose_up
   vars:
-    infrastructure_web_compose_files: >-
-      {{
-        ['infrastructure-web-compose.yml', version_without_build ~ '/infrastructure-web-compose.yml']
-        if versioned_frontend_compose_exists
-        else ['infrastructure-web-compose.yml']
-      }}
+    compose_reconcile_project_src: "{{ compose_dir_path }}"
+    compose_reconcile_project_name: korp-infrastructure-web
+    compose_reconcile_env_files:
+      - "{{ docker_env_file_path }}"
+    compose_reconcile_files:
+      - infrastructure-web-compose.yml
+
+- name: Criação e inicialização do compose versionado de infrastructure-web
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: apps/reconciled_compose_up
+  vars:
+    compose_reconcile_project_src: "{{ versioned_compose_dir_path }}"
+    compose_reconcile_project_name: >-
+      korp-infrastructure-web-{{ version_without_build | replace('.', '-') }}
+    compose_reconcile_env_files:
+      - "{{ docker_env_file_path }}"
+    compose_reconcile_files:
+      - infrastructure-web-compose.yml
+  when: versioned_frontend_compose_exists
 
 - name: Remoção HybridProxy caso exista
   community.docker.docker_container:
