@@ -106,7 +106,7 @@
   when: compose_cleanup_target_name | length > 0
 
 - name: Remoção segura das recriações parciais de {{ compose_reconcile_service.key }}
-  ansible.builtin.include_tasks: cleanup_partial_compose_container.yml
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/cleanup_partial_compose_container.yml"
   loop: "{{ compose_cleanup_partial_names | default([]) }}"
   loop_control:
     loop_var: compose_cleanup_partial_name
