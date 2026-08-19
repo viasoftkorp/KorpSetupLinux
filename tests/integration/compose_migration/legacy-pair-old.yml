@@ -1,0 +1,4 @@
+services:
+  cleanup-service:
+    image: nginx:latest
+    container_name: devo7182-cleanup-test
