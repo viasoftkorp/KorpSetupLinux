@@ -1,0 +1,4 @@
+services:
+  unsafe-new:
+    image: hashicorp/terraform:1.15.8
+    container_name: devo7182-unsafe-test

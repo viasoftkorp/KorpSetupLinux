@@ -25,17 +25,23 @@
   when: has_unversioned_services or has_exclusive_services
 
 - name: "Criação e inicialização de {{ id }}-compose - versionado"
-  community.docker.docker_compose_v2:
-    project_src: "{{ versioned_compose_dir_path }}/"
-    env_files: ["{{ docker_env_file_path }}"]
-    files:
+  ansible.builtin.include_tasks: reconciled_compose_up.yml
+  vars:
+    compose_reconcile_project_src: "{{ versioned_compose_dir_path }}"
+    compose_reconcile_project_name: "{{ version_without_build | replace('.', '') }}"
+    compose_reconcile_env_files:
+      - "{{ docker_env_file_path }}"
+    compose_reconcile_files:
       - "{{ id }}-compose.yml"
   when: has_versioned_services
 
 - name: Criação e inicialização de {{ id }}-compose - não versionado"
-  community.docker.docker_compose_v2:
-    project_src: "{{ compose_dir_path }}/"
-    env_files: ["{{ docker_env_file_path }}"]
-    files:
+  ansible.builtin.include_tasks: reconciled_compose_up.yml
+  vars:
+    compose_reconcile_project_src: "{{ compose_dir_path }}"
+    compose_reconcile_project_name: composes
+    compose_reconcile_env_files:
+      - "{{ docker_env_file_path }}"
+    compose_reconcile_files:
       - "{{ id }}-compose.yml"
   when: has_unversioned_services or has_exclusive_services

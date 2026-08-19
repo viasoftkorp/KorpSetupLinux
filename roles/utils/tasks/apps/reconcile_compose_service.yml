@@ -1,0 +1,246 @@
+- name: Definição da identidade esperada de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_target_name: >-
+      {{ compose_reconcile_service.value.container_name | default('') }}
+    compose_target_image: "{{ compose_reconcile_service.value.image | default('') }}"
+    compose_target_backup_name: >-
+      {{ (compose_reconcile_service.value.container_name | default('')) ~ '-legacy-compose-migration' }}
+    compose_target_expected_image_base: >-
+      {{ compose_reconcile_service.value.image | default('') | docker_image_repository }}
+  no_log: true
+
+- name: Inspeção do container esperado de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_target_name }}"
+  register: compose_target_before
+  when: compose_target_name | length > 0
+
+- name: Inspeção do backup de migração de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_target_backup_name }}"
+  register: compose_backup_before
+  when: compose_target_name | length > 0
+
+- name: Validação da segurança do backup de {{ compose_reconcile_service.key }}
+  ansible.builtin.assert:
+    that:
+      - >-
+        (compose_backup_before.container.Config.Image | default('')
+        | docker_image_repository)
+        == compose_target_expected_image_base
+      - >-
+        ((compose_backup_before.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) | length > 0
+      - >-
+        ((compose_backup_before.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) | length > 0
+      - >-
+        not (compose_backup_before.container.Mounts | default([])
+        | has_anonymous_volume)
+      - >-
+        not compose_target_before.exists or
+        (
+          ((compose_target_before.container.Config.Labels | default({}))
+          ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+          and
+          ((compose_target_before.container.Config.Labels | default({}))
+          ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+          and
+          (compose_target_before.container.Config.Image | default('')
+          | docker_image_repository) == compose_target_expected_image_base
+          and
+          (compose_target_before.container.State.Running | default(false))
+          and
+          (((compose_target_before.container.State.Health | default({})).Status
+          | default('healthy')) == 'healthy')
+        )
+    fail_msg: >-
+      Migração interrompida de {{ compose_target_name }} deixou identidades ambíguas.
+      Nenhum container foi removido; inspecione o nome original e o backup antes de continuar.
+  when:
+    - compose_target_name | length > 0
+    - compose_backup_before.exists | default(false)
+
+- name: Restauração de backup interrompido de {{ compose_reconcile_service.key }}
+  block:
+    - name: Restauração do nome original de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - rename
+          - "{{ compose_target_backup_name }}"
+          - "{{ compose_target_name }}"
+
+    - name: Reinício do container restaurado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - start
+          - "{{ compose_target_name }}"
+
+    - name: Nova inspeção do container restaurado de {{ compose_reconcile_service.key }}
+      community.docker.docker_container_info:
+        name: "{{ compose_target_name }}"
+      register: compose_target_restored
+  when:
+    - compose_target_name | length > 0
+    - compose_backup_before.exists | default(false)
+    - not compose_target_before.exists | default(false)
+
+- name: Atualização da inspeção após restauração de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_target_before: "{{ compose_target_restored }}"
+  when:
+    - compose_target_restored is defined
+    - compose_target_restored.exists | default(false)
+
+- name: Remoção de backup de migração já concluída de {{ compose_reconcile_service.key }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - rm
+      - -f
+      - "{{ compose_target_backup_name }}"
+  when:
+    - compose_target_name | length > 0
+    - compose_backup_before.exists | default(false)
+    - compose_target_before.exists | default(false)
+    - >-
+      ((compose_target_before.container.Config.Labels | default({}))
+      ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+    - >-
+      ((compose_target_before.container.Config.Labels | default({}))
+      ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+
+- name: Definição do estado de reconciliação de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_target_is_canonical: >-
+      {{
+        compose_target_before.exists | default(false)
+        and
+        ((compose_target_before.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+        and
+        ((compose_target_before.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+      }}
+    compose_target_current_image_base: >-
+      {{ compose_target_before.container.Config.Image | default('') | docker_image_repository }}
+    compose_target_has_anonymous_volume: >-
+      {{ compose_target_before.container.Mounts | default([]) | has_anonymous_volume }}
+  when:
+    - compose_target_name | length > 0
+    - compose_target_before.exists | default(false)
+  no_log: true
+
+- name: Validação do container conflitante de {{ compose_reconcile_service.key }}
+  ansible.builtin.assert:
+    that:
+      - >-
+        ((compose_target_before.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) | length > 0
+      - >-
+        ((compose_target_before.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) | length > 0
+      - compose_target_current_image_base == compose_target_expected_image_base
+      - not compose_target_has_anonymous_volume | bool
+    fail_msg: >-
+      O container {{ compose_target_name }} conflita com a identidade desejada, mas não foi
+      reconhecido com segurança como antecessor. Nenhuma alteração foi aplicada a ele.
+  when:
+    - compose_target_name | length > 0
+    - compose_target_before.exists | default(false)
+    - not (compose_target_is_canonical | default(false) | bool)
+
+- name: Migração transacional de {{ compose_reconcile_service.key }}
+  block:
+    - name: Parada do container legado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - stop
+          - "{{ compose_target_name }}"
+
+    - name: Renomeação temporária do container legado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - rename
+          - "{{ compose_target_name }}"
+          - "{{ compose_target_backup_name }}"
+      register: compose_legacy_rename_result
+
+    - name: Inicialização isolada do serviço canônico {{ compose_reconcile_service.key }}
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_reconcile_project_src }}"
+        project_name: "{{ compose_reconcile_project_name }}"
+        env_files: "{{ compose_reconcile_env_files }}"
+        files: "{{ compose_reconcile_files }}"
+        services:
+          - "{{ compose_reconcile_service.key }}"
+        dependencies: false
+
+    - name: Validação do novo container de {{ compose_reconcile_service.key }}
+      community.docker.docker_container_info:
+        name: "{{ compose_target_name }}"
+      register: compose_target_after
+      retries: "{{ compose_migration_validation_retries | default(10) }}"
+      delay: "{{ compose_migration_validation_delay | default(3) }}"
+      until:
+        - compose_target_after.exists | default(false)
+        - compose_target_after.container.State.Running | default(false)
+        - >-
+          ((compose_target_after.container.State.Health | default({})).Status
+          | default('healthy')) == 'healthy'
+
+    - name: Remoção do backup validado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - rm
+          - -f
+          - "{{ compose_target_backup_name }}"
+
+  rescue:
+    - name: Remoção do container novo incompleto de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - rm
+          - -f
+          - "{{ compose_target_name }}"
+      failed_when: false
+      when:
+        - compose_legacy_rename_result is defined
+        - compose_legacy_rename_result.rc | default(1) == 0
+
+    - name: Restauração do nome legado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - rename
+          - "{{ compose_target_backup_name }}"
+          - "{{ compose_target_name }}"
+      failed_when: false
+      when:
+        - compose_legacy_rename_result is defined
+        - compose_legacy_rename_result.rc | default(1) == 0
+
+    - name: Reinício do container legado de {{ compose_reconcile_service.key }}
+      ansible.builtin.command:
+        argv:
+          - docker
+          - start
+          - "{{ compose_target_name }}"
+      failed_when: false
+
+    - name: Falha controlada da migração de {{ compose_reconcile_service.key }}
+      ansible.builtin.fail:
+        msg: >-
+          Não foi possível validar o novo container {{ compose_target_name }}.
+          O container anterior foi restaurado sem remoção de volumes.
+
+  when:
+    - compose_target_name | length > 0
+    - compose_target_before.exists | default(false)
+    - not (compose_target_is_canonical | default(false) | bool)
