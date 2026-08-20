@@ -82,7 +82,7 @@
     tasks_from: apps/reconciled_compose_up
   vars:
     compose_reconcile_project_src: "{{ compose_dir_path }}"
-    compose_reconcile_project_name: korp-infrastructure-web
+    compose_reconcile_project_name: composes
     compose_reconcile_env_files:
       - "{{ docker_env_file_path }}"
     compose_reconcile_files:
@@ -94,8 +94,7 @@
     tasks_from: apps/reconciled_compose_up
   vars:
     compose_reconcile_project_src: "{{ versioned_compose_dir_path }}"
-    compose_reconcile_project_name: >-
-      korp-infrastructure-web-{{ version_without_build | replace('.', '-') }}
+    compose_reconcile_project_name: "{{ version_without_build | replace('.', '') }}"
     compose_reconcile_env_files:
       - "{{ docker_env_file_path }}"
     compose_reconcile_files:
