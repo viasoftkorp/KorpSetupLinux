@@ -1,4 +1,0 @@
-services:
-  service-with-hyphens:
-    image: nginx:latest
-    container_name: devo7182-compose-migration-test

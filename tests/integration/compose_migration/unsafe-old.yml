@@ -1,4 +1,0 @@
-services:
-  unsafe-old:
-    image: nginx:latest
-    container_name: devo7182-unsafe-test
