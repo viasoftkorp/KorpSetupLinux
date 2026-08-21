@@ -131,6 +131,10 @@ class QaPrRoleYamlTests(unittest.TestCase):
             "harbor.korp.com.br",
         )
         self.assertEqual(defaults["qa_pr_harbor_project"], "qa-prs")
+        self.assertEqual(
+            defaults["qa_pr_unversioned_services"],
+            ["korp.atualizacaosistema"],
+        )
         self.assertEqual(defaults["pr_conflict_policy"], "ask")
         self.assertEqual(defaults["qa_pr_reports"], [])
         self.assertEqual(defaults["qa_pr_compose_files"], [])

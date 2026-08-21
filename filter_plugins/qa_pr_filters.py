@@ -4,10 +4,15 @@ import re
 from pathlib import PurePosixPath
 from xml.etree import ElementTree
 
-_PR_LINK = re.compile(
+_GITHUB_PR_LINK = re.compile(
     r"^https://github[.]com/(?P<org>[A-Za-z0-9_.-]+)/"
     r"(?P<repo>[A-Za-z0-9_.-]+)/pull/(?P<pr>[1-9][0-9]*)/?$"
 )
+_BITBUCKET_ATUALIZACAO_SISTEMA_PR_LINK = re.compile(
+    r"^https://bitbucket[.]org/viasoftkorp/"
+    r"korp[.]atualizacaosistema/pull-requests/(?P<pr>[1-9][0-9]*)/?$"
+)
+_ATUALIZACAO_SISTEMA_REPOSITORY = "korp.atualizacaosistema"
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+$")
 _VERSION = re.compile(r"^[0-9]+[.][0-9]+[.][0-9]+$")
 _OVERRIDE_PATH = re.compile(
@@ -25,11 +30,16 @@ def normalize_pr_links(value, organization="viasoftkorp"):
     result = []
     for raw in items:
         url = str(raw).strip()
-        match = _PR_LINK.fullmatch(url)
-        if not match or match.group("org") != organization:
+        match = _GITHUB_PR_LINK.fullmatch(url)
+        bitbucket_match = _BITBUCKET_ATUALIZACAO_SISTEMA_PR_LINK.fullmatch(url)
+        if match and match.group("org") == organization:
+            repo = match.group("repo")
+            pr = int(match.group("pr"))
+        elif bitbucket_match:
+            repo = _ATUALIZACAO_SISTEMA_REPOSITORY
+            pr = int(bitbucket_match.group("pr"))
+        else:
             raise ValueError(f"Link de PR inválido: {url!r}")
-        repo = match.group("repo")
-        pr = int(match.group("pr"))
         result.append({"url": url, "repo": repo, "pr": pr, "key": f"{repo}#{pr}"})
     if not result:
         raise ValueError("Informe ao menos um link de PR em prs")
@@ -118,11 +128,22 @@ def resolve_registry_image(
     return resolved
 
 
-def select_report_version(reports):
+def select_report_version(reports, unversioned_services=None):
     if not reports:
         raise ValueError("Nenhum relatório disponível para selecionar a versão")
+    unversioned_services = {
+        str(service).strip()
+        for service in (unversioned_services or [])
+    }
+    versioned_reports = [
+        report
+        for report in reports
+        if report.get("servico") not in unversioned_services
+    ]
+    if not versioned_reports:
+        return None
     versions = set()
-    for report in reports:
+    for report in versioned_reports:
         version = str(report.get("versao", "")).strip()
         if not _VERSION.fullmatch(version):
             raise ValueError(f"Versão inválida no relatório: {version!r}")

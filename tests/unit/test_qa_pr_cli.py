@@ -79,6 +79,17 @@ class QaPrCliTests(unittest.TestCase):
         self.assertIn("prs=https://github.com/viasoftkorp/sdk/pull/330", call)
         self.assertIn("pr_conflict_policy=replace", call)
 
+    def test_apply_accepts_atualizacao_sistema_bitbucket_pull_request(self):
+        url = (
+            "https://bitbucket.org/viasoftkorp/korp.atualizacaosistema/"
+            "pull-requests/1163"
+        )
+
+        result = self._run("apply", url, "--fail")
+
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertIn(f"prs={url}", self.calls.read_text())
+
     def test_apply_rejects_non_korp_pull_request(self):
         result = self._run(
             "apply",

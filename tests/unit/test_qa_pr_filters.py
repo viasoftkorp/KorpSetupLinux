@@ -102,9 +102,29 @@ class NormalizePrLinksTests(unittest.TestCase):
         )
 
     def test_rejects_unqualified_or_foreign_links(self):
-        for value in ("123", "https://github.com/outra/compras/pull/123"):
+        for value in (
+            "123",
+            "https://github.com/outra/compras/pull/123",
+            "https://bitbucket.org/viasoftkorp/outro/pull-requests/123",
+        ):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 filters.normalize_pr_links(value)
+
+    def test_accepts_only_the_atualizacao_sistema_bitbucket_link(self):
+        value = (
+            "https://bitbucket.org/viasoftkorp/korp.atualizacaosistema/"
+            "pull-requests/1163"
+        )
+
+        self.assertEqual(
+            filters.normalize_pr_links(value),
+            [{
+                "url": value,
+                "repo": "korp.atualizacaosistema",
+                "pr": 1163,
+                "key": "korp.atualizacaosistema#1163",
+            }],
+        )
 
     def test_rejects_empty_input(self):
         with self.assertRaises(ValueError):
@@ -193,6 +213,42 @@ class ReportParsingTests(unittest.TestCase):
                 123,
                 "prs/compras/123/KorpCadastrosService.json",
             )
+
+    def test_loads_atualizacao_sistema_manifest_from_its_canonical_prefix(self):
+        raw = json.dumps({
+            "kind": "container",
+            "pr": 1163,
+            "repositorio": "korp.atualizacaosistema",
+            "branch": "bugfix/SD-40163-m",
+            "servico": "korp.atualizacaosistema",
+            "imagem": (
+                "harbor.korp.com.br/qa-prs/korp.atualizacaosistema"
+            ),
+            "tag": "1.0.3-pr1163",
+            "versao": "1.0",
+            "commit": "1b9044ca180c57fd643a15e65dc7e48a7dea829a",
+            "build": 3,
+        })
+
+        report = filters.load_report(
+            raw,
+            "korp.atualizacaosistema",
+            1163,
+            (
+                "prs/korp.atualizacaosistema/1163/"
+                "korp.atualizacaosistema.json"
+            ),
+        )
+
+        self.assertEqual(
+            "korp/korp.atualizacaosistema",
+            report["compose_image"],
+        )
+        self.assertEqual(
+            "harbor.korp.com.br/qa-prs/korp.atualizacaosistema:"
+            "1.0.3-pr1163",
+            report["desired_image"],
+        )
 
 
 class RegistryResolutionTests(unittest.TestCase):
@@ -283,6 +339,39 @@ class ReportVersionTests(unittest.TestCase):
             with self.subTest(reports=reports):
                 with self.assertRaises(ValueError):
                     filters.select_report_version(reports)
+
+    def test_ignores_unversioned_atualizacao_sistema(self):
+        reports = [
+            {
+                "servico": "korp.atualizacaosistema",
+                "versao": "1.0",
+            },
+            {
+                "servico": "korp.compras.core",
+                "versao": "2025.1.0",
+            },
+        ]
+
+        self.assertEqual(
+            "2025.1.0",
+            filters.select_report_version(
+                reports,
+                ["korp.atualizacaosistema"],
+            ),
+        )
+
+    def test_uses_only_generic_compose_when_all_services_are_unversioned(self):
+        reports = [{
+            "servico": "korp.atualizacaosistema",
+            "versao": "1.0",
+        }]
+
+        self.assertIsNone(
+            filters.select_report_version(
+                reports,
+                ["korp.atualizacaosistema"],
+            )
+        )
 
 
 class BuildTargetsTests(unittest.TestCase):
