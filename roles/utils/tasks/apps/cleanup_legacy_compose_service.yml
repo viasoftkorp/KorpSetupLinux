@@ -1,0 +1,113 @@
+- name: Definição do possível nome legado de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_cleanup_target_name: >-
+      {{ compose_reconcile_service.value.container_name | default('') }}
+    compose_cleanup_target_image: "{{ compose_reconcile_service.value.image | default('') }}"
+    compose_cleanup_target_image_base: >-
+      {{ compose_reconcile_service.value.image | default('') | docker_image_repository }}
+    compose_cleanup_legacy_name: >-
+      {{ compose_reconcile_service.value.container_name | default('') | legacy_container_name(version_without_build) }}
+  no_log: true
+
+- name: Inspeção do substituto de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_cleanup_target_name }}"
+  register: compose_cleanup_target
+  when: compose_cleanup_target_name | length > 0
+
+- name: Inspeção do container legado de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_cleanup_legacy_name }}"
+  register: compose_cleanup_legacy
+  when:
+    - compose_cleanup_target_name | length > 0
+    - compose_cleanup_legacy_name != compose_cleanup_target_name
+
+- name: Definição da segurança de remoção do legado de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_cleanup_legacy_image_base: >-
+      {{ compose_cleanup_legacy.container.Config.Image | default('') | docker_image_repository }}
+    compose_cleanup_legacy_has_anonymous_volume: >-
+      {{ compose_cleanup_legacy.container.Mounts | default([]) | has_anonymous_volume }}
+  when:
+    - compose_cleanup_target_name | length > 0
+    - compose_cleanup_legacy_name != compose_cleanup_target_name
+    - compose_cleanup_legacy.exists | default(false)
+  no_log: true
+
+- name: Validação do container legado de {{ compose_reconcile_service.key }}
+  ansible.builtin.assert:
+    that:
+      - compose_cleanup_target.exists | default(false)
+      - compose_cleanup_target.container.State.Running | default(false)
+      - >-
+        ((compose_cleanup_target.container.State.Health | default({})).Status
+        | default('healthy')) == 'healthy'
+      - >-
+        ((compose_cleanup_target.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+      - >-
+        ((compose_cleanup_target.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+      - >-
+        ((compose_cleanup_legacy.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) | length > 0
+      - >-
+        ((compose_cleanup_legacy.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) | length > 0
+      - compose_cleanup_legacy_image_base == compose_cleanup_target_image_base
+      - not compose_cleanup_legacy_has_anonymous_volume | bool
+    fail_msg: >-
+      O container {{ compose_cleanup_legacy_name }} parece legado, mas não foi reconhecido com
+      segurança. O substituto foi mantido e o legado não foi removido.
+  when:
+    - compose_cleanup_target_name | length > 0
+    - compose_cleanup_legacy_name != compose_cleanup_target_name
+    - compose_cleanup_legacy.exists | default(false)
+
+- name: Remoção do container legado substituído de {{ compose_reconcile_service.key }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - rm
+      - -f
+      - "{{ compose_cleanup_legacy_name }}"
+  when:
+    - compose_cleanup_target_name | length > 0
+    - compose_cleanup_legacy_name != compose_cleanup_target_name
+    - compose_cleanup_legacy.exists | default(false)
+
+- name: Listagem de recriações parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - ps
+      - --all
+      - --filter
+      - "name={{ compose_cleanup_target_name }}"
+      - --format
+      - "{{ '{{.Names}}' }}"
+  register: compose_cleanup_partial_list
+  changed_when: false
+  when: compose_cleanup_target_name | length > 0
+
+- name: Definição das recriações parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_cleanup_partial_names: >-
+      {{
+        compose_cleanup_partial_list.stdout_lines
+        | default([])
+        | select(
+          'match',
+          '^[0-9a-f]{12}_' ~ (compose_cleanup_target_name | regex_escape) ~ '$'
+        )
+        | list
+      }}
+  when: compose_cleanup_target_name | length > 0
+
+- name: Remoção segura das recriações parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/cleanup_partial_compose_container.yml"
+  loop: "{{ compose_cleanup_partial_names | default([]) }}"
+  loop_control:
+    loop_var: compose_cleanup_partial_name
+    label: "{{ compose_cleanup_partial_name }}"
