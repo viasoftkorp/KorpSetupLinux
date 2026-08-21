@@ -1,4 +1,0 @@
-services:
-  rollback.old:
-    image: nginx:latest
-    container_name: devo7182-rollback-test
