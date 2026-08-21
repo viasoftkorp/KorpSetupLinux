@@ -23,6 +23,7 @@ Uso:
 
 Exemplos:
   qa-pr apply https://github.com/viasoftkorp/sdk/pull/330
+  qa-pr apply https://bitbucket.org/viasoftkorp/korp.atualizacaosistema/pull-requests/1163
   qa-pr apply https://github.com/viasoftkorp/sdk/pull/330 --replace
   qa-pr status
   qa-pr reset
@@ -157,7 +158,8 @@ apply_prs() {
       --replace) policy="replace" ;;
       --*) die "opção desconhecida: $argument" ;;
       *)
-        if [[ ! "$argument" =~ ^https://github\.com/viasoftkorp/[A-Za-z0-9._-]+/pull/[0-9]+/?$ ]]; then
+        if [[ ! "$argument" =~ ^https://github\.com/viasoftkorp/[A-Za-z0-9._-]+/pull/[0-9]+/?$ ]] &&
+          [[ ! "$argument" =~ ^https://bitbucket\.org/viasoftkorp/korp\.atualizacaosistema/pull-requests/[0-9]+/?$ ]]; then
           die "URL de PR inválida: $argument"
         fi
         urls+=("$argument")

@@ -34,26 +34,37 @@
     qa_pr_selected_version: >-
       {{
         qa_pr_reports
-        | qa_pr_select_report_version
+        | qa_pr_select_report_version(qa_pr_unversioned_services)
       }}
 
 - name: Definir diretórios de compose da versão selecionada
   ansible.builtin.set_fact:
     qa_pr_versioned_compose_dir: >-
       {{
-        compose_dir_path
-        | regex_replace('/+$', '')
-      }}/{{ qa_pr_selected_version }}
+        (
+          (compose_dir_path | regex_replace('/+$', ''))
+          ~ '/'
+          ~ qa_pr_selected_version
+        )
+        if qa_pr_selected_version is not none
+        else ''
+      }}
     qa_pr_compose_roots: >-
       {{
-        [
-          compose_dir_path,
-          (
-            (compose_dir_path | regex_replace('/+$', ''))
-            ~ '/'
-            ~ qa_pr_selected_version
+        (
+          [compose_dir_path]
+          + (
+            [
+              (
+                (compose_dir_path | regex_replace('/+$', ''))
+                ~ '/'
+                ~ qa_pr_selected_version
+              )
+            ]
+            if qa_pr_selected_version is not none
+            else []
           )
-        ]
+        )
         | map('regex_replace', '/+$', '')
         | unique
         | list
@@ -63,6 +74,7 @@
   ansible.builtin.stat:
     path: "{{ qa_pr_versioned_compose_dir }}"
   register: qa_pr_versioned_compose_dir_stat
+  when: qa_pr_selected_version is not none
 
 - name: Exigir instalação da versão selecionada
   ansible.builtin.assert:
@@ -72,6 +84,7 @@
     fail_msg: >-
       A versão {{ qa_pr_selected_version }} informada pelos relatórios
       não está instalada em {{ qa_pr_versioned_compose_dir }}.
+  when: qa_pr_selected_version is not none
 
 - name: Ler composes base
   ansible.builtin.include_tasks: read_compose.yml
