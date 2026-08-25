@@ -35,6 +35,36 @@
     - compose_cleanup_legacy.exists | default(false)
   no_log: true
 
+- name: Definição da transição de imagem permitida de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_cleanup_image_transition_allowed: >-
+      {{
+        compose_migration_allowed_image_transitions
+        | default([])
+        | selectattr(
+          'legacy_container_name',
+          'equalto',
+          compose_cleanup_legacy_name
+        )
+        | selectattr(
+          'legacy_image_repository',
+          'equalto',
+          compose_cleanup_legacy_image_base
+        )
+        | selectattr(
+          'target_image_repository',
+          'equalto',
+          compose_cleanup_target_image_base
+        )
+        | list
+        | length > 0
+      }}
+  when:
+    - compose_cleanup_target_name | length > 0
+    - compose_cleanup_legacy_name != compose_cleanup_target_name
+    - compose_cleanup_legacy.exists | default(false)
+  no_log: true
+
 - name: Validação do container legado de {{ compose_reconcile_service.key }}
   ansible.builtin.assert:
     that:
@@ -55,7 +85,9 @@
       - >-
         ((compose_cleanup_legacy.container.Config.Labels | default({}))
         ['com.docker.compose.service'] | default('')) | length > 0
-      - compose_cleanup_legacy_image_base == compose_cleanup_target_image_base
+      - >-
+        compose_cleanup_legacy_image_base == compose_cleanup_target_image_base
+        or compose_cleanup_image_transition_allowed | bool
       - not compose_cleanup_legacy_has_anonymous_volume | bool
     fail_msg: >-
       O container {{ compose_cleanup_legacy_name }} parece legado, mas não foi reconhecido com
