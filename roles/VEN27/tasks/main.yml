@@ -1,14 +1,35 @@
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+- name: Verificação do compose versionado de VEN27
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/roles/VEN27/templates/composes/{{ version_without_build }}/VEN27-compose.yml.j2"
+  register: ven27_versioned_compose
+  become: false
 
-- name: Adição de serviços de VEN27
+- name: Validação do compose versionado de VEN27
+  ansible.builtin.fail:
+    msg: "Não existe compose versionado de VEN27 para a versão {{ version_without_build }}"
+  when: not ven27_versioned_compose.stat.exists
+
+- name: Garantia do diretório de compose versionado
+  ansible.builtin.file:
+    path: "{{ versioned_compose_dir_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+
+- name: Definição de VEN27 como aplicativo somente versionado
+  ansible.builtin.set_fact:
+    id: VEN27
+    has_versioned_services: true
+    has_unversioned_services: false
+    has_exclusive_services: false
+
+- name: Setup do compose versionado de VEN27
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_service
-  vars:
-    service_name: "{{ item.key }}"
-    id: VEN27
-  with_dict: "{{ services }}"
-  loop_control:
-    extended: true
+    tasks_from: apps/compose_setup.yml
+
+- name: Registro do VEN27 versionado
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: apps/ensure_mapping.yml
