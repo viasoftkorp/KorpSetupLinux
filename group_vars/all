@@ -37,6 +37,10 @@ docker_env_file_path: "{{ compose_dir_path }}/.env"
 compose_migration_enabled: true
 compose_migration_validation_retries: 10
 compose_migration_validation_delay: 3
+compose_migration_allowed_image_transitions:
+  - legacy_container_name: LOG01_W
+    legacy_image_repository: "{{ docker_account }}/viasoft.logistics.product-frontend"
+    target_image_repository: "{{ docker_account }}/viasoft.logistica.produto-frontend"
 
 certs_directory: "{{ korp_dir_path }}/certs"
 cert_privatekey_path: "{{ certs_directory }}/cert.key" 

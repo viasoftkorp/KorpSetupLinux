@@ -55,6 +55,14 @@
       {{ (compose_reconcile_config_result.stdout | from_json).services | default({}) }}
   no_log: true
 
+- name: Recuperação de containers parciais sem identidade canônica
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/recover_partial_compose_service.yml"
+  loop: "{{ compose_reconcile_services | dict2items }}"
+  loop_control:
+    loop_var: compose_reconcile_service
+    label: "{{ compose_reconcile_service.key }}"
+  when: compose_migration_enabled | default(true) | bool
+
 - name: Reconciliação de containers com nome físico conflitante
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconcile_compose_service.yml"
   loop: "{{ compose_reconcile_services | dict2items }}"
