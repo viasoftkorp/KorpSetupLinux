@@ -1,0 +1,150 @@
+- name: Definição da identidade canônica de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_partial_recovery_target_name: >-
+      {{ compose_reconcile_service.value.container_name | default('') }}
+    compose_partial_recovery_legacy_name: >-
+      {{ compose_reconcile_service.value.container_name | default('')
+         | legacy_container_name(version_without_build) }}
+    compose_partial_recovery_expected_image_base: >-
+      {{ compose_reconcile_service.value.image | default('') | docker_image_repository }}
+    compose_partial_recovery_image_base: ""
+    compose_partial_recovery_has_anonymous_volume: true
+    compose_partial_recovery_image_transition_allowed: false
+  no_log: true
+
+- name: Inspeção da identidade canônica de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_partial_recovery_target_name }}"
+  register: compose_partial_recovery_target
+  when: compose_partial_recovery_target_name | length > 0
+
+- name: Listagem de containers parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - ps
+      - --all
+      - --filter
+      - "name={{ compose_partial_recovery_target_name }}"
+      - --format
+      - "{{ '{{.Names}}' }}"
+  register: compose_partial_recovery_list
+  changed_when: false
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+
+- name: Definição dos containers parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_partial_recovery_names: >-
+      {{
+        compose_partial_recovery_list.stdout_lines
+        | default([])
+        | partial_compose_container_names(compose_partial_recovery_target_name)
+      }}
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+
+- name: Validação da quantidade de containers parciais de {{ compose_reconcile_service.key }}
+  ansible.builtin.assert:
+    that:
+      - compose_partial_recovery_names | default([]) | length <= 1
+    fail_msg: >-
+      Existem múltiplos containers parciais para {{ compose_partial_recovery_target_name }}.
+      Nenhuma identidade foi alterada; remova a ambiguidade manualmente antes de continuar.
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+
+- name: Inspeção do container parcial de {{ compose_reconcile_service.key }}
+  community.docker.docker_container_info:
+    name: "{{ compose_partial_recovery_names[0] }}"
+  register: compose_partial_recovery_candidate
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+    - compose_partial_recovery_names | default([]) | length == 1
+
+- name: Definição da segurança do container parcial de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_partial_recovery_image_base: >-
+      {{
+        compose_partial_recovery_candidate.container.Config.Image
+        | default('')
+        | docker_image_repository
+      }}
+    compose_partial_recovery_has_anonymous_volume: >-
+      {{
+        compose_partial_recovery_candidate.container.Mounts
+        | default([])
+        | has_anonymous_volume
+      }}
+  when:
+    - compose_partial_recovery_candidate.exists | default(false)
+  no_log: true
+
+- name: Definição da transição de imagem permitida de {{ compose_reconcile_service.key }}
+  ansible.builtin.set_fact:
+    compose_partial_recovery_image_transition_allowed: >-
+      {{
+        compose_migration_allowed_image_transitions
+        | default([])
+        | selectattr(
+          'legacy_container_name',
+          'equalto',
+          compose_partial_recovery_legacy_name
+        )
+        | selectattr(
+          'legacy_image_repository',
+          'equalto',
+          compose_partial_recovery_image_base
+        )
+        | selectattr(
+          'target_image_repository',
+          'equalto',
+          compose_partial_recovery_expected_image_base
+        )
+        | list
+        | length > 0
+      }}
+  when:
+    - compose_partial_recovery_candidate.exists | default(false)
+  no_log: true
+
+- name: Validação do container parcial de {{ compose_reconcile_service.key }}
+  ansible.builtin.assert:
+    that:
+      - compose_partial_recovery_candidate.exists | default(false)
+      - >-
+        ((compose_partial_recovery_candidate.container.Config.Labels | default({}))
+        ['com.docker.compose.project'] | default('')) == compose_reconcile_project_name
+      - >-
+        ((compose_partial_recovery_candidate.container.Config.Labels | default({}))
+        ['com.docker.compose.service'] | default('')) == compose_reconcile_service.key
+      - >-
+        ((compose_partial_recovery_candidate.container.Config.Labels | default({}))
+        ['com.docker.compose.oneoff'] | default('')) == 'False'
+      - >-
+        compose_partial_recovery_image_base == compose_partial_recovery_expected_image_base
+        or compose_partial_recovery_image_transition_allowed | bool
+      - not compose_partial_recovery_has_anonymous_volume | bool
+    fail_msg: >-
+      O único container parcial de {{ compose_partial_recovery_target_name }} não corresponde
+      com segurança ao serviço desejado. Nenhuma identidade foi alterada.
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+    - compose_partial_recovery_names | default([]) | length == 1
+
+- name: Recuperação do nome canônico de {{ compose_reconcile_service.key }}
+  ansible.builtin.command:
+    argv:
+      - docker
+      - rename
+      - "{{ compose_partial_recovery_names[0] }}"
+      - "{{ compose_partial_recovery_target_name }}"
+  when:
+    - compose_partial_recovery_target_name | length > 0
+    - not compose_partial_recovery_target.exists | default(false)
+    - compose_partial_recovery_names | default([]) | length == 1
