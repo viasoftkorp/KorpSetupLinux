@@ -39,10 +39,25 @@ def has_anonymous_volume(mounts):
     return False
 
 
+def partial_compose_container_names(container_names, target_name):
+    """Seleciona nomes temporários exatos criados pelo Docker Compose."""
+    target = str(target_name or "")
+    if not target:
+        return []
+
+    pattern = re.compile(rf"^[0-9a-f]{{12}}_{re.escape(target)}$")
+    return [
+        str(container_name)
+        for container_name in container_names or []
+        if pattern.fullmatch(str(container_name))
+    ]
+
+
 class FilterModule:
     def filters(self):
         return {
             "docker_image_repository": docker_image_repository,
             "legacy_container_name": legacy_container_name,
             "has_anonymous_volume": has_anonymous_volume,
+            "partial_compose_container_names": partial_compose_container_names,
         }
