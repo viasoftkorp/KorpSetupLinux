@@ -17,3 +17,11 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+- name: Reconciliação da infraestrutura após API Gateway
+  ansible.builtin.include_role:
+    name: infrastructure
+    apply:
+      tags:
+        - always
+  tags: always
