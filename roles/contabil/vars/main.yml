@@ -6,5 +6,5 @@ services:
 
   Korp.Contabil.Core:
     db:
-      name: Korp_Contabil.Core
+      name: Korp_Contabil_Core
       type: mssql
