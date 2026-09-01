@@ -3,3 +3,8 @@ services:
     db:
       name: Viasoft_Accounting
       type: mssql
+
+  Korp.Contabil.Core:
+    db:
+      name: Korp_Contabil.Core
+      type: mssql
