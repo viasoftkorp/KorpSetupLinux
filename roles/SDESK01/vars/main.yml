@@ -1,0 +1,8 @@
+services:
+
+  Korp.Projetos.ServiceDesk.Gateway:
+    db:
+      name: Korp_Projetos_ServiceDesk_Gateway
+      type: postgres
+    version:
+      unversioned: true
