@@ -1,0 +1,3 @@
+dependencies:
+  - role: wms-frontend
+  - role: inventario

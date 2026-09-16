@@ -1,2 +1,2 @@
-services:
-  Korp.Logistica.Estoque.Inventario:
+# Role de compatibilidade para instalações licenciadas existentes.
+# O serviço está organizado no role inventario.

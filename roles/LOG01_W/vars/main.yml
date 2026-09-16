@@ -1,6 +1,2 @@
-services:
-  Viasoft.Logistica.Produto.Gateway:
-  Viasoft.Logistics.Products:
-    db:
-      name: Viasoft_Logistics_Products
-      type: mssql
+# Role de compatibilidade para instalações licenciadas existentes.
+# Os serviços estão organizados nos roles produto e produto-frontend.

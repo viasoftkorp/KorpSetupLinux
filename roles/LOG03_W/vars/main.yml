@@ -1,7 +1,2 @@
-services: 
-  Korp.Logistica.RequisicaoContraAlmoxarifado.Core:
-    db:
-      name: Korp_Logistica_RequisicaoContraAlmoxarifado_Core
-      type: mssql
-
-  Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway:
+# Role de compatibilidade para instalações licenciadas existentes.
+# Os serviços estão organizados nos roles de Requisição contra Almoxarifado.
