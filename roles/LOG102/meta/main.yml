@@ -1,3 +1,2 @@
 dependencies:
-  - role: logistica
-  - role: LOG103
+  - role: wms-frontend
