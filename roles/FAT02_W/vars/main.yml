@@ -1,8 +1,2 @@
-services:
-  Viasoft.Faturamento.SolicitacaoFaturamento.Core:
-    db:
-      type: mssql
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
-
-  Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
+# Role de compatibilidade para instalações licenciadas existentes.
+# Os serviços estão organizados nos roles de Solicitação de Faturamento.

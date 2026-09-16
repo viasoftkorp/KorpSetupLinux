@@ -1,0 +1,3 @@
+services:
+  Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
+  Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:
