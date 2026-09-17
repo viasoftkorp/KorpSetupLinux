@@ -3,4 +3,5 @@ dependencies:
   - role: campos-padroes
   - role: contabil
   - role: logistica
+  - role: produto
   - role: financeiro

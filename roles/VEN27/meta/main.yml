@@ -9,6 +9,7 @@ dependencies:
   - role: LOG00
   - role: LOG01_W
   - role: logistica
+  - role: produto
   - role: PES00
   - role: PES01
   - role: REL01

@@ -3,6 +3,7 @@ dependencies:
   - role: vendas
   - role: faturamento
   - role: logistica
+  - role: produto
   - role: ERP
   - role: PES01
   - role: PES00
