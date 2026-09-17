@@ -2,6 +2,7 @@ dependencies:
   - role: faturamento
   - role: fiscal
   - role: logistica
+  - role: produto
   - role: vendas
   - role: VEN01_W
   - role: wms

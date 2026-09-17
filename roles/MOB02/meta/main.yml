@@ -2,6 +2,7 @@ dependencies:
   - role: financeiro
   - role: vendas
   - role: logistica
+  - role: produto
   - role: ERP
   - role: MOB01
   - role: VEN27

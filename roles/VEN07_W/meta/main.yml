@@ -8,10 +8,10 @@ dependencies:
   - role: financeiro
   - role: fiscal
   - role: logistica
+  - role: produto
   - role: ERP
   - role: PES01
   - role: PES00
   - role: LOG00
   - role: LOG01_W
   - role: workflow 
- 

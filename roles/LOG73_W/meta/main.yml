@@ -1,3 +1,4 @@
 dependencies:
   - role: LOG102
   - role: logistica
+  - role: produto
