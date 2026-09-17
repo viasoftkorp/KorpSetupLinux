@@ -7,3 +7,7 @@ temporal_namespaces:
   - prd
   - hmlg
 temporal_postgres_user: "temporal"
+# Tempo máximo, em segundos, para o 'docker compose up' do Temporal concluir.
+# O Compose não aplica timeout à espera de 'depends_on', então sem esse limite
+# uma falha do container de setup trava o playbook indefinidamente.
+temporal_compose_timeout: 900

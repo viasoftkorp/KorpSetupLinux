@@ -79,12 +79,86 @@
     mode: '0644'
   loop: "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
 
-- name: Criação e inicialização do Temporal
-  community.docker.docker_compose_v2:
-    project_src: "{{ compose_dir_path }}/"
-    env_files: ["{{ docker_env_file_path }}"]
-    files:
-      - temporal-compose.yml
+# Esta é a única role com containers one-shot (temporal-admin-tools e temporal-create-namespace-*),
+# ou seja, a única que precisa criar containers em toda execução. As demais só têm serviços
+# long-running que já estão no ar, então o Compose não faz nada e nunca esbarra em falhas de
+# criação. Por isso o Temporal é sempre o primeiro a acusar problemas de runtime do host.
+- name: Verificação da capacidade do host de criar PID namespaces
+  ansible.builtin.command: unshare --fork --pid --mount-proc /bin/true
+  become: true
+  become_user: root
+  changed_when: false
+  failed_when: false
+  register: temporal_pidns_check
+
+- name: Falha caso o host não consiga criar PID namespaces
+  ansible.builtin.fail:
+    msg: >-
+      O host não consegue criar PID namespaces:
+      '{{ temporal_pidns_check.stderr | default('sem detalhe') | trim }}'.
+      Nesse estado o runc não cria container algum, falhando com
+      "can't get final child's PID from pipe: EOF" — não é um problema do Temporal,
+      nenhum serviço novo sobe. Causa usual: contabilização de namespaces do kernel
+      esgotada após uptime longo com muita rotatividade de containers.
+      Correção: reiniciar o host.
+  when: temporal_pidns_check.rc != 0
+
+# Um container de setup que falhou fica em Exited com código != 0 e é reiniciado a cada
+# execução. Removê-lo antes do 'up' faz o Compose recriá-lo do zero, em vez de tentar dar
+# start num container deixado inconsistente pela execução anterior.
+- name: Remoção do container de setup do Temporal de execuções anteriores
+  community.docker.docker_container:
+    name: temporal-admin-tools
+    state: absent
+
+# O 'up' abaixo espera a condição 'service_completed_successfully' do temporal-admin-tools
+# (temporal-compose.yml.j2), e o Compose não aplica timeout algum a essa espera: se o
+# container de setup não completar, o 'up' fica preso para sempre e leva o playbook junto.
+# O módulo não expõe limite útil ('timeout' é só para shutdown e 'wait_timeout' só vale com
+# 'wait=true'), então o limite é aplicado via 'async': no estouro o Ansible mata o processo
+# do Compose e falha a task, e o 'rescue' reporta a causa real em vez de um travamento mudo.
+- name: Inicialização do Temporal com limite de tempo
+  block:
+    - name: Criação e inicialização do Temporal
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_dir_path }}/"
+        env_files: ["{{ docker_env_file_path }}"]
+        files:
+          - temporal-compose.yml
+      async: "{{ temporal_compose_timeout }}"
+      poll: 10
+
+  rescue:
+    - name: Coleta de informações do container de setup do Temporal
+      community.docker.docker_container_info:
+        name: temporal-admin-tools
+      failed_when: false
+      register: temporal_admin_info
+
+    - name: Coleta dos logs do container de setup do Temporal
+      ansible.builtin.command: docker logs --tail 30 temporal-admin-tools
+      changed_when: false
+      failed_when: false
+      register: temporal_admin_logs
+
+    - name: Exibição do diagnóstico do container de setup do Temporal
+      ansible.builtin.debug:
+        msg:
+          - "existe: {{ temporal_admin_info.exists | default(false) }}"
+          - "status: {{ temporal_admin_info.container.State.Status | default('desconhecido') }}"
+          - "exit code: {{ temporal_admin_info.container.State.ExitCode | default('desconhecido') }}"
+          - "erro do runtime: {{ temporal_admin_info.container.State.Error | default('nenhum') | trim }}"
+          - "últimas linhas do log: {{ temporal_admin_logs.stdout_lines | default(['sem log'], true) }}"
+
+    - name: Falha da inicialização do Temporal
+      ansible.builtin.fail:
+        msg: >-
+          A inicialização do Temporal não concluiu em {{ temporal_compose_timeout }}s.
+          O Compose só sobe o serviço 'temporal' depois que o 'temporal-admin-tools'
+          concluir com sucesso o schema do PostgreSQL e o índice do Elasticsearch;
+          enquanto isso não acontecer, o 'up' não avança. Veja o diagnóstico acima:
+          exit code 128 indica que o runtime não conseguiu criar o container, o que é
+          problema do host e não do Temporal.
 
 - name: Garantia de kv no consul para Temporal (Global)
   ansible.builtin.include_role:
