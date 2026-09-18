@@ -1,2 +1,3 @@
-# Role de compatibilidade para instalações licenciadas existentes.
-# Os serviços estão organizados nos roles de Solicitação de Faturamento.
+services:
+  Viasoft.Faturamento.SolicitacaoFaturamento.Gateway:
+  Viasoft.Faturamento.SolicitacaoFaturamento.ReadModel:

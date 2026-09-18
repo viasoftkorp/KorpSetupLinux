@@ -2,7 +2,7 @@ dependencies:
   - role: compras
   - role: vendas
   - role: faturamento
-  - role: logistica
+  - role: logistica-saldo
   - role: produto
   - role: ERP
   - role: LOG01_W

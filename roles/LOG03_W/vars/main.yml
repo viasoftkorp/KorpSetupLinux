@@ -1,2 +1,2 @@
-# Role de compatibilidade para instalações licenciadas existentes.
-# Os serviços estão organizados nos roles de Requisição contra Almoxarifado.
+services:
+  Korp.Logistica.RequisicaoContraAlmoxarifado.Gateway:
