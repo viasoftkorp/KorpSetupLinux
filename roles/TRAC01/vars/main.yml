@@ -1,9 +1,1 @@
-services:
-  Korp.Sales.Tracking:
-    db:
-      name: Korp_Sales_Tracking
-      type: postgres 
-    version:
-
-  Korp.Sales.Tracking.Gateway:
-    version:
+services: {}

@@ -1,1 +1,6 @@
-[]
+- name: Configuração do front-end de Inventário
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/setup_compose_only
+  vars:
+    id: LOG05_W

@@ -1,6 +1,6 @@
 dependencies:
   - role: temporal
-  - role: logistica
+  - role: logistica-saldo
   - role: produto
   - role: PES00
   - role: vendas

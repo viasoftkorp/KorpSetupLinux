@@ -1,2 +1,2 @@
-# Role de compatibilidade para instalações licenciadas existentes.
-# Os serviços estão organizados nos roles wms e wms-frontend.
+services:
+  Korp.Logistica.WMS.Gateway:
