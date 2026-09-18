@@ -1,0 +1,4 @@
+services:
+  Viasoft.Faturamento.SolicitacaoFaturamento.Core:
+    db:
+      type: mssql

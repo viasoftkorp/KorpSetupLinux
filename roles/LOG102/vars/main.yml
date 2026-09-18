@@ -1,18 +1,2 @@
 services:
-  Korp.Logistica.Picking:
-
-  Korp.Logistica.Picking.AnaliseDeEstoque:
-
-  Korp.Logistica.Picking.ControlePedidos:
-
-  Korp.Logistica.Picking.Faturamento:
-
-  Korp.Logistica.Picking.OrdemProducao:
-
-  Korp.Faturamento.SolicitacaoDeFaturamento:
-
   Korp.Logistica.WMS.Gateway:
-
-  Korp.Logistica.WMS.Core:
-    db:
-      type: mssql

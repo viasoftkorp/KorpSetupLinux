@@ -2,11 +2,11 @@ dependencies:
   - role: compras
   - role: vendas
   - role: faturamento
-  - role: logistica
+  - role: logistica-saldo
+  - role: produto
   - role: ERP
   - role: LOG01_W
   - role: PES00
   - role: LOG00
   - role: financeiro
   - role: PRO09
- 
