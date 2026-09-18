@@ -1,0 +1,18 @@
+services:
+
+  Korp.Logistic.Tracking:
+
+  Korp.Logistica.SaldoProdutos:
+
+  Viasoft.Legacy.Logistica:
+    db:
+      name: Viasoft_Legacy_Logistica
+      type: mssql
+
+  Viasoft.Logistica.Saldo:
+    db:
+      type: mssql
+    version:
+
+  Viasoft.Logistica.Estoque:
+    version:

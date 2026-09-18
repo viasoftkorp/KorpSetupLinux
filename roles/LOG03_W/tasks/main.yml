@@ -2,7 +2,7 @@
   ansible.builtin.set_fact:
     services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
 
-- name: Adição de serviços de LOG03_W
+- name: Adição do gateway e front-end de Requisição contra Almoxarifado
   ansible.builtin.include_role:
     name: utils
     tasks_from: services/add_service
