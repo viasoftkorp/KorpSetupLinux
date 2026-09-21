@@ -1,3 +1,7 @@
+location /oauth/connect/token {
+    proxy_pass http://fabio:9999;
+}
+
 location / {
     client_max_body_size 0M;
 
