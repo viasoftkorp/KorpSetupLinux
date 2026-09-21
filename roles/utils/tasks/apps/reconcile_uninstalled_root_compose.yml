@@ -3,9 +3,9 @@
     path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
   register: uninstall_root_compose_result
 
-- name: Verificação do template versionado de fallback de {{ uninstall_app }}
+- name: Verificação do template raiz de fallback de {{ uninstall_app }}
   ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ uninstall_app }}/templates/composes/{{ latest_remaining_version }}/{{ uninstall_app }}-compose.yml.j2"
+    path: "{{ playbook_dir }}/roles/{{ uninstall_app }}/templates/composes/{{ uninstall_app }}-compose.yml.j2"
   register: uninstall_root_compose_template_result
   become: false
 
@@ -20,7 +20,7 @@
         )
       }}
 
-- name: Localização do template versionado de fallback de {{ uninstall_app }}
+- name: Localização do template raiz de fallback de {{ uninstall_app }}
   ansible.builtin.set_fact:
     uninstall_root_compose_templates: >-
       {{
@@ -88,6 +88,16 @@
   loop: "{{ uninstall_root_compose_templates }}"
   loop_control:
     loop_var: uninstall_root_compose_template
+  when:
+    - uninstall_app_requires_root_fallback | bool
+    - latest_remaining_version != '0.0.0'
+    - uninstall_root_compose_templates | length > 0
+
+- name: Ajuste da versão do compose raiz de {{ uninstall_app }}
+  ansible.builtin.replace:
+    path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
+    regexp: "{{ removed_version | regex_escape }}"
+    replace: "{{ latest_remaining_version }}"
   when:
     - uninstall_app_requires_root_fallback | bool
     - latest_remaining_version != '0.0.0'
