@@ -16,7 +16,10 @@ create_random_string() {
 #   custom_tags="<tag1,tag2>"   - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
 #   apps="<apps1,apps2>"        - OPCIONAL
 #     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
+#     caso 'custom_tags' seja ['install-versioned-only'], define explicitamente os AppIds versionados a instalar
 #     caso 'custom_tags' seja ['remove-apps'], será utilizado para definir os aplicativos que serão desinstalados
+#   custom_tags=update-versioned - Atualiza somente os AppIds versionados registrados para a versão corrente
+#   custom_tags=install-versioned-only - Instala somente os composes versionados dos AppIds informados em apps
 #   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
