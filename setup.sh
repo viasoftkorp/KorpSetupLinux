@@ -128,21 +128,16 @@ else
     fi
 fi
 
-# Atualização de repositório, instalação de dependencias, instalação de ansible e git
+# Verificação e instalação de dependências
 echo Instalando Ansible e Git
 
-# caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-if [ $? != 0 ]
-then
-    echo "$(tput setaf 1)Erro 'sudo add-apt-repository --yes --update ppa:ansible/ansible'.$(tput setaf 7)"
-    exit 12
-fi
-sudo apt install git ansible --yes
-if [ $? != 0 ]
-then
-    echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
-    exit 13
+if ! command -v git > /dev/null 2>&1 || ! command -v ansible-playbook > /dev/null 2>&1; then
+    sudo apt install git ansible --yes
+    if [ $? != 0 ]
+    then
+        echo "$(tput setaf 1)Erro 'sudo apt install git ansible --yes'.$(tput setaf 7)"
+        exit 13
+    fi
 fi
 
 sudo rm -rf /tmp/KorpSetupLinux
