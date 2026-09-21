@@ -1,0 +1,92 @@
+- name: Verificação do compose raiz de {{ uninstall_app }}
+  ansible.builtin.stat:
+    path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
+  register: uninstall_root_compose_result
+
+- name: Localização dos templates raiz de {{ uninstall_app }}
+  ansible.builtin.set_fact:
+    uninstall_root_compose_templates: >-
+      {{
+        lookup(
+          'ansible.builtin.fileglob',
+          playbook_dir ~ '/roles/' ~ uninstall_app ~ '/templates/composes/*',
+          wantlist=True
+        )
+        | select('search', '\\.yml\\.j2$')
+        | list
+      }}
+
+- name: Definição de permanência de {{ uninstall_app }}
+  ansible.builtin.set_fact:
+    uninstall_app_remains_installed: >-
+      {{
+        uninstall_app in (apps_map.unversioned | default([], true))
+        or (
+          apps_map.versioned | default({}, true)
+          | dict2items
+          | map(attribute='value')
+          | flatten
+          | select('equalto', uninstall_app)
+          | list
+          | length > 0
+        )
+      }}
+
+- name: Validação do template de fallback de {{ uninstall_app }}
+  ansible.builtin.assert:
+    that:
+      - uninstall_root_compose_templates | length > 0
+    fail_msg: >-
+      Não foi encontrado template do compose raiz de {{ uninstall_app }} para reconfigurar
+      o serviço na versão {{ latest_remaining_version }}.
+  when:
+    - uninstall_app_remains_installed | bool
+    - uninstall_root_compose_result.stat.exists
+
+- name: Remoção dos containers raiz de {{ uninstall_app }}
+  community.docker.docker_compose_v2:
+    state: absent
+    project_src: "{{ compose_dir_path }}"
+    files:
+      - "{{ uninstall_app }}-compose.yml"
+  when: uninstall_root_compose_result.stat.exists
+
+- name: Remoção do compose raiz de {{ uninstall_app }}
+  ansible.builtin.file:
+    path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
+    state: absent
+  when:
+    - uninstall_root_compose_result.stat.exists
+    - >-
+      (not uninstall_app_remains_installed | bool)
+      or latest_remaining_version != '0.0.0'
+
+- name: Reconfiguração do compose raiz de {{ uninstall_app }}
+  ansible.builtin.template:
+    src: "{{ uninstall_root_compose_template }}"
+    dest: "{{ compose_dir_path }}/{{ uninstall_root_compose_template | basename | regex_replace('\\.j2$', '') }}"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  vars:
+    version_without_build: "{{ latest_remaining_version }}"
+  loop: "{{ uninstall_root_compose_templates }}"
+  loop_control:
+    loop_var: uninstall_root_compose_template
+  when:
+    - uninstall_app_remains_installed | bool
+    - latest_remaining_version != '0.0.0'
+    - uninstall_root_compose_templates | length > 0
+
+- name: Reinicialização do compose raiz de {{ uninstall_app }}
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir_path }}"
+    project_name: composes
+    env_files:
+      - "{{ docker_env_file_path }}"
+    files:
+      - "{{ uninstall_app }}-compose.yml"
+  when:
+    - uninstall_app_remains_installed | bool
+    - latest_remaining_version != '0.0.0'
+    - uninstall_root_compose_templates | length > 0

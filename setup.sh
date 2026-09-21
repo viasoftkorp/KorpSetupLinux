@@ -55,6 +55,7 @@ https_port="";
 http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
+should_update_rabbitmq=false;
 
 ini_file_path="./setup_config.ini"
 
@@ -260,7 +261,9 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "should_update_rabbitmq": '$should_update_rabbitmq'
   }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
-if [ $? != 0 ]
+ansible_rc=${PIPESTATUS[0]}
+
+if [ "$ansible_rc" != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
     exit 11

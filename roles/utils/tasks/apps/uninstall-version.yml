@@ -8,6 +8,21 @@
     - name: Definição de variáveis
       ansible.builtin.set_fact:
         apps_map: "{{ lookup('file', '{{ config_dir_path }}/installed_apps.yml') | from_yaml }}"
+
+    - name: Validação de versão instalada
+      ansible.builtin.fail:
+        msg: "A versão '{{ removed_version }}' não está registrada em {{ config_dir_path }}/installed_apps.yml"
+      when: removed_version not in (apps_map.versioned | default({}, true))
+
+    - name: Definição de última versão instalada
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: default/get_latest_installed_version
+
+    - name: Definição de variáveis da desinstalação
+      ansible.builtin.set_fact:
+        apps_to_uninstall: "{{ apps_map.versioned[removed_version] | default([], true) | unique | list }}"
+        uninstalling_latest_version: "{{ latest_installed_version == removed_version }}"
         remove_versioned: true
         remove_unversioned: false
 
@@ -15,9 +30,74 @@
       ansible.builtin.include_role:
         name: utils
         tasks_from: apps/remove.yml
-      loop: "{{ apps_map.versioned[removed_version] }}"
+      loop: "{{ apps_to_uninstall }}"
       loop_control:
         loop_var: app_name
+
+    - name: Remoção da versão do registro de apps
+      ansible.builtin.set_fact:
+        apps_map: >-
+          {{
+            apps_map | combine(
+              {
+                'versioned': (
+                  apps_map.versioned
+                  | dict2items
+                  | rejectattr('key', 'equalto', removed_version)
+                  | list
+                  | items2dict
+                )
+              },
+              recursive=True,
+              list_merge='replace'
+            )
+          }}
+
+    - name: "Escrita de arquivo {{ config_dir_path }}/installed_apps.yml"
+      ansible.builtin.copy:
+        dest: "{{ config_dir_path }}/installed_apps.yml"
+        mode: '0644'
+        content: "{{ apps_map | to_yaml }}"
+
+    - name: Definição da versão de fallback
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: default/get_latest_installed_version
+      when: uninstalling_latest_version | bool
+
+    - name: Definição da versão de fallback
+      ansible.builtin.set_fact:
+        latest_remaining_version: "{{ latest_installed_version }}"
+      when: uninstalling_latest_version | bool
+
+    - name: Reconciliar composes raiz ao desinstalar a última versão
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconcile_uninstalled_root_compose.yml"
+      loop: "{{ apps_to_uninstall }}"
+      loop_control:
+        loop_var: uninstall_app
+      when:
+        - uninstalling_latest_version | bool
+
+    - name: Verificação do diretório da versão desinstalada
+      ansible.builtin.stat:
+        path: "{{ compose_dir_path }}/{{ removed_version }}"
+      register: removed_version_directory
+
+    - name: Verificação do conteúdo do diretório da versão desinstalada
+      ansible.builtin.find:
+        paths: "{{ compose_dir_path }}/{{ removed_version }}"
+        recurse: false
+        file_type: any
+      register: removed_version_directory_entries
+      when: removed_version_directory.stat.isdir | default(false)
+
+    - name: Remoção do diretório vazio da versão desinstalada
+      ansible.builtin.file:
+        path: "{{ compose_dir_path }}/{{ removed_version }}"
+        state: absent
+      when:
+        - removed_version_directory.stat.isdir | default(false)
+        - removed_version_directory_entries.matched | default(0) | int == 0
 
   # tags 'always' é necessário aqui pois usamos 'include_role'
   tags: always
