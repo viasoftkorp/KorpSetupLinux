@@ -55,9 +55,7 @@
         apps_map: >-
           {{
             apps_map | combine(
-              {'versioned': versioned_apps_without_removed},
-              recursive=True,
-              list_merge='replace'
+              {'versioned': versioned_apps_without_removed}
             )
           }}
 
