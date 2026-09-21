@@ -34,20 +34,28 @@
       loop_control:
         loop_var: app_name
 
+    - name: Inicialização do mapa de versões restantes
+      ansible.builtin.set_fact:
+        versioned_apps_without_removed: {}
+
+    - name: Preservação das versões não desinstaladas
+      ansible.builtin.set_fact:
+        versioned_apps_without_removed: >-
+          {{
+            versioned_apps_without_removed
+            | combine({remaining_version.key: remaining_version.value})
+          }}
+      loop: "{{ apps_map.versioned | default({}, true) | dict2items }}"
+      loop_control:
+        loop_var: remaining_version
+      when: remaining_version.key != removed_version
+
     - name: Remoção da versão do registro de apps
       ansible.builtin.set_fact:
         apps_map: >-
           {{
             apps_map | combine(
-              {
-                'versioned': (
-                  apps_map.versioned
-                  | dict2items
-                  | rejectattr('key', 'equalto', removed_version)
-                  | list
-                  | items2dict
-                )
-              },
+              {'versioned': versioned_apps_without_removed},
               recursive=True,
               list_merge='replace'
             )
@@ -59,16 +67,21 @@
         mode: '0644'
         content: "{{ apps_map | to_yaml }}"
 
-    - name: Definição da versão de fallback
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: default/get_latest_installed_version
+    - name: Inicialização da versão de fallback
+      ansible.builtin.set_fact:
+        latest_remaining_version: "0.0.0"
       when: uninstalling_latest_version | bool
 
-    - name: Definição da versão de fallback
+    - name: Verificação da última versão restante
       ansible.builtin.set_fact:
-        latest_remaining_version: "{{ latest_installed_version }}"
-      when: uninstalling_latest_version | bool
+        latest_remaining_version: "{{ remaining_version.key }}"
+      loop: "{{ apps_map.versioned | default({}, true) | dict2items }}"
+      loop_control:
+        loop_var: remaining_version
+      when:
+        - uninstalling_latest_version | bool
+        - latest_remaining_version is version(remaining_version.key, '<')
+        - remaining_version.value != 'temp_value'
 
     - name: Reconciliar composes raiz ao desinstalar a última versão
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconcile_uninstalled_root_compose.yml"

@@ -3,17 +3,19 @@
     path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
   register: uninstall_root_compose_result
 
+- name: Verificação do template raiz de {{ uninstall_app }}
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/roles/{{ uninstall_app }}/templates/composes/{{ uninstall_app }}-compose.yml.j2"
+  register: uninstall_root_compose_template_result
+  become: false
+
 - name: Localização dos templates raiz de {{ uninstall_app }}
   ansible.builtin.set_fact:
     uninstall_root_compose_templates: >-
       {{
-        lookup(
-          'ansible.builtin.fileglob',
-          playbook_dir ~ '/roles/' ~ uninstall_app ~ '/templates/composes/*',
-          wantlist=True
-        )
-        | select('search', '\\.yml\\.j2$')
-        | list
+        [uninstall_root_compose_template_result.stat.path]
+        if uninstall_root_compose_template_result.stat.exists
+        else []
       }}
 
 - name: Definição de permanência de {{ uninstall_app }}
