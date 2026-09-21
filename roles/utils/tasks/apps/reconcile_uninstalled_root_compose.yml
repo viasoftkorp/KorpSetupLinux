@@ -3,13 +3,24 @@
     path: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
   register: uninstall_root_compose_result
 
-- name: Verificação do template raiz de {{ uninstall_app }}
+- name: Verificação do template versionado de fallback de {{ uninstall_app }}
   ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ uninstall_app }}/templates/composes/{{ uninstall_app }}-compose.yml.j2"
+    path: "{{ playbook_dir }}/roles/{{ uninstall_app }}/templates/composes/{{ latest_remaining_version }}/{{ uninstall_app }}-compose.yml.j2"
   register: uninstall_root_compose_template_result
   become: false
 
-- name: Localização dos templates raiz de {{ uninstall_app }}
+- name: Definição da necessidade de fallback de {{ uninstall_app }}
+  ansible.builtin.set_fact:
+    uninstall_app_requires_root_fallback: >-
+      {{
+        uninstall_app not in (apps_map.unversioned | default([], true))
+        and uninstall_app in (
+          (apps_map.versioned | default({}, true))[latest_remaining_version]
+          | default([], true)
+        )
+      }}
+
+- name: Localização do template versionado de fallback de {{ uninstall_app }}
   ansible.builtin.set_fact:
     uninstall_root_compose_templates: >-
       {{
@@ -42,7 +53,7 @@
       Não foi encontrado template do compose raiz de {{ uninstall_app }} para reconfigurar
       o serviço na versão {{ latest_remaining_version }}.
   when:
-    - uninstall_app_remains_installed | bool
+    - uninstall_app_requires_root_fallback | bool
     - uninstall_root_compose_result.stat.exists
 
 - name: Remoção dos containers raiz de {{ uninstall_app }}
@@ -51,7 +62,11 @@
     project_src: "{{ compose_dir_path }}"
     files:
       - "{{ uninstall_app }}-compose.yml"
-  when: uninstall_root_compose_result.stat.exists
+  when:
+    - uninstall_root_compose_result.stat.exists
+    - >-
+      (not uninstall_app_remains_installed | bool)
+      or (uninstall_app_requires_root_fallback | bool)
 
 - name: Remoção do compose raiz de {{ uninstall_app }}
   ansible.builtin.file:
@@ -61,22 +76,20 @@
     - uninstall_root_compose_result.stat.exists
     - >-
       (not uninstall_app_remains_installed | bool)
-      or latest_remaining_version != '0.0.0'
+      or (uninstall_app_requires_root_fallback | bool)
 
 - name: Reconfiguração do compose raiz de {{ uninstall_app }}
   ansible.builtin.template:
     src: "{{ uninstall_root_compose_template }}"
-    dest: "{{ compose_dir_path }}/{{ uninstall_root_compose_template | basename | regex_replace('\\.j2$', '') }}"
+    dest: "{{ compose_dir_path }}/{{ uninstall_app }}-compose.yml"
     owner: "{{ linux_korp.user }}"
     group: root
     mode: '0644'
-  vars:
-    version_without_build: "{{ latest_remaining_version }}"
   loop: "{{ uninstall_root_compose_templates }}"
   loop_control:
     loop_var: uninstall_root_compose_template
   when:
-    - uninstall_app_remains_installed | bool
+    - uninstall_app_requires_root_fallback | bool
     - latest_remaining_version != '0.0.0'
     - uninstall_root_compose_templates | length > 0
 
@@ -89,6 +102,6 @@
     files:
       - "{{ uninstall_app }}-compose.yml"
   when:
-    - uninstall_app_remains_installed | bool
+    - uninstall_app_requires_root_fallback | bool
     - latest_remaining_version != '0.0.0'
     - uninstall_root_compose_templates | length > 0
