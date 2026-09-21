@@ -84,6 +84,28 @@
             # tag utilizada para facilitar teste do setup, não deve ser utilizada fora de ambiente de teste
             - update-only
 
+        # Atualiza exclusivamente os composes versionados registrados para version_without_build.
+        # Não executa roles de aplicativos, serviços exclusivos ou infraestrutura compartilhada.
+        - name: Atualização somente dos aplicativos versionados
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/update_versioned.yml
+          tags:
+            - never
+            - update-versioned
+
+        # Instala exclusivamente os composes versionados dos AppIds informados em apps.
+        - name: Instalação somente de aplicativos versionados
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/install_versioned_only.yml
+          loop: "{{ apps }}"
+          loop_control:
+            loop_var: app_name
+          tags:
+            - never
+            - install-versioned-only
+
         # Variáveis esperadas:
         #   customs.remove_versioned: bool
         #   customs.remove_unversioned: bool
