@@ -20,11 +20,35 @@
           A versão '{{ version_without_build }}' não está registrada em
           {{ config_dir_path }}/installed_apps.yml como aplicativos versionados.
 
-    - name: Atualização dos aplicativos versionados da versão corrente
+    - name: Checagem dos composes versionados da versão corrente
+      ansible.builtin.stat:
+        path: "{{ playbook_dir }}/roles/{{ app_name }}/templates/composes/{{ version_without_build }}/{{ app_name }}-compose.yml.j2"
+      loop: "{{ versioned_apps_map[version_without_build] | default([]) | unique }}"
+      loop_control:
+        loop_var: app_name
+      register: versioned_compose_results
+      # Por algum motivo, o Ansible dá erro executando essa task como super user.
+      become: false
+
+    - name: Aviso sobre aplicativos sem compose versionado
+      ansible.builtin.debug:
+        msg: >-
+          Ignorando {{ versioned_compose_result.app_name }}: não possui compose
+          versionado para {{ version_without_build }}.
+      loop: "{{ versioned_compose_results.results }}"
+      loop_control:
+        loop_var: versioned_compose_result
+      when: not versioned_compose_result.stat.exists
+
+    - name: Atualização dos aplicativos com compose versionado da versão corrente
       ansible.builtin.include_role:
         name: utils
         tasks_from: apps/install_versioned_only.yml
-      loop: "{{ versioned_apps_map[version_without_build] | default([]) | unique }}"
+      loop: >-
+        {{ versioned_compose_results.results
+           | selectattr('stat.exists')
+           | map(attribute='app_name')
+           | list }}
       loop_control:
         loop_var: app_name
   # Necessário porque esta task é incluída dinamicamente por uma tag opt-in.
