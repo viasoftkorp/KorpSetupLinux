@@ -1,4 +1,27 @@
 ---
+- name: Carrega configuração para renovação
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: Carrega variáveis padrões do setup
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/group_vars/all"
+
+    - name: Carrega inventário persistido
+      ansible.builtin.include_vars:
+        file: /etc/korp/ansible/inventory.yml
+        name: persisted_inventory
+
+    - name: Disponibiliza variáveis necessárias à renovação
+      ansible.builtin.set_fact:
+        linux_korp: >-
+          {{ persisted_inventory.all.children.nodes.hosts.localhost.linux_korp }}
+        certs: >-
+          {{ persisted_inventory.all.children.nodes.hosts.localhost.certs }}
+
 - name: Renovação de certificado autoassinado
   hosts: 127.0.0.1
   connection: local
