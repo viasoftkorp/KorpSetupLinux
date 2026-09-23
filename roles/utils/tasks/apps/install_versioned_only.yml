@@ -1,0 +1,46 @@
+---
+# Deve ser chamado dentro de loop e recebe app_name como o AppId a instalar.
+# Este fluxo deliberadamente não importa a role do AppId: ele manipula apenas o
+# compose versionado da versão corrente.
+- name: "Instalação somente versionada de {{ app_name }}"
+  block:
+    - name: "Checagem de compose versionado de {{ app_name }}"
+      ansible.builtin.stat:
+        path: "{{ playbook_dir }}/roles/{{ app_name }}/templates/composes/{{ version_without_build }}/{{ app_name }}-compose.yml.j2"
+      register: versioned_compose_result
+      # Por algum motivo, o Ansible dá erro executando essa task como super user.
+      become: false
+
+    - name: "Validação de compose versionado de {{ app_name }}"
+      ansible.builtin.fail:
+        msg: >-
+          Não existe compose versionado para o AppId '{{ app_name }}'
+          na versão '{{ version_without_build }}'.
+      when: not versioned_compose_result.stat.exists
+
+    - name: "Garantia do diretório de compose versionado de {{ app_name }}"
+      ansible.builtin.file:
+        path: "{{ versioned_compose_dir_path }}"
+        state: directory
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0755'
+
+    - name: "Definição de {{ app_name }} como aplicativo somente versionado"
+      ansible.builtin.set_fact:
+        id: "{{ app_name }}"
+        has_versioned_services: true
+        has_unversioned_services: false
+        has_exclusive_services: false
+
+    - name: "Setup do compose versionado de {{ app_name }}"
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: apps/compose_setup.yml
+
+    - name: "Registro de {{ app_name }} como aplicativo versionado"
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: apps/ensure_mapping.yml
+  # Necessário porque esta task é incluída dinamicamente por uma tag opt-in.
+  tags: always
