@@ -1,0 +1,7 @@
+dependencies:
+  - role: wms
+  - role: campos-padroes
+  - role: contabil
+  - role: logistica-saldo
+  - role: produto
+  - role: financeiro

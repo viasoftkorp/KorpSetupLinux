@@ -18,23 +18,6 @@ networks:
       name: servicos
 
 services:
-  korp-logistica-estoque-inventario-2022-4-0:
-    image: "{{ docker_account }}/korp.logistica.estoque.inventario:2022.4.0.x{{ docker_image_suffix }}"
-    container_name: "Korp.Logistica.Estoque.Inventario-2022.4.0"
-    restart: unless-stopped
-    extra_hosts: *default-extra_hosts
-    environment:
-      - ON_PREMISE_MODE=true
-      - USE_SERVERGC=$USE_SERVERGC
-      - URL_CONSUL=http://consul-server:8500
-      - CERT_FILE_PATH={{ containers_cert_path }}
-    networks:
-      - servicos
-    dns_opt:
-      - single-request-reopen
-    volumes:
-      - "{{ certs_directory }}/:{{ certs_directory }}/"
-
   LOG05_W-2022-4-0:
     image: "{{ docker_account }}/korp.logistica.estoque.inventario-frontend:2022.4.0.x{{ docker_image_suffix }}"
     container_name: "LOG05_W-2022.4.0"

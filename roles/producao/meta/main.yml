@@ -1,0 +1,5 @@
+dependencies:
+  - role: RMA01_W
+  - role: wms
+  - role: temporal
+  - role: engenharia

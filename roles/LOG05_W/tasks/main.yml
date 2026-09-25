@@ -1,14 +1,6 @@
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
-
-- name: Adição de serviços de LOG05_W
+- name: Configuração do front-end de Inventário
   ansible.builtin.include_role:
     name: utils
-    tasks_from: services/add_service
+    tasks_from: services/setup_compose_only
   vars:
-    service_name: "{{ item.key }}"
     id: LOG05_W
-  with_dict: "{{ services }}"
-  loop_control:
-    extended: true

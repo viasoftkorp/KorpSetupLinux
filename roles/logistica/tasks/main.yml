@@ -1,14 +1,50 @@
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+- name: Verificação do registro legado de logistica
+  ansible.builtin.stat:
+    path: "{{ config_dir_path }}/installed_apps.yml"
+  register: logistica_installed_apps_file
 
-- name: Adição de serviços de logistica
-  ansible.builtin.include_role:
-    name: utils
-    tasks_from: services/add_service
-  vars:
-    service_name: "{{ item.key }}"
-    id: logistica
-  with_dict: "{{ services }}"
-  loop_control:
-    extended: true
+- name: Migração do registro legado de logistica
+  when: logistica_installed_apps_file.stat.exists
+  block:
+    - name: Leitura do registro de aplicativos
+      ansible.builtin.set_fact:
+        logistica_apps_map: "{{ lookup('file', config_dir_path + '/installed_apps.yml') | from_yaml }}"
+
+    - name: Normalização do registro de aplicativos
+      ansible.builtin.set_fact:
+        logistica_apps_map: >-
+          {{ logistica_apps_map | combine({
+            'unversioned': logistica_apps_map.unversioned | default([], true),
+            'versioned': logistica_apps_map.versioned | default({}, true)
+          }) }}
+
+    - name: Substituição de logistica nos aplicativos não versionados
+      ansible.builtin.set_fact:
+        logistica_migrated_apps_map: >-
+          {{ logistica_apps_map | combine({
+            'unversioned': (
+              logistica_apps_map.unversioned | reject('equalto', 'logistica') | list
+              + (['logistica-saldo'] if 'logistica' in logistica_apps_map.unversioned else [])
+            ) | unique,
+            'versioned': {}
+          }) }}
+
+    - name: Substituição de logistica nos aplicativos versionados
+      ansible.builtin.set_fact:
+        logistica_migrated_apps_map: >-
+          {{ logistica_migrated_apps_map | combine({
+            'versioned': logistica_migrated_apps_map.versioned | combine({
+              item.key: (
+                item.value | reject('equalto', 'logistica') | list
+                + (['logistica-saldo'] if 'logistica' in item.value else [])
+              ) | unique
+            })
+          }) }}
+      loop: "{{ logistica_apps_map.versioned | dict2items }}"
+
+    - name: Escrita do registro migrado de aplicativos
+      ansible.builtin.copy:
+        dest: "{{ config_dir_path }}/installed_apps.yml"
+        mode: '0644'
+        content: "{{ logistica_migrated_apps_map | to_yaml }}"
+      when: logistica_migrated_apps_map != logistica_apps_map
