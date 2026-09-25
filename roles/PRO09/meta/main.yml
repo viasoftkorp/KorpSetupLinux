@@ -1,3 +1,2 @@
 dependencies:
-  - role: RMA01_W
-  - role: wms
+  - role: producao
