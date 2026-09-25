@@ -1,7 +1,2 @@
 dependencies:
-  - role: PES00
-  - role: FAT01
-  - role: FAT02_W
-  - role: LOG01_W
-  - role: vendas
-  - role: VEN27
+  - role: tracking

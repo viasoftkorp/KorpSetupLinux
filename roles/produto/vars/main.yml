@@ -1,0 +1,9 @@
+services:
+  Viasoft.Logistics.Products:
+    db:
+      name: Viasoft_Logistics_Products
+      type: mssql
+  Viasoft.Logistica.Produto.Core:
+    db:
+      name: Viasoft_Logistica_Produto_Core
+      type: mssql

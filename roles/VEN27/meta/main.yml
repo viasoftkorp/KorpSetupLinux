@@ -8,7 +8,8 @@ dependencies:
   - role: fiscal
   - role: LOG00
   - role: LOG01_W
-  - role: logistica
+  - role: logistica-saldo
+  - role: produto
   - role: PES00
   - role: PES01
   - role: REL01
