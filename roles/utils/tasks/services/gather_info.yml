@@ -4,6 +4,7 @@
   register: versioned_compose_result
   # por algum motivo, o ansible dá erro executando essa task como super user
   become: false
+  when: not (korp_setup_fast_path | default(true) | bool)
 
 - name: Checagem de compose - não versionado
   ansible.builtin.stat:
@@ -11,6 +12,19 @@
   register: unversioned_compose_result
   # por algum motivo, o ansible dá erro executando essa task como super user
   become: false
+  when: not (korp_setup_fast_path | default(true) | bool)
+
+# Fast path (korp_setup_fast_path): os templates estão no próprio host (connection: local), então a
+# existência é verificada no controlador, sem executar o módulo stat; o resultado tem o mesmo formato.
+# Precisa vir depois dos stats acima: uma tarefa pulada com `register` também sobrescreve a variável.
+- name: Checagem de composes de {{ id }}
+  ansible.builtin.set_fact:
+    versioned_compose_result: >-
+      {{ (playbook_dir ~ '/roles/' ~ id ~ '/templates/composes/' ~ version_without_build ~ '/' ~ id
+          ~ '-compose.yml.j2') | korp_path_stat }}
+    unversioned_compose_result: >-
+      {{ (playbook_dir ~ '/roles/' ~ id ~ '/templates/composes/' ~ id ~ '-compose.yml.j2') | korp_path_stat }}
+  when: korp_setup_fast_path | default(true) | bool
 
 - name: Definição de variáveis
   ansible.builtin.set_fact:
