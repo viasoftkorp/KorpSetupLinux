@@ -1,0 +1,127 @@
+{
+ "log": "s7-installonly-ven27-orig.log",
+ "total_s": 407.0,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.6,
+   "duration_s": 2.0
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.7,
+   "duration_s": 3.8
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.5,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.6,
+   "duration_s": 398.4
+  }
+ ],
+ "task_headers": 5123,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=2859 changed=183 unreachable=0 failed=0 skipped=2343 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 8.24,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 1.26,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.13,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.11,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.01,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.96,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.87,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.8,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.76,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.76,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 396,
+   "s": 84.9
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1276,
+   "s": 54.2
+  },
+  {
+   "task": "utils : Validação",
+   "count": 711,
+   "s": 32.3
+  },
+  {
+   "task": "utils : Criação",
+   "count": 190,
+   "s": 25.2
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 126,
+   "s": 19.8
+  },
+  {
+   "task": "utils : Adição",
+   "count": 184,
+   "s": 19.7
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 56,
+   "s": 16.9
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 132,
+   "s": 15.2
+  },
+  {
+   "task": "utils : Remoção",
+   "count": 217,
+   "s": 9.4
+  },
+  {
+   "task": "utils : Checagem",
+   "count": 76,
+   "s": 8.8
+  }
+ ]
+}

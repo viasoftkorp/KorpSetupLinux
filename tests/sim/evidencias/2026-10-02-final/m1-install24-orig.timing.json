@@ -1,0 +1,127 @@
+{
+ "log": "m1-install24-orig.log",
+ "total_s": 750.3,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.8,
+   "duration_s": 1.4
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.2,
+   "duration_s": 3.9
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.1,
+   "duration_s": 0.7
+  },
+  {
+   "name": "Setup main",
+   "start_s": 6.8,
+   "duration_s": 743.4
+  }
+ ],
+ "task_headers": 9529,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=5168 changed=394 unreachable=0 failed=0 skipped=4693 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 4.14,
+   "task": "infrastructure : Aguarda inicialização do rabbitmq"
+  },
+  {
+   "s": 3.33,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.75,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.07,
+   "task": "utils : Criação de escopos para cliente"
+  },
+  {
+   "s": 2.07,
+   "task": "infrastructure : Criação e inicialização de infrastructure-compose"
+  },
+  {
+   "s": 1.66,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.44,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.42,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.34,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  },
+  {
+   "s": 1.25,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 810,
+   "s": 182.1
+  },
+  {
+   "task": "utils : Definição",
+   "count": 2306,
+   "s": 81.5
+  },
+  {
+   "task": "utils : Criação",
+   "count": 352,
+   "s": 53.5
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1436,
+   "s": 52.8
+  },
+  {
+   "task": "utils : Adição",
+   "count": 318,
+   "s": 45.4
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 242,
+   "s": 44.4
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 270,
+   "s": 37.2
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 72,
+   "s": 31.6
+  },
+  {
+   "task": "Adição",
+   "count": 265,
+   "s": 13.7
+  },
+  {
+   "task": "utils : Remoção",
+   "count": 427,
+   "s": 13.4
+  }
+ ]
+}

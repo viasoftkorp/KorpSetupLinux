@@ -1,0 +1,127 @@
+{
+ "log": "s5a-update-legacy25-orig.log",
+ "total_s": 605.9,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.4,
+   "duration_s": 1.6
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.9,
+   "duration_s": 3.5
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.4,
+   "duration_s": 1.0
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.4,
+   "duration_s": 598.5
+  }
+ ],
+ "task_headers": 7396,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=4167 changed=256 unreachable=0 failed=0 skipped=3447 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 52.03,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 13.84,
+   "task": "infrastructure : Criação e inicialização de infrastructure-compose"
+  },
+  {
+   "s": 3.59,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.57,
+   "task": "infrastructure : Aguarda inicialização do rabbitmq"
+  },
+  {
+   "s": 2.34,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.74,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.68,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.59,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.41,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.37,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 600,
+   "s": 120.9
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1799,
+   "s": 59.5
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 52.0
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1077,
+   "s": 38.2
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 58,
+   "s": 30.8
+  },
+  {
+   "task": "utils : Criação",
+   "count": 281,
+   "s": 30.0
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 182,
+   "s": 30.0
+  },
+  {
+   "task": "utils : Adição",
+   "count": 243,
+   "s": 21.7
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 200,
+   "s": 21.0
+  },
+  {
+   "task": "utils : Edição",
+   "count": 98,
+   "s": 16.3
+  }
+ ]
+}

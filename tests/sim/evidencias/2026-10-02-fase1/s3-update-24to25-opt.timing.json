@@ -1,0 +1,127 @@
+{
+ "log": "s3-update-24to25-opt.log",
+ "total_s": 201.1,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 1.7
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.2,
+   "duration_s": 3.4
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.7,
+   "duration_s": 2.0
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.7,
+   "duration_s": 192.5
+  }
+ ],
+ "task_headers": 2766,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1288 changed=157 unreachable=0 failed=0 skipped=1494 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 14.78,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 3.41,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.37,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.0,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.93,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.58,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.35,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.33,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.3,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.21,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 29.5
+  },
+  {
+   "task": "utils : Definição",
+   "count": 475,
+   "s": 16.2
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 14.8
+  },
+  {
+   "task": "utils : Criação",
+   "count": 207,
+   "s": 10.8
+  },
+  {
+   "task": "utils : Checagem",
+   "count": 92,
+   "s": 10.0
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 92,
+   "s": 8.8
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 42,
+   "s": 7.0
+  },
+  {
+   "task": "Garantia",
+   "count": 244,
+   "s": 6.6
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 33,
+   "s": 6.0
+  },
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 4.8
+  }
+ ]
+}
