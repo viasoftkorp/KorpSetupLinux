@@ -7,6 +7,14 @@
 # depois bancos), e a validação das variáveis acontece antes de qualquer escrita.
 # Ver docs/desempenho/2026-10-02-desempenho-setup-design.md (seção 4.2).
 
+- name: "Verificação do loop de {{ id }}"
+  ansible.builtin.assert:
+    that: service_name == ansible_loop.allitems[0].key
+    fail_msg: >-
+      O cadastro em lote assume que o chamador percorre with_dict services com service_name: item.key
+      (service_name '{{ service_name }}' difere da primeira chave do loop)
+    quiet: true
+
 - name: "Planejamento do cadastro dos serviços de {{ id }}"
   ansible.builtin.set_fact:
     korp_batch: >-
@@ -50,6 +58,11 @@
     read_keys: "{{ korp_batch.oauth_services }}"
   register: korp_kv_batch_result
   when: (korp_batch.kv_services | length > 0) or (korp_batch.oauth_services | length > 0)
+
+- name: "KVs criados ou alterados de {{ id }}"
+  ansible.builtin.debug:
+    msg: "{{ korp_kv_batch_result.results | rejectattr('action', 'equalto', 'unchanged') | list }}"
+  when: korp_kv_batch_result.results is defined
 
 - name: "Manutenção de custom_kv_overwrite para os próximos serviços"
   ansible.builtin.set_fact:

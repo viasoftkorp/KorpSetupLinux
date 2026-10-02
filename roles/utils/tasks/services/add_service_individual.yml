@@ -1,3 +1,4 @@
+# ATENÇÃO: add_services_batch.yml (fast path) reproduz este arquivo em lote; ao alterar um, altere o outro.
 # Cadastro de UM serviço (caminho original, usado com korp_setup_fast_path=false).
 # Incluído por add_service.yml a cada iteração do loop; com o fast path, o cadastro de todos os
 # serviços é feito por add_services_batch.yml na primeira iteração.
