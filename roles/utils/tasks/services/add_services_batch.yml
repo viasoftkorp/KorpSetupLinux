@@ -40,7 +40,8 @@
 - name: "Renderização dos KVs dos serviços de {{ id }}"
   ansible.builtin.set_fact:
     korp_rendered_kv: >-
-      {{ lookup('ansible.builtin.template', 'consul_kv/' ~ (korp_svc | lower) ~ '.json.j2',
+      {{ lookup('ansible.builtin.template',
+                (consul_kv_template_dir | default('consul_kv')) ~ '/' ~ (korp_svc | lower) ~ '.json.j2',
                 template_vars={'service_name': korp_svc,
                                'service_vars': korp_batch.service_vars[korp_svc],
                                'secret': korp_batch.secrets[korp_svc]}) }}
