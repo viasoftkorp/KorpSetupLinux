@@ -2,6 +2,11 @@
 # Executado DENTRO do host isolado, como root: deixa o host no estado de um servidor já provisionado
 # (o que roles/provisioning faria), antes do primeiro setup.sh.
 set -euo pipefail
+# Proteção: só roda dentro do host isolado de testes (nunca em um servidor real).
+if [ ! -e /sim/sim-entry ] || [[ "$(hostname)" != sim* ]]; then
+  echo "Recusado: este script só pode ser executado dentro do host isolado de testes (hostname 'sim*' com /sim/sim-entry)." >&2
+  exit 1
+fi
 mkdir -p /etc/korp && chown korp:root /etc/korp
 # CA do gateway/portal simulados (nos servidores reais: certificado do nginx local)
 cp /simwork/tls/ca.crt /usr/local/share/ca-certificates/korpsim-ca.crt && update-ca-certificates >/dev/null

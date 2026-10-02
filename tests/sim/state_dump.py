@@ -30,6 +30,9 @@ SKIP_UNDER = ("/etc/korp/dados-docker/",)
 
 SECRET_KEY_HINTS = ("password", "secret", "key", "token", "pass")
 INVENTORY_SECRETS = []
+# Authorization.Secret de cada KV (chave -> segredo); usado apenas em memória para comparar com o
+# hash gravado em ClientSecrets e nunca gravado no dump.
+KV_SECRETS = {}
 
 
 def inventory_secrets():
@@ -97,6 +100,7 @@ def consul_kv():
             text = value
             secret = ((parsed or {}).get("Authorization") or {}).get("Secret") if isinstance(parsed, dict) else None
             if isinstance(secret, str) and secret:
+                KV_SECRETS[item["Key"]] = secret
                 text = text.replace(secret, "<secret>")
             # formatação exata (to_nice_json) comparável mesmo com segredo aleatório
             result[item["Key"]] = {"json": mask_secrets(parsed), "text_sha": sha(text)}
@@ -143,6 +147,13 @@ def mssql(host, user, password):
             cur.execute(q)
             rows = [[str(x) for x in r] for r in cur.fetchall()]
             if name == "ClientSecrets":
+                # invariante: ClientSecrets.Value == base64(sha256(Authorization.Secret do KV)); só o booleano é gravado
+                matches = {}
+                for r in rows:
+                    if r[0] in KV_SECRETS:
+                        expected = base64.b64encode(hashlib.sha256(KV_SECRETS[r[0]].encode("utf-8")).digest()).decode("ascii")
+                        matches[r[0]] = matches.get(r[0], False) or r[2] == expected
+                oauth["secret_matches_kv"] = matches
                 rows = [[r[0], r[1], "<secret:%s>" % sha(r[2])] for r in rows]
             oauth[name] = sorted(rows)
         out["oauth"] = oauth
