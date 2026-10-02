@@ -98,6 +98,12 @@ do
    export "$KEY"="$VALUE"
 done
 
+# fast_path vazio (ex.: "fast_path=") mantém o padrão
+if [ "$fast_path" == "" ];
+then
+   fast_path=true
+fi
+
 if [ "$custom_tags" == "" ];
 then   
    ansible_tags="default-setup,install"
