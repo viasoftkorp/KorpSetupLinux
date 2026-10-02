@@ -186,6 +186,74 @@ lote — não mudou na revisão final além de mensagens de erro, validação de
 ``service_name`` e a fonte única do comando Postgres (exercitada em M2–M4 e, no caminho original, em M7).
 A instalação nova da 2025.1 não foi medida isoladamente (a da 2024.2 foi, na fase 1).
 
+Fluxos de aplicativos versionados (SD-40916)
+============================================
+
+As tags ``update-versioned`` e ``install-versioned-only`` (SD-40916, PRs #591–#593) foram incorporadas às branches de
+desempenho junto com um ajuste: no ``install-versioned-only``, um AppId que ainda não está registrado em nenhuma versão
+tem os serviços do compose versionado (container ``<serviço>-<versão>``) cadastrados pelo fluxo normal de
+``services/add_service`` — KV, cliente OAuth, bancos e diretórios de volume, sem compose nem registro. AppIds já
+registrados continuam sem nenhuma alteração de KV (os KVs são compartilhados entre versões). Dependências da role e
+serviços não versionados ou exclusivos seguem fora destes fluxos, como no PR. Os dois fluxos usam o
+``reconciled_compose_up`` otimizado e, no cadastro, o lote.
+
+Validação no ambiente isolado, a partir de um servidor com 2024.2 e 2025.1 instaladas (evidências:
+``tests/sim/evidencias/2026-10-02-sd40916``). Referência: o código original com o PR (na 2025.1, a release atual com o
+PR mesclado — o PR #593 parte de um commit anterior da release, com outro compose do LOG102).
+
+.. list-table::
+   :header-rows: 1
+
+   * - Linha / token
+     - Cenário
+     - Referência
+     - Desempenho
+     - Estado final
+   * - 2024.2
+     - ``update-versioned``
+     - 58,8 s
+     - 25,1 s
+     - igual
+   * - 2024.2
+     - ``install-versioned-only`` LOG102,LOG103 (já registrados)
+     - 36,7 s
+     - 18,0 s
+     - igual
+   * - 2024.2
+     - ``install-versioned-only`` PRO09,RMA01_W (nunca instalados) — ``fast_path=false`` × padrão
+     - 32,7 s
+     - 20,5 s
+     - igual
+   * - 2024.2
+     - ``install-only`` PRO09,RMA01_W (fluxo normal, regressão do cadastro)
+     - 51,6 s
+     - 27,3 s
+     - igual
+   * - 2025.1
+     - ``update-versioned``
+     - 63,4 s
+     - 25,4 s
+     - igual
+   * - 2025.1
+     - ``install-versioned-only`` LOG102 (já registrado; só frontend no compose versionado)
+     - 15,0 s
+     - 15,1 s
+     - igual
+   * - 2025.1
+     - ``install-versioned-only`` engenharia,RMA01_W,PCRG001 (nunca instalados)
+     - 41,8 s
+     - 28,8 s
+     - igual
+   * - 2025.1
+     - ``install-only`` engenharia,RMA01_W,PCRG001 (fluxo normal, regressão do cadastro)
+     - 53,8 s
+     - 27,0 s
+     - igual
+
+No caso de AppId nunca instalado, os KVs criados para os serviços versionados têm o mesmo conteúdo que uma instalação
+normal do mesmo app produziria, exceto ``Authorization.Secret`` (aleatório a cada instalação). Sem o ajuste, o PR
+subia esses containers sem KV.
+
 Validação pendente num servidor real (QA12)
 ===========================================
 

@@ -5,6 +5,8 @@ Análise e tabelas: `docs/files/guias/desempenho_setup_resultados.rst`.
 
 - `2026-10-02-fase1/`: validação durante o desenvolvimento (ambiente isolado da sessão de trabalho, mesmos scripts).
 - `2026-10-02-final/`: medição final com o `tests/sim` do repositório e os commits finais das duas branches.
+- `2026-10-02-sd40916/`: fluxos `update-versioned`/`install-versioned-only` (SD-40916) sobre as branches de desempenho
+  (`sd24-*` com token 2024.2, `sd25-*` com token 2025.1).
 
 Por execução:
 
