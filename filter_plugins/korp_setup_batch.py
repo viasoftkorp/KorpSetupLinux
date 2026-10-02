@@ -11,10 +11,10 @@ import hashlib
 import json
 import os
 import random
+import uuid
 
 from ansible.errors import AnsibleFilterError
 from ansible.module_utils.common.text.converters import to_text
-from ansible.plugins.filter.core import to_uuid
 
 
 def _combine(base, extra):
@@ -28,9 +28,17 @@ def _combine(base, extra):
     return result
 
 
+# Namespace usado pelo filtro `to_uuid` do Ansible
+_ANSIBLE_UUID_NAMESPACE = uuid.UUID("361E6D51-FAEC-444A-9079-341386DA8E2E")
+
+
+def _to_uuid(value):
+    return str(uuid.uuid5(_ANSIBLE_UUID_NAMESPACE, to_text(value, errors="surrogate_or_strict")))
+
+
 def _legacy_secret(rng):
     """Mesmo valor de `10000 | random | to_uuid | upper`."""
-    return to_text(to_uuid(rng.randrange(0, 10000, 1))).upper()
+    return _to_uuid(rng.randrange(0, 10000, 1)).upper()
 
 
 def korp_service_plan(services, names, db_suffix_divider, db_suffix):
@@ -78,6 +86,8 @@ def korp_service_plan(services, names, db_suffix_divider, db_suffix):
             else:
                 plan["unsupported_databases"].append({"service": name, "type": db["type"]})
         if "volumes_directories" in service_vars:
+            if not isinstance(service_vars["volumes_directories"], list):
+                raise AnsibleFilterError("'volumes_directories' de %s deve ser uma lista" % name)
             plan["volume_directories"].extend(service_vars["volumes_directories"])
         plan["last_service"] = name
     return plan
