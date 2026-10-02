@@ -1,0 +1,2 @@
+   5 changed  Remoção do container legado substituído
+total: 5

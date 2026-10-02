@@ -1,0 +1,4 @@
+# compare_dumps.py dumps/s1-install24-initial.json dumps/s1-install24-orig-norm.json dumps/s1-install24-opt-norm.json --allow ^/containers/(postgres|minio-server|minio-server-new)/config_hash$
+ignorado (3): ^/containers/(postgres|minio-server|minio-server-new)/config_hash$
+ignorado (44): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)

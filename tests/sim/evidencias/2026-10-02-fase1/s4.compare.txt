@@ -1,0 +1,3 @@
+# compare_dumps.py dumps/upd25-initial.json dumps/s4-orig.json dumps/s4-opt.json
+ignorado (8): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)

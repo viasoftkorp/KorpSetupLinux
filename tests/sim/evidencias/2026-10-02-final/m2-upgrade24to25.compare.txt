@@ -1,0 +1,5 @@
+# compare_dumps.py m2-upgrade24to25-initial.json m2-upgrade24to25-orig.json m2-upgrade24to25-opt.json --allow ^/files//etc/korp/configs/temporalio/nginx/basic_auth_temporal_ui/sha$ --allow ^/files//etc/korp/composes/temporal-compose.yml/sha$ --allow ^/containers/temporal[^/]*/config_hash$
+ignorado (2): ^/containers/temporal[^/]*/config_hash$
+ignorado (1): ^/files//etc/korp/configs/temporalio/nginx/basic_auth_temporal_ui/sha$
+ignorado (200): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)

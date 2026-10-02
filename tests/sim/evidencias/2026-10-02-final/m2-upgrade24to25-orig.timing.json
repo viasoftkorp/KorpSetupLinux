@@ -1,0 +1,127 @@
+{
+ "log": "m2-upgrade24to25-orig.log",
+ "total_s": 857.8,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.7,
+   "duration_s": 2.0
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.7,
+   "duration_s": 4.2
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.0,
+   "duration_s": 1.3
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.2,
+   "duration_s": 849.5
+  }
+ ],
+ "task_headers": 8183,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=4633 changed=275 unreachable=0 failed=0 skipped=3807 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 19.95,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 3.48,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.73,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.96,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.89,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.69,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.66,
+   "task": "utils : Adição de cliente oauth para Viasoft.OrganizationalStructureManagement"
+  },
+  {
+   "s": 1.64,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.64,
+   "task": "utils : Leitura de secret do Consul"
+  },
+  {
+   "s": 1.52,
+   "task": "utils : Inspeção do backup de migração de viasoft-legacy-parametros"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 678,
+   "s": 192.4
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1979,
+   "s": 102.2
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1211,
+   "s": 61.7
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 205,
+   "s": 44.9
+  },
+  {
+   "task": "utils : Criação",
+   "count": 305,
+   "s": 42.8
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 66,
+   "s": 39.7
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 226,
+   "s": 38.2
+  },
+  {
+   "task": "utils : Adição",
+   "count": 274,
+   "s": 36.1
+  },
+  {
+   "task": "utils : Edição",
+   "count": 110,
+   "s": 23.5
+  },
+  {
+   "task": "utils : Sobrescrita",
+   "count": 110,
+   "s": 21.6
+  }
+ ]
+}

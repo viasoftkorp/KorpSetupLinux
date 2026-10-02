@@ -1,0 +1,127 @@
+{
+ "log": "m3-rerun25-opt.log",
+ "total_s": 243.2,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.7,
+   "duration_s": 2.2
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.9,
+   "duration_s": 5.1
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 8.0,
+   "duration_s": 1.9
+  },
+  {
+   "name": "Setup main",
+   "start_s": 9.8,
+   "duration_s": 233.4
+  }
+ ],
+ "task_headers": 2327,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1278 changed=80 unreachable=0 failed=0 skipped=1064 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 12.0,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 3.5,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.32,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 2.25,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.87,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.35,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.31,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.25,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 1.23,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 1.12,
+   "task": "infrastructure : Transferência de scripts de template"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Definição",
+   "count": 475,
+   "s": 27.0
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 19.5
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 92,
+   "s": 14.1
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 12.0
+  },
+  {
+   "task": "utils : Criação",
+   "count": 102,
+   "s": 10.3
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 42,
+   "s": 10.2
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 33,
+   "s": 9.3
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 124,
+   "s": 8.4
+  },
+  {
+   "task": "Setup",
+   "count": 128,
+   "s": 7.4
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 20,
+   "s": 7.2
+  }
+ ]
+}
