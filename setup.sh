@@ -20,6 +20,8 @@ create_random_string() {
 #     caso 'custom_tags' seja ['remove-apps'], será utilizado para definir os aplicativos que serão desinstalados
 #   custom_tags=update-versioned - Atualiza somente os AppIds versionados registrados para a versão corrente
 #   custom_tags=install-versioned-only - Instala somente os composes versionados dos AppIds informados em apps
+#     (AppId ainda não instalado em nenhuma versão: cadastra também KVs, clientes OAuth e bancos dos serviços
+#     versionados; dependências e serviços não versionados/exclusivos não são instalados por este fluxo)
 #   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
