@@ -1,0 +1,101 @@
+---
+# Deve ser chamado dentro de loop e recebe app_name como o AppId a instalar.
+# Este fluxo deliberadamente não importa a role do AppId: ele manipula apenas o
+# compose versionado da versão corrente.
+- name: "Instalação somente versionada de {{ app_name }}"
+  block:
+    - name: "Checagem de compose versionado de {{ app_name }}"
+      ansible.builtin.stat:
+        path: "{{ playbook_dir }}/roles/{{ app_name }}/templates/composes/{{ version_without_build }}/{{ app_name }}-compose.yml.j2"
+      register: versioned_compose_result
+      # Por algum motivo, o Ansible dá erro executando essa task como super user.
+      become: false
+
+    - name: "Validação de compose versionado de {{ app_name }}"
+      ansible.builtin.fail:
+        msg: >-
+          Não existe compose versionado para o AppId '{{ app_name }}'
+          na versão '{{ version_without_build }}'.
+      when: not versioned_compose_result.stat.exists
+
+    - name: "Garantia do diretório de compose versionado de {{ app_name }}"
+      ansible.builtin.file:
+        path: "{{ versioned_compose_dir_path }}"
+        state: directory
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0755'
+
+    # Os KVs, clientes OAuth e bancos são compartilhados entre as versões (chave = nome do serviço). Se o
+    # AppId já está registrado em alguma versão, eles já existem e não são alterados aqui. Se o AppId nunca
+    # foi instalado, os serviços do compose versionado (container "<serviço>-<versão>") passam pelo cadastro
+    # normal de services/add_service (KV, cliente OAuth, bancos e diretórios de volume), sem compose nem
+    # registro. Dependências da role e serviços não versionados ou exclusivos continuam fora deste fluxo.
+    - name: "Leitura do mapeamento de aplicativos instalados para {{ app_name }}"
+      ansible.builtin.set_fact:
+        versioned_only_apps_map: "{{ lookup('file', config_dir_path + '/installed_apps.yml') | from_yaml }}"
+
+    - name: "Definição dos serviços do compose versionado de {{ app_name }}"
+      vars:
+        versioned_only_suffix: "-{{ version_without_build }}"
+        versioned_only_compose: "{{ lookup('ansible.builtin.template', versioned_compose_result.stat.path) | from_yaml }}"
+        versioned_only_role_services: >-
+          {{ (lookup('ansible.builtin.template', playbook_dir + '/roles/' + app_name + '/vars/main.yml')
+              | from_yaml)['services'] | default({}, true) }}
+        versioned_only_compose_services: >-
+          {{ versioned_only_compose.services | dict2items
+             | selectattr('value.container_name', 'defined')
+             | map(attribute='value.container_name') | map('string')
+             | select('match', '.*' ~ (versioned_only_suffix | regex_escape) ~ '$')
+             | map('regex_replace', (versioned_only_suffix | regex_escape) ~ '$', '') | list }}
+      ansible.builtin.set_fact:
+        versioned_only_registered: >-
+          {{ app_name in (versioned_only_apps_map.unversioned | default([], true))
+             or app_name in (versioned_only_apps_map.versioned | default({}, true) | dict2items
+                             | map(attribute='value') | select | flatten) }}
+        versioned_only_services: >-
+          {{ versioned_only_role_services | dict2items
+             | selectattr('key', 'in', versioned_only_compose_services) | items2dict }}
+
+    - name: "Cadastro dos serviços versionados de {{ app_name }} (aplicativo ainda não instalado)"
+      when:
+        - not (versioned_only_registered | bool)
+        - versioned_only_services | length > 0
+      block:
+        - name: "Definição dos serviços a cadastrar de {{ app_name }}"
+          ansible.builtin.set_fact:
+            id: "{{ app_name }}"
+            services: "{{ versioned_only_services }}"
+
+        - name: "Adição de serviços versionados de {{ app_name }}"
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: services/add_service
+          vars:
+            service_name: "{{ item.key }}"
+            skip_compose: true
+            skip_app_register: true
+            # o cadastro roda na role utils; os templates de KV ficam na role do app
+            consul_kv_template_dir: "{{ playbook_dir }}/roles/{{ app_name }}/templates/consul_kv"
+          with_dict: "{{ services }}"
+          loop_control:
+            extended: true
+
+    - name: "Definição de {{ app_name }} como aplicativo somente versionado"
+      ansible.builtin.set_fact:
+        id: "{{ app_name }}"
+        has_versioned_services: true
+        has_unversioned_services: false
+        has_exclusive_services: false
+
+    - name: "Setup do compose versionado de {{ app_name }}"
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: apps/compose_setup.yml
+
+    - name: "Registro de {{ app_name }} como aplicativo versionado"
+      ansible.builtin.include_role:
+        name: utils
+        tasks_from: apps/ensure_mapping.yml
+  # Necessário porque esta task é incluída dinamicamente por uma tag opt-in.
+  tags: always
