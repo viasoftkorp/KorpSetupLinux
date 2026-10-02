@@ -124,7 +124,7 @@ def korp_path_stat(path):
     a lookup do compose não versionado fica indefinida e a tarefa é pulada pelo `when`).
     Avaliado no controlador, que é o próprio host (os plays usam connection: local).
     """
-    if os.path.exists(path):
+    if os.path.lexists(path):  # mesmo critério do stat (follow: false)
         return {"stat": {"exists": True, "path": path}}
     return {"stat": {"exists": False}}
 
