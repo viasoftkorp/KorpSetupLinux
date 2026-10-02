@@ -1,0 +1,127 @@
+{
+ "log": "s10-fastpath-false.log",
+ "total_s": 593.3,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 1.8
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.3,
+   "duration_s": 3.5
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.8,
+   "duration_s": 1.0
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.8,
+   "duration_s": 585.5
+  }
+ ],
+ "task_headers": 8433,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=4498 changed=196 unreachable=0 failed=0 skipped=4191 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 7.66,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 2.27,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.92,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.23,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.13,
+   "task": "utils : Checagem de compose - versionado"
+  },
+  {
+   "s": 1.06,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.04,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.01,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 0.99,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.86,
+   "task": "finishing : Notificação de TenantManagement"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 678,
+   "s": 135.6
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1979,
+   "s": 67.0
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1211,
+   "s": 42.2
+  },
+  {
+   "task": "utils : Criação",
+   "count": 305,
+   "s": 32.8
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 205,
+   "s": 32.2
+  },
+  {
+   "task": "utils : Adição",
+   "count": 208,
+   "s": 24.7
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 226,
+   "s": 19.7
+  },
+  {
+   "task": "utils : Edição",
+   "count": 110,
+   "s": 17.8
+  },
+  {
+   "task": "utils : Sobrescrita",
+   "count": 110,
+   "s": 16.8
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 13.3
+  }
+ ]
+}
