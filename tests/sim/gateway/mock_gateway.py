@@ -5,14 +5,11 @@ Isolated-test only. Serves deterministic fake data; never contacts real services
 Env: SIM_VERSION (e.g. 2025.1.0), SIM_LICENSED (comma list), SIM_TENANT.
 Every request is appended to /var/log/mock_gateway.jsonl for assertions.
 """
-import json, os, ssl, sys, threading, time
+import json, os, ssl, threading, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 STATE = {"version": os.environ.get("SIM_VERSION", "2025.1.0")}
 LOG = os.environ.get("SIM_LOG", "/var/log/mock_gateway.jsonl")
-
-def tree():
-    return defaultdict(tree)
 
 SECRET_PATHS = """
 Global.ApiWebKey
