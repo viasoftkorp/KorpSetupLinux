@@ -25,7 +25,7 @@ class ArgvTest(unittest.TestCase):
         for name in ("Korp.A-2025.1.0", "Korp.A", "x-2025.1.0-2025.1.0", ""):
             self.assertEqual(m.legacy_container_name(name, V), cm.legacy_container_name(name, V))
         names = ["0123456789ab_Korp.A", "0123456789ab_Korp.AB", "Korp.A", "zz3456789ab_Korp.A"]
-        self.assertEqual(m.partial_container_names(names, "Korp.A"), cm.partial_container_names(names, "Korp.A"))
+        self.assertEqual(m.partial_container_names(names, "Korp.A"), cm.partial_compose_container_names(names, "Korp.A"))
 
 
 class ClassifyTest(unittest.TestCase):
