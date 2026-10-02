@@ -99,7 +99,9 @@ pull-public)
   N=$1; docker exec -e SIM_VERSIONS="${SIM_VERSIONS:-2024.2.0,2025.1.0}" $N bash -c 'rm -rf /tmp/simrepo && mkdir -p /tmp/simrepo
     for r in $(git -C /simwork/mirror.git for-each-ref --format="%(refname:short)" refs/heads/); do
       mkdir -p "/tmp/simrepo/$r" && git -C /simwork/mirror.git archive "$r" roles | tar -x -C "/tmp/simrepo/$r"; done
-    python3 /sim/sim_tag_images.py public /tmp/simrepo "$SIM_VERSIONS" | while read i; do docker pull -q "$i" >/dev/null && echo "pulled $i" || echo "FAILED $i"; done' ;;
+    python3 /sim/sim_tag_images.py public /tmp/simrepo "$SIM_VERSIONS" | while read i; do docker pull -q "$i" >/dev/null && echo "pulled $i" || echo "FAILED $i"; done
+    # minio/minio saiu do Docker Hub (o repo passou a usar korp/minio): servidores antigos já têm essas imagens
+    for i in $(docker images --format "{{.Repository}}:{{.Tag}}" korp/minio); do docker tag "$i" "minio/minio:${i#*:}"; done' ;;
 setup)
   N=$1; LOG=$2; shift 2
   docker exec -u deployer -w /home/deployer -e SIM_REF="${SIM_REF}" $N bash -c 'git -C /simwork/mirror.git show "${SIM_REF}:setup.sh" > /tmp/setup.sh'

@@ -5,6 +5,7 @@ can run `docker compose up` without registry credentials. Public infra images ar
 (pulled for real), except the ones in FAKE_PUBLIC that must not run for real in a sandbox."""
 import glob, os, re, subprocess, sys, time
 import jinja2
+import yaml
 
 ACCOUNT = os.environ.get("SIM_ACCOUNT", "korpsim")
 FAKE_PUBLIC = ("nickfedor/watchtower", "portainer/portainer-ce", "sosedoff/pgweb")
@@ -27,15 +28,26 @@ def tag(images):
             n += 1
     return n
 
+def role_vars(path):
+    """Variáveis simples de roles/<role>/vars/main.yml (ex.: versões de imagens do temporal)."""
+    role_dir = path.split("/templates/")[0]
+    try:
+        data = yaml.safe_load(open(os.path.join(role_dir, "vars", "main.yml"))) or {}
+    except Exception:
+        return {}
+    return {k: v for k, v in data.items() if isinstance(v, (str, int, float))}
+
+
 def from_templates(repo, versions):
     env = jinja2.Environment(undefined=jinja2.ChainableUndefined)
     imgs = set()
     for path in glob.glob(f"{repo}/roles/*/templates/composes/**/*.j2", recursive=True):
         src = open(path).read()
+        extra = role_vars(path)
         for v in versions:
             try:
-                txt = env.from_string(src).render(docker_account=ACCOUNT, docker_image_suffix="",
-                                                  version_without_build=v)
+                txt = env.from_string(src).render(dict(extra, docker_account=ACCOUNT, docker_image_suffix="",
+                                                       version_without_build=v))
             except Exception:
                 txt = src
             imgs.update(IMG_RE.findall(txt))
