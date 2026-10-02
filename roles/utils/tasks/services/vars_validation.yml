@@ -1,4 +1,5 @@
 ---
+# ATENÇÃO: add_services_batch.yml (fast path) reproduz este arquivo em lote; ao alterar um, altere o outro.
 - name: "Validação de variáveis de {{ service_name }}"
   ansible.builtin.fail:
     msg: "Um ou mais valores não foram setados nas variáveis de {{ service_name }}"
