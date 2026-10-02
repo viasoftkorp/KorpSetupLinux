@@ -58,5 +58,20 @@ SIM_REF=<otimizado> ./simctl.sh setup sim1 b.log branch_name=<otimizado> token=s
 ./simctl.sh compare .work/dumps/initial.json .work/dumps/a.json .work/dumps/b.json
 ```
 
+Ou, de uma vez (original e otimizado a partir do mesmo snapshot, com dumps e comparação):
+
+```bash
+scenarios/run_pair.sh s4 upd25 2025.1.0 <ref-original> <ref-otimizada> custom_tags=update
+```
+
 `compare` aceita diferenças apenas em segredos gerados aleatoriamente para KVs/clientes criados na própria
-execução e exige que segredos pré-existentes continuem idênticos.
+execução e exige que segredos pré-existentes continuem idênticos. O dump substitui por `<inventory>` os
+valores sensíveis do inventário (senhas geradas aleatoriamente pelo `inventory-playbook` numa instalação
+nova) e ignora dados escritos pelos próprios containers abaixo dos diretórios de volume. Não-determinismo
+conhecido do código original deve ser declarado com `--allow REGEX` (ex.: o htpasswd do Temporal UI, gerado
+com salt aleatório).
+
+Estados legados reais podem ser produzidos instalando com os commits históricos anteriores ao DEVO-5167
+(`repro/devo-7182-old` para 2024.2 e `repro/devo-7182-2025.1-old` para 2025.1) e atualizando com o código
+atual; `scenarios/make_legacy_states.sh` cria sobre um ambiente 2025.1 os estados E, F, A e C tratados pelo
+DEVO-7182 (parcial, backup de migração, identidade conflitante, legado sem sufixo).

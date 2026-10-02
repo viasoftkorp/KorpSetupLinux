@@ -28,6 +28,43 @@ SKIP_DIRS = ("/etc/korp/ansible", "/etc/korp/lost+found")
 SKIP_UNDER = ("/etc/korp/dados-docker/",)
 
 
+SECRET_KEY_HINTS = ("password", "secret", "key", "token", "pass")
+INVENTORY_SECRETS = []
+
+
+def inventory_secrets():
+    """Valores sensíveis gerados no inventário (senhas aleatórias criadas pelo inventory-playbook).
+
+    São substituídos por <inventory> antes de registrar/hashear, para que duas instalações novas
+    (cada uma com suas senhas aleatórias) possam ser comparadas."""
+    try:
+        import yaml
+        out = subprocess.run(["ansible-vault", "view", "/etc/korp/ansible/inventory.yml",
+                              "--vault-id", "/etc/korp/ansible/.vault_key"], capture_output=True, text=True)
+        data = yaml.safe_load(out.stdout) or {}
+    except Exception:
+        return []
+    found = []
+
+    def walk(node, key=""):
+        if isinstance(node, dict):
+            for k, v in node.items():
+                walk(v, str(k).lower())
+        elif isinstance(node, list):
+            for v in node:
+                walk(v, key)
+        elif isinstance(node, str) and len(node) >= 8 and any(h in key for h in SECRET_KEY_HINTS):
+            found.append(node)
+    walk(data)
+    return sorted(set(found), key=len, reverse=True)
+
+
+def norm(text):
+    for value in INVENTORY_SECRETS:
+        text = text.replace(value, "<inventory>")
+    return text
+
+
 def sha(data):
     return hashlib.sha256(data if isinstance(data, bytes) else str(data).encode()).hexdigest()[:16]
 
@@ -54,6 +91,7 @@ def consul_kv():
     result = {}
     for item in json.loads(raw):
         value = base64.b64decode(item["Value"]).decode("utf-8", "replace") if item.get("Value") else None
+        value = norm(value) if value is not None else None
         try:
             parsed = json.loads(value) if value is not None else None
             text = value
@@ -146,7 +184,7 @@ def files():
             }
             if info["type"] == "f" and entry.startswith(HASH_DIRS) and not entry.startswith(META_ONLY_DIRS):
                 with open(entry, "rb") as fh:
-                    info["sha"] = sha(fh.read())
+                    info["sha"] = sha(norm(fh.read().decode("utf-8", "surrogateescape")).encode("utf-8", "surrogateescape"))
             out[entry] = info
     # dados-docker: apenas os diretórios criados pelo setup (subdiretórios de dados dos serviços são dos containers)
     return out
@@ -179,6 +217,7 @@ def main():
     ap.add_argument("--mssql-password-file", required=True)
     a = ap.parse_args()
     password = open(a.mssql_password_file).read().strip()
+    INVENTORY_SECRETS.extend(inventory_secrets())
     cron = run(["crontab", "-l", "-u", "korp"])
     state = {
         "consul_kv": consul_kv(),
