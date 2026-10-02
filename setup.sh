@@ -22,6 +22,7 @@ create_random_string() {
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
 #   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
+#   fast_path=<bool> - OPCIONAL, padrão true - false executa as tarefas originais por serviço (sem as otimizações de desempenho)
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -55,6 +56,7 @@ https_port="";
 http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
+fast_path=true;
 
 ini_file_path="./setup_config.ini"
 
@@ -257,7 +259,8 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "apps":['$apps'],
     "removed_version": "'$removed_version'",
     "skip_salt_test": '$skip_salt_test',
-    "should_update_rabbitmq": '$should_update_rabbitmq'
+    "should_update_rabbitmq": '$should_update_rabbitmq',
+    "korp_setup_fast_path": '$fast_path'
   }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
 ansible_rc=${PIPESTATUS[0]}
