@@ -92,5 +92,15 @@ class OAuthTest(unittest.TestCase):
                 f.korp_oauth_clients(values, ["A"])
 
 
+class PathStatTest(unittest.TestCase):
+    def test_existing_file_has_path(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile() as fh:
+            self.assertEqual(f.korp_path_stat(fh.name), {"stat": {"exists": True, "path": fh.name}})
+
+    def test_missing_file_has_no_path(self):
+        self.assertEqual(f.korp_path_stat("/nao/existe/compose.yml.j2"), {"stat": {"exists": False}})
+
+
 if __name__ == "__main__":
     unittest.main()
