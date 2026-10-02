@@ -125,6 +125,8 @@ Para mantenedores
   precisa ser feita no outro; os arquivos originais têm um aviso. A regra de merge de KV e o comando de criação de
   banco Postgres têm uma única fonte (``module_utils/korp_kv_merge.py`` e
   ``templates/queries/create_db_postgres.sh.j2``).
+* ``consul_kv_template_dir`` (opcional, padrão ``consul_kv``) existe nos dois caminhos do cadastro de KV: usado pelo
+  ``install-versioned-only`` (SD-40916), que cadastra serviços fora da role do app.
 * Ao alterar a reconciliação de compose (``recover_partial``/``reconcile``/``cleanup_*``), revise as condições de
   ``korp_compose_state.classify``: elas precisam cobrir todo caso em que essas tarefas agem ou falham.
 * Depois de qualquer mudança: ``bash tests/run_unit_tests.sh`` e, no ambiente isolado, um par original × otimizado
