@@ -41,12 +41,7 @@ def merge_kv(current_kv, new_kv, keys_to_overwrite):
         keys_sequence = key_path.split(".")
         new_val = access_value(keys_sequence, new_kv)
         if new_val:
-            try:
-                merged_kv = replace_key(keys_sequence, merged_kv, new_val)
-            except TypeError:
-                # Caminho não é um dict em algum nível, não consegue substituir
-                # Mantém o estado atual de merged_kv
-                pass
+            merged_kv = replace_key(keys_sequence, merged_kv, new_val)
     return merged_kv
 
 
