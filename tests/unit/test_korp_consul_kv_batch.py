@@ -23,6 +23,13 @@ class FakeKV:
         return True
 
 
+class FailingPutKV(FakeKV):
+    def put(self, key, value, cas=None):
+        if key == "B":
+            raise RuntimeError("consul fora do ar")
+        return super().put(key, value, cas)
+
+
 class BatchTest(unittest.TestCase):
     def run_batch(self, kv, items, default=("D",), custom=None, custom_defined=False, read=()):
         return mod.ensure_kvs(kv, items, list(default), custom, custom_defined, list(read))
@@ -108,6 +115,13 @@ class BatchTest(unittest.TestCase):
         with self.assertRaises(mod.KorpKVError) as ctx:
             self.run_batch(kv, [{"key": "A", "new_kv": {}, "has_custom_kv_overwrite": False}])
         self.assertIn("A", str(ctx.exception))
+
+    def test_put_failure_mentions_key_and_carries_results(self):
+        items = [{"key": k, "new_kv": {"x": 1}, "has_custom_kv_overwrite": False} for k in ("A", "B", "C")]
+        with self.assertRaises(mod.KorpKVError) as ctx:
+            self.run_batch(FailingPutKV(), items)
+        self.assertIn("Falha ao acessar o KV de B", str(ctx.exception))
+        self.assertEqual(ctx.exception.results, [{"key": "A", "action": "created"}])
 
 
 if __name__ == "__main__":

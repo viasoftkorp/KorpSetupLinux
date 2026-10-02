@@ -41,7 +41,9 @@ except ImportError:
 
 
 class KorpKVError(Exception):
-    pass
+    def __init__(self, message, results=None):
+        super(KorpKVError, self).__init__(message)
+        self.results = results or []
 
 
 def _stored_text(data):
@@ -60,13 +62,29 @@ def _text_changed(data, target):
 
 
 def ensure_kvs(kv, items, default_kv_overwrite, custom_kv_overwrite, custom_defined, read_keys):
+    results = []
+    try:
+        return _ensure_kvs(kv, items, default_kv_overwrite, custom_kv_overwrite, custom_defined, read_keys,
+                           results)
+    except KorpKVError as exc:
+        exc.results = list(results)
+        raise
+
+
+def _kv_call(key, func, *args, **kwargs):
+    try:
+        return func(*args, **kwargs)
+    except Exception as exc:
+        raise KorpKVError("Falha ao acessar o KV de %s: %s" % (key, to_text(exc)))
+
+
+def _ensure_kvs(kv, items, default_kv_overwrite, custom_kv_overwrite, custom_defined, read_keys, results):
     changed = False
     custom_set = False
-    results = []
     for item in items:
         key = item["key"]
         new_kv = item["new_kv"]
-        _, existing = kv.get(key)
+        _, existing = _kv_call(key, kv.get, key)
         if existing is not None:
             # ensure_kv.yml: custom_kv_overwrite só é (re)definido quando o KV já existe
             if item.get("has_custom_kv_overwrite"):
@@ -82,21 +100,21 @@ def ensure_kvs(kv, items, default_kv_overwrite, custom_kv_overwrite, custom_defi
                 raise KorpKVError("Falha ao mesclar o KV de %s: %s" % (key, to_text(exc)))
             value = to_nice_json(merged)
             if _text_changed(existing, value):
-                kv.put(key, value)
+                _kv_call(key, kv.put, key, value)
                 changed = True
                 action = "updated"
             else:
                 action = "unchanged"
         else:
             value = to_nice_json(new_kv)
-            created = bool(kv.put(key, value, cas=0))
+            created = bool(_kv_call(key, kv.put, key, value, cas=0))
             changed = changed or created
             action = "created" if created else "cas_conflict"
         results.append({"key": key, "action": action})
 
     values = {}
     for key in read_keys:
-        _, data = kv.get(key)
+        _, data = _kv_call(key, kv.get, key)
         values[key] = None if data is None or data.get("Value") is None else _stored_text(data)
     return {
         "changed": changed,
@@ -133,7 +151,7 @@ def main():
         result = ensure_kvs(client.kv, p["items"], p["default_kv_overwrite"], p["custom_kv_overwrite"],
                             p["custom_kv_overwrite_defined"], p["read_keys"])
     except Exception as exc:
-        module.fail_json(msg=to_text(exc))
+        module.fail_json(msg=to_text(exc), results=getattr(exc, "results", []))
     module.exit_json(**result)
 
 
