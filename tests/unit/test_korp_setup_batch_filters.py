@@ -50,6 +50,13 @@ class PlanTest(unittest.TestCase):
             plan = f.korp_service_plan({"A": {"db": db}, "B": None}, ["A", "B"], "_", "")
             self.assertEqual(plan["invalid"], ["A"])
 
+    def test_volumes_directories_must_be_list(self):
+        from ansible.errors import AnsibleFilterError
+        for value in ("/d/a", None):
+            with self.assertRaises(AnsibleFilterError) as ctx:
+                f.korp_service_plan({"A": {"volumes_directories": value}}, ["A"], "_", "")
+            self.assertIn("'volumes_directories' de A deve ser uma lista", str(ctx.exception))
+
     def test_order_follows_names(self):
         plan = f.korp_service_plan({"A": None, "B": None, "C": None}, ["C", "A", "B"], "_", "")
         self.assertEqual(plan["kv_services"], ["C", "A", "B"])
