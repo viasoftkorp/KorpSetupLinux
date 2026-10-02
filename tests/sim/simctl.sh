@@ -24,6 +24,13 @@ HOSTS='--add-host korp-api.local:172.31.250.11 --add-host korp-cdn.local:172.31.
 SKIP="-e ANSIBLE_SKIP_TAGS=provisioning -e ANSIBLE_COLLECTIONS_PATH=/simwork/collections:/usr/share/ansible/collections"
 mkdir -p $W/runs $W/dumps
 cmd=$1; shift
+# comandos que recebem o NOME de um host: só aceitam nomes do ambiente isolado (sim*)
+case $cmd in
+host-up|seed|pull-public|setup|snapshot|restore|dump|host-down)
+  if [[ ! "${1:-}" =~ ^sim[a-z0-9-]*$ ]]; then
+    echo "Recusado: o nome do host deve corresponder a ^sim[a-z0-9-]*\$ (recebido: '${1:-}')." >&2; exit 1
+  fi ;;
+esac
 run_host() {  # NAME IMAGE
   docker run -d --name $1 --hostname $1 --privileged --cpus=${SIM_CPUS:-4} --memory=${SIM_MEM:-16g} --network $NET $HOSTS \
     -v $1-docker:/var/lib/docker -v $1-korp:/etc/korp -v $H:/sim:ro -v $W:/simwork --entrypoint /sim/sim-entry $2 sleep infinity >/dev/null

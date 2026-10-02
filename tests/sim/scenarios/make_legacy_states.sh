@@ -7,6 +7,11 @@
 #   C - legado sem sufixo:      "<nome sem -2025.1.0>" ao lado do canônico, mesma imagem
 # Uso: make_legacy_states.sh  (imprime os nomes usados)
 set -euo pipefail
+# Proteção: só roda dentro do host isolado de testes (nunca em um servidor real).
+if [ ! -e /sim/sim-entry ] || [[ "$(hostname)" != sim* ]]; then
+  echo "Recusado: este script só pode ser executado dentro do host isolado de testes (hostname 'sim*' com /sim/sim-entry)." >&2
+  exit 1
+fi
 VER=2025.1.0
 PROJECT=202510
 mapfile -t CANDIDATES < <(docker ps --filter "label=com.docker.compose.project=$PROJECT" --format '{{.Names}}' \
