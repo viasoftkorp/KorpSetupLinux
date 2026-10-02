@@ -53,6 +53,10 @@ def partial_compose_container_names(container_names, target_name):
     ]
 
 
+# Alias para compatibilidade
+partial_container_names = partial_compose_container_names
+
+
 class FilterModule:
     def filters(self):
         return {
