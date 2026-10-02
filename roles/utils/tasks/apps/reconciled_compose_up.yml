@@ -5,71 +5,50 @@
 #   compose_reconcile_project_name
 #   compose_reconcile_files
 #   compose_reconcile_env_files
+#
+# O módulo korp_compose_state resolve a configuração efetiva (mesmo `docker compose config` de antes)
+# e verifica, apenas com leituras, se algum serviço está num estado que exige recuperação,
+# reconciliação ou limpeza (container parcial, backup de migração, identidade conflitante,
+# container legado). Os loops por serviço abaixo só rodam quando necessário e, quando rodam,
+# são exatamente os mesmos de antes, para todos os serviços do compose.
+# Com korp_setup_fast_path=false os loops sempre rodam (comportamento original).
 
-- name: Inicialização dos argumentos de resolução do compose
-  ansible.builtin.set_fact:
-    compose_reconcile_config_argv:
-      - docker
-      - compose
-      - --ansi
-      - never
-      - --project-directory
-      - "{{ compose_reconcile_project_src }}"
-      - --project-name
-      - "{{ compose_reconcile_project_name }}"
-
-- name: Adição dos arquivos de ambiente aos argumentos do compose
-  ansible.builtin.set_fact:
-    compose_reconcile_config_argv: >-
-      {{ compose_reconcile_config_argv + ['--env-file', compose_env_file] }}
-  loop: "{{ compose_reconcile_env_files }}"
-  loop_control:
-    loop_var: compose_env_file
-
-- name: Adição dos arquivos compose aos argumentos de resolução
-  ansible.builtin.set_fact:
-    compose_reconcile_config_argv: >-
-      {{
-        compose_reconcile_config_argv
-        + [
-          '--file',
-          compose_file
-          if compose_file.startswith('/')
-          else compose_reconcile_project_src ~ '/' ~ compose_file
-        ]
-      }}
-  loop: "{{ compose_reconcile_files }}"
-  loop_control:
-    loop_var: compose_file
-
-- name: Resolução da configuração efetiva do compose
-  ansible.builtin.command:
-    argv: "{{ compose_reconcile_config_argv + ['config', '--format', 'json'] }}"
-  register: compose_reconcile_config_result
-  changed_when: false
+- name: Resolução da configuração efetiva do compose e análise das identidades
+  korp_compose_state:
+    project_src: "{{ compose_reconcile_project_src }}"
+    project_name: "{{ compose_reconcile_project_name }}"
+    files: "{{ compose_reconcile_files }}"
+    env_files: "{{ compose_reconcile_env_files }}"
+    version: "{{ version_without_build }}"
+    phase: pre
+    migration_enabled: "{{ compose_migration_enabled | default(true) | bool }}"
+    force_slow_path: "{{ not (korp_setup_fast_path | default(true) | bool) }}"
+  register: compose_reconcile_state
   no_log: true
 
 - name: Definição dos serviços efetivos do compose
   ansible.builtin.set_fact:
-    compose_reconcile_services: >-
-      {{ (compose_reconcile_config_result.stdout | from_json).services | default({}) }}
+    compose_reconcile_services: "{{ compose_reconcile_state.services }}"
   no_log: true
+
+- name: Serviços que exigem reconciliação de identidade
+  ansible.builtin.debug:
+    msg: "{{ compose_reconcile_state.reasons }}"
+  when: compose_reconcile_state.reasons | length > 0
 
 - name: Recuperação de containers parciais sem identidade canônica
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/recover_partial_compose_service.yml"
-  loop: "{{ compose_reconcile_services | dict2items }}"
+  loop: "{{ (compose_reconcile_services | dict2items) if compose_reconcile_state.needs_action else [] }}"
   loop_control:
     loop_var: compose_reconcile_service
     label: "{{ compose_reconcile_service.key }}"
-  when: compose_migration_enabled | default(true) | bool
 
 - name: Reconciliação de containers com nome físico conflitante
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconcile_compose_service.yml"
-  loop: "{{ compose_reconcile_services | dict2items }}"
+  loop: "{{ (compose_reconcile_services | dict2items) if compose_reconcile_state.needs_action else [] }}"
   loop_control:
     loop_var: compose_reconcile_service
     label: "{{ compose_reconcile_service.key }}"
-  when: compose_migration_enabled | default(true) | bool
 
 - name: Inicialização do compose reconciliado
   community.docker.docker_compose_v2:
@@ -78,10 +57,30 @@
     env_files: "{{ compose_reconcile_env_files }}"
     files: "{{ compose_reconcile_files }}"
 
+- name: Análise de containers legados após a inicialização do compose
+  korp_compose_state:
+    project_src: "{{ compose_reconcile_project_src }}"
+    project_name: "{{ compose_reconcile_project_name }}"
+    files: "{{ compose_reconcile_files }}"
+    env_files: "{{ compose_reconcile_env_files }}"
+    version: "{{ version_without_build }}"
+    phase: post
+    services: "{{ compose_reconcile_services }}"
+    force_slow_path: "{{ not (korp_setup_fast_path | default(true) | bool) }}"
+  register: compose_reconcile_state_post
+  no_log: true
+  when: compose_migration_enabled | default(true) | bool
+
+- name: Containers legados ou parciais a remover
+  ansible.builtin.debug:
+    msg: "{{ compose_reconcile_state_post.reasons }}"
+  when: compose_reconcile_state_post.reasons | default({}) | length > 0
+
 - name: Remoção segura de containers legados substituídos
   ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/cleanup_legacy_compose_service.yml"
-  loop: "{{ compose_reconcile_services | dict2items }}"
+  loop: >-
+    {{ (compose_reconcile_services | dict2items)
+       if (compose_reconcile_state_post.needs_action | default(false)) else [] }}
   loop_control:
     loop_var: compose_reconcile_service
     label: "{{ compose_reconcile_service.key }}"
-  when: compose_migration_enabled | default(true) | bool
