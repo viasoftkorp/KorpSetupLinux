@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/g2-reg-orig.log",
+ "total_s": 15.0,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 1.8
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.3,
+   "duration_s": 4.1
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.3,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.5,
+   "duration_s": 7.6
+  }
+ ],
+ "task_headers": 170,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=49 changed=0 unreachable=0 failed=0 skipped=43 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 1.17,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.13,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.09,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.99,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.95,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.59,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.38,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.35,
+   "task": "utils : Inspeção da identidade canônica de LOG102-2025-1-0"
+  },
+  {
+   "s": 0.26,
+   "task": "utils : Inspeção do substituto de LOG102-2025-1-0"
+  },
+  {
+   "s": 0.25,
+   "task": "finishing : Notificação de TenantManagement"
+  },
+  {
+   "s": 0.25,
+   "task": "utils : Inspeção do container legado de LOG102-2025-1-0"
+  },
+  {
+   "s": 0.24,
+   "task": "utils : Escrita de arquivo /etc/korp/configs/installed_apps.yml"
+  },
+  {
+   "s": 0.24,
+   "task": "utils : Inspeção do container esperado de LOG102-2025-1-0"
+  },
+  {
+   "s": 0.23,
+   "task": "utils : Validação de token"
+  },
+  {
+   "s": 0.23,
+   "task": "utils : Inspeção do backup de migração de LOG102-2025-1-0"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 4.4
+  },
+  {
+   "task": "utils : Inspeção",
+   "count": 6,
+   "s": 1.4
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 0.9
+  },
+  {
+   "task": "utils : Definição",
+   "count": 29,
+   "s": 0.9
+  },
+  {
+   "task": "Verificação",
+   "count": 11,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 2,
+   "s": 0.6
+  },
+  {
+   "task": "Coleta",
+   "count": 17,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Validação",
+   "count": 10,
+   "s": 0.5
+  },
+  {
+   "task": "Definição",
+   "count": 19,
+   "s": 0.5
+  },
+  {
+   "task": "Montagem",
+   "count": 1,
+   "s": 0.4
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 2,
+   "s": 0.3
+  },
+  {
+   "task": "finishing : Notificação",
+   "count": 1,
+   "s": 0.3
+  },
+  {
+   "task": "utils : Configuração",
+   "count": 2,
+   "s": 0.2
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 1,
+   "s": 0.2
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 1,
+   "s": 0.2
+  }
+ ]
+}

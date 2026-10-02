@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/f2-ref-opt.log",
+ "total_s": 27.3,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 1.9
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.5,
+   "duration_s": 4.2
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.7,
+   "duration_s": 1.2
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.9,
+   "duration_s": 19.4
+  }
+ ],
+ "task_headers": 336,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=143 changed=16 unreachable=0 failed=0 skipped=118 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 1.23,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.21,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.19,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.18,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.96,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.85,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.84,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.67,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.51,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.41,
+   "task": "utils : Configuração e transferência de arquivos de compose de RMA01_W - versionado"
+  },
+  {
+   "s": 0.41,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.38,
+   "task": "utils : Criação dos bancos de dados SQL Server de PRO09"
+  },
+  {
+   "s": 0.3,
+   "task": "utils : Validação de token"
+  },
+  {
+   "s": 0.29,
+   "task": "utils : Configuração e transferência de arquivos de compose de RMA01_W - versionado"
+  },
+  {
+   "s": 0.28,
+   "task": "utils : Configuração de docker"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 4.8
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 4,
+   "s": 2.9
+  },
+  {
+   "task": "utils : Definição",
+   "count": 70,
+   "s": 2.5
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 6,
+   "s": 1.3
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 1.0
+  },
+  {
+   "task": "utils : Criação",
+   "count": 12,
+   "s": 0.9
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 4,
+   "s": 0.9
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 3,
+   "s": 0.8
+  },
+  {
+   "task": "utils : Adição",
+   "count": 5,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Análise",
+   "count": 4,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Checagem",
+   "count": 18,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 15,
+   "s": 0.7
+  },
+  {
+   "task": "Coleta",
+   "count": 17,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Garantia",
+   "count": 3,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 12,
+   "s": 0.6
+  }
+ ]
+}

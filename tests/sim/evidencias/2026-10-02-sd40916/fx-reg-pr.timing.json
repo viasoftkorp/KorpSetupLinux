@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/fx-reg-pr.log",
+ "total_s": 36.7,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 1.9
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.3,
+   "duration_s": 3.8
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.1,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.2,
+   "duration_s": 29.5
+  }
+ ],
+ "task_headers": 444,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=161 changed=2 unreachable=0 failed=0 skipped=224 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 2.02,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.15,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.13,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.09,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.88,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.53,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.41,
+   "task": "utils : Inspeção do backup de migração de korp-logistic-picking-analisedeestoque-2024-2-0"
+  },
+  {
+   "s": 0.4,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.37,
+   "task": "utils : Inspeção do container esperado de LOG102-2024-2-0"
+  },
+  {
+   "s": 0.36,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.36,
+   "task": "utils : Inspeção do container esperado de korp-logistic-picking-analisedeestoque-2024-2-0"
+  },
+  {
+   "s": 0.34,
+   "task": "utils : Inspeção do container legado de korp-logistica-picking-ordemproducao-2024-2-0"
+  },
+  {
+   "s": 0.34,
+   "task": "utils : Inspeção da identidade canônica de LOG102-2024-2-0"
+  },
+  {
+   "s": 0.34,
+   "task": "utils : Configuração e transferência de arquivos de compose de LOG102 - versionado"
+  },
+  {
+   "s": 0.32,
+   "task": "utils : Escrita de arquivo /etc/korp/configs/installed_apps.yml"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 48,
+   "s": 11.1
+  },
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 5.4
+  },
+  {
+   "task": "utils : Definição",
+   "count": 105,
+   "s": 3.7
+  },
+  {
+   "task": "utils : Validação",
+   "count": 52,
+   "s": 2.2
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 16,
+   "s": 1.4
+  },
+  {
+   "task": "utils : Remoção",
+   "count": 26,
+   "s": 1.0
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 4,
+   "s": 1.0
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 0.9
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 4,
+   "s": 0.6
+  },
+  {
+   "task": "Coleta",
+   "count": 17,
+   "s": 0.6
+  },
+  {
+   "task": "Verificação",
+   "count": 11,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 2,
+   "s": 0.5
+  },
+  {
+   "task": "utils : Remoção segura",
+   "count": 10,
+   "s": 0.4
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 2,
+   "s": 0.4
+  },
+  {
+   "task": "utils : Recuperação",
+   "count": 10,
+   "s": 0.4
+  }
+ ]
+}

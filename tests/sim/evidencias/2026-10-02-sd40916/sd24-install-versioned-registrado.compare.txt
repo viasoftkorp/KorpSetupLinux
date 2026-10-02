@@ -1,0 +1,3 @@
+python3 compare_dumps.py fx-initial.json fx-reg-pr.json f2-reg-opt.json
+ignorado (8): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)
