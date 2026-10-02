@@ -7,8 +7,8 @@ from ansible.module_utils.korp_kv_merge import merge_kv
 # Este módulo permite a manipulação de KVs do consul.
 # Ele realiza as seguintes operações:
 #
-#   1. Adiciona valores inéditos;
-#   2. Sobrescreve valores referentes ao caminho passado explicitamente em 'keys_to_overwrite';
+#   1. Adiciona valores inéditos;      
+#   2. Sobrescreve valores referentes ao caminho passado explicitamente em 'keys_to_overwrite'; 
 #   3. Retorna um novo dicionário resultante da operação.
 
 def main():
@@ -26,7 +26,7 @@ def main():
     current_kv = module.params['current_kv']
     keys_to_overwrite = module.params["keys_to_overwrite"]
 
-    merged_kv = merge_kv(current_kv, new_kv, keys_to_overwrite) 
+    merged_kv = merge_kv(current_kv, new_kv, keys_to_overwrite)
     
     # Retornando resultado
     result = dict(
