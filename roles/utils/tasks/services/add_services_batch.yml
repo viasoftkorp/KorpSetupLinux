@@ -1,0 +1,147 @@
+# Cadastro em lote (fast path) dos serviços do loop de add_service.yml.
+#
+# Incluído na primeira iteração do loop. Para cada serviço de ansible_loop.allitems, na mesma ordem,
+# equivale a: services/vars_validation.yml, consul_kv/ensure_kv.yml, oauth_client/ensure_client.yml +
+# add_client.yml, create_db/<tipo>.yml e services/ensure_volume_folder.yml — usando os mesmos templates.
+# Diferença apenas em caso de falha: as etapas são agrupadas (KVs de todos, depois clientes OAuth,
+# depois bancos), e a validação das variáveis acontece antes de qualquer escrita.
+# Ver docs/desempenho/2026-10-02-desempenho-setup-design.md (seção 4.2).
+
+- name: "Planejamento do cadastro dos serviços de {{ id }}"
+  ansible.builtin.set_fact:
+    korp_batch: >-
+      {{ services | korp_service_plan(ansible_loop.allitems | map(attribute='key') | list,
+                                      db_suffix_divider, db_suffix) }}
+
+- name: "Validação de variáveis dos serviços de {{ id }}"
+  ansible.builtin.fail:
+    msg: "Um ou mais valores não foram setados nas variáveis de {{ korp_batch.invalid[0] }}"
+  when: korp_batch.invalid | length > 0
+
+- name: "Validação do tipo de banco dos serviços de {{ id }}"
+  ansible.builtin.fail:
+    msg: >-
+      Tipo de banco '{{ korp_batch.unsupported_databases[0].type }}' não suportado
+      ({{ korp_batch.unsupported_databases[0].service }})
+  when: korp_batch.unsupported_databases | length > 0
+
+- name: "Definição dos valores padrão das variáveis dos serviços de {{ id }}"
+  ansible.builtin.set_fact:
+    services: "{{ korp_batch.services }}"
+
+- name: "Renderização dos KVs dos serviços de {{ id }}"
+  ansible.builtin.set_fact:
+    korp_rendered_kv: >-
+      {{ lookup('ansible.builtin.template', 'consul_kv/' ~ (korp_svc | lower) ~ '.json.j2',
+                template_vars={'service_name': korp_svc,
+                               'service_vars': korp_batch.service_vars[korp_svc],
+                               'secret': korp_batch.secrets[korp_svc]}) }}
+  loop: "{{ korp_batch.kv_services }}"
+  loop_control:
+    loop_var: korp_svc
+  register: korp_kv_render
+
+- name: "Garantia dos KVs no Consul dos serviços de {{ id }}"
+  korp_consul_kv_batch:
+    items: "{{ korp_kv_render.results | default([]) | korp_kv_batch_items(services) }}"
+    default_kv_overwrite: "{{ default_kv_overwrite }}"
+    custom_kv_overwrite: "{{ custom_kv_overwrite | default(omit) }}"
+    custom_kv_overwrite_defined: "{{ custom_kv_overwrite is defined }}"
+    read_keys: "{{ korp_batch.oauth_services }}"
+  register: korp_kv_batch_result
+  when: (korp_batch.kv_services | length > 0) or (korp_batch.oauth_services | length > 0)
+
+- name: "Manutenção de custom_kv_overwrite para os próximos serviços"
+  ansible.builtin.set_fact:
+    custom_kv_overwrite: "{{ korp_kv_batch_result.custom_kv_overwrite }}"
+  when: korp_kv_batch_result.custom_kv_overwrite_set | default(false)
+
+- name: "Renderização dos clientes oauth de {{ id }}"
+  ansible.builtin.set_fact:
+    korp_rendered_sql: >-
+      {{ lookup('ansible.builtin.template', 'queries/add_oauth_client.sql.j2',
+                template_vars={'service_name': korp_client.service_name,
+                               'secret_as_hash': korp_client.secret_as_hash}) | string }}
+  loop: "{{ korp_kv_batch_result['values'] | default({}) | korp_oauth_clients(korp_batch.oauth_services) }}"
+  loop_control:
+    loop_var: korp_client
+    label: "{{ korp_client.service_name }}"
+  register: korp_oauth_render
+
+- name: "Adição dos clientes oauth2 de {{ id }}"
+  community.general.mssql_script:
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
+    login_host: "{{ mssql.address }}"
+    name: "{{ authentication_db_name }}"
+    script: "{{ korp_oauth_render.results | map(attribute='ansible_facts.korp_rendered_sql') | join(korp_sql_go) }}"
+  vars:
+    korp_sql_go: "\nGO\n"
+  when: korp_batch.oauth_services | length > 0
+
+- name: "Renderização dos bancos SQL Server de {{ id }}"
+  ansible.builtin.set_fact:
+    korp_rendered_sql: >-
+      {{ lookup('ansible.builtin.template', 'templates/queries/create_db_mssql.j2',
+                template_vars={'db_name': korp_db.name}) | string }}
+  loop: "{{ korp_batch.mssql_databases }}"
+  loop_control:
+    loop_var: korp_db
+    label: "{{ korp_db.name }}"
+  register: korp_mssql_render
+
+- name: "Criação dos bancos de dados SQL Server de {{ id }}"
+  community.general.mssql_script:
+    login_user: "{{ mssql.korp_user }}"
+    login_password: "{{ mssql.korp_password }}"
+    login_host: "{{ mssql.address }}"
+    name: master
+    script: "{{ korp_mssql_render.results | map(attribute='ansible_facts.korp_rendered_sql') | join(korp_sql_go) }}"
+  vars:
+    korp_sql_go: "\nGO\n"
+  when: korp_batch.mssql_databases | length > 0
+
+- name: "Renderização dos bancos PostgreSql de {{ id }}"
+  ansible.builtin.set_fact:
+    korp_rendered_cmd: >-
+      {{ lookup('ansible.builtin.template', 'queries/create_db_postgres.sh.j2',
+                template_vars={'db_name': korp_db.name}) | string }}
+  loop: "{{ korp_batch.postgres_databases }}"
+  loop_control:
+    loop_var: korp_db
+    label: "{{ korp_db.name }}"
+  register: korp_pg_render
+
+- name: "Criação dos bancos de dados PostgreSql de {{ id }}"
+  ansible.builtin.shell: >-
+    {{ (['set -e'] + (korp_pg_render.results | map(attribute='ansible_facts.korp_rendered_cmd') | list))
+       | join(korp_newline) }}
+  vars:
+    korp_newline: "\n"
+  when: korp_batch.postgres_databases | length > 0
+
+- name: "Verificação dos diretórios de volume de {{ id }}"
+  ansible.builtin.stat:
+    path: "{{ korp_volume_path }}"
+  loop: "{{ korp_batch.volume_directories }}"
+  loop_control:
+    loop_var: korp_volume_path
+  register: korp_volume_stat
+
+- name: "Criação dos diretórios de volume de {{ id }}"
+  ansible.builtin.file:
+    path: "{{ korp_volume_missing.korp_volume_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ linux_korp.user }}"
+    group: root
+  loop: "{{ korp_volume_stat.results | default([]) | rejectattr('stat.exists') | list }}"
+  loop_control:
+    loop_var: korp_volume_missing
+    label: "{{ korp_volume_missing.korp_volume_path }}"
+
+- name: "Definição das variáveis do último serviço de {{ id }}"
+  ansible.builtin.set_fact:
+    service_vars: "{{ korp_batch.service_vars[korp_batch.last_service] }}"
+    secret: "{{ korp_batch.secrets[korp_batch.last_service] }}"
+  when: korp_batch.last_service is not none
