@@ -1,0 +1,4 @@
+#!/bin/sh
+# SHIM DO AMBIENTE ISOLADO: o PPA já está configurado no host; evita a instabilidade de rede do Launchpad.
+echo "[sim] add-apt-repository $* (ignorado no ambiente isolado)"
+exit 0
