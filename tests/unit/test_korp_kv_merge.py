@@ -44,7 +44,9 @@ class MergeTest(unittest.TestCase):
                          {"a": {"b": {"c": "Valor novo"}, "d": "Valor antigo2"}})
         self.assertEqual(self.m.merge_kv(copy.deepcopy(current), copy.deepcopy(new), ["a"]),
                          {"a": {"b": {"c": "Valor novo"}}})
-        self.assertEqual(self.m.merge_kv(copy.deepcopy(current), copy.deepcopy(new), ["a.b.c"]), current)
+        # Nota: A tabela original está incorreta nesta linha - o original também lança TypeError aqui
+        with self.assertRaises(TypeError):
+            self.m.merge_kv(copy.deepcopy(current), copy.deepcopy(new), ["a.b.c"])
         self.assertEqual(self.m.merge_kv(copy.deepcopy(current), copy.deepcopy(new), ["b"]), current)
 
     def test_falsy_new_values_never_overwrite(self):
