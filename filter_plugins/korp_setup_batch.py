@@ -9,6 +9,7 @@ import base64
 import copy
 import hashlib
 import json
+import os
 import random
 
 from ansible.errors import AnsibleFilterError
@@ -116,6 +117,18 @@ def korp_oauth_clients(values, names):
     return clients
 
 
+def korp_path_stat(path):
+    """Subconjunto do retorno de ansible.builtin.stat usado por services/gather_info.yml.
+
+    Como no stat, `path` só existe no resultado quando o arquivo existe (gather_info depende disso:
+    a lookup do compose não versionado fica indefinida e a tarefa é pulada pelo `when`).
+    Avaliado no controlador, que é o próprio host (os plays usam connection: local).
+    """
+    if os.path.exists(path):
+        return {"stat": {"exists": True, "path": path}}
+    return {"stat": {"exists": False}}
+
+
 class FilterModule:
     def filters(self):
         return {
@@ -123,4 +136,5 @@ class FilterModule:
             "korp_kv_batch_items": korp_kv_batch_items,
             "korp_sha256_base64": korp_sha256_base64,
             "korp_oauth_clients": korp_oauth_clients,
+            "korp_path_stat": korp_path_stat,
         }

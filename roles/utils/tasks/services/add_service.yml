@@ -32,47 +32,8 @@
 
 # Caminho original, serviço a serviço (korp_setup_fast_path=false)
 - name: "Cadastro individual de {{ service_name }}"
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/services/add_service_individual.yml"
   when: not (korp_setup_fast_path | default(true) | bool)
-  block:
-    - name: "Validação de variáveis de {{ service_name }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: services/vars_validation
-
-    - name: Criação de secret
-      ansible.builtin.set_fact:
-        secret: "{{ 10000 | random | to_uuid | upper }}"
-
-    - name: "Garantia de kv no consul para {{ service_name }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: 'consul_kv/ensure_kv'
-      when: not service_vars.kv_skip
-
-    - name: "Adição de cliente oauth2 para {{ service_name }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: oauth_client/ensure_client
-      when: not service_vars.oauth_client.skip
-
-    - name: "Criação de bancos de dados para {{ service_name }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: "create_db/{{ service_vars.db.type }}"
-      vars:
-        db_name: "{{ service_vars.db.name }}"
-      when: service_vars.db is defined
-
-    - name: "Garantia da existência dos diretórios de volume de {{ service_name }}"
-      ansible.builtin.include_role:
-        name: utils
-        tasks_from: services/ensure_volume_folder
-      vars:
-        volume_path: "{{ volume_dir }}"
-      loop: "{{ service_vars.volumes_directories }}"
-      loop_control:
-        loop_var: volume_dir
-      when: service_vars.volumes_directories is defined
 
 # essa task só acontece na ultima interação do loop
 # isso é necessário pois a configuração de composes e o registro em installed_apps.yml, só deve acontecer uma vez, quando todos os serviços já estão configurados
