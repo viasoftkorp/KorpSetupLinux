@@ -1,3 +1,4 @@
+# ATENÇÃO: add_services_batch.yml (fast path) reproduz este arquivo em lote; ao alterar um, altere o outro.
 # essa role não deve ser chamada diretamente.
 # use ensure_client.yml
 
