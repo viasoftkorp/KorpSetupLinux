@@ -30,6 +30,9 @@ services:
       - "{{ reverse_proxy.http_ports.api }}:{{ reverse_proxy.http_ports.api }}"
       - "{{ reverse_proxy.http_ports.cdn }}:{{ reverse_proxy.http_ports.cdn }}"
       - "{{ reverse_proxy.http_ports.frontend }}:{{ reverse_proxy.http_ports.frontend }}"
+{% if dns.api_gateway | default('', true) | length > 0 %}
+      - "{{ reverse_proxy.http_ports.dns_api_gateway | default('9878') }}:{{ reverse_proxy.http_ports.dns_api_gateway | default('9878') }}"
+{% endif %}
 {% endif %}
 
     volumes:
