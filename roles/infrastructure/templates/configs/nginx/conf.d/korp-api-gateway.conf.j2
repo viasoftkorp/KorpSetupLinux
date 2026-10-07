@@ -1,6 +1,6 @@
 {% if reverse_proxy.external %}
 server {
-    listen {{ reverse_proxy.http_ports.api_gateway }};
+    listen {{ reverse_proxy.http_ports.dns_api_gateway | default('9878') }};
 
     include /etc/nginx/default_conf;
 
