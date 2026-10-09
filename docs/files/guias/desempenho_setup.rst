@@ -121,6 +121,16 @@ pacotes. Sem o PPA, tenta adicioná-lo até 3 vezes. Se a rede falhar mas o serv
 ou mais novo, o setup segue com um aviso; abaixo disso (a community.docker que o setup instala exige 2.17), para com
 uma mensagem que mostra a versão encontrada e os endereços a liberar (códigos 12 e 13, como antes).
 
+Pipelining do Ansible
+=====================
+
+Opcional: ``pipelining=true``. O Ansible passa cada módulo pela entrada do ``sudo`` em vez de criar, ajustar
+permissões (ACL para o usuário korp) e apagar um arquivo temporário por tarefa: menos processos por módulo, o
+que pesa em servidores com CPU lenta. ``copy`` e ``template`` continuam transferindo arquivos como antes, e
+tarefas que não suportam pipelining voltam sozinhas ao modo normal. Se o sudoers tiver ``Defaults
+requiretty`` (toda tarefa com become falharia), o ``setup.sh`` avisa e segue sem pipelining. ``use_pty``, o
+padrão do Ubuntu 22.04, é compatível.
+
 Desligando as otimizações
 =========================
 

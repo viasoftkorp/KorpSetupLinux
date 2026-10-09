@@ -31,6 +31,8 @@ create_random_string() {
 #   progress=<bool> - OPCIONAL, padrão false - true executa o playbook principal em segundo plano e mostra o andamento
 #     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar). O log completo continua em
 #     /etc/korp/ansible/logs. O setup não é interrompido se a sessão SSH cair.
+#   pipelining=<bool> - OPCIONAL, padrão false - true liga o pipelining do Ansible (módulos pela entrada do sudo, sem
+#     arquivos temporários); é ignorado, com aviso, se o sudoers tiver 'Defaults requiretty'
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -65,6 +67,7 @@ http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
 fast_path=true;
+pipelining=false;
 
 # ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
 korp_min_ansible_core="2.17"
@@ -118,6 +121,11 @@ done
 if [ "$fast_path" == "" ];
 then
    fast_path=true
+fi
+
+if [ "$pipelining" != "true" ];
+then
+   pipelining=false
 fi
 
 # Um setup em segundo plano usa /tmp/KorpSetupLinux até terminar: nenhum outro setup pode começar antes disso
@@ -324,6 +332,19 @@ korp_extra_vars='{
     "should_update_rabbitmq": '$should_update_rabbitmq',
     "korp_setup_fast_path": '$fast_path'
   }'
+
+# Pipelining do Ansible (pipelining=true): cada módulo vai pela entrada do sudo, sem arquivo temporário.
+# Com 'Defaults requiretty' no sudoers isso falharia em toda tarefa com become: nesse caso segue sem pipelining.
+# Vale para o playbook principal nos dois modos (o modo de acompanhamento leva as variáveis ANSIBLE_* no run.env).
+if [ "$pipelining" == "true" ];
+then
+    if sudo grep -rhsE '^[[:space:]]*Defaults' /etc/sudoers /etc/sudoers.d | grep -qE '(^|[[:space:],])requiretty([[:space:],]|$)';
+    then
+        echo "pipelining=true ignorado: o sudoers exige tty (Defaults requiretty). O setup segue sem pipelining."
+    else
+        export ANSIBLE_PIPELINING=True
+    fi
+fi
 
 # Modo de acompanhamento: o playbook principal roda em segundo plano (systemd-run, ou setsid sem systemd)
 # e esta sessão mostra o andamento. O resultado, o log e a limpeza ficam a cargo de korp_setup_runner.py.
