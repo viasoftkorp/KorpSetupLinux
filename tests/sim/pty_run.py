@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run a command under a pseudo-terminal (like an operator's SSH session) and write every output
 line to LOG prefixed with elapsed seconds since start. Exit code = command exit code."""
-import os, pty, sys, time
+import fcntl, os, pty, struct, sys, termios, time
 
 def main():
     log_path = sys.argv[1]
@@ -12,6 +12,8 @@ def main():
     if pid == 0:
         os.environ.setdefault("TERM", "xterm")
         os.execvp(cmd[0], cmd)
+    # janela de 120x40, como uma sessão SSH (sem isso o terminal informa largura 0)
+    fcntl.ioctl(fd, termios.TIOCSWINSZ, struct.pack("HHHH", 40, 120, 0, 0))
     buf = b""
     with open(log_path, "w", buffering=1) as log:
         log.write(f"[0.000] START {time.strftime('%Y-%m-%dT%H:%M:%S%z')} {' '.join(cmd)}\n")
