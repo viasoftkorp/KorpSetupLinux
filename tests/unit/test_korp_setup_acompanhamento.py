@@ -57,6 +57,14 @@ class MonitorRenderTest(unittest.TestCase):
         text = "\n".join(monitor.render(dict(BASE, state="failed", interrupted=True, rc=-15, duration_s=5), T0))
         self.assertIn("O setup interrompido", text)
 
+    def test_fit_uses_visible_width_and_ignores_unknown_width(self):
+        colored = "\033[1mKorp Setup · update · release/2025.1.0.x-performance-test\033[0m"
+        self.assertEqual(monitor.fit([colored, "curta"], 0), [colored, "curta"])  # pty sem tamanho
+        self.assertEqual(monitor.fit([colored], 80), [colored])  # cabe: os códigos de cor não contam
+        cut = monitor.fit([colored], 20)[0]
+        self.assertEqual(cut, "Korp Setup · update…")
+        self.assertNotIn("\033", cut)
+
     def test_color_only_when_requested(self):
         self.assertIn("\033[32m", "\n".join(monitor.render(dict(BASE, state="success", duration_s=1), T0, color=True)))
 
