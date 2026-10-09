@@ -1,3 +1,7 @@
+- name: Download antecipado de imagens
+  ansible.builtin.include_tasks: image_prefetch.yml
+  when: korp_image_prefetch | default(false) | bool
+
 - name: Notificação de TenantManagement
   ansible.builtin.uri:
     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"

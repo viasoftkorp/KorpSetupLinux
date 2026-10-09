@@ -1,0 +1,59 @@
+# Download antecipado (prefetch) das imagens dos composes que este setup vai subir, em segundo plano.
+# Opt-in: setup.sh prefetch=true (korp_image_prefetch). Não muda o que o setup faz: uma imagem que ainda
+# não tiver sido baixada quando o compose subir é baixada pelo próprio compose, como sem o prefetch.
+# O processo é encerrado na finalização (roles/finishing/tasks/image_prefetch.yml).
+#
+# Roles consideradas, na ordem de execução de main.yml:
+#   - infraestrutura e apps padrões (korp_default_apps), se as tags da execução os incluem;
+#   - aplicativos da tag update (installed_apps.yml, mesma regra de apps/update.yml);
+#   - aplicativos da tag install: 'apps' ou, depois de obtidos, os licenciados (apps_to_install).
+
+- name: Download antecipado de imagens
+  block:
+    - name: Planejamento do download antecipado de imagens
+      korp_image_prefetch_plan:
+        roles_dir: "{{ playbook_dir }}/roles"
+        roles: >-
+          {{ ((['infrastructure', 'infrastructure-web', 'infrastructure-desktop'] + korp_default_apps)
+              if (ansible_run_tags | intersect(['all', 'default-setup', 'update', 'install']) | length > 0) else [])
+             + ((apps_to_install | default(apps | default([], true), true))
+              if (ansible_run_tags | intersect(['all', 'install', 'install-only']) | length > 0) else []) }}
+        installed_apps_file: >-
+          {{ (config_dir_path ~ '/installed_apps.yml')
+             if (ansible_run_tags | intersect(['update', 'update-only']) | length > 0) else omit }}
+        version: "{{ version_without_build }}"
+        variables:
+          docker_account: "{{ docker_account }}"
+          docker_image_suffix: "{{ docker_image_suffix }}"
+          version_without_build: "{{ version_without_build }}"
+      register: korp_prefetch_plan
+
+    - name: Diretório do download antecipado de imagens
+      ansible.builtin.file:
+        path: "{{ korp_prefetch_status | dirname }}"
+        state: directory
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0755'
+      become: false
+      when: korp_prefetch_plan.missing | length > 0
+
+    # Roda como o usuário korp, que fez o docker login do Default setup
+    - name: Início do download antecipado de imagens em segundo plano
+      ansible.builtin.command:
+        argv: >-
+          {{ ['python3', role_path ~ '/files/korp_image_prefetch.py', 'start', '--status', korp_prefetch_status,
+              '--parallel', korp_image_prefetch_parallel | default(3) | string, '--'] + korp_prefetch_plan.missing }}
+      changed_when: false
+      when: korp_prefetch_plan.missing | length > 0
+
+    - name: Download antecipado de imagens
+      ansible.builtin.debug:
+        msg: >-
+          {{ korp_prefetch_plan.missing | length }} de {{ korp_prefetch_plan.images | length }} imagens
+          dos composes a baixar em segundo plano ({{ korp_image_prefetch_parallel | default(3) }} por vez);
+          as demais já estão no servidor.
+          {{ ('Sem previsão (o compose baixa na hora): ' ~ (korp_prefetch_plan.unresolved | map(attribute='value') | join(', ')))
+             if korp_prefetch_plan.unresolved else '' }}
+  # tags 'always' é necessário aqui pois o arquivo é incluído dinamicamente
+  tags: always

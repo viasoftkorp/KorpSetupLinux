@@ -31,6 +31,7 @@ create_random_string() {
 #   progress=<bool> - OPCIONAL, padrão false - true executa o playbook principal em segundo plano e mostra o andamento
 #     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar). O log completo continua em
 #     /etc/korp/ansible/logs. O setup não é interrompido se a sessão SSH cair.
+#   prefetch=<bool> - OPCIONAL, padrão false - true baixa em segundo plano, desde o início, as imagens dos composes que o setup vai subir
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -65,6 +66,7 @@ http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
 fast_path=true;
+prefetch=false;
 
 # ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
 korp_min_ansible_core="2.17"
@@ -118,6 +120,11 @@ done
 if [ "$fast_path" == "" ];
 then
    fast_path=true
+fi
+
+if [ "$prefetch" != "true" ];
+then
+   prefetch=false
 fi
 
 # Um setup em segundo plano usa /tmp/KorpSetupLinux até terminar: nenhum outro setup pode começar antes disso
@@ -322,7 +329,8 @@ korp_extra_vars='{
     "removed_version": "'$removed_version'",
     "skip_salt_test": '$skip_salt_test',
     "should_update_rabbitmq": '$should_update_rabbitmq',
-    "korp_setup_fast_path": '$fast_path'
+    "korp_setup_fast_path": '$fast_path',
+    "korp_image_prefetch": '$prefetch'
   }'
 
 # Modo de acompanhamento: o playbook principal roda em segundo plano (systemd-run, ou setsid sem systemd)
