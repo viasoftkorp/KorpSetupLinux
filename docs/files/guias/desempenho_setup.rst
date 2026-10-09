@@ -32,8 +32,8 @@ Fast path da reconciliação de compose
     exige ação: container parcial ``<12hex>_<nome>``, backup ``<nome>-legacy-compose-migration``,
     container com projeto/serviço Compose diferente do esperado, ou container legado sem sufixo de versão.
     Se houver qualquer um, os **mesmos loops de antes** rodam para todos os serviços daquele compose
-    (com todas as validações e o rollback do DEVO-7182). Se não houver, os loops são pulados — neles só
-    haveria leituras. Os motivos aparecem no log (tarefas "Serviços que exigem reconciliação de
+    (com todas as validações e o rollback do DEVO-7182). Se não houver, os loops nem são incluídos — neles
+    só haveria leituras. Os motivos aparecem no log (tarefas "Serviços que exigem reconciliação de
     identidade" e "Containers legados ou parciais a remover").
 
 Cadastro de serviços em lote
@@ -45,6 +45,14 @@ Cadastro de serviços em lote
 Checagem de templates de compose
     ``gather_info`` verifica a existência dos templates no próprio host (os plays usam
     ``connection: local``) em vez de executar o módulo ``stat``.
+
+Menos tarefas por aplicativo
+    Cálculos que eram feitos em várias tarefas, algumas com loop item a item, viram uma tarefa com um filtro
+    (``filter_plugins/korp_setup_batch.py``): a última versão instalada no início de cada role
+    (``korp_latest_installed_version``), as listas e versões de ``gather_info`` (``korp_service_lists``) e o
+    ``apps_map`` de ``ensure_mapping`` (``korp_apps_mapping``; roles só com serviços exclusivos mantêm as
+    tarefas originais). As tarefas originais ficam em ``*_tasks.yml`` e são usadas com ``fast_path=false``;
+    ``tests/unit/test_korp_fast_path_equivalence.py`` executa as duas versões no Ansible e compara os facts.
 
 O que **não** mudou: roles de aplicativos e seus ``vars/main.yml``, templates (compose, KV, SQL),
 infraestrutura, provisioning, ``update``/``remove-apps``/``uninstall-version``, formato do
