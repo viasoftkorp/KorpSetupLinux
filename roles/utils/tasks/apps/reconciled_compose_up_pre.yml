@@ -1,0 +1,19 @@
+# Incluído por reconciled_compose_up.yml quando compose_reconcile_state.needs_action.
+- name: Serviços que exigem reconciliação de identidade
+  ansible.builtin.debug:
+    msg: "{{ compose_reconcile_state.reasons }}"
+  when: compose_reconcile_state.reasons | length > 0
+
+- name: Recuperação de containers parciais sem identidade canônica
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/recover_partial_compose_service.yml"
+  loop: "{{ (compose_reconcile_services | dict2items) if compose_reconcile_state.needs_action else [] }}"
+  loop_control:
+    loop_var: compose_reconcile_service
+    label: "{{ compose_reconcile_service.key }}"
+
+- name: Reconciliação de containers com nome físico conflitante
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/reconcile_compose_service.yml"
+  loop: "{{ (compose_reconcile_services | dict2items) if compose_reconcile_state.needs_action else [] }}"
+  loop_control:
+    loop_var: compose_reconcile_service
+    label: "{{ compose_reconcile_service.key }}"

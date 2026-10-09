@@ -3,10 +3,23 @@
     name: utils
     tasks_from: services/gather_info
 
+# Fast path (korp_setup_fast_path, padrão true): os mesmos facts de default/get_latest_installed_version.yml
+# (sem is_updating) em uma tarefa, calculados pelo filtro korp_latest_installed_version.
+- name: "Definição da última versão instalada para {{ id }}"
+  vars:
+    korp_latest: >-
+      {{ lookup('file', config_dir_path ~ '/installed_apps.yml') | from_yaml | korp_latest_installed_version }}
+  ansible.builtin.set_fact:
+    temp_apps_map: "{{ korp_latest.temp_apps_map }}"
+    latest_installed_version: "{{ korp_latest.latest_installed_version }}"
+    has_versioned_apps: "{{ korp_latest.has_versioned_apps }}"
+  when: korp_setup_fast_path | default(true) | bool and not (is_updating | default(false) | bool)
+
 - name: "Definição de ultima versão instalada"
   ansible.builtin.include_role:
     name: utils
     tasks_from: default/get_latest_installed_version
+  when: not (korp_setup_fast_path | default(true) | bool and not (is_updating | default(false) | bool))
 
 - name: Verificação de versão que será instalada
   ansible.builtin.fail:
