@@ -3,7 +3,9 @@
 
 Reproduzem, para todos os serviços de uma role de uma vez, o que
 roles/utils/tasks/services/vars_validation.yml, add_service.yml (segredo),
-consul_kv/ensure_kv.yml (itens) e oauth_client/* (hash) faziam por serviço.
+consul_kv/ensure_kv.yml (itens) e oauth_client/* (hash) faziam por serviço, e, em uma tarefa,
+o que default/get_latest_installed_version.yml, services/gather_info.yml e apps/ensure_mapping.yml
+calculavam em várias.
 """
 import base64
 import copy
@@ -15,6 +17,8 @@ import uuid
 
 from ansible.errors import AnsibleFilterError
 from ansible.module_utils.common.text.converters import to_text
+from ansible.plugins.test.core import version_compare
+from ansible.utils.vars import merge_hash
 
 
 def _combine(base, extra):
@@ -139,6 +143,81 @@ def korp_path_stat(path):
     return {"stat": {"exists": False}}
 
 
+def korp_latest_installed_version(apps_map):
+    """Facts de default/get_latest_installed_version.yml sem is_updating, a partir de installed_apps.yml.
+
+    Mesma sequência das tarefas: has_versioned_apps = versioned != None; sem aplicativos versionados,
+    versioned recebe o valor temporário {1: 'temp_value'} (combine recursive, list_merge append_rp);
+    a última versão é a maior pelo teste `version` (loose), na ordem do with_dict.
+    """
+    if not isinstance(apps_map, dict) or "versioned" not in apps_map:
+        raise AnsibleFilterError("installed_apps.yml sem a chave 'versioned'")
+    temp_apps_map = copy.deepcopy(apps_map)
+    has_versioned_apps = temp_apps_map["versioned"] is not None
+    if not has_versioned_apps:
+        temp_apps_map = merge_hash(temp_apps_map, {"versioned": {1: "temp_value"}}, True, "append_rp")
+    versioned = temp_apps_map["versioned"]
+    if not isinstance(versioned, dict):
+        raise AnsibleFilterError("'versioned' de installed_apps.yml não é um mapeamento")
+    latest = "0.0.0"
+    if has_versioned_apps:
+        for key, value in versioned.items():
+            if version_compare(latest, key, "<") and value != "temp_value":
+                latest = to_text(key)
+    return {"temp_apps_map": temp_apps_map, "latest_installed_version": latest,
+            "has_versioned_apps": has_versioned_apps}
+
+
+def _jinja_attr(value, name):
+    """`value.name` do Jinja sobre dados YAML: chave do dict ou indefinido (None aqui)."""
+    if isinstance(value, dict) and name in value:
+        return True, value[name]
+    return False, None
+
+
+def korp_service_lists(compose_services, services):
+    """Listas de services/gather_info.yml (tarefas com with_dict e set_fact acumulando à esquerda).
+
+    compose_services: services do compose não versionado renderizado ({} se ele não existe).
+    exclusivos: container_name dos serviços cuja tag tem mais de 3 partes separadas por ponto;
+    não versionados: chaves de services com version.unversioned definido e verdadeiro.
+    """
+    exclusive = []
+    for name, service in (compose_services or {}).items():
+        try:
+            tag = service["image"].split(":")[1]
+            if len(tag.split(".")) > 3:
+                exclusive = [service["container_name"]] + exclusive
+        except (KeyError, IndexError, TypeError, AttributeError) as e:
+            raise AnsibleFilterError("serviço %s do compose sem image/container_name válidos: %s" % (name, e))
+    if not isinstance(services, dict):
+        raise AnsibleFilterError("services deve ser um mapeamento")
+    unversioned = []
+    for name, value in services.items():
+        has_version, version = _jinja_attr(value, "version")
+        defined, flag = _jinja_attr(version, "unversioned") if has_version else (False, None)
+        if defined and flag:
+            unversioned = [name] + unversioned
+    return {"exclusive": exclusive, "unversioned": unversioned}
+
+
+def korp_apps_mapping(apps_map, app_id, version, unversioned, versioned):
+    """apps_map de apps/ensure_mapping.yml fora do caso só exclusivo (que mantém as tarefas originais).
+
+    Normalização (combine não recursivo com default(..., true)), depois, se for o caso, [app_id] em
+    unversioned e em versioned[version], com combine recursive e list_merge append_rp.
+    """
+    if not isinstance(apps_map, dict):
+        raise AnsibleFilterError("installed_apps.yml não contém um mapeamento")
+    apps_map = merge_hash(apps_map, {"unversioned": apps_map.get("unversioned") or [],
+                                     "versioned": apps_map.get("versioned") or {}}, False, "replace")
+    if unversioned:
+        apps_map = merge_hash(apps_map, {"unversioned": [app_id]}, True, "append_rp")
+    if versioned:
+        apps_map = merge_hash(apps_map, {"versioned": {version: [app_id]}}, True, "append_rp")
+    return apps_map
+
+
 class FilterModule:
     def filters(self):
         return {
@@ -147,4 +226,7 @@ class FilterModule:
             "korp_sha256_base64": korp_sha256_base64,
             "korp_oauth_clients": korp_oauth_clients,
             "korp_path_stat": korp_path_stat,
+            "korp_latest_installed_version": korp_latest_installed_version,
+            "korp_service_lists": korp_service_lists,
+            "korp_apps_mapping": korp_apps_mapping,
         }
