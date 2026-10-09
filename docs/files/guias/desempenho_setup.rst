@@ -108,6 +108,19 @@ pacotes. Sem o PPA, tenta adicioná-lo até 3 vezes. Se a rede falhar mas o serv
 ou mais novo, o setup segue com um aviso; abaixo disso (a community.docker que o setup instala exige 2.17), para com
 uma mensagem que mostra a versão encontrada e os endereços a liberar (códigos 12 e 13, como antes).
 
+Download antecipado de imagens
+==============================
+
+Opcional: ``prefetch=true``. Logo depois do *Default setup* (login no Docker), o setup lista as imagens dos composes
+que a execução vai subir (infraestrutura, apps padrões e os aplicativos da tag ``update`` ou ``install``, com as
+dependências das roles) e baixa as que faltam em segundo plano, 3 por vez, enquanto as demais etapas seguem. Com
+``apps`` vazio, os aplicativos licenciados entram numa segunda lista assim que são obtidos. O setup não depende do
+resultado: o compose continua baixando na hora o que ainda não tiver chegado (o Docker compartilha o download de
+uma imagem pedida pelos dois ao mesmo tempo) e uma falha só é registrada. Na finalização (com sucesso ou erro), o
+processo é encerrado e o resumo aparece no log. Status: ``/etc/korp/ansible/prefetch/status.json``.
+
+Ganha tempo quando há muito a baixar (versão nova, instalação nova). Sem imagens novas não muda nada.
+
 Desligando as otimizações
 =========================
 
