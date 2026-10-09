@@ -1,22 +1,7 @@
-- name: Checagem de compose - versionado
-  ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ version_without_build }}/{{ id }}-compose.yml.j2"
-  register: versioned_compose_result
-  # por algum motivo, o ansible dá erro executando essa task como super user
-  become: false
-  when: not (korp_setup_fast_path | default(true) | bool)
-
-- name: Checagem de compose - não versionado
-  ansible.builtin.stat:
-    path: "{{ playbook_dir }}/roles/{{ id }}/templates/composes/{{ id }}-compose.yml.j2"
-  register: unversioned_compose_result
-  # por algum motivo, o ansible dá erro executando essa task como super user
-  become: false
-  when: not (korp_setup_fast_path | default(true) | bool)
-
-# Fast path (korp_setup_fast_path): os templates estão no próprio host (connection: local), então a
-# existência é verificada no controlador, sem executar o módulo stat; o resultado tem o mesmo formato.
-# Precisa vir depois dos stats acima: uma tarefa pulada com `register` também sobrescreve a variável.
+# Fast path (korp_setup_fast_path, padrão true): as mesmas informações de gather_info_tasks.yml em duas
+# tarefas. Os templates estão no próprio host (connection: local), então a existência é verificada no
+# controlador, sem o módulo stat (mesmo formato de resultado), e as listas que as tarefas com with_dict
+# acumulavam são calculadas pelo filtro korp_service_lists.
 - name: Checagem de composes de {{ id }}
   ansible.builtin.set_fact:
     versioned_compose_result: >-
@@ -26,29 +11,21 @@
       {{ (playbook_dir ~ '/roles/' ~ id ~ '/templates/composes/' ~ id ~ '-compose.yml.j2') | korp_path_stat }}
   when: korp_setup_fast_path | default(true) | bool
 
-- name: Definição de variáveis
-  ansible.builtin.set_fact:
-    exclusive_services_list: []
-    unversioned_services_list: []
-
-- name: Definição de serviços exclusivos
-  vars:
-    compose_content: "{{  lookup('ansible.builtin.template', unversioned_compose_result.stat.path) | from_yaml }}"
-  ansible.builtin.set_fact:
-    exclusive_services_list: "{{ [item.value.container_name ] + exclusive_services_list }}"
-  with_dict: "{{ compose_content.services }}"
-  when: (unversioned_compose_result.stat.exists) and ((((item.value.image | split(':'))[1]) | split('.')) | length > 3)
-
-- name: Definição de serviços não versionados
+# `services` como em gather_info_tasks.yml: a variável da tarefa só vale se não houver um fact services
+- name: Definição dos serviços e versões de {{ id }}
   vars:
     services: "{{ (lookup('ansible.builtin.template', '~/roles/{{ id }}/vars/main.yml') | from_yaml)['services'] }}"
+    korp_service_lists_result: >-
+      {{ ((lookup('ansible.builtin.template', unversioned_compose_result.stat.path) | from_yaml).services
+          if unversioned_compose_result.stat.exists else {}) | korp_service_lists(services) }}
   ansible.builtin.set_fact:
-    unversioned_services_list: "{{ [item.key] + unversioned_services_list }}"
-  with_dict: "{{ services }}"
-  when: item.value.version.unversioned is defined and item.value.version.unversioned
-
-- name: Definição de versões do aplicativo
-  ansible.builtin.set_fact:
+    exclusive_services_list: "{{ korp_service_lists_result.exclusive }}"
+    unversioned_services_list: "{{ korp_service_lists_result.unversioned }}"
     has_versioned_services: "{{ versioned_compose_result.stat.exists }}"
-    has_unversioned_services: "{{ unversioned_services_list | length > 0 }}"
-    has_exclusive_services: "{{ exclusive_services_list | length > 0 }}"
+    has_unversioned_services: "{{ korp_service_lists_result.unversioned | length > 0 }}"
+    has_exclusive_services: "{{ korp_service_lists_result.exclusive | length > 0 }}"
+  when: korp_setup_fast_path | default(true) | bool
+
+- name: Leitura das informações gerais de {{ id }} (tarefas originais)
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/services/gather_info_tasks.yml"
+  when: not (korp_setup_fast_path | default(true) | bool)
