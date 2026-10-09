@@ -221,6 +221,18 @@ class PrefetchProcessTest(unittest.TestCase):
         self.assertFalse(pf.is_prefetch_process(started["pid"]))
         self.assertFalse(os.path.exists(f"{self.dir}/present/ok_y:1"))
 
+    def test_status_ready_when_start_returns_and_stop_works_with_other_script_name(self):
+        copy = f"{self.dir}/outro_nome.py"
+        shutil.copy(SCRIPT, copy)
+        out = subprocess.run([sys.executable, copy, "start", "--status", self.status, "--parallel", "1",
+                              "--docker", self.docker, "--", "slow/x:1"], capture_output=True, text=True, timeout=30)
+        started = json.loads(out.stdout)
+        self.assertEqual(pf.read_status(self.status)["pid"], started["pid"])
+        result = json.loads(subprocess.run([sys.executable, copy, "stop", "--status", self.status],
+                                           capture_output=True, text=True, timeout=30).stdout)
+        self.assertTrue(result["stopped"])
+        self.assertEqual(result["state"], "cancelled")
+
     def test_start_replaces_running_prefetch(self):
         first = self.cli("start", "--status", self.status, "--parallel", "1", "--docker", self.docker,
                          "--", "slow/x:1")
