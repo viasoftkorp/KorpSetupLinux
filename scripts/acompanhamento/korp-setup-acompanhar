@@ -60,11 +60,13 @@ def render(status, now, color=False):
         lines.append(c("32", f"✔ Setup concluído em {fmt_duration(took)}."))
     elif state == "failed":
         err = status.get("error") or {}
-        what = "interrompido" if status.get("interrupted") else "falhou"
-        lines.append(c("31;1", f"✖ O setup {what} depois de {fmt_duration(took)} (código {status.get('rc')})."))
-        where = status.get("phase") or ""
-        if apps.get("current"):
-            where += f" — {apps['current']}"
+        what = "foi interrompido" if status.get("interrupted") else "falhou"
+        lines.append(c("31;1", f"✖ O setup {what} depois de {fmt_duration(took)}."))
+        phase = err.get("phase") or status.get("phase") or ""
+        app = err.get("app") if "app" in err else apps.get("current")
+        where = phase + (f" — {app}" if app else "")
+        if err.get("dependency"):
+            where += f" (dependência: {err['dependency']})"
         lines.append(f"  Etapa:  {where}")
         if err.get("task"):
             task = f"{err['role']} : {err['task']}" if err.get("role") else err["task"]
@@ -76,6 +78,8 @@ def render(status, now, color=False):
         for raw in msg.splitlines()[-25:]:
             for part in textwrap.wrap(raw, 110) or [""]:
                 lines.append(c("31", f"    {part}"))
+        if status.get("rc") is not None:
+            lines.append(f"  (ansible-playbook terminou com código {status['rc']}; o setup.sh termina com {EXIT_FAILED})")
     else:
         phase = status.get("phase") or "Preparação"
         if apps.get("items"):
