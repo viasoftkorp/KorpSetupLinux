@@ -226,6 +226,12 @@ class CallbackTest(unittest.TestCase):
         self.cb.v2_playbook_on_task_start(running, False)  # em execução, ainda sem resultado
         self.assertEqual(self.cb._state.data["task"], "utils : Inicialização do compose reconciliado")
 
+    def test_task_start_is_always_written(self):
+        # duas tarefas em menos de 0,5 s: a segunda (longa) tem que estar no arquivo
+        self.cb.v2_playbook_on_task_start(Task("Configuração e transferência de composes", Role("temporal")), False)
+        self.cb.v2_playbook_on_task_start(Task("Criação e inicialização do Temporal", Role("temporal")), False)
+        self.assertEqual(self.status()["task"], "temporal : Criação e inicialização do Temporal")
+
     def test_counts_and_warnings(self):
         t = Task("a", Role("infrastructure"))
         self.cb.v2_runner_on_ok(Result(t, {"changed": True, "warnings": ["w1", "w2", "w3", "w4"]}))
