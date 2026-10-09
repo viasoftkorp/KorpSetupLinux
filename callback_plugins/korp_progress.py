@@ -38,7 +38,8 @@ ROLE_PHASES = {
 }
 PLAY_PHASES = {"Setup de provisioning": "Provisionamento"}
 # avisos esperados em toda execução (vários arquivos de compose no mesmo projeto): não aparecem na tela
-EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprecated")
+EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprecated",
+                     "is using the discovered Python interpreter")
 
 
 def now_iso():
@@ -176,7 +177,10 @@ class ProgressState:
             w["last"] = (w["last"] + [tail(t, 300)])[-3:]
 
     def failure(self, role, task_name, item, text):
-        err = {"role": role, "task": task_name, "item": item, "message": text, "at": now_iso()}
+        apps = self.data.get("apps") or {}
+        err = {"role": role, "task": task_name, "item": item, "message": text, "at": now_iso(),
+               # onde o setup estava na falha (depois o tratamento de erro muda a etapa para Finalização)
+               "phase": self.data.get("phase"), "app": apps.get("current"), "dependency": apps.get("dependency")}
         if self.data["error"] is None:
             self.data["error"] = err  # a primeira falha é a causa; as seguintes são o tratamento de erro
         else:

@@ -44,18 +44,28 @@ class MonitorRenderTest(unittest.TestCase):
                   apps={"items": ["A"], "index": 0, "current": "A"},
                   error={"role": "utils", "task": "Garantia dos KVs", "item": "svc", "message": "linha1\nlinha2"})
         text = "\n".join(monitor.render(st, T0))
-        self.assertIn("✖ O setup falhou depois de 1m35s (código 11).", text)
+        self.assertIn("✖ O setup falhou depois de 1m35s.", text)
+        self.assertIn("(ansible-playbook terminou com código 11; o setup.sh termina com 11)", text)
         self.assertIn("Etapa:  Aplicativos — A", text)
         self.assertIn("Tarefa: utils : Garantia dos KVs", text)
         self.assertIn("Item:   svc", text)
         self.assertIn("    linha2", text)
         self.assertNotIn("Ctrl+C", text)
 
+    def test_failure_shows_where_it_failed_not_final_phase(self):
+        st = dict(BASE, state="failed", rc=2, duration_s=79, phase="Finalização",
+                  apps={"items": ["REL01", "FAT02_W"], "index": 1, "current": "FAT02_W"},
+                  error={"role": "utils", "task": "Garantia dos KVs", "message": "Falha ao mesclar",
+                         "phase": "Apps padrão", "app": "FAT02_W", "dependency": "vendas"})
+        text = "\n".join(monitor.render(st, T0))
+        self.assertIn("Etapa:  Apps padrão — FAT02_W (dependência: vendas)", text)
+        self.assertNotIn("Finalização", text)
+
     def test_success_and_interrupted(self):
         self.assertIn("✔ Setup concluído em 1h01m01s.",
                       "\n".join(monitor.render(dict(BASE, state="success", duration_s=3661), T0)))
         text = "\n".join(monitor.render(dict(BASE, state="failed", interrupted=True, rc=-15, duration_s=5), T0))
-        self.assertIn("O setup interrompido", text)
+        self.assertIn("O setup foi interrompido", text)
 
     def test_fit_uses_visible_width_and_ignores_unknown_width(self):
         colored = "\033[1mKorp Setup · update · release/2025.1.0.x-performance-test\033[0m"

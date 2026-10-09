@@ -108,11 +108,15 @@ class CallbackTest(unittest.TestCase):
         c.v2_runner_on_failed(Result(failing, {"msg": "esperado"}), ignore_errors=True)
         self.assertIsNone(self.status()["error"])
         c.v2_runner_on_failed(Result(failing, {"msg": "Consul indisponível", "item": "svc-a"}))
+        c.v2_playbook_on_task_start(Task("Falha do playbook", Role("finishing")), False)
         c.v2_runner_on_failed(Result(Task("Falha do playbook", Role("finishing")), {"msg": {"msg": "repasse"}}))
         st = self.status()
         self.assertEqual(st["error"]["message"], "Consul indisponível")
         self.assertEqual((st["error"]["role"], st["error"]["item"]), ("utils", "svc-a"))
         self.assertEqual(st["last_failure"]["message"], "repasse")
+        # a etapa e o app são os do momento da falha (o tratamento de erro roda depois, em Finalização)
+        self.assertEqual((st["error"]["phase"], st["error"]["app"]), ("Aplicativos", "LOG102"))
+        self.assertEqual(st["phase"], "Finalização")
         self.assertEqual(st["counts"]["ignored"], 1)
         self.assertEqual(st["counts"]["failed"], 2)
 
@@ -144,7 +148,8 @@ class CallbackTest(unittest.TestCase):
         self.assertEqual(st["warnings"], {"count": 4, "last": ["w2", "w3", "w4"]})
         self.cb.v2_runner_on_ok(Result(t, {"warnings": [
             "Found orphan containers ([x y]) for this project.",
-            "network servicos: network.external.name is deprecated. Please set network.name with external: true"]}))
+            "network servicos: network.external.name is deprecated. Please set network.name with external: true",
+            "Platform linux on host localhost is using the discovered Python interpreter at /usr/bin/python3.10"]}))
         self.cb.v2_playbook_on_stats(Stats({"failures": 0, "unreachable": 0}))
         self.assertEqual(self.status()["warnings"]["count"], 4)  # avisos esperados não contam
         self.assertEqual(st["playbook_result"], "success")
