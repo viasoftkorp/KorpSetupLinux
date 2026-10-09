@@ -80,6 +80,34 @@ Para medir o tempo de cada tarefa, exporte antes ``ANSIBLE_CALLBACKS_ENABLED=ans
 Na 2025.1, o ``setup.sh`` voltou a terminar com código 11 quando o playbook principal falha (como na 2024.2);
 antes, o código era o do ``tee`` e falhas terminavam com 0.
 
+Acompanhamento em segundo plano
+===============================
+
+Com ``progress=true`` (opcional; sem ele nada muda), o ``setup.sh`` faz em primeiro plano o que pode pedir
+alguma resposta (instalação do Ansible, clone, inventário e perguntas de DNS) e dispara o playbook principal em
+segundo plano: com ``systemd-run`` (serviço ``korp-setup``) ou, onde não há systemd, com ``setsid``. A execução
+continua mesmo que a sessão SSH caia. A sessão mostra a etapa, o app atual (X de N), a tarefa, o tempo decorrido
+(com estimativa pela última execução com as mesmas tags) e os contadores; em caso de falha, mostra o app, a tarefa
+e a mensagem de erro, e o ``setup.sh`` termina com código 11, como hoje.
+
+- ``Ctrl+C`` fecha só a tela; para voltar: ``sudo korp-setup-acompanhar``.
+- O log completo continua em ``/etc/korp/ansible/logs``, no mesmo formato. O andamento fica em
+  ``/etc/korp/ansible/progress/status.json`` e o histórico das execuções em ``history.jsonl`` (acesso só do root).
+- Enquanto um setup roda em segundo plano, um novo ``setup.sh`` é recusado (código 15).
+- As variáveis ``ANSIBLE_*`` de quem executa (por exemplo ``ANSIBLE_CALLBACKS_ENABLED``) são repassadas ao playbook.
+- Componentes: ``callback_plugins/korp_progress.py`` (grava o andamento e nunca interrompe o setup),
+  ``scripts/acompanhamento/korp_setup_runner.py`` (executa o playbook, fecha o resultado e limpa
+  ``/tmp/KorpSetupLinux``) e ``scripts/acompanhamento/korp-setup-acompanhar`` (a tela).
+
+Instalação do Ansible
+=====================
+
+O ``setup.sh`` não chama mais o ``add-apt-repository`` quando o PPA do Ansible já está configurado: esse comando
+consulta ``api.launchpad.net`` e falhava em servidores sem acesso a ele. Nesse caso, só atualiza a lista de
+pacotes. Sem o PPA, tenta adicioná-lo até 3 vezes. Se a rede falhar mas o servidor já tiver git e ansible-core 2.17
+ou mais novo, o setup segue com um aviso; abaixo disso (a community.docker que o setup instala exige 2.17), para com
+uma mensagem que mostra a versão encontrada e os endereços a liberar (códigos 12 e 13, como antes).
+
 Desligando as otimizações
 =========================
 
