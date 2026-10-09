@@ -54,6 +54,11 @@ Menos tarefas por aplicativo
     tarefas originais). As tarefas originais ficam em ``*_tasks.yml`` e são usadas com ``fast_path=false``;
     ``tests/unit/test_korp_fast_path_equivalence.py`` executa as duas versões no Ansible e compara os facts.
 
+Instalação do docker no provisioning
+    As dependências e os pacotes do docker são instalados em duas chamadas do ``apt`` (uma lista cada), em vez
+    de um loop em que cada pacote fazia o seu próprio ``apt update`` (10 atualizações viram 2). Os pacotes
+    instalados são os mesmos; com ``fast_path=false`` os loops originais continuam.
+
 O que **não** mudou: roles de aplicativos e seus ``vars/main.yml``, templates (compose, KV, SQL),
 infraestrutura, provisioning, ``update``/``remove-apps``/``uninstall-version``, formato do
 ``installed_apps.yml``, nomes de projeto Compose e as regras de segurança do DEVO-7182. A forma de adicionar
