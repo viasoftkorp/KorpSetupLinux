@@ -137,6 +137,19 @@ class CallbackTest(unittest.TestCase):
                                                 {"msg": "falhou", "ansible_loop_var": "item", "item": "svc-b"}))
         self.assertEqual((self.status()["error"]["item"], self.status()["error"]["task"]), ("svc-b", "Criação"))
 
+    def test_skipped_task_does_not_replace_current_task(self):
+        ran = Task("Cadastro em lote dos serviços de X", Role("utils"))
+        self.cb.v2_playbook_on_task_start(ran, False)
+        self.cb.v2_runner_on_ok(Result(ran, {}))
+        skipped = Task("Cadastro individual de svc", Role("utils"))
+        self.cb.v2_playbook_on_task_start(skipped, False)
+        self.assertEqual(self.cb._state.data["task"], "utils : Cadastro individual de svc")  # anunciada
+        self.cb.v2_runner_on_skipped(Result(skipped, {}))
+        self.assertEqual(self.cb._state.data["task"], "utils : Cadastro em lote dos serviços de X")
+        running = Task("Inicialização do compose reconciliado", Role("utils"))
+        self.cb.v2_playbook_on_task_start(running, False)  # em execução, ainda sem resultado
+        self.assertEqual(self.cb._state.data["task"], "utils : Inicialização do compose reconciliado")
+
     def test_counts_and_warnings(self):
         t = Task("a", Role("infrastructure"))
         self.cb.v2_runner_on_ok(Result(t, {"changed": True, "warnings": ["w1", "w2", "w3", "w4"]}))

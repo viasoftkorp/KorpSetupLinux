@@ -117,6 +117,7 @@ class ProgressState:
         self.data["error"] = None
         self._batch_task = None
         self._batch_label = None
+        self._last_ran = None
 
     # eventos -----------------------------------------------------------------
     def play(self, name):
@@ -161,7 +162,15 @@ class ProgressState:
         apps["dependency"] = role if role and role != items[idx] and role != "utils" else None
         self.data["phase"] = apps["label"]
 
-    def result(self, status, ignore_errors=False):
+    def result(self, status, ignore_errors=False, label=None):
+        # o Ansible anuncia toda tarefa antes de avaliar o "when": uma tarefa pulada (ex.: "Cadastro
+        # individual", do caminho original) não substitui na tela a última que rodou de verdade
+        if label:
+            if status == "skipped":
+                if self._last_ran:
+                    self.data["task"] = self._last_ran
+            else:
+                self._last_ran = label
         c = self.data["counts"]
         if status == "failed" and ignore_errors:
             c["ignored"] += 1
@@ -285,12 +294,13 @@ class CallbackModule(CallbackBase):
     def _result(self, result, status, ignore_errors=False):
         def go():
             res = getattr(result, "_result", {}) or {}
-            self._state.result(status, ignore_errors)
+            task = getattr(result, "_task", None)
+            role = role_name(getattr(task, "_role", None))
+            label = f"{role} : {task_label(task)}" if role else task_label(task)
+            self._state.result(status, ignore_errors, label)
             if res.get("warnings"):
                 self._state.warning(res["warnings"])
             if status == "failed" and not ignore_errors:
-                task = getattr(result, "_task", None)
-                role = role_name(getattr(task, "_role", None))
                 item = res.get("item") if not res.get("_ansible_no_log") else None
                 self._state.failure(role, task_label(task), None if item is None else tail(item, 200),
                                     error_text(res))
