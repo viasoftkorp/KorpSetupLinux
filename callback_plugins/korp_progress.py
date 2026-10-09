@@ -383,7 +383,8 @@ class CallbackModule(CallbackBase):
             role = getattr(task, "_role", None)
             names = [role_name(r) for r in role_ancestors(role)]
             self._state.task(role_name(role), names, task_label(task))
-        self._safe(go)
+        # sempre grava: uma tarefa longa (ex.: compose up) logo depois de outra não pode ficar sem registro
+        self._safe(go, force=True)
 
     def v2_playbook_on_handler_task_start(self, task):
         self.v2_playbook_on_task_start(task, False)
