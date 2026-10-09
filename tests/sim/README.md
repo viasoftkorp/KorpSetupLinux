@@ -15,7 +15,7 @@ comparar o estado final entre duas versões do código. Não acessa nenhum servi
 | Gateway da Korp (`gateway_url`) e portal local (`/oauth/...`) | **simulados** (`gateway/mock_gateway.py`) |
 | Imagens privadas dos aplicativos | **simuladas**: uma imagem mínima que só fica em execução (`fake-image/`) é marcada com cada nome/tag usado nos composes |
 | `docker_login` | **stub** (`stubs/docker_login.py`, só no ambiente isolado): não há credenciais reais |
-| `add-apt-repository` e `ansible-galaxy collection install` do `setup.sh` | **shims** (`shims/`): apenas rede externa (Launchpad/Galaxy), idênticos nas duas versões; a coleção community.docker 5.3.0 é fixada pelo ambiente |
+| `add-apt-repository`, `apt-get update` e `ansible-galaxy collection install` do `setup.sh` | **shims** (`shims/`): apenas rede externa (Launchpad, mirrors do Ubuntu, Galaxy), idênticos nas duas versões; a coleção community.docker 5.3.0 é fixada pelo ambiente |
 | role `provisioning` | **não executada** (`ANSIBLE_SKIP_TAGS=provisioning`): instala pacotes do SO, salt e zabbix e depende de systemd; o host já sai com o estado que ela produziria |
 
 Consequências: os tempos medidos aqui **não incluem** download de imagens dos aplicativos, provisioning,
