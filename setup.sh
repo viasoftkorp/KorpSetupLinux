@@ -28,6 +28,9 @@ create_random_string() {
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
 #   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
 #   fast_path=<bool> - OPCIONAL, padrão true - false executa as tarefas originais por serviço (sem as otimizações de desempenho)
+#   progress=<bool> - OPCIONAL, padrão false - true executa o playbook principal em segundo plano e mostra o andamento
+#     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar). O log completo continua em
+#     /etc/korp/ansible/logs. O setup não é interrompido se a sessão SSH cair.
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -65,6 +68,11 @@ fast_path=true;
 
 # ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
 korp_min_ansible_core="2.17"
+
+# modo de acompanhamento (progress=true)
+progress=false;
+korp_progress_dir=/etc/korp/ansible/progress
+korp_progress_unit=korp-setup
 
 ini_file_path="./setup_config.ini"
 
@@ -110,6 +118,17 @@ done
 if [ "$fast_path" == "" ];
 then
    fast_path=true
+fi
+
+# Um setup em segundo plano usa /tmp/KorpSetupLinux até terminar: nenhum outro setup pode começar antes disso
+korp_running_pid=""
+if sudo test -f "$korp_progress_dir/status.json"; then
+    korp_running_pid=$(sudo python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(d.get('runner_pid','') if d.get('state')=='running' else '')" "$korp_progress_dir/status.json" 2>/dev/null)
+fi
+if { [ -n "$korp_running_pid" ] && sudo kill -0 "$korp_running_pid" 2>/dev/null; } || systemctl is-active --quiet "$korp_progress_unit" 2>/dev/null;
+then
+    echo "$(tput setaf 1)Já existe um setup em execução em segundo plano. Acompanhe com: sudo korp-setup-acompanhar$(tput setaf 7)"
+    exit 15
 fi
 
 if [ "$custom_tags" == "" ];
@@ -290,12 +309,7 @@ sudo ansible-galaxy collection install 'community.docker:>=3.10.3' -p /usr/lib/p
 
 sudo mkdir -p /etc/korp/ansible/logs/
 
-ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
-  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
-  --limit localhost \
-  --vault-id /etc/korp/ansible/.vault_key \
-  --tags=$ansible_tags \
-  --extra-vars='{
+korp_extra_vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
     "customs": {
@@ -309,7 +323,53 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "skip_salt_test": '$skip_salt_test',
     "should_update_rabbitmq": '$should_update_rabbitmq',
     "korp_setup_fast_path": '$fast_path'
-  }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
+  }'
+
+# Modo de acompanhamento: o playbook principal roda em segundo plano (systemd-run, ou setsid sem systemd)
+# e esta sessão mostra o andamento. O resultado, o log e a limpeza ficam a cargo de korp_setup_runner.py.
+if [ "$progress" == "true" ];
+then
+    korp_run_id=$(date '+%Y-%m-%d_%H-%M-%S')
+    korp_scripts=/tmp/KorpSetupLinux/scripts/acompanhamento
+    sudo mkdir -p "$korp_progress_dir" && sudo chmod 700 "$korp_progress_dir"
+    sudo install -m 0755 "$korp_scripts/korp-setup-acompanhar" /usr/local/bin/korp-setup-acompanhar
+    sudo install -m 0644 "$korp_scripts/korp_setup_runner.py" "$korp_progress_dir/korp_setup_runner.py"
+    printf '%s\n' "$korp_extra_vars" | sudo tee "$korp_progress_dir/extra-vars.yml" > /dev/null
+    env | grep '^ANSIBLE_' | sudo tee "$korp_progress_dir/run.env" > /dev/null
+    sudo chmod 600 "$korp_progress_dir/extra-vars.yml" "$korp_progress_dir/run.env"
+
+    korp_runner=(/usr/bin/python3 "$korp_progress_dir/korp_setup_runner.py"
+        --status "$korp_progress_dir/status.json" --history "$korp_progress_dir/history.jsonl"
+        --log "/etc/korp/ansible/logs/ansible_output_${korp_run_id}.log" --run-id "$korp_run_id"
+        --env-file "$korp_progress_dir/run.env" --callback-dir /tmp/KorpSetupLinux/callback_plugins
+        --meta "tags=$ansible_tags" --meta "branch=$branch_name"
+        --cleanup /tmp/KorpSetupLinux --cleanup "$korp_progress_dir/extra-vars.yml" --cleanup "$korp_progress_dir/run.env"
+        -- "$(command -v ansible-playbook)" /tmp/KorpSetupLinux/bootstrap-playbook.yml
+        --limit localhost --vault-id /etc/korp/ansible/.vault_key --tags="$ansible_tags"
+        --extra-vars "@$korp_progress_dir/extra-vars.yml")
+
+    if [ -d /run/systemd/system ] && command -v systemd-run > /dev/null;
+    then
+        sudo systemd-run --unit="$korp_progress_unit" --collect --quiet --working-directory="$PWD" "${korp_runner[@]}"
+    else
+        sudo setsid --fork "${korp_runner[@]}" < /dev/null > /dev/null 2>&1
+    fi
+    if [ $? != 0 ];
+    then
+        echo "$(tput setaf 1)Não foi possível iniciar o setup em segundo plano.$(tput setaf 7)"
+        exit 16
+    fi
+
+    sudo /usr/local/bin/korp-setup-acompanhar --run-id "$korp_run_id" --wait 60
+    exit $?
+fi
+
+ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
+  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key \
+  --tags=$ansible_tags \
+  --extra-vars="$korp_extra_vars" | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
 
 # status do ansible-playbook (o $? seria o do tee)
 ansible_rc=${PIPESTATUS[0]}

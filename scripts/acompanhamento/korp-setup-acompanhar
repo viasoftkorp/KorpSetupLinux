@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+"""Mostra o andamento do setup executado em segundo plano (setup.sh progress=true).
+
+Uso: sudo korp-setup-acompanhar [--status ARQ] [--run-id ID] [--wait SEGUNDOS]
+Ctrl+C fecha só esta tela; o setup continua. Saída: 0 concluído (ou tela fechada), 11 falhou, 1 sem resultado.
+"""
+import argparse
+import json
+import os
+import shutil
+import sys
+import textwrap
+import time
+from datetime import datetime, timezone
+
+DEFAULT_STATUS = "/etc/korp/ansible/progress/status.json"
+EXIT_FAILED = 11
+
+
+def parse_time(value):
+    try:
+        return datetime.fromisoformat(value).timestamp()
+    except (TypeError, ValueError):
+        return None
+
+
+def fmt_duration(seconds):
+    seconds = max(int(seconds or 0), 0)
+    h, rest = divmod(seconds, 3600)
+    m, s = divmod(rest, 60)
+    return f"{h}h{m:02d}m{s:02d}s" if h else f"{m}m{s:02d}s"
+
+
+def bar(done, total, width=24):
+    filled = int(width * done / total) if total else 0
+    return "█" * filled + "░" * (width - filled)
+
+
+def elapsed(status, now):
+    start = parse_time(status.get("started_at"))
+    if status.get("duration_s") is not None:
+        return status["duration_s"]
+    return now - start if start else 0
+
+
+def render(status, now, color=False):
+    """Linhas da tela para um status (função pura, testada em tests/unit)."""
+    def c(code, text):
+        return f"\033[{code}m{text}\033[0m" if color else text
+
+    state = status.get("state", "running")
+    counts = status.get("counts") or {}
+    apps = status.get("apps") or {}
+    title = " · ".join(x for x in ("Korp Setup", status.get("tags"), status.get("branch")) if x)
+    lines = [c("1", title), ""]
+    took = elapsed(status, now)
+
+    if state == "success":
+        lines.append(c("32", f"✔ Setup concluído em {fmt_duration(took)}."))
+    elif state == "failed":
+        err = status.get("error") or {}
+        what = "interrompido" if status.get("interrupted") else "falhou"
+        lines.append(c("31;1", f"✖ O setup {what} depois de {fmt_duration(took)} (código {status.get('rc')})."))
+        where = status.get("phase") or ""
+        if apps.get("current"):
+            where += f" — {apps['current']}"
+        lines.append(f"  Etapa:  {where}")
+        if err.get("task"):
+            task = f"{err['role']} : {err['task']}" if err.get("role") else err["task"]
+            lines.append(f"  Tarefa: {task}")
+        if err.get("item"):
+            lines.append(f"  Item:   {err['item']}")
+        msg = (err.get("message") or "sem mensagem").strip()
+        lines.append("  Erro:")
+        for raw in msg.splitlines()[-25:]:
+            for part in textwrap.wrap(raw, 110) or [""]:
+                lines.append(c("31", f"    {part}"))
+    else:
+        phase = status.get("phase") or "Preparação"
+        if apps.get("items"):
+            total, idx = len(apps["items"]), apps.get("index", -1)
+            done = max(idx + 1, 0)
+            lines.append(f"  Etapa    {phase} {done}/{total}  {bar(done, total)}")
+            current = apps.get("current") or "—"
+            if apps.get("dependency"):
+                current += f" (dependência: {apps['dependency']})"
+            lines.append(f"  App      {current}")
+        else:
+            lines.append(f"  Etapa    {phase}")
+        lines.append(f"  Tarefa   {status.get('task') or '—'}")
+        timing = f"{fmt_duration(took)} decorridos"
+        last = (status.get("last_run") or {}).get("duration_s")
+        if last:
+            remaining = last - took
+            timing += (f" · última execução {fmt_duration(last)} (faltam ~{fmt_duration(remaining)})"
+                       if remaining > 0 else f" · já passou do tempo da última execução ({fmt_duration(last)})")
+        lines.append(f"  Tempo    {timing}")
+
+    lines.append(f"  Tarefas  {counts.get('ok', 0)} ok · {counts.get('changed', 0)} alteradas · "
+                 f"{counts.get('skipped', 0)} puladas · {counts.get('failed', 0)} falhas")
+    warnings = status.get("warnings") or {}
+    if warnings.get("count"):
+        lines.append(c("33", f"  Avisos   {warnings['count']} · último: {warnings['last'][-1][:100]}"))
+    lines.append(f"  Log      {status.get('log', '')}")
+    if state == "running":
+        lines += ["", c("2", "  Ctrl+C fecha esta tela; o setup continua. Para voltar: sudo korp-setup-acompanhar")]
+    return lines
+
+
+def read_status(path):
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def alive(pid):
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except (TypeError, ValueError, ProcessLookupError):
+        return False
+    except PermissionError:
+        return True
+
+
+def draw(lines, tty):
+    width = shutil.get_terminal_size((120, 40)).columns
+    out = [line if len(line) <= width + 20 else line[: width - 1] + "…" for line in lines]
+    if tty:
+        sys.stdout.write("\033[H\033[2J" + "\n".join(out) + "\n")
+    else:
+        sys.stdout.write("\n".join(out) + "\n\n")
+    sys.stdout.flush()
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description="Acompanha o setup em segundo plano")
+    p.add_argument("--status", default=DEFAULT_STATUS)
+    p.add_argument("--run-id", help="espera esta execução começar")
+    p.add_argument("--wait", type=int, default=0, help="segundos de espera pelo início")
+    a = p.parse_args(argv)
+    tty = sys.stdout.isatty()
+
+    if not os.access(os.path.dirname(a.status) or ".", os.R_OK):
+        print("Sem permissão para ler o andamento. Use: sudo korp-setup-acompanhar")
+        return 1
+    deadline = time.time() + a.wait
+    status = read_status(a.status)
+    while not status or (a.run_id and status.get("run_id") != a.run_id):
+        if time.time() >= deadline:
+            print("Nenhum setup em acompanhamento encontrado." if not a.run_id
+                  else "O setup em segundo plano não iniciou. Veja o último log em /etc/korp/ansible/logs.")
+            return 1
+        time.sleep(1)
+        status = read_status(a.status)
+
+    last_key, last_print = None, 0.0
+    try:
+        while True:
+            status = read_status(a.status) or status
+            state = status.get("state", "running")
+            now = time.time()
+            if state == "running" and not alive(status.get("runner_pid")):
+                draw(render(status, now, tty), tty)
+                print("O processo do setup terminou sem registrar o resultado. Veja o log acima.")
+                return 1
+            key = (state, status.get("phase"), (status.get("apps") or {}).get("current"))
+            if tty or key != last_key or now - last_print >= 60 or state != "running":
+                draw(render(status, now, tty), tty)
+                last_key, last_print = key, now
+            if state == "success":
+                return 0
+            if state == "failed":
+                return EXIT_FAILED
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nTela fechada. O setup continua em segundo plano. Para voltar: sudo korp-setup-acompanhar")
+        return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
