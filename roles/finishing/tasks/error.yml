@@ -11,6 +11,10 @@
       status: error
       ErrorMessage: "Erro ao executar task '{{ ansible_failed_task.name }}''.\n Mensagem de erro: '{{ ansible_failed_result }}"
 
+- name: Download antecipado de imagens
+  ansible.builtin.include_tasks: image_prefetch.yml
+  when: korp_image_prefetch | default(false) | bool
+
 - name: Falha do playbook
   ansible.builtin.fail:
     msg: "{{ ansible_failed_result }}"
