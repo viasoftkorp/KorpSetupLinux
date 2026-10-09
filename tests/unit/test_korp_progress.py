@@ -84,6 +84,7 @@ class ProgressTest(unittest.TestCase):
                                "last_run": {"stage_times": {"Preparação": 10, "Aplicativos": 80, "Finalização": 10},
                                             "stage_tasks": {"Preparação": 4}}}, clock=clock)
         self.assertEqual(st.progress(), 0.0)
+        st.play("Setup main")
         for _ in range(2):  # metade das tarefas de Preparação da última vez
             st.task("utils", ["utils"], "x")
         self.assertAlmostEqual(st.progress(), 0.05)
@@ -97,8 +98,8 @@ class ProgressTest(unittest.TestCase):
         st.task("B", ["B"], "z")
         self.assertAlmostEqual(st.progress(), 0.7)
         clock.t = 90
-        st.task("finishing", ["finishing"], "fim")  # Finalização: as etapas anteriores contam inteiras
-        self.assertAlmostEqual(st.progress(), 0.9)
+        st.task("finishing", ["finishing"], "fim")  # anteriores inteiras + 1 de ~10 tarefas da Finalização
+        self.assertAlmostEqual(st.progress(), 0.91)
         for _ in range(50):
             st.task("finishing", ["finishing"], "fim")
         self.assertEqual(st.progress(), 0.99)  # teto durante a execução (0,9 + 0,1 * 0,95 passaria de 99%)
@@ -106,14 +107,26 @@ class ProgressTest(unittest.TestCase):
         self.assertEqual(st.data["stage_times"]["Aplicativos"], 60.0)
         self.assertLess(st.progress(), 1.0)  # 100% só quando o executor fecha com sucesso
 
+    def test_stage_order_follows_the_plays(self):
+        st = cb.ProgressState({"tags": "update"}, clock=Clock())
+        self.assertTrue(all(s["state"] == "pending" for s in st.data["stages"]))
+        st.play("Setup de provisioning")
+        st.task("provisioning", ["provisioning"], "a")
+        st.play("Setup main")
+        st.task("utils", ["utils"], "default setup")
+        st.task("infrastructure", ["infrastructure"], "b")
+        states = [(s["name"], s["state"]) for s in st.data["stages"][:3]]
+        self.assertEqual(states, [("Provisionamento", "done"), ("Preparação", "done"), ("Infraestrutura", "current")])
+        self.assertEqual(st.data["stage_tasks"], {"Provisionamento": 1, "Preparação": 1})
+
     def test_skipped_stages_and_never_decreases(self):
         st = cb.ProgressState({"tags": "update"}, clock=Clock())
-        st.task("infrastructure", ["infrastructure"], "a")  # Provisionamento não ocorreu (pulado)
+        st.task("infrastructure", ["infrastructure"], "a")  # sem plays: Provisionamento e Preparação puladas
         states = {s["name"]: s["state"] for s in st.data["stages"]}
-        self.assertEqual((states["Preparação"], states["Provisionamento"], states["Infraestrutura"]),
-                         ("done", "skipped", "current"))
+        self.assertEqual((states["Provisionamento"], states["Preparação"], states["Infraestrutura"]),
+                         ("skipped", "skipped", "current"))
         first = st.progress()
-        self.assertAlmostEqual(first, 6 / 100)
+        self.assertAlmostEqual(first, (6 + 14 / 80) / 100, places=3)  # puladas inteiras + 1 de ~80 tarefas
         st.include("u", "Instalação de apps padrões", "app_name", "REL01")
         st.task("REL01", ["REL01"], "b")
         high = st.progress()

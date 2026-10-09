@@ -36,7 +36,8 @@ ROLE_PHASES = {
     "infrastructure-desktop": "Infraestrutura desktop",
     "finishing": "Finalização",
 }
-PLAY_PHASES = {"Setup de provisioning": "Provisionamento"}
+# o play de provisionamento roda antes; o play principal começa pelo "Default setup" (Preparação)
+PLAY_PHASES = {"Setup de provisioning": "Provisionamento", "Setup main": "Preparação"}
 # avisos esperados em toda execução (vários arquivos de compose no mesmo projeto): não aparecem na tela
 EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprecated",
                      "is using the discovered Python interpreter")
@@ -45,7 +46,7 @@ EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprec
 # (--list-tasks de uma atualização lista ~150 de ~2.000 a 8.500), então o percentual vem das etapas:
 # etapas concluídas + fração da etapa atual. O peso de cada etapa é o tempo que ela levou na última
 # execução bem-sucedida com as mesmas tags (histórico do servidor) ou, sem histórico, o padrão abaixo.
-STAGES = ["Preparação", "Provisionamento", "Infraestrutura", "Infraestrutura web", "Infraestrutura desktop",
+STAGES = ["Provisionamento", "Preparação", "Infraestrutura", "Infraestrutura web", "Infraestrutura desktop",
           "Apps padrão", "Aplicativos", "Finalização"]
 APP_STAGES = ("Apps padrão", "Aplicativos")
 ONLY_APPS_TAGS = {"update-versioned", "install-versioned-only", "remove-apps", "uninstall-version"}
@@ -161,7 +162,7 @@ class ProgressState:
         self.data["stage_times"] = {}
         self.data["stage_tasks"] = {}
         self.data["progress"] = 0.0
-        self._set_phase("Preparação")
+        self.data["phase"] = "Preparação"  # até o primeiro play (nenhuma etapa visitada ainda)
 
     # etapas ------------------------------------------------------------------
     def _close_stage(self):
@@ -229,11 +230,14 @@ class ProgressState:
 
     def task(self, role, names, task_name):
         """role: nome do papel da tarefa; names: nomes do papel e dos ancestrais (mais próximo primeiro)."""
-        c = self.data["counts"]
-        c["tasks"] += 1
         self.data["task"] = f"{role} : {task_name}" if role else task_name
         if role in ROLE_PHASES:
             self._set_phase(ROLE_PHASES[role])
+        self._track_app(role, names)
+        # contada depois da troca de etapa: a primeira tarefa de uma etapa pertence a ela
+        self.data["counts"]["tasks"] += 1
+
+    def _track_app(self, role, names):
         apps = self.data.get("apps")
         if not apps:
             return
