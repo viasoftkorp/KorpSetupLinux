@@ -1,4 +1,18 @@
+# Fast path (korp_setup_fast_path, padrão true): os mesmos pacotes numa única chamada do apt, com uma única
+# atualização da lista de pacotes. No loop original, cada item fazia o seu próprio apt update.
 - name: Instalação de dependências
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+    state: present
+    update_cache: true
+  when: korp_setup_fast_path | default(true) | bool
+
+- name: Instalação de dependências (um pacote por vez)
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -9,6 +23,7 @@
     - curl
     - gnupg-agent
     - software-properties-common
+  when: not (korp_setup_fast_path | default(true) | bool)
 
 - name: Adição de chave GPG
   ansible.builtin.apt_key:
@@ -20,7 +35,20 @@
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
+# Fast path: idem, uma chamada do apt e um apt update para os pacotes do docker
 - name: Instalação de docker
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    update_cache: true
+    state: present
+  when: korp_setup_fast_path | default(true) | bool
+
+- name: Instalação de docker (um pacote por vez)
   ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
@@ -31,6 +59,7 @@
     - containerd.io
     - docker-buildx-plugin
     - docker-compose-plugin
+  when: not (korp_setup_fast_path | default(true) | bool)
 
 - name: Configuração de inicialização de docker
   ansible.builtin.service:
