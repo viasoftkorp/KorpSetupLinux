@@ -35,7 +35,7 @@
         owner: "{{ linux_korp.user }}"
         group: root
         mode: '0755'
-      become: false
+      become_user: root
       when: korp_prefetch_plan.missing | length > 0
 
     # Roda como o usuário korp, que fez o docker login do Default setup
