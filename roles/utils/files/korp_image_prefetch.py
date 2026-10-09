@@ -21,7 +21,8 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-MARKER = "korp_image_prefetch"
+# Nome deste script: identifica o processo de download (protege contra PID reutilizado)
+MARKER = os.path.basename(os.path.abspath(__file__))
 
 
 def now():
@@ -202,6 +203,11 @@ def start(args):
         with os.fdopen(read_fd) as r:
             pid = r.read().strip()
         os.waitpid(child, 0)
+        if pid.isdigit():
+            # retorna só depois que o novo processo gravou o status (um stop logo em seguida o encontra)
+            limit = time.monotonic() + 10
+            while time.monotonic() < limit and (read_status(args.status) or {}).get("pid") != int(pid):
+                time.sleep(0.05)
         print(json.dumps({"pid": int(pid) if pid.isdigit() else None, "images": len(args.images)}))
         return 0 if pid.isdigit() else 1
     # filho: nova sessão e segundo fork, para não ficar preso ao processo do Ansible
