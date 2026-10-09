@@ -63,6 +63,9 @@ cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
 fast_path=true;
 
+# ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
+korp_min_ansible_core="2.17"
+
 ini_file_path="./setup_config.ini"
 
 
@@ -143,18 +146,52 @@ fi
 # Atualização de repositório, instalação de dependencias, instalação de ansible e git
 echo Instalando Ansible e Git
 
-# caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-if [ $? != 0 ]
+ansible_core_version() {
+    ansible --version 2>/dev/null | sed -nE '1s/.*core ([0-9]+(\.[0-9]+)+).*/\1/p'
+}
+version_at_least() {  # $1 >= $2
+    [ -n "$1" ] && [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -1)" == "$2" ]
+}
+ansible_ready() {
+    command -v git > /dev/null && version_at_least "$(ansible_core_version)" "$korp_min_ansible_core"
+}
+
+# O PPA já configurado dispensa o add-apt-repository, que consulta a API do Launchpad (api.launchpad.net)
+if grep -Rqs "ppa.launchpad\(content\)\?.net/ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/;
 then
-    echo "$(tput setaf 1)Erro 'sudo add-apt-repository --yes --update ppa:ansible/ansible'.$(tput setaf 7)"
-    exit 12
+    echo "PPA do Ansible já configurado; atualizando a lista de pacotes."
+    sudo apt-get update
+    apt_source_rc=$?
+else
+    # caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
+    for attempt in 1 2 3;
+    do
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        apt_source_rc=$?
+        [ $apt_source_rc == 0 ] && break
+        [ $attempt -lt 3 ] && echo "$(tput setaf 3)Falha ao adicionar o PPA do Ansible (tentativa $attempt de 3); nova tentativa em $((attempt * 15))s.$(tput setaf 7)" && sleep $((attempt * 15))
+    done
 fi
 sudo apt install git ansible --yes
-if [ $? != 0 ]
+apt_install_rc=$?
+
+if ! ansible_ready;
 then
-    echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
+    if [ "$apt_source_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Erro ao configurar o PPA do Ansible (ppa:ansible/ansible).$(tput setaf 7)"
+    else
+        echo "$(tput setaf 1)Erro 'sudo apt install git ansible --yes'.$(tput setaf 7)"
+    fi
+    korp_installed_core=$(ansible_core_version)
+    echo "$(tput setaf 1)O setup precisa de git e ansible-core $korp_min_ansible_core ou mais novo; instalado: ansible-core ${korp_installed_core:-nenhum}.$(tput setaf 7)"
+    echo "$(tput setaf 1)Verifique o acesso HTTPS a api.launchpad.net, ppa.launchpadcontent.net e galaxy.ansible.com.$(tput setaf 7)"
+    [ "$apt_source_rc" != 0 ] && exit 12
     exit 13
+fi
+if [ "$apt_source_rc" != 0 ] || [ "$apt_install_rc" != 0 ];
+then
+    echo "$(tput setaf 3)Não foi possível atualizar o Ansible pela rede; seguindo com o já instalado (ansible-core $(ansible_core_version)).$(tput setaf 7)"
 fi
 
 sudo rm -rf /tmp/KorpSetupLinux
