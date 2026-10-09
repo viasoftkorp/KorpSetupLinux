@@ -142,6 +142,11 @@ class CallbackTest(unittest.TestCase):
         st = self.status()
         self.assertEqual((st["counts"]["changed"], st["counts"]["ok"], st["counts"]["skipped"]), (1, 1, 1))
         self.assertEqual(st["warnings"], {"count": 4, "last": ["w2", "w3", "w4"]})
+        self.cb.v2_runner_on_ok(Result(t, {"warnings": [
+            "Found orphan containers ([x y]) for this project.",
+            "network servicos: network.external.name is deprecated. Please set network.name with external: true"]}))
+        self.cb.v2_playbook_on_stats(Stats({"failures": 0, "unreachable": 0}))
+        self.assertEqual(self.status()["warnings"]["count"], 4)  # avisos esperados não contam
         self.assertEqual(st["playbook_result"], "success")
 
     def test_no_log_and_loop_item_failures(self):

@@ -37,6 +37,8 @@ ROLE_PHASES = {
     "finishing": "Finalização",
 }
 PLAY_PHASES = {"Setup de provisioning": "Provisionamento"}
+# avisos esperados em toda execução (vários arquivos de compose no mesmo projeto): não aparecem na tela
+EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprecated")
 
 
 def now_iso():
@@ -168,6 +170,8 @@ class ProgressState:
     def warning(self, texts):
         w = self.data["warnings"]
         for t in texts:
+            if any(e in str(t) for e in EXPECTED_WARNINGS):
+                continue
             w["count"] += 1
             w["last"] = (w["last"] + [tail(t, 300)])[-3:]
 

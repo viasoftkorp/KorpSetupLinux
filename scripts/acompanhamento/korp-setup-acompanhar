@@ -7,6 +7,7 @@ Ctrl+C fecha só esta tela; o setup continua. Saída: 0 concluído (ou tela fech
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 import textwrap
@@ -125,9 +126,22 @@ def alive(pid):
         return True
 
 
+ANSI = re.compile(r"\033\[[0-9;]*m")
+
+
+def fit(lines, width):
+    """Corta pela largura visível (sem os códigos de cor); largura desconhecida (0) não corta."""
+    if width < 20:
+        return lines
+    out = []
+    for line in lines:
+        plain = ANSI.sub("", line)
+        out.append(line if len(plain) <= width else plain[: width - 1] + "…")
+    return out
+
+
 def draw(lines, tty):
-    width = shutil.get_terminal_size((120, 40)).columns
-    out = [line if len(line) <= width + 20 else line[: width - 1] + "…" for line in lines]
+    out = fit(lines, shutil.get_terminal_size((120, 40)).columns)
     if tty:
         sys.stdout.write("\033[H\033[2J" + "\n".join(out) + "\n")
     else:
