@@ -91,6 +91,75 @@ class MonitorRenderTest(unittest.TestCase):
             self.assertEqual(monitor.main(["--status", path, "--run-id", "outra", "--wait", "1"]), 1)
 
 
+STAGES = [{"name": n, "state": s} for n, s in (("Preparação", "done"), ("Provisionamento", "skipped"),
+                                                ("Infraestrutura", "done"), ("Infraestrutura web", "done"),
+                                                ("Aplicativos", "current"), ("Finalização", "pending"))]
+
+
+class PanelTest(unittest.TestCase):
+    def panels(self, st, **kw):
+        for width in (72, 90, 140):
+            for uni in (True, False):
+                for color in (True, False):
+                    yield width, uni, monitor.render_panel(st, T0 + 300, width, color=color, unicode=uni,
+                                                           host="qa5", **kw)
+
+    def check_box(self, lines, width, uni):
+        body = [ln for ln in lines if "Ctrl+C" not in ln]
+        self.assertEqual({len(monitor.ANSI.sub("", ln)) for ln in body}, {min(max(width, 72), 100)})
+        if not uni:
+            self.assertTrue(all(ord(ch) < 128 for ln in lines for ch in monitor.ANSI.sub("", ln)))
+
+    def test_running_panel(self):
+        st = dict(BASE, state="running", progress=0.4837, phase="Aplicativos", stages=STAGES,
+                  task="utils : Cadastro em lote", apps={"items": ["A"] * 53, "index": 22, "current": "LOG102",
+                                                        "dependency": "wms"})
+        for width, uni, lines in self.panels(st):
+            self.check_box(lines, width, uni)
+            text = monitor.ANSI.sub("", "\n".join(lines))
+            self.assertIn(" 48%", text)
+            self.assertIn("23 de 53", text)
+            self.assertNotIn("Provisionamento", text)  # etapa pulada não aparece
+            self.assertIn("█▄▀" if uni else "|_|", text)  # logo
+
+    def test_failed_and_success_panels(self):
+        failed = dict(BASE, state="failed", rc=2, duration_s=90, progress=0.71, stages=STAGES,
+                      error={"role": "utils", "task": "KVs", "message": "x" * 300, "phase": "Aplicativos", "app": "A"})
+        success = dict(BASE, state="success", rc=0, duration_s=95, progress=1.0,
+                       stages=[dict(s, state="done") for s in STAGES])
+        for width, uni, lines in self.panels(failed):
+            self.check_box(lines, width, uni)
+            text = monitor.ANSI.sub("", "\n".join(lines))
+            self.assertIn(" 71%", text)
+            self.assertIn("Aplicativos", text)
+            self.assertNotIn("Ctrl+C", text)
+        for width, uni, lines in self.panels(success):
+            self.check_box(lines, width, uni)
+            self.assertIn("100%", monitor.ANSI.sub("", "\n".join(lines)))
+
+    def test_stale_task_and_choice_of_layout(self):
+        st = dict(BASE, state="running", progress=0.1, task="utils : Inicialização do compose reconciliado",
+                  updated_at="2026-10-08T10:00:00+00:00")
+        text = "\n".join(monitor.render_panel(st, T0 + 200, 90, color=False))
+        self.assertIn("tarefa longa em andamento, há 3m20s", text)
+        orig = monitor.shutil.get_terminal_size
+        try:
+            monitor.shutil.get_terminal_size = lambda *_: os.terminal_size((60, 30))
+            self.assertIn("  Progresso 10%", "\n".join(monitor.screen(st, T0, tty=True)))
+            monitor.shutil.get_terminal_size = lambda *_: os.terminal_size((100, 30))
+            self.assertIn("Setup Korp", "\n".join(monitor.screen(st, T0, tty=True)))
+            self.assertIn("  Progresso 10%", "\n".join(monitor.screen(st, T0, tty=False)))
+        finally:
+            monitor.shutil.get_terminal_size = orig
+
+    def test_ascii_override(self):
+        os.environ["KORP_ASCII"] = "1"
+        try:
+            self.assertFalse(monitor.utf8_terminal())
+        finally:
+            os.environ.pop("KORP_ASCII")
+
+
 class RunnerTest(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
@@ -131,6 +200,20 @@ class RunnerTest(unittest.TestCase):
         # a próxima execução com as mesmas tags recebe a duração da última
         self.run_cmd("pass", run_id="r2")
         self.assertEqual(json.loads(self.read(self.status))["last_run"]["duration_s"], h[0]["duration_s"])
+
+    def test_stage_history_feeds_next_run_and_success_is_100(self):
+        script = ("import json,os; p=os.environ['KORP_PROGRESS_FILE']; d=json.load(open(p)); "
+                  "d.update(progress=0.97, stage_times={'Preparação': 5, 'Aplicativos': 50}, "
+                  "stage_tasks={'Preparação': 40}, stages=[{'name':'Aplicativos','state':'current'},"
+                  "{'name':'Finalização','state':'pending'}]); json.dump(d, open(p,'w'))")
+        self.assertEqual(self.run_cmd(script), 0)
+        st = json.loads(self.read(self.status))
+        self.assertEqual(st["progress"], 1.0)
+        self.assertEqual([s["state"] for s in st["stages"]], ["done", "skipped"])
+        self.run_cmd("pass", run_id="r2")
+        last = json.loads(self.read(self.status))["last_run"]
+        self.assertEqual((last["stage_times"], last["stage_tasks"]),
+                         ({"Preparação": 5, "Aplicativos": 50}, {"Preparação": 40}))
 
     def test_failure_without_callback_uses_log_tail(self):
         self.assertEqual(self.run_cmd("import sys; print('ERROR! playbook inválido'); sys.exit(4)"), 4)

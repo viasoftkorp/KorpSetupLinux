@@ -58,6 +58,69 @@ def include_batch(callback, task_name, uuid, items):
         callback.v2_playbook_on_include(Included(task, {"ansible_loop_var": "app_name", "app_name": item}))
 
 
+class Clock:
+    def __init__(self):
+        self.t = 0.0
+
+    def __call__(self):
+        return self.t
+
+
+class ProgressTest(unittest.TestCase):
+    def test_plan_by_tags(self):
+        self.assertEqual(cb.plan_stages("update"), cb.STAGES)
+        self.assertEqual(cb.plan_stages("default-setup,install"), cb.STAGES)
+        self.assertEqual(cb.plan_stages("update-versioned"), ["Preparação", "Aplicativos", "Finalização"])
+
+    def test_weights_from_history_or_default(self):
+        plan = ["Preparação", "Aplicativos", "Finalização"]
+        self.assertEqual(cb.stage_weights(plan), {"Preparação": 2.0, "Aplicativos": 55.0, "Finalização": 3.0})
+        self.assertEqual(cb.stage_weights(plan, {"Preparação": 10, "Aplicativos": 80, "Infraestrutura": 99}),
+                         {"Preparação": 10.0, "Aplicativos": 80.0, "Finalização": 0.0})
+
+    def test_progress_through_stages(self):
+        clock = Clock()
+        st = cb.ProgressState({"tags": "update-versioned",
+                               "last_run": {"stage_times": {"Preparação": 10, "Aplicativos": 80, "Finalização": 10},
+                                            "stage_tasks": {"Preparação": 4}}}, clock=clock)
+        self.assertEqual(st.progress(), 0.0)
+        for _ in range(2):  # metade das tarefas de Preparação da última vez
+            st.task("utils", ["utils"], "x")
+        self.assertAlmostEqual(st.progress(), 0.05)
+        clock.t = 30
+        st.include("u1", "Atualização somente dos aplicativos versionados", "app_name", "A")
+        st.include("u1", "Atualização somente dos aplicativos versionados", "app_name", "B")
+        st.task("A", ["A"], "y")  # app 1 de 2 em andamento: 10% + 80% * 0,25
+        self.assertAlmostEqual(st.progress(), 0.3)
+        self.assertEqual([s["state"] for s in st.data["stages"]], ["done", "current", "pending"])
+        self.assertEqual(st.data["stage_times"], {"Preparação": 30.0})
+        st.task("B", ["B"], "z")
+        self.assertAlmostEqual(st.progress(), 0.7)
+        clock.t = 90
+        st.task("finishing", ["finishing"], "fim")  # Finalização: as etapas anteriores contam inteiras
+        self.assertAlmostEqual(st.progress(), 0.9)
+        for _ in range(50):
+            st.task("finishing", ["finishing"], "fim")
+        self.assertEqual(st.progress(), 0.99)  # teto durante a execução (0,9 + 0,1 * 0,95 passaria de 99%)
+        st.stats({"failures": 0})
+        self.assertEqual(st.data["stage_times"]["Aplicativos"], 60.0)
+        self.assertLess(st.progress(), 1.0)  # 100% só quando o executor fecha com sucesso
+
+    def test_skipped_stages_and_never_decreases(self):
+        st = cb.ProgressState({"tags": "update"}, clock=Clock())
+        st.task("infrastructure", ["infrastructure"], "a")  # Provisionamento não ocorreu (pulado)
+        states = {s["name"]: s["state"] for s in st.data["stages"]}
+        self.assertEqual((states["Preparação"], states["Provisionamento"], states["Infraestrutura"]),
+                         ("done", "skipped", "current"))
+        first = st.progress()
+        self.assertAlmostEqual(first, 6 / 100)
+        st.include("u", "Instalação de apps padrões", "app_name", "REL01")
+        st.task("REL01", ["REL01"], "b")
+        high = st.progress()
+        st.data["stages"][-3]["state"] = "pending"  # mesmo que algo volte, o percentual não diminui
+        self.assertEqual(st.progress(), high)
+
+
 class CallbackTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.TemporaryDirectory()

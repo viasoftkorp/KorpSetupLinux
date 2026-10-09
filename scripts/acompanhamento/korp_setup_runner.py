@@ -66,7 +66,7 @@ def last_run(history_path, tags):
                     best = r
     except OSError:
         pass
-    return best and {"duration_s": best.get("duration_s"), "finished_at": best.get("finished_at")}
+    return best and {k: best.get(k) for k in ("duration_s", "finished_at", "stage_times", "stage_tasks")}
 
 
 def log_tail(path, lines=20):
@@ -147,6 +147,10 @@ def main(argv=None):
                   "state": "success" if rc == 0 else "failed"})
     if interrupted:
         final["interrupted"] = True
+    if rc == 0:
+        final["progress"] = 1.0
+        for stage in final.get("stages") or []:
+            stage["state"] = {"current": "done", "pending": "skipped"}.get(stage.get("state"), stage.get("state"))
     if rc != 0 and not final.get("error"):
         final["error"] = {"role": "", "task": "", "item": None, "at": final["finished_at"],
                           "message": "o playbook terminou com erro antes de registrar a tarefa que falhou; "
@@ -158,7 +162,8 @@ def main(argv=None):
             with open(a.history, "a") as h:
                 h.write(json.dumps({"run_id": a.run_id, "tags": meta.get("tags"), "branch": meta.get("branch"),
                                     "started_at": status["started_at"], "finished_at": final["finished_at"],
-                                    "duration_s": duration, "rc": rc}) + "\n")
+                                    "duration_s": duration, "rc": rc, "stage_times": final.get("stage_times"),
+                                    "stage_tasks": final.get("stage_tasks")}) + "\n")
         except OSError:
             pass
 

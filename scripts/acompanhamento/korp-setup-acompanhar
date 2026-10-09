@@ -3,6 +3,9 @@
 
 Uso: sudo korp-setup-acompanhar [--status ARQ] [--run-id ID] [--wait SEGUNDOS]
 Ctrl+C fecha só esta tela; o setup continua. Saída: 0 concluído (ou tela fechada), 11 falhou, 1 sem resultado.
+
+Num terminal com pelo menos 72 colunas, mostra o painel (logo, barra de 0 a 100% e etapas), em Unicode ou,
+sem UTF-8, só com caracteres ASCII. Sem terminal (ou mais estreito), mostra linhas simples.
 """
 import argparse
 import json
@@ -12,10 +15,35 @@ import shutil
 import sys
 import textwrap
 import time
+import unicodedata
 from datetime import datetime, timezone
 
 DEFAULT_STATUS = "/etc/korp/ansible/progress/status.json"
 EXIT_FAILED = 11
+PANEL_MIN, PANEL_MAX = 72, 100
+STALE_AFTER = 60
+ANSI = re.compile(r"\033\[[0-9;]*m")
+SHORT_STAGES = {"Infraestrutura web": "Infra web", "Infraestrutura desktop": "Infra desktop"}
+
+# cores (256 cores): vermelho e azul da marca, verde de progresso
+RED, BLUE, GREEN, DIM, WHITE = "38;5;167", "38;5;67", "38;5;42", "38;5;244", "1;97"
+TAG = "1;97;48;5;167"
+
+TAG_TITLES = {"update": "atualização", "default-setup,install": "instalação", "install": "instalação",
+              "update-versioned": "atualização dos versionados", "install-versioned-only": "instalação de versionados",
+              "remove-apps": "remoção de aplicativos", "uninstall-version": "remoção de versão"}
+
+CHARSETS = {
+    True: {"tl": "╭", "tr": "╮", "bl": "╰", "br": "╯", "h": "─", "v": "│", "ml": "├", "mr": "┤",
+           "full": "█", "parts": "▏▎▍▌▋▊▉", "empty": "░", "done": "✔", "current": "▶", "skipped": "·",
+           "pending": "○", "ok": "✔", "fail": "✖", "spin": "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏", "sep": "·", "dash": "—",
+           "logo": ["█▄▀ █▀█ █▀█ █▀█    ", "█ █ █▄█ █▀▄ █▀▀ ERP", "            ▀▀▀▀▀▀▀", "        BY VIASOFT "]},
+    False: {"tl": "+", "tr": "+", "bl": "+", "br": "+", "h": "-", "v": "|", "ml": "+", "mr": "+",
+            "full": "#", "parts": "", "empty": ".", "done": "v", "current": ">", "skipped": "-",
+            "pending": "o", "ok": "OK", "fail": "X", "spin": "|/-\\", "sep": "-", "dash": "-",
+            "logo": [" _  _____  ___ ___       ", "| |/ / _ \\| _ \\ _ \\      ", "| ' < (_) |   /  _/  ERP ",
+                     "|_|\\_\\___/|_|_\\_|  ______", "          BY VIASOFT     "]},
+}
 
 
 def parse_time(value):
@@ -32,11 +60,6 @@ def fmt_duration(seconds):
     return f"{h}h{m:02d}m{s:02d}s" if h else f"{m}m{s:02d}s"
 
 
-def bar(done, total, width=24):
-    filled = int(width * done / total) if total else 0
-    return "█" * filled + "░" * (width - filled)
-
-
 def elapsed(status, now):
     start = parse_time(status.get("started_at"))
     if status.get("duration_s") is not None:
@@ -44,11 +67,58 @@ def elapsed(status, now):
     return now - start if start else 0
 
 
+def percent(status):
+    if status.get("state") == "success":
+        return 100
+    return min(int((status.get("progress") or 0) * 100), 99)
+
+
+def bar(fraction, width, cs):
+    """Barra com frações de bloco (Unicode) para avançar suave."""
+    fraction = min(max(fraction, 0.0), 1.0)
+    cells = fraction * width
+    full = int(cells)
+    part = ""
+    if cs["parts"] and full < width:
+        idx = int((cells - full) * (len(cs["parts"]) + 1))
+        part = cs["parts"][idx - 1] if idx > 0 else ""
+    return cs["full"] * full + part + cs["empty"] * (width - full - len(part))
+
+
+def timing_text(status, now, took, sep="·"):
+    text = f"{fmt_duration(took)} decorridos"
+    last = (status.get("last_run") or {}).get("duration_s")
+    if last:
+        remaining = last - took
+        text += (f" {sep} última execução {fmt_duration(last)} (faltam ~{fmt_duration(remaining)})"
+                 if remaining > 0 else f" {sep} já passou do tempo da última execução ({fmt_duration(last)})")
+    return text
+
+
+def app_text(apps, cs):
+    if not apps.get("items"):
+        return None
+    total, idx = len(apps["items"]), apps.get("index", -1)
+    current = apps.get("current") or cs["dash"]
+    text = f"{current} {cs['sep']} {max(idx + 1, 0)} de {total}" if idx >= 0 else f"{total} na fila"
+    if apps.get("dependency"):
+        text += f" {cs['sep']} dependência: {apps['dependency']}"
+    return text
+
+
+def stale_text(status, now):
+    updated = parse_time(status.get("updated_at"))
+    if status.get("state") == "running" and updated and now - updated > STALE_AFTER:
+        return f"tarefa longa em andamento, há {fmt_duration(now - updated)}"
+    return None
+
+
 def render(status, now, color=False):
-    """Linhas da tela para um status (função pura, testada em tests/unit)."""
+    """Linhas simples (sem terminal ou terminal estreito); função pura, testada em tests/unit."""
     def c(code, text):
         return f"\033[{code}m{text}\033[0m" if color else text
 
+    cs = CHARSETS[True]
     state = status.get("state", "running")
     counts = status.get("counts") or {}
     apps = status.get("apps") or {}
@@ -59,33 +129,13 @@ def render(status, now, color=False):
     if state == "success":
         lines.append(c("32", f"✔ Setup concluído em {fmt_duration(took)}."))
     elif state == "failed":
-        err = status.get("error") or {}
-        what = "foi interrompido" if status.get("interrupted") else "falhou"
-        lines.append(c("31;1", f"✖ O setup {what} depois de {fmt_duration(took)}."))
-        phase = err.get("phase") or status.get("phase") or ""
-        app = err.get("app") if "app" in err else apps.get("current")
-        where = phase + (f" — {app}" if app else "")
-        if err.get("dependency"):
-            where += f" (dependência: {err['dependency']})"
-        lines.append(f"  Etapa:  {where}")
-        if err.get("task"):
-            task = f"{err['role']} : {err['task']}" if err.get("role") else err["task"]
-            lines.append(f"  Tarefa: {task}")
-        if err.get("item"):
-            lines.append(f"  Item:   {err['item']}")
-        msg = (err.get("message") or "sem mensagem").strip()
-        lines.append("  Erro:")
-        for raw in msg.splitlines()[-25:]:
-            for part in textwrap.wrap(raw, 110) or [""]:
-                lines.append(c("31", f"    {part}"))
-        if status.get("rc") is not None:
-            lines.append(f"  (ansible-playbook terminou com código {status['rc']}; o setup.sh termina com {EXIT_FAILED})")
+        lines += failure_lines(status, apps, took, cs, c)
     else:
         phase = status.get("phase") or "Preparação"
+        lines.append(f"  Progresso {percent(status)}%  {bar((status.get('progress') or 0), 24, cs)}")
         if apps.get("items"):
             total, idx = len(apps["items"]), apps.get("index", -1)
-            done = max(idx + 1, 0)
-            lines.append(f"  Etapa    {phase} {done}/{total}  {bar(done, total)}")
+            lines.append(f"  Etapa    {phase} {max(idx + 1, 0)}/{total}")
             current = apps.get("current") or "—"
             if apps.get("dependency"):
                 current += f" (dependência: {apps['dependency']})"
@@ -93,13 +143,7 @@ def render(status, now, color=False):
         else:
             lines.append(f"  Etapa    {phase}")
         lines.append(f"  Tarefa   {status.get('task') or '—'}")
-        timing = f"{fmt_duration(took)} decorridos"
-        last = (status.get("last_run") or {}).get("duration_s")
-        if last:
-            remaining = last - took
-            timing += (f" · última execução {fmt_duration(last)} (faltam ~{fmt_duration(remaining)})"
-                       if remaining > 0 else f" · já passou do tempo da última execução ({fmt_duration(last)})")
-        lines.append(f"  Tempo    {timing}")
+        lines.append(f"  Tempo    {timing_text(status, now, took)}")
 
     lines.append(f"  Tarefas  {counts.get('ok', 0)} ok · {counts.get('changed', 0)} alteradas · "
                  f"{counts.get('skipped', 0)} puladas · {counts.get('failed', 0)} falhas")
@@ -110,6 +154,143 @@ def render(status, now, color=False):
     if state == "running":
         lines += ["", c("2", "  Ctrl+C fecha esta tela; o setup continua. Para voltar: sudo korp-setup-acompanhar")]
     return lines
+
+
+def failure_lines(status, apps, took, cs, c, width=110, label=lambda t: t):
+    err = status.get("error") or {}
+    what = "foi interrompido" if status.get("interrupted") else "falhou"
+    lines = [c("31;1", f"{cs['fail']} O setup {what} depois de {fmt_duration(took)}.")]
+    phase = err.get("phase") or status.get("phase") or ""
+    app = err.get("app") if "app" in err else apps.get("current")
+    where = phase + (f" {cs['dash']} {app}" if app else "")
+    if err.get("dependency"):
+        where += f" (dependência: {err['dependency']})"
+    lines.append(f"  {label('Etapa:')}  {where}")
+    if err.get("task"):
+        task = f"{err['role']} : {err['task']}" if err.get("role") else err["task"]
+        lines.append(f"  {label('Tarefa:')} {task}")
+    if err.get("item"):
+        lines.append(f"  {label('Item:')}   {err['item']}")
+    msg = (err.get("message") or "sem mensagem").strip()
+    lines.append(f"  {label('Erro:')}")
+    for raw in msg.splitlines()[-25:]:
+        for part in textwrap.wrap(raw, width) or [""]:
+            lines.append(c("31", f"    {part}"))
+    if status.get("rc") is not None:
+        lines.append(f"  (ansible-playbook terminou com código {status['rc']}; o setup.sh termina com {EXIT_FAILED})")
+    return lines
+
+
+def render_panel(status, now, width, color=True, unicode=True, host=""):
+    """Painel com logo, barra de 0 a 100% e etapas (terminal com pelo menos 72 colunas)."""
+    cs = CHARSETS[bool(unicode)]
+
+    def c(code, text):
+        return f"\033[{code}m{text}\033[0m" if color else text
+
+    width = max(PANEL_MIN, min(width, PANEL_MAX))
+    inner = width - 4
+    state = status.get("state", "running")
+    counts = status.get("counts") or {}
+    apps = status.get("apps") or {}
+    took = elapsed(status, now)
+    pct = percent(status)
+
+    def row(text=""):
+        visible = len(ANSI.sub("", text))
+        if visible > inner:
+            ellipsis = "…" if unicode else "..."
+            text = ANSI.sub("", text)[: inner - len(ellipsis)] + ellipsis
+            visible = inner
+        return c(BLUE, cs["v"]) + " " + text + " " * (inner - visible) + " " + c(BLUE, cs["v"])
+
+    def label(text):
+        return c(BLUE, text)
+
+    # cabeçalho: logo à esquerda, título à direita
+    tags = status.get("tags") or ""
+    title = f"Setup Korp {cs['sep']} {TAG_TITLES.get(tags, tags)}" + (f" ({tags})" if tags in ("update",) else "")
+    started = parse_time(status.get("started_at"))
+    when = datetime.fromtimestamp(started).strftime("%d/%m %H:%M") if started else ""
+    info = [c("1", title), status.get("branch") or "", c(DIM, f" {cs['sep']} ".join(x for x in (host, when and f"iniciado {when}") if x)), ""]
+    logo = cs["logo"]
+    lines = [c(BLUE, cs["tl"] + cs["h"] * (width - 2) + cs["tr"])]
+    for i in range(max(len(logo), len(info))):
+        art = logo[i] if i < len(logo) else " " * len(logo[0])
+        if unicode and color:
+            if i in (0, 1):
+                art = c(WHITE, art[:15]) + c("1", art[15:])
+            elif i == 2:
+                art = c(RED, art)
+            elif i == 3:
+                art = art[:7] + c(TAG, art[7:])  # " BY VIASOFT " em selo vermelho
+        lines.append(row(" " + art + "     " + (info[i] if i < len(info) else "")))
+    lines.append(c(BLUE, cs["ml"] + cs["h"] * (width - 2) + cs["mr"]))
+    lines.append(row())
+
+    # barra de 0 a 100%
+    bar_color = RED if state == "failed" else GREEN
+    tail_mark = {"success": cs["ok"], "failed": cs["fail"]}.get(state, cs["spin"][int(now) % len(cs["spin"])])
+    bar_width = max(20, min(50, inner - 16))
+    fraction = 1.0 if state == "success" else (status.get("progress") or 0)
+    lines.append(row(f"  {c(bar_color, bar(fraction, bar_width, cs))}  {c('1', f'{pct:3d}%')}  {tail_mark}"))
+
+    if state == "failed":
+        lines.append(row())
+        for line in failure_lines(status, apps, took, cs, c, width=inner - 6, label=label):
+            lines.append(row(" " + line))
+        lines.append(row())
+    else:
+        if state == "success":
+            lines.append(row("  " + c(f"1;{GREEN}", f"{cs['ok']} Setup concluído em {fmt_duration(took)}")))
+        else:
+            lines.append(row("  " + c(DIM, timing_text(status, now, took, cs["sep"]))))
+        lines.append(row())
+        marks = {"done": (cs["done"], GREEN), "current": (cs["current"], "1;97"), "skipped": (cs["skipped"], DIM),
+                 "pending": (cs["pending"], DIM)}
+        chunks, current_len = [], 2
+        stage_line = "  "
+        for stage in status.get("stages") or []:
+            if stage.get("state") == "skipped":
+                continue
+            mark, code = marks.get(stage.get("state"), marks["pending"])
+            piece = f"{mark} {SHORT_STAGES.get(stage['name'], stage['name'])}"
+            if current_len + len(piece) + 2 > inner and current_len > 2:
+                chunks.append(stage_line)
+                stage_line, current_len = "  ", 2
+            stage_line += c(code, piece) + "  "
+            current_len += len(piece) + 2
+        chunks.append(stage_line)
+        for chunk in chunks:
+            lines.append(row(chunk.rstrip()))
+        lines.append(row())
+        app = app_text(apps, cs)
+        if app and state == "running":
+            lines.append(row(f"  {label('App     ')} {app}"))
+        if state == "running":
+            task = status.get("task") or cs["dash"]
+            stale = stale_text(status, now)
+            lines.append(row(f"  {label('Tarefa  ')} {task}"))
+            if stale:
+                lines.append(row("            " + c(DIM, f"({stale})")))
+        lines.append(row(f"  {label('Tarefas ')} {counts.get('ok', 0)} ok {cs['sep']} {counts.get('changed', 0)} alteradas "
+                         f"{cs['sep']} {counts.get('skipped', 0)} puladas {cs['sep']} {counts.get('failed', 0)} falhas"))
+        warnings = status.get("warnings") or {}
+        if warnings.get("count"):
+            lines.append(row(f"  {label('Avisos  ')} " + c("33", f"{warnings['count']} {cs['sep']} último: "
+                                                                   f"{warnings['last'][-1]}")))
+    lines.append(row(f"  {label('Log     ')} {status.get('log', '')}"))
+    lines.append(row())
+    lines.append(c(BLUE, cs["bl"] + cs["h"] * (width - 2) + cs["br"]))
+    if state == "running":
+        lines.append(c(DIM, "  Ctrl+C fecha esta tela; o setup continua. Para voltar: sudo korp-setup-acompanhar"))
+    return lines if unicode else [ascii_fold(line) for line in lines]
+
+
+def ascii_fold(text):
+    """Sem UTF-8: tira acentos e troca o que sobrar de não ASCII (o painel ASCII não usa nenhum)."""
+    text = text.replace("·", "-").replace("—", "-").replace("…", "...")
+    return unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
 
 
 def read_status(path):
@@ -130,9 +311,6 @@ def alive(pid):
         return True
 
 
-ANSI = re.compile(r"\033\[[0-9;]*m")
-
-
 def fit(lines, width):
     """Corta pela largura visível (sem os códigos de cor); largura desconhecida (0) não corta."""
     if width < 20:
@@ -144,12 +322,25 @@ def fit(lines, width):
     return out
 
 
+def utf8_terminal():
+    if os.environ.get("KORP_ASCII") == "1":
+        return False
+    encoding = (getattr(sys.stdout, "encoding", "") or "").lower().replace("-", "")
+    return "utf8" in encoding
+
+
+def screen(status, now, tty):
+    width = shutil.get_terminal_size((120, 40)).columns
+    if tty and width >= PANEL_MIN:
+        return render_panel(status, now, width, color=True, unicode=utf8_terminal(), host=os.uname().nodename)
+    return fit(render(status, now, tty), width)
+
+
 def draw(lines, tty):
-    out = fit(lines, shutil.get_terminal_size((120, 40)).columns)
     if tty:
-        sys.stdout.write("\033[H\033[2J" + "\n".join(out) + "\n")
+        sys.stdout.write("\033[H\033[2J" + "\n".join(lines) + "\n")
     else:
-        sys.stdout.write("\n".join(out) + "\n\n")
+        sys.stdout.write("\n".join(lines) + "\n\n")
     sys.stdout.flush()
 
 
@@ -160,6 +351,10 @@ def main(argv=None):
     p.add_argument("--wait", type=int, default=0, help="segundos de espera pelo início")
     a = p.parse_args(argv)
     tty = sys.stdout.isatty()
+    try:
+        sys.stdout.reconfigure(errors="replace")  # terminal sem UTF-8 não derruba a tela
+    except (AttributeError, ValueError):
+        pass
 
     if not os.access(os.path.dirname(a.status) or ".", os.R_OK):
         print("Sem permissão para ler o andamento. Use: sudo korp-setup-acompanhar")
@@ -181,12 +376,12 @@ def main(argv=None):
             state = status.get("state", "running")
             now = time.time()
             if state == "running" and not alive(status.get("runner_pid")):
-                draw(render(status, now, tty), tty)
+                draw(screen(status, now, tty), tty)
                 print("O processo do setup terminou sem registrar o resultado. Veja o log acima.")
                 return 1
             key = (state, status.get("phase"), (status.get("apps") or {}).get("current"))
             if tty or key != last_key or now - last_print >= 60 or state != "running":
-                draw(render(status, now, tty), tty)
+                draw(screen(status, now, tty), tty)
                 last_key, last_print = key, now
             if state == "success":
                 return 0

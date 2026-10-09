@@ -41,6 +41,36 @@ PLAY_PHASES = {"Setup de provisioning": "Provisionamento"}
 EXPECTED_WARNINGS = ("Found orphan containers", "network.external.name is deprecated",
                      "is using the discovered Python interpreter")
 
+# Percentual (0 a 100). O Ansible só conhece as tarefas de includes, laços e condições ao executá-las
+# (--list-tasks de uma atualização lista ~150 de ~2.000 a 8.500), então o percentual vem das etapas:
+# etapas concluídas + fração da etapa atual. O peso de cada etapa é o tempo que ela levou na última
+# execução bem-sucedida com as mesmas tags (histórico do servidor) ou, sem histórico, o padrão abaixo.
+STAGES = ["Preparação", "Provisionamento", "Infraestrutura", "Infraestrutura web", "Infraestrutura desktop",
+          "Apps padrão", "Aplicativos", "Finalização"]
+APP_STAGES = ("Apps padrão", "Aplicativos")
+ONLY_APPS_TAGS = {"update-versioned", "install-versioned-only", "remove-apps", "uninstall-version"}
+DEFAULT_WEIGHTS = {"Preparação": 2, "Provisionamento": 4, "Infraestrutura": 14, "Infraestrutura web": 8,
+                   "Infraestrutura desktop": 2, "Apps padrão": 12, "Aplicativos": 55, "Finalização": 3}
+DEFAULT_STAGE_TASKS = {"Preparação": 60, "Provisionamento": 50, "Infraestrutura": 80, "Infraestrutura web": 120,
+                       "Infraestrutura desktop": 30, "Finalização": 10}
+MAX_RUNNING_PROGRESS = 0.99
+
+
+def plan_stages(tags):
+    """Etapas previstas pelas tags (as que não ocorrerem ficam como puladas)."""
+    given = {t.strip() for t in str(tags or "").split(",") if t.strip()}
+    if given and given <= ONLY_APPS_TAGS:
+        return ["Preparação", "Aplicativos", "Finalização"]
+    return list(STAGES)
+
+
+def stage_weights(plan, last_times=None):
+    """Pesos das etapas: tempos da última execução (quando cobrem as etapas previstas) ou o padrão."""
+    last_times = last_times or {}
+    if last_times and sum(last_times.get(s, 0) for s in plan) > 0:
+        return {s: max(float(last_times.get(s, 0)), 0.0) for s in plan}
+    return {s: float(DEFAULT_WEIGHTS.get(s, 1)) for s in plan}
+
 
 def now_iso():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -106,11 +136,10 @@ def role_ancestors(role, limit=50):
 class ProgressState:
     """Estado do andamento, independente do Ansible (testável sem executar playbooks)."""
 
-    def __init__(self, base=None):
+    def __init__(self, base=None, clock=time.monotonic):
         self.data = dict(base or {})
         self.data.setdefault("state", "running")
         self.data.setdefault("started_at", now_iso())
-        self.data["phase"] = self.data.get("phase") or "Preparação"
         self.data["counts"] = {"tasks": 0, "ok": 0, "changed": 0, "skipped": 0, "failed": 0, "ignored": 0}
         self.data["apps"] = None
         self.data["warnings"] = {"count": 0, "last": []}
@@ -118,12 +147,73 @@ class ProgressState:
         self._batch_task = None
         self._batch_label = None
         self._last_ran = None
+        # etapas e percentual
+        self._clock = clock
+        last = self.data.get("last_run") or {}
+        plan = plan_stages(self.data.get("tags"))
+        self._weights = stage_weights(plan, last.get("stage_times"))
+        self._expected_tasks = dict(DEFAULT_STAGE_TASKS, **(last.get("stage_tasks") or {}))
+        self._visited = set()
+        self._stage = None
+        self._stage_start = 0.0
+        self._stage_tasks0 = 0
+        self.data["stages"] = [{"name": s, "state": "pending"} for s in plan]
+        self.data["stage_times"] = {}
+        self.data["stage_tasks"] = {}
+        self.data["progress"] = 0.0
+        self._set_phase("Preparação")
+
+    # etapas ------------------------------------------------------------------
+    def _close_stage(self):
+        if self._stage is None:
+            return
+        name = self._stage
+        times, tasks = self.data["stage_times"], self.data["stage_tasks"]
+        times[name] = round(times.get(name, 0) + self._clock() - self._stage_start, 1)
+        tasks[name] = tasks.get(name, 0) + self.data["counts"]["tasks"] - self._stage_tasks0
+
+    def _set_phase(self, name):
+        self.data["phase"] = name
+        if name == self._stage:
+            return
+        self._close_stage()
+        self._stage, self._stage_start, self._stage_tasks0 = name, self._clock(), self.data["counts"]["tasks"]
+        self._visited.add(name)
+        stages = self.data["stages"]
+        names = [s["name"] for s in stages]
+        if name not in names:
+            return
+        idx = names.index(name)
+        for i, s in enumerate(stages):
+            if i < idx:
+                s["state"] = "done" if s["name"] in self._visited else "skipped"
+            elif i == idx:
+                s["state"] = "current"
+
+    def progress(self):
+        """Fração concluída (0 a 0,99 durante a execução); nunca diminui."""
+        stages = self.data["stages"]
+        total = sum(self._weights.values()) or 1.0
+        done = sum(self._weights.get(s["name"], 0) for s in stages if s["state"] in ("done", "skipped"))
+        current = next((s["name"] for s in stages if s["state"] == "current"), None)
+        frac = 0.0
+        if current in APP_STAGES:
+            apps = self.data.get("apps") or {}
+            if apps.get("label") == current and apps.get("items"):
+                idx = apps.get("index", -1)
+                frac = (idx + 0.5) / len(apps["items"]) if idx >= 0 else 0.0
+        elif current:
+            expected = self._expected_tasks.get(current) or 50
+            frac = min((self.data["counts"]["tasks"] - self._stage_tasks0) / expected, 0.95)
+        value = min((done + self._weights.get(current, 0) * min(frac, 0.99)) / total, MAX_RUNNING_PROGRESS)
+        self.data["progress"] = round(max(self.data.get("progress", 0.0), value), 4)
+        return self.data["progress"]
 
     # eventos -----------------------------------------------------------------
     def play(self, name):
         self.data["play"] = name
         if name in PLAY_PHASES:
-            self.data["phase"] = PLAY_PHASES[name]
+            self._set_phase(PLAY_PHASES[name])
 
     def include(self, task_uuid, task_name, loop_var, item):
         if loop_var != APP_LOOP_VAR or not item:
@@ -143,7 +233,7 @@ class ProgressState:
         c["tasks"] += 1
         self.data["task"] = f"{role} : {task_name}" if role else task_name
         if role in ROLE_PHASES:
-            self.data["phase"] = ROLE_PHASES[role]
+            self._set_phase(ROLE_PHASES[role])
         apps = self.data.get("apps")
         if not apps:
             return
@@ -160,7 +250,7 @@ class ProgressState:
             apps["index"] = idx
         apps["current"] = items[idx]
         apps["dependency"] = role if role and role != items[idx] and role != "utils" else None
-        self.data["phase"] = apps["label"]
+        self._set_phase(apps["label"])
 
     def result(self, status, ignore_errors=False, label=None):
         # o Ansible anuncia toda tarefa antes de avaliar o "when": uma tarefa pulada (ex.: "Cadastro
@@ -196,6 +286,8 @@ class ProgressState:
             self.data["last_failure"] = err
 
     def stats(self, summary):
+        self._close_stage()
+        self._stage = None
         self.data["summary"] = summary
         self.data["phase_final"] = self.data.get("phase")
         failed = (summary or {}).get("failures", 0) or (summary or {}).get("unreachable", 0)
@@ -231,6 +323,7 @@ class CallbackModule(CallbackBase):
             return
         self._last_write = now
         try:
+            self._state.progress()
             self._state.data["updated_at"] = now_iso()
             tmp = f"{self._path}.{os.getpid()}.tmp"
             fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
