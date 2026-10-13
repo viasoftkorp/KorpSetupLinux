@@ -97,6 +97,12 @@ class ResolveTest(unittest.TestCase):
         self.assertEqual(plan_mod.normalize("host:5000/img"), "host:5000/img:latest")
         self.assertEqual(plan_mod.normalize("korp/a:2025.1.0.x"), "korp/a:2025.1.0.x")
         self.assertEqual(plan_mod.normalize("a/b@sha256:abc"), "a/b@sha256:abc")
+        # como 'docker image ls' mostra imagens do Docker Hub (ex.: svix_redis_image)
+        self.assertEqual(plan_mod.normalize("docker.io/redis:7-alpine"), "redis:7-alpine")
+        self.assertEqual(plan_mod.normalize("docker.io/library/redis"), "redis:latest")
+        self.assertEqual(plan_mod.normalize("docker.io/svix/svix-server:v1.84"), "svix/svix-server:v1.84")
+        self.assertEqual(plan_mod.normalize("library/postgres:14"), "postgres:14")
+        self.assertEqual(plan_mod.normalize("host.io/library/x:1"), "host.io/library/x:1")
 
 
 class PlanTest(RolesFixture):

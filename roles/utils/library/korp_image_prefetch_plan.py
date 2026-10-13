@@ -136,9 +136,18 @@ def resolve(value, variables, depth=5):
 
 
 def normalize(image):
-    """Nome como 'docker image ls' mostra: sem tag vira ':latest' (referências por digest ficam como estão)."""
+    """Nome como 'docker image ls' mostra: sem o registro padrão (docker.io/, library/) e, sem tag, ':latest'.
+
+    Referências por digest ficam como estão.
+    """
     if '@' in image:
         return image
+    for prefix in ('docker.io/', 'index.docker.io/'):
+        if image.startswith(prefix):
+            image = image[len(prefix):]
+            break
+    if image.startswith('library/') and image.count('/') == 1:
+        image = image[len('library/'):]
     last = image.rsplit('/', 1)[-1]
     return image if ':' in last else image + ':latest'
 
