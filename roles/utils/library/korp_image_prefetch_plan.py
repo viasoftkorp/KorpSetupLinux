@@ -16,6 +16,9 @@ description:
   - Com installed_apps_file, acrescenta os aplicativos que a tag update vai atualizar, com a mesma regra
     de roles/utils/tasks/apps/update.yml e default/get_latest_installed_version.yml.
   - skip_templates: nomes de templates que o setup renderiza mas nunca sobe (ex.: pgweb-compose.yml.j2).
+  - versioned_apps_file (tag update-versioned): acrescenta só o compose versionado
+    roles/<AppId>/templates/composes/<versão>/<AppId>-compose.yml.j2 de cada AppId registrado na versão,
+    sem dependências nem composes não versionados, como apps/update_versioned.yml e install_versioned_only.yml.
   - Não altera nada: só lê arquivos do repositório e a lista de imagens locais (docker image ls).
 options:
   roles_dir: {type: path, required: true}
@@ -24,6 +27,7 @@ options:
   variables: {type: dict, default: {}}
   installed_apps_file: {type: path}
   skip_templates: {type: list, elements: str, default: []}
+  versioned_apps_file: {type: path}
   docker: {type: str, default: docker}
 '''
 
@@ -193,13 +197,31 @@ def update_apps(installed_apps, version):
     return [str(a) for a in unique]
 
 
-def plan(roles_dir, roles, version, variables, local_images, skip_templates=()):
+def versioned_only_apps(installed_apps, version):
+    """AppIds de apps/update_versioned.yml: versioned[versão] (sem duplicados), na ordem."""
+    data = installed_apps if isinstance(installed_apps, dict) else {}
+    versioned = data.get('versioned') or {}
+    apps = []
+    for app in (versioned.get(version) or []) if isinstance(versioned, dict) else []:
+        if str(app) not in apps:
+            apps.append(str(app))
+    return apps
+
+
+def versioned_only_templates(roles_dir, app, version):
+    path = os.path.join(roles_dir, app, 'templates', 'composes', version, app + '-compose.yml.j2')
+    return [path] if os.path.isfile(path) else []
+
+
+def plan(roles_dir, roles, version, variables, local_images, skip_templates=(), versioned_apps=()):
     expanded, missing_roles = expand_roles(roles_dir, roles)
     images, unresolved = [], []
-    for role in expanded:
+    work = [(role, compose_templates(roles_dir, role, version, skip_templates)) for role in expanded]
+    work += [(app, versioned_only_templates(roles_dir, app, version)) for app in versioned_apps]
+    for role, templates in work:
         context = dict(role_variables(roles_dir, role))
         context.update(variables or {})
-        for path in compose_templates(roles_dir, role, version, skip_templates):
+        for path in templates:
             try:
                 with open(path) as f:
                     text = f.read()
@@ -234,6 +256,7 @@ def main():
             variables=dict(type='dict', default={}),
             installed_apps_file=dict(type='path'),
             skip_templates=dict(type='list', elements='str', default=[]),
+            versioned_apps_file=dict(type='path'),
             docker=dict(type='str', default='docker'),
         ),
         supports_check_mode=True,
@@ -244,8 +267,10 @@ def main():
     roles = list(p['roles'])
     if p['installed_apps_file']:
         roles += update_apps(_load_yaml(p['installed_apps_file']), p['version'])
+    versioned_apps = versioned_only_apps(_load_yaml(p['versioned_apps_file']), p['version']) if p['versioned_apps_file'] else []
     result = plan(p['roles_dir'], roles, p['version'], p['variables'], local_image_names(module, p['docker']),
-                  set(p['skip_templates']))
+                  set(p['skip_templates']), versioned_apps)
+    result['versioned_apps'] = versioned_apps
     module.exit_json(changed=False, **result)
 
 

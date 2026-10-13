@@ -117,6 +117,20 @@ class PlanTest(RolesFixture):
         self.assertEqual(sorted(u["value"] for u in result["unresolved"]),
                          ["${CUSTOM_IMAGE}", "{{ opt_image | default('x/y:1') }}"])
 
+    def test_versioned_only_apps_like_update_versioned(self):
+        data = {"unversioned": ["U"], "versioned": {"2024.2.0": ["X"], "2025.1.0": ["B", "A", "B", "ERP"]}}
+        self.assertEqual(plan_mod.versioned_only_apps(data, "2025.1.0"), ["B", "A", "ERP"])
+        self.assertEqual(plan_mod.versioned_only_apps({"versioned": None}, "2025.1.0"), [])
+        self.assertEqual(plan_mod.versioned_only_apps({"versioned": {"2025.1.0": None}}, "2025.1.0"), [])
+
+    def test_plan_versioned_only_uses_only_the_app_versioned_compose(self):
+        result = plan_mod.plan(self.dir, [], "2025.1.0", self.vars, {"korp/korp.b:2025.1.0.x"},
+                               versioned_apps=["B", "A", "ERP"])
+        # B: só B-compose da versão (sem a dependência ERP/base); A: sem compose versionado; ERP: o próprio
+        self.assertEqual(result["images"], ["korp/korp.b:2025.1.0.x", "korp/viasoft.erp:2025.1.0.x"])
+        self.assertEqual(result["missing"], ["korp/viasoft.erp:2025.1.0.x"])
+        self.assertEqual(result["roles"], [])
+
     def test_skip_templates(self):
         result = plan_mod.plan(self.dir, ["A"], "2025.1.0", self.vars, set(), {"base-compose.yml.j2"})
         self.assertNotIn("redis:7.4", result["images"])
