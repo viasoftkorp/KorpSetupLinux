@@ -34,6 +34,7 @@
             - update
             - install
             - install-only
+            - update-versioned
 
         - name: Infrastructure
           ansible.builtin.import_role:

@@ -6,7 +6,8 @@
 # Roles consideradas, na ordem de execução de main.yml:
 #   - infraestrutura e apps padrões (korp_default_apps), se as tags da execução os incluem;
 #   - aplicativos da tag update (installed_apps.yml, mesma regra de apps/update.yml);
-#   - aplicativos da tag install: 'apps' ou, depois de obtidos, os licenciados (apps_to_install).
+#   - aplicativos da tag install: 'apps' ou, depois de obtidos, os licenciados (apps_to_install);
+#   - tag update-versioned: só os composes versionados dos AppIds registrados na versão (apps/update_versioned.yml).
 
 - name: Download antecipado de imagens
   block:
@@ -21,6 +22,9 @@
         installed_apps_file: >-
           {{ (config_dir_path ~ '/installed_apps.yml')
              if (ansible_run_tags | intersect(['update', 'update-only']) | length > 0) else omit }}
+        # tag update-versioned: só os composes versionados dos AppIds registrados na versão
+        versioned_apps_file: >-
+          {{ (config_dir_path ~ '/installed_apps.yml') if 'update-versioned' in ansible_run_tags else omit }}
         version: "{{ version_without_build }}"
         # composes que o setup só escreve em /etc/korp/composes e nunca sobe (são iniciados manualmente)
         skip_templates:
