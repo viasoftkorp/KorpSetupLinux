@@ -22,6 +22,10 @@
           {{ (config_dir_path ~ '/installed_apps.yml')
              if (ansible_run_tags | intersect(['update', 'update-only']) | length > 0) else omit }}
         version: "{{ version_without_build }}"
+        # composes que o setup só escreve em /etc/korp/composes e nunca sobe (são iniciados manualmente)
+        skip_templates:
+          - pgweb-compose.yml.j2
+          - temporal-ui-compose.yml.j2
         variables:
           docker_account: "{{ docker_account }}"
           docker_image_suffix: "{{ docker_image_suffix }}"
