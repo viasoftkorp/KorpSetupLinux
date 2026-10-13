@@ -108,6 +108,11 @@ pacotes. Sem o PPA, tenta adicioná-lo até 3 vezes. Se a rede falhar mas o serv
 ou mais novo, o setup segue com um aviso; abaixo disso (a community.docker que o setup instala exige 2.17), para com
 uma mensagem que mostra a versão encontrada e os endereços a liberar (códigos 12 e 13, como antes).
 
+O ``ansible-core`` é instalado explicitamente junto com ``ansible``: o pacote ``ansible`` do PPA depende de
+``ansible-core`` sem versão mínima, então um core antigo já instalado (ex.: 2.13 de uma instalação anterior do
+PPA) não era atualizado. Quando a rede e o apt funcionam mas a versão continua abaixo da exigida, a mensagem
+aponta a causa (pacote retido com ``apt-mark hold`` ou outra instalação do Ansible) em vez da rede.
+
 Desligando as otimizações
 =========================
 

@@ -191,7 +191,9 @@ else
         [ $attempt -lt 3 ] && echo "$(tput setaf 3)Falha ao adicionar o PPA do Ansible (tentativa $attempt de 3); nova tentativa em $((attempt * 15))s.$(tput setaf 7)" && sleep $((attempt * 15))
     done
 fi
-sudo apt install git ansible --yes
+# ansible-core explícito: o pacote ansible do PPA depende de ansible-core sem versão mínima, então um core antigo
+# já instalado (ex.: 2.13 de uma instalação anterior do PPA) não seria atualizado só com 'apt install ansible'
+sudo apt install git ansible ansible-core --yes
 apt_install_rc=$?
 
 if ! ansible_ready;
@@ -199,12 +201,22 @@ then
     if [ "$apt_source_rc" != 0 ];
     then
         echo "$(tput setaf 1)Erro ao configurar o PPA do Ansible (ppa:ansible/ansible).$(tput setaf 7)"
-    else
-        echo "$(tput setaf 1)Erro 'sudo apt install git ansible --yes'.$(tput setaf 7)"
+    elif [ "$apt_install_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Erro 'sudo apt install git ansible ansible-core --yes'.$(tput setaf 7)"
     fi
     korp_installed_core=$(ansible_core_version)
     echo "$(tput setaf 1)O setup precisa de git e ansible-core $korp_min_ansible_core ou mais novo; instalado: ansible-core ${korp_installed_core:-nenhum}.$(tput setaf 7)"
-    echo "$(tput setaf 1)Verifique o acesso HTTPS a api.launchpad.net, ppa.launchpadcontent.net e galaxy.ansible.com.$(tput setaf 7)"
+    if apt-mark showhold 2>/dev/null | grep -qx "ansible-core";
+    then
+        echo "$(tput setaf 1)O pacote ansible-core está retido (apt-mark hold). Para liberar: sudo apt-mark unhold ansible-core$(tput setaf 7)"
+    elif [ "$apt_source_rc" != 0 ] || [ "$apt_install_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Verifique o acesso HTTPS a api.launchpad.net, ppa.launchpadcontent.net e galaxy.ansible.com.$(tput setaf 7)"
+    else
+        # o apt terminou sem erro: o ansible usado não é o do apt atualizado (outra instalação, pacote retido, etc.)
+        echo "$(tput setaf 1)O apt terminou sem erro, mas o ansible encontrado ($(command -v ansible || echo nenhum)) é ansible-core ${korp_installed_core:-?}; pacote ansible-core do apt: $(dpkg-query -W -f='${Version}' ansible-core 2>/dev/null || echo 'não instalado'). Verifique se há outra instalação do Ansible (pip) ou pacote retido (apt-mark showhold).$(tput setaf 7)"
+    fi
     [ "$apt_source_rc" != 0 ] && exit 12
     exit 13
 fi
