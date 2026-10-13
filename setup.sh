@@ -324,7 +324,8 @@ sudo ansible-vault encrypt /etc/korp/ansible/inventory.yml --vault-id /etc/korp/
 sudo chmod 644 /etc/korp/ansible/inventory.yml
 
 # fixado para evitar problema do docker (https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.md#v3103)
-sudo ansible-galaxy collection install community.docker>=3.10.3 -p /usr/lib/python3/dist-packages/ansible_collections --force
+# entre aspas: sem elas o shell trata o '>' como redirecionamento (a saída ia para um arquivo '=3.10.3' na pasta atual)
+sudo ansible-galaxy collection install 'community.docker:>=3.10.3' -p /usr/lib/python3/dist-packages/ansible_collections --force
 
 sudo mkdir -p /etc/korp/ansible/logs/
 
