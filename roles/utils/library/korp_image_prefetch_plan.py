@@ -15,6 +15,7 @@ description:
     é ignorada (fica em "unresolved"): o compose a baixa na hora, como sem o download antecipado.
   - Com installed_apps_file, acrescenta os aplicativos que a tag update vai atualizar, com a mesma regra
     de roles/utils/tasks/apps/update.yml e default/get_latest_installed_version.yml.
+  - skip_templates: nomes de templates que o setup renderiza mas nunca sobe (ex.: pgweb-compose.yml.j2).
   - Não altera nada: só lê arquivos do repositório e a lista de imagens locais (docker image ls).
 options:
   roles_dir: {type: path, required: true}
@@ -22,6 +23,7 @@ options:
   version: {type: str, required: true}
   variables: {type: dict, default: {}}
   installed_apps_file: {type: path}
+  skip_templates: {type: list, elements: str, default: []}
   docker: {type: str, default: docker}
 '''
 
@@ -92,12 +94,12 @@ def role_variables(roles_dir, role):
     return result
 
 
-def compose_templates(roles_dir, role, version):
-    """Os templates de compose que o setup renderiza para a role, versionados primeiro."""
+def compose_templates(roles_dir, role, version, skip=()):
+    """Os templates de compose que o setup renderiza para a role, versionados primeiro (menos os de skip)."""
     base = os.path.join(roles_dir, role, 'templates', 'composes')
     versioned = sorted(glob.glob(os.path.join(base, version, '*.yml.j2')))
     unversioned = sorted(glob.glob(os.path.join(base, '*.yml.j2')))
-    return versioned + unversioned
+    return [p for p in versioned + unversioned if os.path.basename(p) not in skip]
 
 
 def image_values(text):
@@ -182,13 +184,13 @@ def update_apps(installed_apps, version):
     return [str(a) for a in unique]
 
 
-def plan(roles_dir, roles, version, variables, local_images):
+def plan(roles_dir, roles, version, variables, local_images, skip_templates=()):
     expanded, missing_roles = expand_roles(roles_dir, roles)
     images, unresolved = [], []
     for role in expanded:
         context = dict(role_variables(roles_dir, role))
         context.update(variables or {})
-        for path in compose_templates(roles_dir, role, version):
+        for path in compose_templates(roles_dir, role, version, skip_templates):
             try:
                 with open(path) as f:
                     text = f.read()
@@ -222,6 +224,7 @@ def main():
             version=dict(type='str', required=True),
             variables=dict(type='dict', default={}),
             installed_apps_file=dict(type='path'),
+            skip_templates=dict(type='list', elements='str', default=[]),
             docker=dict(type='str', default='docker'),
         ),
         supports_check_mode=True,
@@ -232,7 +235,8 @@ def main():
     roles = list(p['roles'])
     if p['installed_apps_file']:
         roles += update_apps(_load_yaml(p['installed_apps_file']), p['version'])
-    result = plan(p['roles_dir'], roles, p['version'], p['variables'], local_image_names(module, p['docker']))
+    result = plan(p['roles_dir'], roles, p['version'], p['variables'], local_image_names(module, p['docker']),
+                  set(p['skip_templates']))
     module.exit_json(changed=False, **result)
 
 

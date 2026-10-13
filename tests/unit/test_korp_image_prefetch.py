@@ -111,6 +111,12 @@ class PlanTest(RolesFixture):
         self.assertEqual(sorted(u["value"] for u in result["unresolved"]),
                          ["${CUSTOM_IMAGE}", "{{ opt_image | default('x/y:1') }}"])
 
+    def test_skip_templates(self):
+        result = plan_mod.plan(self.dir, ["A"], "2025.1.0", self.vars, set(), {"base-compose.yml.j2"})
+        self.assertNotIn("redis:7.4", result["images"])
+        self.assertNotIn("nginx:latest", result["images"])
+        self.assertIn("korp/viasoft.erp:2025.1.0.x", result["images"])
+
     def test_facts_override_role_vars(self):
         result = plan_mod.plan(self.dir, ["A"], "2025.1.0", self.vars, set())
         self.assertNotIn("role-value-ignored/korp.a:2025.1.0.x", result["images"])
@@ -149,6 +155,10 @@ class RepositoryTemplatesTest(unittest.TestCase):
         v = {"docker_account": "korp", "docker_image_suffix": "", "version_without_build": "2025.1.0"}
         result = plan_mod.plan(roles_dir, roles, "2025.1.0", v, set())
         self.assertGreater(len(result["images"]), 100)
+        skipped = plan_mod.plan(roles_dir, roles, "2025.1.0", v, set(),
+                                {"pgweb-compose.yml.j2", "temporal-ui-compose.yml.j2"})
+        self.assertIn("sosedoff/pgweb:0.14.2", result["images"])
+        self.assertNotIn("sosedoff/pgweb:0.14.2", skipped["images"])
         self.assertEqual([u for u in result["unresolved"]], [])
         for image in result["images"]:
             self.assertNotIn("{", image)
