@@ -14,6 +14,7 @@ create_random_string() {
 #   branch_name="<branch_name>" - OPCIONAL, caso não sejá passado, receberá 'master'
 #   gateway_url="<gateway_url>" - OPCIONAL, caso não sejá passado, receberá "https://gateway.korp.com.br"
 #   custom_tags="<tag1,tag2>"   - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#     (uma tag que não existe nos playbooks interrompe o setup com o código 17, antes de qualquer alteração)
 #   apps="<apps1,apps2>"        - OPCIONAL
 #     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
 #     caso 'custom_tags' seja ['install-versioned-only'], define explicitamente os AppIds versionados a instalar
@@ -235,6 +236,16 @@ fi
 sudo rm -rf /tmp/KorpSetupLinux
 
 git clone -b $branch_name --depth=1 --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
+
+# Uma tag inexistente (ex.: update_versioned) não é erro para o Ansible: ele rodaria só as tarefas 'always' e
+# terminaria com sucesso sem fazer nada. Para aqui, antes de qualquer alteração no servidor.
+korp_tags_msg=$(python3 /tmp/KorpSetupLinux/scripts/korp_setup_tags.py /tmp/KorpSetupLinux "$ansible_tags")
+if [ $? == 3 ];
+then
+    echo "$(tput setaf 1)$korp_tags_msg$(tput setaf 7)"
+    echo "$(tput setaf 1)Tags válidas: veja o cabeçalho do setup.sh (custom_tags).$(tput setaf 7)"
+    exit 17
+fi
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
