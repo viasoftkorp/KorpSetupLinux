@@ -5,15 +5,15 @@
 #   F - backup de migração:     "<nome>-legacy-compose-migration" sem o canônico (migração interrompida)
 #   A - identidade conflitante: container com o nome canônico, mas rotulado com projeto "composes"
 #   C - legado sem sufixo:      "<nome sem -2025.1.0>" ao lado do canônico, mesma imagem
-# Uso: make_legacy_states.sh  (imprime os nomes usados)
+# Uso: [VER=2025.2.0] make_legacy_states.sh  (padrão VER=2025.1.0; projeto = VER sem pontos; imprime os nomes usados)
 set -euo pipefail
 # Proteção: só roda dentro do host isolado de testes (nunca em um servidor real).
 if [ ! -e /sim/sim-entry ] || [[ "$(hostname)" != sim* ]]; then
   echo "Recusado: este script só pode ser executado dentro do host isolado de testes (hostname 'sim*' com /sim/sim-entry)." >&2
   exit 1
 fi
-VER=2025.1.0
-PROJECT=202510
+VER=${VER:-2025.1.0}
+PROJECT=${PROJECT:-${VER//./}}
 mapfile -t CANDIDATES < <(docker ps --filter "label=com.docker.compose.project=$PROJECT" --format '{{.Names}}' \
   | grep -E -- "-$VER\$" | sort | head -4)
 [ "${#CANDIDATES[@]}" -eq 4 ] || { echo "precisa de 4 containers do projeto $PROJECT"; exit 1; }
