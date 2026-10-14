@@ -3,6 +3,8 @@
 #   default_kv_overwrite - lista (OBRIGATÓRIO)
 #   new_kv - json (OPCIONAL) - caso não passado, será pego do arquivo .json.j2 do serviço
 #   custom_kv_overwrite: - lista (OPCIONAL)
+#   consul_kv_template_dir - string (OPCIONAL) - diretório dos templates de KV; padrão 'consul_kv', resolvido
+#     pela role que incluiu o cadastro. Usado por apps/install_versioned_only.yml, que cadastra fora da role do app.
 
 - name: Leitura de kv atual
   community.general.consul_kv:
@@ -11,7 +13,7 @@
 
 - name: Validação de new_kv
   ansible.builtin.set_fact:
-    new_kv: "{{ lookup('template', 'consul_kv/{{ service_name | lower }}.json.j2') }}"
+    new_kv: "{{ lookup('template', (consul_kv_template_dir | default('consul_kv')) ~ '/' ~ (service_name | lower) ~ '.json.j2') }}"
 
 # bloco só será executado caso KV já exista no consul
 - name: Validação de kv existente
