@@ -117,6 +117,11 @@ do
    export "$KEY"="$VALUE"
 done
 
+# Tempo que o Ansible espera o sudo responder (become). O padrão do Ansible (10 s) estoura em servidor sobrecarregado
+# (ex.: sem memória livre) e a tarefa falha com "timeout waiting for privilege escalation password prompt".
+# Vale para todos os playbooks (o modo de acompanhamento leva as variáveis ANSIBLE_* no run.env).
+export ANSIBLE_TIMEOUT="${ANSIBLE_TIMEOUT:-30}"
+
 # fast_path vazio (ex.: "fast_path=") mantém o padrão
 if [ "$fast_path" == "" ];
 then
