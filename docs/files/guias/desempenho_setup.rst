@@ -126,6 +126,11 @@ O ``ansible-core`` é instalado explicitamente junto com ``ansible``: o pacote `
 PPA) não era atualizado. Quando a rede e o apt funcionam mas a versão continua abaixo da exigida, a mensagem
 aponta a causa (pacote retido com ``apt-mark hold`` ou outra instalação do Ansible) em vez da rede.
 
+O ``setup.sh`` exporta ``ANSIBLE_TIMEOUT=30`` (o padrão do Ansible é 10 s): é o tempo que o Ansible espera o
+``sudo`` responder em cada tarefa com become. Em servidor sobrecarregado (ex.: memória e swap esgotados) o ``sudo``
+pode levar mais de 10 s e a tarefa falhava com ``timeout waiting for privilege escalation password prompt``. Um
+valor passado na chamada (``ANSIBLE_TIMEOUT=60``) tem precedência.
+
 Download antecipado de imagens
 ==============================
 
