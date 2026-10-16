@@ -1,4 +1,7 @@
 echo "Iniciando task de reload de serviços devido à atualização dos certificados - $(date)" >> {{ certs_directory }}/logs/certs_reload.log
 docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
-docker restart Viasoft.Authentication >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+# O container tem a versão no nome e há um Authentication por versão instalada; todos usam o certificado
+for container in $(docker ps --format '{% raw %}{{.Names}}{% endraw %}' | grep -E '^Viasoft\.Authentication(-|$)'); do
+  docker restart "$container" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+done
 echo "Reload de serviços finalizada" >> {{ certs_directory }}/logs/certs_reload.log

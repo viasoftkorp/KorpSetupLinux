@@ -1,0 +1,127 @@
+{
+ "log": "s6-constructed25-orig.log",
+ "total_s": 559.9,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.4,
+   "duration_s": 1.7
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.1,
+   "duration_s": 3.6
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.7,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.7,
+   "duration_s": 552.2
+  }
+ ],
+ "task_headers": 8177,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=4486 changed=206 unreachable=0 failed=0 skipped=3947 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 7.23,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 2.33,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.25,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.06,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.05,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.01,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.95,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 0.88,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.85,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.84,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 678,
+   "s": 133.1
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1979,
+   "s": 63.9
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1211,
+   "s": 42.8
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 205,
+   "s": 31.2
+  },
+  {
+   "task": "utils : Criação",
+   "count": 305,
+   "s": 30.5
+  },
+  {
+   "task": "utils : Adição",
+   "count": 274,
+   "s": 23.3
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 226,
+   "s": 18.7
+  },
+  {
+   "task": "utils : Edição",
+   "count": 110,
+   "s": 17.1
+  },
+  {
+   "task": "utils : Sobrescrita",
+   "count": 110,
+   "s": 16.4
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 66,
+   "s": 14.1
+  }
+ ]
+}

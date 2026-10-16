@@ -1,0 +1,4 @@
+# Fast path do setup (docs/files/guias/desempenho_setup.rst).
+# true  -> pula verificações por serviço que não teriam efeito e cadastra os serviços de cada role em lote.
+# false -> executa exatamente as tarefas originais por serviço (setup.sh fast_path=false).
+korp_setup_fast_path: true
