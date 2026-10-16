@@ -44,6 +44,20 @@
     backup: true
   register: pfx_status
 
+# files_and_folders_setup.yml mantém o certificado anterior no ssl_conf até o certificado do certbot existir
+- name: Definição do ssl_conf com o certificado do Let's Encrypt
+  ansible.builtin.set_fact:
+    nginx_ssl_conf_transicao: false
+
+- name: Configuração de ssl_conf do nginx com o certificado do Let's Encrypt
+  ansible.builtin.template:
+    dest: "{{ config_dir_path }}/nginx/ssl_conf"
+    src: "configs/nginx/ssl_conf.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  register: nginx_ssl_conf_certbot_status
+
 - name: Configuração e transferência de arquivos de nginx
   ansible.builtin.template:
     dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
@@ -79,8 +93,13 @@
       }}
   register: nginx_files_status
 
+# O ssl_conf é montado no container como arquivo: o template troca o inode e só um reinício enxerga o novo
+- name: Reinício do container nginx com o certificado do Let's Encrypt
+  ansible.builtin.import_tasks: nginx_restart.yml
+  when: nginx_ssl_conf_certbot_status is changed
+
 - name: Reload de nginx
   community.docker.docker_container_exec:
     container: nginx
     command: bash -c "/usr/sbin/nginx -s reload"
-  when: nginx_files_status.changed
+  when: nginx_files_status is changed and nginx_ssl_conf_certbot_status is not changed
