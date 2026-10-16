@@ -1,0 +1,21 @@
+# Encerra o download antecipado de imagens (roles/utils/tasks/default/image_prefetch.yml), se ainda
+# estiver rodando, e mostra o resultado. Nunca falha o setup.
+- name: Encerramento do download antecipado de imagens
+  block:
+    - name: Encerramento do download antecipado de imagens
+      ansible.builtin.command:
+        argv:
+          - python3
+          - "{{ playbook_dir }}/roles/utils/files/korp_image_prefetch.py"
+          - stop
+          - --status
+          - "{{ korp_prefetch_status }}"
+      register: korp_prefetch_stop
+      changed_when: false
+      failed_when: false
+
+    - name: Resultado do download antecipado de imagens
+      ansible.builtin.debug:
+        msg: "{{ korp_prefetch_stop.stdout | default('') }}"
+  # tags 'always' é necessário aqui pois o arquivo é incluído dinamicamente
+  tags: always

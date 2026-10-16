@@ -1,0 +1,6 @@
+# compare_dumps.py dumps/legacy24-initial.json dumps/s5b-orig.json dumps/s5b-opt.json --allow ^/files//etc/korp/configs/temporalio/nginx/basic_auth_temporal_ui/sha$ --allow ^/files//etc/korp/composes/temporal-compose.yml/sha$ --allow ^/containers/temporal[^/]*/config_hash$
+ignorado (2): ^/containers/temporal[^/]*/config_hash$
+ignorado (1): ^/files//etc/korp/composes/temporal-compose.yml/sha$
+ignorado (1): ^/files//etc/korp/configs/temporalio/nginx/basic_auth_temporal_ui/sha$
+ignorado (212): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)

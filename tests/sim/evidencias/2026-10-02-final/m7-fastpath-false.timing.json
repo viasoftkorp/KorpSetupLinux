@@ -1,0 +1,127 @@
+{
+ "log": "m7-fastpath-false.log",
+ "total_s": 947.1,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.6,
+   "duration_s": 2.1
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.6,
+   "duration_s": 4.4
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.0,
+   "duration_s": 1.4
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.4,
+   "duration_s": 938.7
+  }
+ ],
+ "task_headers": 8433,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=4498 changed=196 unreachable=0 failed=0 skipped=4191 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 13.63,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 2.81,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.56,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.11,
+   "task": "utils : Inspeção do backup de migração de viasoft-erp-core"
+  },
+  {
+   "s": 1.5,
+   "task": "Setup de composes e registro de solicitacao-faturamento"
+  },
+  {
+   "s": 1.5,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.36,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.31,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.3,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.3,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inspeção",
+   "count": 678,
+   "s": 213.7
+  },
+  {
+   "task": "utils : Definição",
+   "count": 1979,
+   "s": 118.5
+  },
+  {
+   "task": "utils : Validação",
+   "count": 1211,
+   "s": 72.4
+  },
+  {
+   "task": "utils : Leitura",
+   "count": 205,
+   "s": 49.5
+  },
+  {
+   "task": "utils : Criação",
+   "count": 305,
+   "s": 48.3
+  },
+  {
+   "task": "utils : Adição",
+   "count": 208,
+   "s": 34.8
+  },
+  {
+   "task": "utils : Listagem",
+   "count": 226,
+   "s": 30.8
+  },
+  {
+   "task": "utils : Edição",
+   "count": 110,
+   "s": 26.3
+  },
+  {
+   "task": "utils : Sobrescrita",
+   "count": 110,
+   "s": 26.3
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 22.9
+  }
+ ]
+}

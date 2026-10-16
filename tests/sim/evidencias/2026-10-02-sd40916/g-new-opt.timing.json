@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/g-new-opt.log",
+ "total_s": 28.8,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 3.0
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.5,
+   "duration_s": 4.6
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 8.2,
+   "duration_s": 1.3
+  },
+  {
+   "name": "Setup main",
+   "start_s": 9.5,
+   "duration_s": 19.3
+  }
+ ],
+ "task_headers": 345,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=149 changed=15 unreachable=0 failed=0 skipped=120 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 2.27,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.34,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.25,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.15,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.01,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 1.0,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.85,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.58,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.41,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.36,
+   "task": "utils : Configuração e transferência de arquivos de compose de engenharia - versionado"
+  },
+  {
+   "s": 0.32,
+   "task": "utils : Resolução da configuração efetiva do compose e análise das identidades"
+  },
+  {
+   "s": 0.3,
+   "task": "utils : Adição dos clientes oauth2 de engenharia"
+  },
+  {
+   "s": 0.29,
+   "task": "utils : Garantia dos KVs no Consul dos serviços de engenharia"
+  },
+  {
+   "s": 0.27,
+   "task": "finishing : Notificação de TenantManagement"
+  },
+  {
+   "s": 0.27,
+   "task": "Coleta do objeto na url gateway"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 6.0
+  },
+  {
+   "task": "utils : Definição",
+   "count": 78,
+   "s": 3.3
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 3,
+   "s": 2.4
+  },
+  {
+   "task": "utils : Checagem",
+   "count": 21,
+   "s": 1.2
+  },
+  {
+   "task": "utils : Garantia",
+   "count": 6,
+   "s": 1.1
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 1.0
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 6,
+   "s": 1.0
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 16,
+   "s": 0.9
+  },
+  {
+   "task": "Definição",
+   "count": 22,
+   "s": 0.8
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 3,
+   "s": 0.8
+  },
+  {
+   "task": "Coleta",
+   "count": 17,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 3,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Adição",
+   "count": 5,
+   "s": 0.7
+  },
+  {
+   "task": "Verificação",
+   "count": 11,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Validação",
+   "count": 12,
+   "s": 0.6
+  }
+ ]
+}
