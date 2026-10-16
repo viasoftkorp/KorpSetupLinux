@@ -11,6 +11,19 @@
 # diretórios usados pelo certbot são customizados devido á permissões (logs-dir, config-dir, work-dir)
 # 'cert-name' é o nome que o certbot irá utilizar para se resolver, não tem nenhum efeito no certificado em sí
 # o challenge utilizado para validar o certificado é o 'http-01'
+# O compose up logo antes pode ter recriado o nginx, que só atende depois que os containers de roteamento sobem.
+# Uma validação com o nginx fora do ar conta para o limite do Let's Encrypt (5 falhas por domínio por hora).
+- name: Espera do nginx na porta 80 para a validação do certbot
+  ansible.builtin.uri:
+    url: "http://127.0.0.1/.well-known/acme-challenge/korp-setup"
+    headers:
+      Host: "{{ dns.frontend }}"
+    status_code: 404
+  register: nginx_porta_80
+  until: nginx_porta_80.status == 404
+  retries: 30
+  delay: 2
+
 - name: Criação de certificado pelo Certbot 
   ansible.builtin.command:
     cmd: >
