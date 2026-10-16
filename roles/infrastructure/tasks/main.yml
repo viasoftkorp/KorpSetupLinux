@@ -156,13 +156,28 @@
     minio_gateway_config: "{{ minio_gateway_response.json }}"
     onpremise_auth_config: "{{ onpremise_auth_response.json }}"
 
+- name: Leitura do kv Global atual
+  community.general.consul_kv:
+    key: Global
+  register: global_kv_atual
+
+# O CORS mantém as origens cadastradas à mão e só troca a do frontend antigo (filter_plugins/korp_global_kv.py)
+- name: Definição do CORS do kv Global
+  ansible.builtin.set_fact:
+    korp_global_cors: "{{ global_kv_atual.data.Value | from_json | korp_global_cors(frontend.endpoints.frontend_url) }}"
+  when: global_kv_atual.data.Value is defined
+
+# As URLs vêm dos DNSs do inventário e são sobrescritas: numa troca de domínio (ex.: autoassinado -> Let's Encrypt)
+# o KV não pode manter as antigas. Os serviços leem o KV ao subir; os composes que mudam com os domínios
+# (extra_hosts) são recriados depois desta tarefa, já com as URLs novas.
 - name: "Garantia de kv no consul para Global"
   ansible.builtin.include_role:
     name: utils
     tasks_from: 'consul_kv/ensure_kv'
   vars:
     service_name: Global
-    keys_to_overwrite: ["RuntimeEnvironment"]
+    keys_to_overwrite: ["RuntimeEnvironment", "LegacyGateway", "CORS", "FrontendUrl", "CdnUrl", "PublicGatewayUrl",
+                        "Authentication.Authority"]
 
 - name: Configuração de fabio pelo consul
   ansible.builtin.import_tasks: fabio_config.yml
