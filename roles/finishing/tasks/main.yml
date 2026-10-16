@@ -1,3 +1,9 @@
+# O download antecipado só existe no play de main.yml (que define korp_prefetch_status); no tratamento de erro do
+# play de provisioning (bootstrap-playbook.yml) ele ainda não começou e não há o que encerrar.
+- name: Download antecipado de imagens
+  ansible.builtin.include_tasks: image_prefetch.yml
+  when: korp_image_prefetch | default(false) | bool and korp_prefetch_status is defined
+
 - name: Notificação de TenantManagement
   ansible.builtin.uri:
     url: "{{ gateway_url }}/TenantManagement/server-deploy/token/{{ token }}"

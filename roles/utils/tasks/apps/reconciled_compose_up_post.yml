@@ -1,0 +1,14 @@
+# Incluído por reconciled_compose_up.yml quando compose_reconcile_state_post.needs_action.
+- name: Containers legados ou parciais a remover
+  ansible.builtin.debug:
+    msg: "{{ compose_reconcile_state_post.reasons }}"
+  when: compose_reconcile_state_post.reasons | default({}) | length > 0
+
+- name: Remoção segura de containers legados substituídos
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/apps/cleanup_legacy_compose_service.yml"
+  loop: >-
+    {{ (compose_reconcile_services | dict2items)
+       if (compose_reconcile_state_post.needs_action | default(false)) else [] }}
+  loop_control:
+    loop_var: compose_reconcile_service
+    label: "{{ compose_reconcile_service.key }}"

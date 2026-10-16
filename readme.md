@@ -357,3 +357,19 @@ Desinstalação de Aplicativo:
   ``` bash
   export branch_name=master; curl -s -S https://raw.githubusercontent.com/viasoftkorp/KorpSetupLinux/$branch_name/setup.sh > /tmp/setup.sh && bash /tmp/setup.sh gateway_url=https://gateway.korp.com.br branch_name=$branch_name custom_tags=remove-apps token=<token> remove_unversioned=<bool> remove_versioned=<bool> removed_version=<version_to_uninstall> apps=<app1>,<app2>
   ```
+
+---
+
+## Desempenho do setup
+
+O cadastro de serviços e a reconciliação de composes têm um caminho rápido (padrão) que produz o mesmo
+estado final com muito menos tarefas. Para executar o caminho original, acrescente `fast_path=false` ao
+comando do `setup.sh`. Detalhes, compatibilidade e recuperação: `docs/files/guias/desempenho_setup.rst`.
+
+Testes:
+
+``` bash
+bash tests/run_unit_tests.sh          # testes unitários (python3 com ansible-core)
+```
+
+Ambiente isolado para medir e comparar execuções: `tests/sim/README.md`.

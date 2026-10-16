@@ -1,0 +1,3 @@
+# compare_dumps.py dumps/constructed25-initial.json dumps/s6-orig.json dumps/s6-opt.json
+ignorado (8): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: IGUAL (0 diferenças)

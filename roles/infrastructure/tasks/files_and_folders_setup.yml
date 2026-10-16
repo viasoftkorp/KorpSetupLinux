@@ -57,6 +57,43 @@
         owner: "{{ linux_korp.user }}"
         group: root
 
+    - name: Configuração para certbot
+      block:
+        - name: Configuração e transferência de arquivo 'acme-challenge'
+          ansible.builtin.template:
+            dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+            src: "configs/nginx/conf.d/{{ item }}.j2"
+            owner: "{{ linux_korp.user }}"
+            group: root
+            mode: '0644'
+          loop:
+            - "acme-challenge.conf"
+          register: nginx_acme_challenge_status
+
+        # Na troca de um certificado autoassinado ou customizado para o Let's Encrypt, o certificado do certbot só
+        # existe depois do certbot.yml, que valida pela porta 80 e precisa do nginx no ar. Se o ssl_conf já
+        # apontasse para ele, o nginx não subiria e o certbot falharia (Connection refused). Até lá o nginx
+        # continua com o certificado anterior; o certbot.yml grava o ssl_conf definitivo.
+        - name: Verificação dos certificados para o ssl_conf do nginx
+          ansible.builtin.stat:
+            path: "{{ item }}"
+            follow: true
+          loop:
+            - "{{ certs_directory }}/letsencrypt/live/{{ certbot_cert_name }}/fullchain.pem"
+            - "{{ certs_directory }}/cert.crt"
+            - "{{ certs_directory }}/cert.key"
+            - "{{ certs_directory }}/cert.pass"
+          register: nginx_ssl_certs_stat
+
+        - name: Definição do certificado do ssl_conf na troca para o Let's Encrypt
+          ansible.builtin.set_fact:
+            nginx_ssl_conf_transicao: "{{ not certs_stat[0].stat.exists and certs_stat[1].stat.exists and certs_stat[2].stat.exists }}"
+            nginx_ssl_conf_transicao_senha: "{{ certs_stat[3].stat.exists }}"
+          vars:
+            certs_stat: "{{ nginx_ssl_certs_stat.results }}"
+
+      when: certs.certbot_automated.certificate
+
     - name: Configuração de ssl_conf do nginx
       ansible.builtin.template:
         dest: "{{ config_dir_path }}/nginx/ssl_conf"
@@ -66,9 +103,10 @@
         mode: '0644'
       register: nginx_ssl_conf_status
 
+    # O reinício também carrega o acme-challenge.conf, que o certbot.yml precisa para a validação na porta 80
     - name: Reinício do container nginx
       ansible.builtin.import_tasks: nginx_restart.yml
-      when: nginx_ssl_conf_status.changed
+      when: nginx_ssl_conf_status is changed or nginx_acme_challenge_status is changed
 
     - name: Configuração e transferência de arquivos de configuração de nginx
       ansible.builtin.template:
@@ -115,21 +153,6 @@
               else []
             )
           }}
-
-
-    - name: Configuração para certbot
-      block:
-        - name: Configuração e transferência de arquivo 'acme-challenge'
-          ansible.builtin.template:
-            dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
-            src: "configs/nginx/conf.d/{{ item }}.j2"
-            owner: "{{ linux_korp.user }}"
-            group: root
-            mode: '0644'
-          loop:
-            - "acme-challenge.conf"
-
-      when: certs.certbot_automated.certificate
 
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
