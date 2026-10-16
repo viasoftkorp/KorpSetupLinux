@@ -112,6 +112,18 @@ class TarefasTest(unittest.TestCase):
         self.assertIn("nginx_ssl_conf_status is changed", quando)
         self.assertIn("nginx_acme_challenge_status is changed", quando)
 
+    def test_certbot_espera_o_nginx_na_porta_80(self):
+        """O compose up logo antes pode recriar o nginx, que só atende quando os containers de roteamento sobem."""
+        lista = tarefas(CERTBOT)
+        ordem = nomes(lista)
+        espera = tarefa(lista, "Espera do nginx na porta 80 para a validação do certbot")
+        self.assertLess(ordem.index("Espera do nginx na porta 80 para a validação do certbot"),
+                        ordem.index("Criação de certificado pelo Certbot"))
+        uri = espera["ansible.builtin.uri"]
+        self.assertTrue(uri["url"].startswith("http://127.0.0.1/.well-known/acme-challenge/"))
+        self.assertEqual(uri["status_code"], 404)
+        self.assertGreaterEqual(espera["retries"] * espera["delay"], 60)
+
     def test_certbot_grava_ssl_conf_definitivo_e_reinicia(self):
         lista = tarefas(CERTBOT)
         ordem = nomes(lista)
