@@ -78,7 +78,7 @@
 {% endif %}
   "GatewayUrl": "{{ gateway_url }}",
   "LegacyGateway": "{{ frontend.endpoints.gateway_url }}",
-  "CORS": "{{ frontend.endpoints.frontend_url }}",
+  "CORS": "{{ korp_global_cors | default(frontend.endpoints.frontend_url) }}",
   "FrontendUrl": "{{ frontend.endpoints.frontend_url }}",
   "Authentication": {
     "Authority": "{{ frontend.endpoints.gateway_url }}/oauth",
