@@ -320,6 +320,7 @@ services:
     extra_hosts: *default-extra_hosts
     environment:
       - ON_PREMISE_MODE=true
+      - REMOVE_OTHER_APP_VERSIONS=true
       - USE_SERVERGC=$USE_SERVERGC
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
@@ -342,6 +343,7 @@ services:
       - viasoft-portal
     environment:
       - ON_PREMISE_MODE=true
+      - REMOVE_OTHER_APP_VERSIONS=true
       - USE_SERVERGC=$USE_SERVERGC
       - GATEWAY_URL={{ frontend.endpoints.gateway_url }}
       - CDN_URL={{ frontend.endpoints.cdn_url }}
