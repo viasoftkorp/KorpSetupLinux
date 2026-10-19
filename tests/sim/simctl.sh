@@ -134,6 +134,10 @@ snapshot)
   echo snapshot $S ;;
 restore)
   N=$1; S=$2
+  # sem isso, um snapshot apagado (ex.: docker volume prune) viraria volumes vazios e zeraria o host e o SQL Server
+  docker image inspect korpsim-snap:$S >/dev/null 2>&1 && \
+    docker volume inspect korpsim-snapvol-$S korpsim-snapkorp-$S korpsim-mssqlsnap-$S >/dev/null 2>&1 || {
+    echo "Snapshot '$S' incompleto ou inexistente (imagem korpsim-snap:$S e volumes korpsim-*-$S)." >&2; exit 1; }
   docker rm -f $N >/dev/null 2>&1 || true
   docker volume rm -f $N-docker >/dev/null 2>&1 || true; docker volume create $N-docker >/dev/null
   docker run --rm -v korpsim-snapvol-$S:/from -v $N-docker:/to busybox:1.36-musl sh -c 'cp -a /from/. /to/'
