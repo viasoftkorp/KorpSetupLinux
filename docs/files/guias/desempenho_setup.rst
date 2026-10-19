@@ -137,7 +137,9 @@ Download antecipado de imagens
 Opcional: ``prefetch=true``. Logo depois do *Default setup* (login no Docker), o setup lista as imagens dos composes
 que a execução vai subir (infraestrutura, apps padrões e os aplicativos da tag ``update`` ou ``install``, com as
 dependências das roles; fica de fora ``pgweb``, que o setup escreve mas não sobe) e baixa as que faltam em segundo
-plano, 3 por vez, enquanto as demais etapas seguem. O setup não depende do resultado: o compose continua baixando na hora o que ainda não tiver chegado (o Docker compartilha o download de
+plano, 3 por vez, enquanto as demais etapas seguem. Com
+``apps`` vazio, os aplicativos licenciados entram numa segunda lista assim que são obtidos. O setup não depende do
+resultado: o compose continua baixando na hora o que ainda não tiver chegado (o Docker compartilha o download de
 uma imagem pedida pelos dois ao mesmo tempo) e uma falha só é registrada. Na finalização (com sucesso ou erro), o
 processo é encerrado e o resumo aparece no log. Status: ``/etc/korp/ansible/prefetch/status.json``.
 
