@@ -7,6 +7,7 @@ services:
   temporal-elasticsearch:
     image: elasticsearch:{{ temporal_elasticsearch_version }}
     container_name: temporal-elasticsearch
+    restart: always
     environment:
       - cluster.routing.allocation.disk.threshold_enabled=true
       - cluster.routing.allocation.disk.watermark.low=512mb
