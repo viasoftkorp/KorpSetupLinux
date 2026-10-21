@@ -1,0 +1,127 @@
+{
+ "log": "m2-upgrade24to25-opt.log",
+ "total_s": 278.9,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.7,
+   "duration_s": 2.6
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.3,
+   "duration_s": 6.0
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 9.3,
+   "duration_s": 1.5
+  },
+  {
+   "name": "Setup main",
+   "start_s": 10.8,
+   "duration_s": 268.1
+  }
+ ],
+ "task_headers": 2333,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1288 changed=157 unreachable=0 failed=0 skipped=1061 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 17.23,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 3.85,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 3.85,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.48,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 2.12,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.98,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.95,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 1.82,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.8,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.78,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 40.1
+  },
+  {
+   "task": "utils : Definição",
+   "count": 475,
+   "s": 27.3
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 17.2
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 92,
+   "s": 13.1
+  },
+  {
+   "task": "utils : Criação",
+   "count": 102,
+   "s": 12.9
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 42,
+   "s": 11.2
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 33,
+   "s": 9.2
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 124,
+   "s": 7.9
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 20,
+   "s": 7.6
+  },
+  {
+   "task": "utils : Análise",
+   "count": 33,
+   "s": 7.4
+  }
+ ]
+}

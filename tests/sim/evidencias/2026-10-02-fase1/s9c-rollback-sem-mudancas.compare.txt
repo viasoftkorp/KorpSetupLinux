@@ -1,0 +1,2 @@
+# compare_dumps.py dumps/s9b-opt-recovered.json dumps/s9b-opt-recovered.json dumps/s9c-after-rollback.json
+RESULTADO: IGUAL (0 diferenças)

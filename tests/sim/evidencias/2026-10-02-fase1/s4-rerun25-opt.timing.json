@@ -1,0 +1,127 @@
+{
+ "log": "s4-rerun25-opt.log",
+ "total_s": 160.7,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 1.8
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.3,
+   "duration_s": 3.8
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.1,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.2,
+   "duration_s": 152.5
+  }
+ ],
+ "task_headers": 2281,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1232 changed=80 unreachable=0 failed=0 skipped=1064 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 7.74,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 2.32,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.3,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.13,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.09,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.08,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.99,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 0.94,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.9,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.82,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Definição",
+   "count": 475,
+   "s": 16.7
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 33,
+   "s": 13.6
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 92,
+   "s": 9.3
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 7.7
+  },
+  {
+   "task": "utils : Criação",
+   "count": 102,
+   "s": 7.3
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 42,
+   "s": 7.2
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 33,
+   "s": 6.5
+  },
+  {
+   "task": "utils : Análise",
+   "count": 33,
+   "s": 4.9
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 20,
+   "s": 4.8
+  },
+  {
+   "task": "Setup",
+   "count": 128,
+   "s": 4.6
+  }
+ ]
+}
