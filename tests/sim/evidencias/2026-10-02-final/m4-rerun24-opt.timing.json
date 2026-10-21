@@ -1,0 +1,127 @@
+{
+ "log": "m4-rerun24-opt.log",
+ "total_s": 144.2,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.7,
+   "duration_s": 2.2
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.9,
+   "duration_s": 4.6
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.4,
+   "duration_s": 1.4
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.8,
+   "duration_s": 135.3
+  }
+ ],
+ "task_headers": 1683,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=900 changed=60 unreachable=0 failed=0 skipped=775 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 2.73,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.37,
+   "task": "utils : Criação de escopos para cliente"
+  },
+  {
+   "s": 1.71,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.41,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.35,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.33,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.27,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.16,
+   "task": "utils : Reinicio de serviços TenantManagement e Administration"
+  },
+  {
+   "s": 1.06,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 1.01,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Definição",
+   "count": 327,
+   "s": 14.2
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 22,
+   "s": 11.5
+  },
+  {
+   "task": "utils : Criação",
+   "count": 76,
+   "s": 9.8
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 64,
+   "s": 8.2
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 28,
+   "s": 5.8
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 22,
+   "s": 5.6
+  },
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 5.4
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 88,
+   "s": 4.4
+  },
+  {
+   "task": "utils : Análise",
+   "count": 22,
+   "s": 4.2
+  },
+  {
+   "task": "infrastructure : Configuração e transferência",
+   "count": 6,
+   "s": 4.1
+  }
+ ]
+}

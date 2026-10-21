@@ -1,0 +1,127 @@
+{
+ "log": "s5b-upgrade-legacy24-to25-opt.log",
+ "total_s": 251.8,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 3.8,
+   "duration_s": 1.7
+  },
+  {
+   "name": "localhost",
+   "start_s": 5.5,
+   "duration_s": 4.5
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 10.1,
+   "duration_s": 1.0
+  },
+  {
+   "name": "Setup main",
+   "start_s": 11.1,
+   "duration_s": 240.7
+  }
+ ],
+ "task_headers": 2844,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1598 changed=177 unreachable=0 failed=0 skipped=1295 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 27.41,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 14.53,
+   "task": "infrastructure : Criação e inicialização de infrastructure-compose"
+  },
+  {
+   "s": 3.78,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.36,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.24,
+   "task": "infrastructure : Aguarda inicialização do rabbitmq"
+  },
+  {
+   "s": 2.0,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.8,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.62,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.33,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 1.31,
+   "task": "infrastructure : Instalação de dependências padrões"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inicialização",
+   "count": 37,
+   "s": 32.1
+  },
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 27.4
+  },
+  {
+   "task": "utils : Definição",
+   "count": 651,
+   "s": 21.3
+  },
+  {
+   "task": "infrastructure : Criação e inicialização",
+   "count": 1,
+   "s": 14.5
+  },
+  {
+   "task": "utils : Inspeção",
+   "count": 48,
+   "s": 10.5
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 108,
+   "s": 10.3
+  },
+  {
+   "task": "utils : Criação",
+   "count": 118,
+   "s": 9.3
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 50,
+   "s": 8.4
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 37,
+   "s": 6.9
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 24,
+   "s": 5.7
+  }
+ ]
+}

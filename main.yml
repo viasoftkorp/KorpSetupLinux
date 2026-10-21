@@ -4,6 +4,12 @@
   connection: local
   vars:
     ansible_become_password: "{{ linux_korp.password }}"
+    korp_default_apps:
+      - REL01
+      - ERP_ACL
+      - FAT02_W
+      - FAT01
+    korp_prefetch_status: "{{ korp_dir_path }}/ansible/prefetch/status.json"
   become_user: "{{ linux_korp.user }}"
   become: true
 
@@ -16,6 +22,19 @@
             tasks_from: default/default_setup.yml
           tags:
             - always
+
+        # Download antecipado das imagens em segundo plano (setup.sh prefetch=true)
+        - name: Download antecipado de imagens
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: default/image_prefetch.yml
+          when: korp_image_prefetch | default(false) | bool
+          tags:
+            - default-setup
+            - update
+            - install
+            - install-only
+            - update-versioned
 
         - name: Infrastructure
           ansible.builtin.import_role:
@@ -48,11 +67,7 @@
           ansible.builtin.include_role:
             name: utils
             tasks_from: apps/install.yml
-          loop:
-            - REL01
-            - ERP_ACL
-            - FAT02_W
-            - FAT01
+          loop: "{{ korp_default_apps }}"
           loop_control:
             loop_var: app_name
           tags:
@@ -66,6 +81,16 @@
             tasks_from: apps/get_licensed_apps.yml
           tags: 
             - default-setup
+            - install
+            - install-only
+
+        # Com 'apps' vazio, os aplicativos licenciados só são conhecidos agora
+        - name: Download antecipado de imagens dos aplicativos licenciados
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: default/image_prefetch.yml
+          when: korp_image_prefetch | default(false) | bool and apps | default([], true) | length == 0
+          tags:
             - install
             - install-only
 
@@ -92,6 +117,28 @@
             - update
             # tag utilizada para facilitar teste do setup, não deve ser utilizada fora de ambiente de teste
             - update-only
+
+        # Atualiza exclusivamente os composes versionados registrados para version_without_build.
+        # Não executa roles de aplicativos, serviços exclusivos ou infraestrutura compartilhada.
+        - name: Atualização somente dos aplicativos versionados
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/update_versioned.yml
+          tags:
+            - never
+            - update-versioned
+
+        # Instala exclusivamente os composes versionados dos AppIds informados em apps.
+        - name: Instalação somente de aplicativos versionados
+          ansible.builtin.include_role:
+            name: utils
+            tasks_from: apps/install_versioned_only.yml
+          loop: "{{ apps }}"
+          loop_control:
+            loop_var: app_name
+          tags:
+            - never
+            - install-versioned-only
 
         # Variáveis esperadas:
         #   customs.remove_versioned: bool

@@ -1,0 +1,11 @@
+#!/bin/bash
+# Entrypoint do host isolado (sem systemd): prepara /dev e inicia o dockerd, depois executa o CMD.
+mkdir -p /etc/docker
+# disk-playbook: LVM já configurado no servidor (/dev é tmpfs, recriado a cada início)
+mkdir -p /dev/vg_korp && touch /dev/vg_korp/lv_korp
+[ -f /etc/docker/daemon.json ] || echo '{"log-driver":"json-file","log-opts":{"max-size":"50m","max-file":"5"}}' > /etc/docker/daemon.json
+# shims só do ambiente isolado para os passos do setup.sh que dependem apenas de rede externa (README)
+[ "${SIM_SHIMS:-1}" = 1 ] && cp /sim/shims/* /usr/local/sbin/
+(dockerd > /var/log/dockerd.log 2>&1 &)
+for i in $(seq 1 60); do docker info >/dev/null 2>&1 && break; sleep 1; done
+exec "$@"
