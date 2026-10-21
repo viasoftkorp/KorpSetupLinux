@@ -134,11 +134,16 @@
   ansible.builtin.shell: |
     docker exec -i "{{ postgres_container_name }}" psql -U postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{{ postgres.korp_user }}') THEN EXECUTE 'CREATE USER \"{{ postgres.korp_user }}\" WITH PASSWORD ''{{ postgres.korp_password }}'' LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION;'; END IF; END \$\$;"
 
+# A nuvem às vezes responde 500 nesta leitura (a cada chamada o vault manager consulta o Vault e o MinIO da
+# nuvem). Repetir é seguro, a chamada só cria o que ainda não existe: tenta de novo antes de falhar o setup.
 - name: Leitura de configuração de minio da nuvem
   ansible.builtin.uri:
     url: "{{ gateway_url }}/vault/manager/server-deploy/minio-gateway-config/{{ token }}"
     return_content: true
   register: response
+  retries: 5
+  delay: 10
+  until: response is not failed
 
 - name: Definição de minio_gateway_config
   ansible.builtin.set_fact:
