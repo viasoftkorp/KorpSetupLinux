@@ -12,3 +12,16 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+# Antes de logistica-saldo existir, Korp.Logistic.Tracking e Korp.Logistica.SaldoProdutos ficavam no compose
+# versionado 'logistica-compose.yml'. Com os dois no compose de logistica-saldo, o antigo só os duplicaria.
+- name: Checagem do compose versionado de logistica-saldo
+  ansible.builtin.stat:
+    path: "{{ versioned_compose_dir_path }}/logistica-saldo-compose.yml"
+  register: logistica_saldo_versioned_compose
+
+- name: Remoção do compose versionado anterior a logistica-saldo
+  ansible.builtin.file:
+    path: "{{ versioned_compose_dir_path }}/logistica-compose.yml"
+    state: absent
+  when: logistica_saldo_versioned_compose.stat.exists

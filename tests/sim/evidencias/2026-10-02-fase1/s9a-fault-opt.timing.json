@@ -1,0 +1,127 @@
+{
+ "log": "s9a-fault-opt.log",
+ "total_s": 83.9,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 1.7
+  },
+  {
+   "name": "localhost",
+   "start_s": 3.2,
+   "duration_s": 3.5
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 6.7,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 7.8,
+   "duration_s": 76.1
+  }
+ ],
+ "task_headers": 1094,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=600 changed=41 unreachable=0 failed=1 skipped=467 rescued=1 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 7.18,
+   "task": "temporal : Criação e inicialização do Temporal"
+  },
+  {
+   "s": 2.27,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 1.24,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.06,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.06,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.05,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.98,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.83,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.81,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  },
+  {
+   "s": 0.73,
+   "task": "infrastructure : Transferência de scripts de template"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "temporal : Criação e inicialização",
+   "count": 1,
+   "s": 7.2
+  },
+  {
+   "task": "utils : Definição",
+   "count": 206,
+   "s": 6.7
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 11,
+   "s": 4.2
+  },
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 4.1
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 41,
+   "s": 3.8
+  },
+  {
+   "task": "utils : Criação",
+   "count": 50,
+   "s": 3.8
+  },
+  {
+   "task": "infrastructure : Configuração e transferência",
+   "count": 6,
+   "s": 3.3
+  },
+  {
+   "task": "infrastructure : Geração",
+   "count": 10,
+   "s": 2.8
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 50,
+   "s": 2.6
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 16,
+   "s": 2.1
+  }
+ ]
+}

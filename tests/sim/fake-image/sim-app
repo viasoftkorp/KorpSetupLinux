@@ -1,0 +1,4 @@
+#!/bin/sh
+# Fake application process for isolated tests: ignores arguments, stays up, exits fast on stop.
+trap 'exit 0' TERM INT
+while :; do sleep 3600 & wait $!; done

@@ -14,14 +14,25 @@ create_random_string() {
 #   branch_name="<branch_name>" - OPCIONAL, caso não sejá passado, receberá 'master'
 #   gateway_url="<gateway_url>" - OPCIONAL, caso não sejá passado, receberá "https://gateway.korp.com.br"
 #   custom_tags="<tag1,tag2>"   - OPCIONAL, caso não sejá passada, as tags "default-setup,install" serão usadas
+#     (uma tag que não existe nos playbooks interrompe o setup com o código 17, antes de qualquer alteração)
 #   apps="<apps1,apps2>"        - OPCIONAL
 #     caso 'custom_tags' seja ['install', 'install-only', 'default-setup'], será utilizado para definir os aplicativos que serão instalados
+#     caso 'custom_tags' seja ['install-versioned-only'], define explicitamente os AppIds versionados a instalar
 #     caso 'custom_tags' seja ['remove-apps'], será utilizado para definir os aplicativos que serão desinstalados
+#   custom_tags=update-versioned - Atualiza somente os AppIds versionados registrados para a versão corrente
+#   custom_tags=install-versioned-only - Instala somente os composes versionados dos AppIds informados em apps
+#     (AppId ainda não instalado em nenhuma versão: cadastra também KVs, clientes OAuth e bancos dos serviços
+#     versionados; dependências e serviços não versionados/exclusivos não são instalados por este fluxo)
 #   remove_versioned=<bool>     - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   remove_unversioned=<bool>   - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps'] - padrão, false
 #   removed_version="2022.1.0"  - OBRIGATÓRIO caso 'custom_tags' seja ['remove-apps', 'uninstall-version']
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
 #   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
+#   fast_path=<bool> - OPCIONAL, padrão true - false executa as tarefas originais por serviço (sem as otimizações de desempenho)
+#   progress=<bool> - OPCIONAL, padrão false - true executa o playbook principal em segundo plano e mostra o andamento
+#     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar). O log completo continua em
+#     /etc/korp/ansible/logs. O setup não é interrompido se a sessão SSH cair.
+#   prefetch=<bool> - OPCIONAL, padrão false - true baixa em segundo plano, desde o início, as imagens dos composes que o setup vai subir
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -55,6 +66,16 @@ https_port="";
 http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
+fast_path=true;
+prefetch=false;
+
+# ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
+korp_min_ansible_core="2.17"
+
+# modo de acompanhamento (progress=true)
+progress=false;
+korp_progress_dir=/etc/korp/ansible/progress
+korp_progress_unit=korp-setup
 
 ini_file_path="./setup_config.ini"
 
@@ -96,6 +117,33 @@ do
    export "$KEY"="$VALUE"
 done
 
+# Tempo que o Ansible espera o sudo responder (become). O padrão do Ansible (10 s) estoura em servidor sobrecarregado
+# (ex.: sem memória livre) e a tarefa falha com "timeout waiting for privilege escalation password prompt".
+# Vale para todos os playbooks (o modo de acompanhamento leva as variáveis ANSIBLE_* no run.env).
+export ANSIBLE_TIMEOUT="${ANSIBLE_TIMEOUT:-30}"
+
+# fast_path vazio (ex.: "fast_path=") mantém o padrão
+if [ "$fast_path" == "" ];
+then
+   fast_path=true
+fi
+
+if [ "$prefetch" != "true" ];
+then
+   prefetch=false
+fi
+
+# Um setup em segundo plano usa /tmp/KorpSetupLinux até terminar: nenhum outro setup pode começar antes disso
+korp_running_pid=""
+if sudo test -f "$korp_progress_dir/status.json"; then
+    korp_running_pid=$(sudo python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(d.get('runner_pid','') if d.get('state')=='running' else '')" "$korp_progress_dir/status.json" 2>/dev/null)
+fi
+if { [ -n "$korp_running_pid" ] && sudo kill -0 "$korp_running_pid" 2>/dev/null; } || systemctl is-active --quiet "$korp_progress_unit" 2>/dev/null;
+then
+    echo "$(tput setaf 1)Já existe um setup em execução em segundo plano. Acompanhe com: sudo korp-setup-acompanhar$(tput setaf 7)"
+    exit 15
+fi
+
 if [ "$custom_tags" == "" ];
 then   
    ansible_tags="default-setup,install"
@@ -130,23 +178,79 @@ fi
 # Atualização de repositório, instalação de dependencias, instalação de ansible e git
 echo Instalando Ansible e Git
 
-# caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-if [ $? != 0 ]
+ansible_core_version() {
+    ansible --version 2>/dev/null | sed -nE '1s/.*core ([0-9]+(\.[0-9]+)+).*/\1/p'
+}
+version_at_least() {  # $1 >= $2
+    [ -n "$1" ] && [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -1)" == "$2" ]
+}
+ansible_ready() {
+    command -v git > /dev/null && version_at_least "$(ansible_core_version)" "$korp_min_ansible_core"
+}
+
+# O PPA já configurado dispensa o add-apt-repository, que consulta a API do Launchpad (api.launchpad.net)
+if grep -Rqs "ppa.launchpad\(content\)\?.net/ansible/ansible" /etc/apt/sources.list /etc/apt/sources.list.d/;
 then
-    echo "$(tput setaf 1)Erro 'sudo add-apt-repository --yes --update ppa:ansible/ansible'.$(tput setaf 7)"
-    exit 12
+    echo "PPA do Ansible já configurado; atualizando a lista de pacotes."
+    sudo apt-get update
+    apt_source_rc=$?
+else
+    # caso o comando falhe, checar 'https://askubuntu.com/questions/1123177/sudo-add-apt-repository-hangs'
+    for attempt in 1 2 3;
+    do
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        apt_source_rc=$?
+        [ $apt_source_rc == 0 ] && break
+        [ $attempt -lt 3 ] && echo "$(tput setaf 3)Falha ao adicionar o PPA do Ansible (tentativa $attempt de 3); nova tentativa em $((attempt * 15))s.$(tput setaf 7)" && sleep $((attempt * 15))
+    done
 fi
-sudo apt install git ansible --yes
-if [ $? != 0 ]
+# ansible-core explícito: o pacote ansible do PPA depende de ansible-core sem versão mínima, então um core antigo
+# já instalado (ex.: 2.13 de uma instalação anterior do PPA) não seria atualizado só com 'apt install ansible'
+sudo apt install git ansible ansible-core --yes
+apt_install_rc=$?
+
+if ! ansible_ready;
 then
-    echo "$(tput setaf 1)Erro 'sudo apt install ansible --yes'.$(tput setaf 7)"
+    if [ "$apt_source_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Erro ao configurar o PPA do Ansible (ppa:ansible/ansible).$(tput setaf 7)"
+    elif [ "$apt_install_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Erro 'sudo apt install git ansible ansible-core --yes'.$(tput setaf 7)"
+    fi
+    korp_installed_core=$(ansible_core_version)
+    echo "$(tput setaf 1)O setup precisa de git e ansible-core $korp_min_ansible_core ou mais novo; instalado: ansible-core ${korp_installed_core:-nenhum}.$(tput setaf 7)"
+    if apt-mark showhold 2>/dev/null | grep -qx "ansible-core";
+    then
+        echo "$(tput setaf 1)O pacote ansible-core está retido (apt-mark hold). Para liberar: sudo apt-mark unhold ansible-core$(tput setaf 7)"
+    elif [ "$apt_source_rc" != 0 ] || [ "$apt_install_rc" != 0 ];
+    then
+        echo "$(tput setaf 1)Verifique o acesso HTTPS a api.launchpad.net, ppa.launchpadcontent.net e galaxy.ansible.com.$(tput setaf 7)"
+    else
+        # o apt terminou sem erro: o ansible usado não é o do apt atualizado (outra instalação, pacote retido, etc.)
+        echo "$(tput setaf 1)O apt terminou sem erro, mas o ansible encontrado ($(command -v ansible || echo nenhum)) é ansible-core ${korp_installed_core:-?}; pacote ansible-core do apt: $(dpkg-query -W -f='${Version}' ansible-core 2>/dev/null || echo 'não instalado'). Verifique se há outra instalação do Ansible (pip) ou pacote retido (apt-mark showhold).$(tput setaf 7)"
+    fi
+    [ "$apt_source_rc" != 0 ] && exit 12
     exit 13
+fi
+if [ "$apt_source_rc" != 0 ] || [ "$apt_install_rc" != 0 ];
+then
+    echo "$(tput setaf 3)Não foi possível atualizar o Ansible pela rede; seguindo com o já instalado (ansible-core $(ansible_core_version)).$(tput setaf 7)"
 fi
 
 sudo rm -rf /tmp/KorpSetupLinux
 
 git clone -b $branch_name --depth=1 --single-branch https://github.com/viasoftkorp/KorpSetupLinux.git /tmp/KorpSetupLinux
+
+# Uma tag inexistente (ex.: update_versioned) não é erro para o Ansible: ele rodaria só as tarefas 'always' e
+# terminaria com sucesso sem fazer nada. Para aqui, antes de qualquer alteração no servidor.
+korp_tags_msg=$(python3 /tmp/KorpSetupLinux/scripts/korp_setup_tags.py /tmp/KorpSetupLinux "$ansible_tags")
+if [ $? == 3 ];
+then
+    echo "$(tput setaf 1)$korp_tags_msg$(tput setaf 7)"
+    echo "$(tput setaf 1)Tags válidas: veja o cabeçalho do setup.sh (custom_tags).$(tput setaf 7)"
+    exit 17
+fi
 
 # Configuração de disco segundário, que será mondado em /etc/korp
 
@@ -240,12 +344,7 @@ sudo ansible-galaxy collection install 'community.docker:>=3.10.3' -p /usr/lib/p
 
 sudo mkdir -p /etc/korp/ansible/logs/
 
-ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
-  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
-  --limit localhost \
-  --vault-id /etc/korp/ansible/.vault_key \
-  --tags=$ansible_tags \
-  --extra-vars='{
+korp_extra_vars='{
     "token": "'$token'",
     "gateway_url": "'$gateway_url'",
     "customs": {
@@ -257,10 +356,61 @@ ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
     "apps":['$apps'],
     "removed_version": "'$removed_version'",
     "skip_salt_test": '$skip_salt_test',
-    "should_update_rabbitmq": '$should_update_rabbitmq'
-  }'  | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
+    "should_update_rabbitmq": '$should_update_rabbitmq',
+    "korp_setup_fast_path": '$fast_path',
+    "korp_image_prefetch": '$prefetch'
+  }'
 
-if [ $? != 0 ]
+# Modo de acompanhamento: o playbook principal roda em segundo plano (systemd-run, ou setsid sem systemd)
+# e esta sessão mostra o andamento. O resultado, o log e a limpeza ficam a cargo de korp_setup_runner.py.
+if [ "$progress" == "true" ];
+then
+    korp_run_id=$(date '+%Y-%m-%d_%H-%M-%S')
+    korp_scripts=/tmp/KorpSetupLinux/scripts/acompanhamento
+    sudo mkdir -p "$korp_progress_dir" && sudo chmod 700 "$korp_progress_dir"
+    sudo install -m 0755 "$korp_scripts/korp-setup-acompanhar" /usr/local/bin/korp-setup-acompanhar
+    sudo install -m 0644 "$korp_scripts/korp_setup_runner.py" "$korp_progress_dir/korp_setup_runner.py"
+    printf '%s\n' "$korp_extra_vars" | sudo tee "$korp_progress_dir/extra-vars.yml" > /dev/null
+    env | grep '^ANSIBLE_' | sudo tee "$korp_progress_dir/run.env" > /dev/null
+    sudo chmod 600 "$korp_progress_dir/extra-vars.yml" "$korp_progress_dir/run.env"
+
+    korp_runner=(/usr/bin/python3 "$korp_progress_dir/korp_setup_runner.py"
+        --status "$korp_progress_dir/status.json" --history "$korp_progress_dir/history.jsonl"
+        --log "/etc/korp/ansible/logs/ansible_output_${korp_run_id}.log" --run-id "$korp_run_id"
+        --env-file "$korp_progress_dir/run.env" --callback-dir /tmp/KorpSetupLinux/callback_plugins
+        --meta "tags=$ansible_tags" --meta "branch=$branch_name"
+        --cleanup /tmp/KorpSetupLinux --cleanup "$korp_progress_dir/extra-vars.yml" --cleanup "$korp_progress_dir/run.env"
+        -- "$(command -v ansible-playbook)" /tmp/KorpSetupLinux/bootstrap-playbook.yml
+        --limit localhost --vault-id /etc/korp/ansible/.vault_key --tags="$ansible_tags"
+        --extra-vars "@$korp_progress_dir/extra-vars.yml")
+
+    if [ -d /run/systemd/system ] && command -v systemd-run > /dev/null;
+    then
+        sudo systemd-run --unit="$korp_progress_unit" --collect --quiet --working-directory="$PWD" "${korp_runner[@]}"
+    else
+        sudo setsid --fork "${korp_runner[@]}" < /dev/null > /dev/null 2>&1
+    fi
+    if [ $? != 0 ];
+    then
+        echo "$(tput setaf 1)Não foi possível iniciar o setup em segundo plano.$(tput setaf 7)"
+        exit 16
+    fi
+
+    sudo /usr/local/bin/korp-setup-acompanhar --run-id "$korp_run_id" --wait 60
+    exit $?
+fi
+
+ansible-playbook /tmp/KorpSetupLinux/bootstrap-playbook.yml \
+  $(sudo -nv 2> /dev/null; if [ $? -eq 1 ]; then echo "-K"; fi;) \
+  --limit localhost \
+  --vault-id /etc/korp/ansible/.vault_key \
+  --tags=$ansible_tags \
+  --extra-vars="$korp_extra_vars" | sudo tee "/etc/korp/ansible/logs/ansible_output_$(date '+%Y-%m-%d_%H-%M-%S').log"
+
+# status do ansible-playbook (o $? seria o do tee)
+ansible_rc=${PIPESTATUS[0]}
+
+if [ "$ansible_rc" != 0 ]
 then
     echo "$(tput setaf 1)Erro durante a execução do playbook 'main.yml'.$(tput setaf 7)"
     exit 11

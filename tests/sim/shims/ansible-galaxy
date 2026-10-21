@@ -1,0 +1,6 @@
+#!/bin/sh
+# SHIM DO AMBIENTE ISOLADO: community.docker 5.3.0 é fixado via ANSIBLE_COLLECTIONS_PATH; evita acesso ao Galaxy.
+case "$1 $2" in
+  "collection install") echo "[sim] ansible-galaxy $* (ignorado no ambiente isolado)"; exit 0 ;;
+esac
+exec /usr/bin/ansible-galaxy "$@"

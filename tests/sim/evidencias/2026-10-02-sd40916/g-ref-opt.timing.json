@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/g-ref-opt.log",
+ "total_s": 27.0,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 1.8
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.3,
+   "duration_s": 5.0
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.2,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.4,
+   "duration_s": 18.6
+  }
+ ],
+ "task_headers": 349,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=149 changed=19 unreachable=0 failed=0 skipped=127 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 2.09,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.14,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.12,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.98,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.96,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.88,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.86,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.78,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.57,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.41,
+   "task": "utils : Criação dos bancos de dados PostgreSql de engenharia"
+  },
+  {
+   "s": 0.36,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.35,
+   "task": "utils : Criação dos bancos de dados SQL Server de engenharia"
+  },
+  {
+   "s": 0.33,
+   "task": "utils : Configuração e transferência de arquivos de compose de engenharia - versionado"
+  },
+  {
+   "s": 0.32,
+   "task": "utils : Adição dos clientes oauth2 de engenharia"
+  },
+  {
+   "s": 0.28,
+   "task": "utils : Escrita de arquivo /etc/korp/configs/installed_apps.yml"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 5.3
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 4,
+   "s": 3.1
+  },
+  {
+   "task": "utils : Definição",
+   "count": 74,
+   "s": 2.1
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 6,
+   "s": 1.2
+  },
+  {
+   "task": "utils : Criação",
+   "count": 12,
+   "s": 1.1
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 1.0
+  },
+  {
+   "task": "utils : Adição",
+   "count": 5,
+   "s": 0.8
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 4,
+   "s": 0.8
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 3,
+   "s": 0.8
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 12,
+   "s": 0.7
+  },
+  {
+   "task": "Verificação",
+   "count": 11,
+   "s": 0.7
+  },
+  {
+   "task": "utils : Garantia",
+   "count": 3,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Análise",
+   "count": 4,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 16,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Checagem",
+   "count": 18,
+   "s": 0.6
+  }
+ ]
+}

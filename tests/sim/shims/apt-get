@@ -1,0 +1,5 @@
+#!/bin/sh
+# SHIM DO AMBIENTE ISOLADO: "apt-get update" acessa a rede (PPA do Ansible e mirrors do Ubuntu); os pacotes já estão
+# instalados no host. Os demais comandos usam o apt-get real.
+if [ "$1" = "update" ]; then echo "[sim] apt-get $* (ignorado no ambiente isolado)"; exit 0; fi
+exec /usr/bin/apt-get "$@"
