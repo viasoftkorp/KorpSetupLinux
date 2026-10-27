@@ -1,0 +1,126 @@
+{
+ "log": "s9b-interrupted-opt.log",
+ "total_s": 37.3,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 2.8
+  },
+  {
+   "name": "localhost",
+   "start_s": 4.2,
+   "duration_s": 3.5
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 7.8,
+   "duration_s": 1.1
+  },
+  {
+   "name": "Setup main",
+   "start_s": 8.8,
+   "duration_s": 28.5
+  }
+ ],
+ "task_headers": 363,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 2.34,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.08,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.24,
+   "task": "infrastructure : Instalação de dependências padrões"
+  },
+  {
+   "s": 1.06,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.04,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.95,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.84,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  },
+  {
+   "s": 0.83,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.7,
+   "task": "infrastructure : Transferência de scripts de template"
+  },
+  {
+   "s": 0.66,
+   "task": "infrastructure : Transferência de arquivos de configuração em files"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 5.1
+  },
+  {
+   "task": "infrastructure : Configuração e transferência",
+   "count": 6,
+   "s": 3.3
+  },
+  {
+   "task": "infrastructure : Geração",
+   "count": 10,
+   "s": 2.9
+  },
+  {
+   "task": "infrastructure : Transferência",
+   "count": 3,
+   "s": 1.6
+  },
+  {
+   "task": "infrastructure : Criação",
+   "count": 12,
+   "s": 1.5
+  },
+  {
+   "task": "utils : Definição",
+   "count": 39,
+   "s": 1.5
+  },
+  {
+   "task": "infrastructure : Instalação",
+   "count": 1,
+   "s": 1.2
+  },
+  {
+   "task": "utils : Criação",
+   "count": 14,
+   "s": 1.2
+  },
+  {
+   "task": "infrastructure : Adição",
+   "count": 3,
+   "s": 1.2
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 8,
+   "s": 0.9
+  }
+ ]
+}
