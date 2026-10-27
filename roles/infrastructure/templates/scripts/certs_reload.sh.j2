@@ -3,5 +3,8 @@ docker exec nginx bash -c "/usr/sbin/nginx -s reload" >> {{ certs_directory }}/l
 echo "Limpando todas as chaves do Redis - $(date)" >> {{ certs_directory }}/logs/certs_reload.log
 docker exec {{ redis_container_name }} redis-cli -a "{{ redis.password }}" FLUSHALL >> {{ certs_directory }}/logs/certs_reload.log 2>&1
 echo "Limpeza do Redis concluída" >> {{ certs_directory }}/logs/certs_reload.log
-docker restart Viasoft.Authentication >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+# O container tem a versão no nome e há um Authentication por versão instalada; todos usam o certificado
+for container in $(docker ps --format '{% raw %}{{.Names}}{% endraw %}' | grep -E '^Viasoft\.Authentication(-|$)'); do
+  docker restart "$container" >> {{ certs_directory }}/logs/certs_reload.log 2>&1
+done
 echo "Reload de serviços finalizada" >> {{ certs_directory }}/logs/certs_reload.log

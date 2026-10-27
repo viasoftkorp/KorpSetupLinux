@@ -1,0 +1,6 @@
+# compare_dumps.py dumps/upd25-initial.json dumps/s9a-orig-recovered.json dumps/s9a-opt-recovered.json --allow ^/consul_kv/Korp.Vendas.ListaPreco/(json/Authorization/Secret|text_sha)$
+A: segredo pré-existente alterado em Korp.Vendas.ListaPreco/json/Authorization/Secret
+B: segredo pré-existente alterado em Korp.Vendas.ListaPreco/json/Authorization/Secret
+ignorado (1): ^/consul_kv/Korp.Vendas.ListaPreco/(json/Authorization/Secret|text_sha)$
+ignorado (8): ^/files//etc/korp/dados-docker/[^/]+/[^/]+/.+
+RESULTADO: DIFERENTE (2 diferenças)

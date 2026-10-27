@@ -1,0 +1,10 @@
+   1 changed  Inicialização isolada
+   1 changed  Parada do container legado
+   1 changed  Recuperação do nome canônico
+   1 changed  Reinício do container restaurado
+   1 changed  Remoção de backup de migração já concluída
+   1 changed  Remoção do backup validado
+   1 changed  Remoção do container legado substituído
+   1 changed  Renomeação temporária
+   1 changed  Restauração do nome original
+total: 9
