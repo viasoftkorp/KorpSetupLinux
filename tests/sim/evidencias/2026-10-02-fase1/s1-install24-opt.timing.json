@@ -1,0 +1,127 @@
+{
+ "log": "s1-install24-opt.log",
+ "total_s": 169.8,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 1.5,
+   "duration_s": 1.3
+  },
+  {
+   "name": "localhost",
+   "start_s": 2.8,
+   "duration_s": 3.1
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 5.9,
+   "duration_s": 0.6
+  },
+  {
+   "name": "Setup main",
+   "start_s": 6.5,
+   "duration_s": 163.2
+  }
+ ],
+ "task_headers": 2473,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=1307 changed=192 unreachable=0 failed=0 skipped=1200 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 3.46,
+   "task": "utils : Leitura de kv atual"
+  },
+  {
+   "s": 2.83,
+   "task": "infrastructure : Aguarda inicialização do rabbitmq"
+  },
+  {
+   "s": 2.83,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 2.39,
+   "task": "infrastructure : Geração de chave privada para o certificado da CA (RSA, 4096)"
+  },
+  {
+   "s": 2.12,
+   "task": "infrastructure : Configuração e transferência de arquivos de nginx"
+  },
+  {
+   "s": 2.0,
+   "task": "utils : Criação dos bancos de dados SQL Server de infrastructure-web"
+  },
+  {
+   "s": 1.84,
+   "task": "infrastructure : Criação e inicialização de infrastructure-compose"
+  },
+  {
+   "s": 1.73,
+   "task": "utils : Criação de escopos para cliente"
+  },
+  {
+   "s": 1.57,
+   "task": "utils : Criação dos bancos de dados SQL Server de vendas"
+  },
+  {
+   "s": 1.41,
+   "task": "utils : Inicialização do compose reconciliado"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "utils : Inicialização",
+   "count": 36,
+   "s": 26.5
+  },
+  {
+   "task": "utils : Criação",
+   "count": 111,
+   "s": 18.1
+  },
+  {
+   "task": "utils : Definição",
+   "count": 510,
+   "s": 14.4
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 46,
+   "s": 7.6
+  },
+  {
+   "task": "utils : Renderização",
+   "count": 100,
+   "s": 6.4
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 36,
+   "s": 6.4
+  },
+  {
+   "task": "utils : Adição",
+   "count": 33,
+   "s": 6.1
+  },
+  {
+   "task": "utils : Análise",
+   "count": 36,
+   "s": 4.8
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 22,
+   "s": 4.8
+  },
+  {
+   "task": "utils : Garantia",
+   "count": 25,
+   "s": 4.6
+  }
+ ]
+}

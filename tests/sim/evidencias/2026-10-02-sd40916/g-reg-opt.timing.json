@@ -1,0 +1,172 @@
+{
+ "log": ".work/runs/g-reg-opt.log",
+ "total_s": 15.1,
+ "rc": "END rc=0",
+ "plays": [
+  {
+   "name": "localhost",
+   "start_s": 0.5,
+   "duration_s": 3.9
+  },
+  {
+   "name": "localhost",
+   "start_s": 4.4,
+   "duration_s": 3.9
+  },
+  {
+   "name": "Setup de provisioning",
+   "start_s": 8.3,
+   "duration_s": 1.2
+  },
+  {
+   "name": "Setup main",
+   "start_s": 9.5,
+   "duration_s": 5.5
+  }
+ ],
+ "task_headers": 134,
+ "recap": [
+  "localhost : ok=2 changed=0 unreachable=0 failed=0 skipped=10 rescued=0 ignored=0 ",
+  "localhost : ok=10 changed=1 unreachable=0 failed=0 skipped=56 rescued=0 ignored=0 ",
+  "localhost : ok=33 changed=0 unreachable=0 failed=0 skipped=23 rescued=0 ignored=0 "
+ ],
+ "slowest_tasks": [
+  {
+   "s": 3.12,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.23,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.18,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 1.12,
+   "task": "Gathering Facts"
+  },
+  {
+   "s": 0.9,
+   "task": "Escrita do arquivo de inventário"
+  },
+  {
+   "s": 0.55,
+   "task": "utils : Inicialização do compose reconciliado"
+  },
+  {
+   "s": 0.38,
+   "task": "Montagem de partição no dispositivo"
+  },
+  {
+   "s": 0.3,
+   "task": "finishing : Notificação de TenantManagement"
+  },
+  {
+   "s": 0.3,
+   "task": "utils : Validação de token"
+  },
+  {
+   "s": 0.28,
+   "task": "utils : Resolução da configuração efetiva do compose e análise das identidades"
+  },
+  {
+   "s": 0.25,
+   "task": "utils : Configuração e transferência de arquivos de compose de LOG102 - versionado"
+  },
+  {
+   "s": 0.23,
+   "task": "utils : Configuração de docker"
+  },
+  {
+   "s": 0.22,
+   "task": "utils : Escrita de arquivo /etc/korp/configs/installed_apps.yml"
+  },
+  {
+   "s": 0.2,
+   "task": "utils : Verificação de grupos do usuário korp"
+  },
+  {
+   "s": 0.19,
+   "task": "Verificação de arquivos de certificados"
+  }
+ ],
+ "by_task_name": [
+  {
+   "task": "Gathering Facts",
+   "count": 4,
+   "s": 6.7
+  },
+  {
+   "task": "Escrita",
+   "count": 1,
+   "s": 0.9
+  },
+  {
+   "task": "Verificação",
+   "count": 11,
+   "s": 0.6
+  },
+  {
+   "task": "Coleta",
+   "count": 17,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Definição",
+   "count": 19,
+   "s": 0.6
+  },
+  {
+   "task": "utils : Inicialização",
+   "count": 1,
+   "s": 0.5
+  },
+  {
+   "task": "Definição",
+   "count": 19,
+   "s": 0.4
+  },
+  {
+   "task": "Montagem",
+   "count": 1,
+   "s": 0.4
+  },
+  {
+   "task": "utils : Validação",
+   "count": 4,
+   "s": 0.4
+  },
+  {
+   "task": "finishing : Notificação",
+   "count": 1,
+   "s": 0.3
+  },
+  {
+   "task": "utils : Configuração e transferência",
+   "count": 2,
+   "s": 0.3
+  },
+  {
+   "task": "utils : Resolução",
+   "count": 1,
+   "s": 0.3
+  },
+  {
+   "task": "utils : Configuração",
+   "count": 2,
+   "s": 0.3
+  },
+  {
+   "task": "utils : Escrita",
+   "count": 1,
+   "s": 0.2
+  },
+  {
+   "task": "utils : Verificação",
+   "count": 1,
+   "s": 0.2
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+   1 changed  Inicialização isolada
+   1 changed  Parada do container legado
+   1 changed  Remoção do backup validado
+   5 changed  Remoção do container legado substituído
+   1 changed  Renomeação temporária
+total: 9

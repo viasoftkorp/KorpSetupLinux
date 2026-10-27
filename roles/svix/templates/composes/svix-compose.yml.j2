@@ -9,6 +9,7 @@ services:
   redis_svix:
     image: "{{ svix_redis_image }}"
     container_name: "redis_svix"
+    restart: always
     command: "--save 60 500 --appendonly yes --appendfsync everysec"
     volumes:
       - "{{ dados_docker_dir_path }}/svix_redis/:/data"
@@ -23,6 +24,7 @@ services:
   svix:
     image: "{{ svix_image }}"
     container_name: "svix"
+    restart: always
     depends_on:
       redis_svix:
         condition: service_healthy
