@@ -1,6 +1,7 @@
 # Download antecipado (prefetch) das imagens dos composes que este setup vai subir, em segundo plano.
-# Opt-in: setup.sh prefetch=true (korp_image_prefetch). Não muda o que o setup faz: uma imagem que ainda
-# não tiver sido baixada quando o compose subir é baixada pelo próprio compose, como sem o prefetch.
+# Ligado por padrão no setup.sh (prefetch=false desliga); fora do setup.sh, korp_image_prefetch é falso. Não muda o
+# que o setup faz: uma imagem que ainda não tiver sido baixada quando o compose subir é baixada pelo próprio
+# compose, como sem o prefetch.
 # O processo é encerrado na finalização (roles/finishing/tasks/image_prefetch.yml).
 #
 # Roles consideradas, na ordem de execução de main.yml:
