@@ -123,6 +123,11 @@ Para utilizar o certificado automatizado, é necessário:
 
     - Direcionamento interno dos DNSs, nas portas 80 e 443, para o servidor Linux
 
+O desafio é atendido na porta 80 e também nos servidores HTTPS (443) e nas portas HTTP do proxy reverso externo.
+Assim a renovação funciona atrás de um proxy que repassa ao servidor em HTTPS (ex.: Azure Front Door), desde que o
+certificado atual ainda esteja válido: com ele vencido, o proxy não conecta mais ao servidor e é preciso repassar
+temporariamente em HTTP (porta 80) para renovar.
+
 
 .. _Let's Encrypt: https://letsencrypt.org
 .. _`Certbot`: https://certbot.eff.org
