@@ -96,14 +96,15 @@ antes, o código era o do ``tee`` e falhas terminavam com 0.
 Acompanhamento em segundo plano
 ===============================
 
-Com ``progress=true`` (opcional; sem ele nada muda), o ``setup.sh`` faz em primeiro plano o que pode pedir
-alguma resposta (instalação do Ansible, clone, inventário e perguntas de DNS) e dispara o playbook principal em
-segundo plano: com ``systemd-run`` (serviço ``korp-setup``) ou, onde não há systemd, com ``setsid``. A execução
-continua mesmo que a sessão SSH caia. A sessão mostra a etapa, o app atual (X de N), a tarefa, o tempo decorrido
-(com estimativa pela última execução com as mesmas tags) e os contadores; em caso de falha, mostra o app, a tarefa
-e a mensagem de erro, e o ``setup.sh`` termina com código 11, como hoje.
+Ligado por padrão (``progress=false`` executa o playbook na própria sessão, como antes): o ``setup.sh`` faz em
+primeiro plano o que pode pedir alguma resposta (instalação do Ansible, clone, inventário e perguntas de DNS) e
+dispara o playbook principal em segundo plano: com ``systemd-run`` (serviço ``korp-setup``) ou, onde não há
+systemd, com ``setsid``. A execução continua mesmo que a sessão SSH caia. A sessão mostra a etapa, o app atual
+(X de N), a tarefa, o tempo decorrido (com estimativa pela última execução com as mesmas tags) e os contadores; em
+caso de falha, mostra o app, a tarefa e a mensagem de erro, e o ``setup.sh`` termina com código 11, como hoje.
 
-- ``Ctrl+C`` fecha só a tela; para voltar: ``sudo korp-setup-acompanhar``.
+- ``Ctrl+C`` fecha só a tela, o setup continua; para voltar: ``sudo korp-setup-acompanhar``. Para interromper o
+  setup: ``sudo systemctl stop korp-setup`` (o playbook recebe o sinal e o resultado fica como falha).
 - O log completo continua em ``/etc/korp/ansible/logs``, no mesmo formato. O andamento fica em
   ``/etc/korp/ansible/progress/status.json`` e o histórico das execuções em ``history.jsonl`` (acesso só do root).
 - Enquanto um setup roda em segundo plano, um novo ``setup.sh`` é recusado (código 15).
@@ -134,13 +135,13 @@ valor passado na chamada (``ANSIBLE_TIMEOUT=60``) tem precedência.
 Download antecipado de imagens
 ==============================
 
-Opcional: ``prefetch=true``. Logo depois do *Default setup* (login no Docker), o setup lista as imagens dos composes
-que a execução vai subir (infraestrutura, apps padrões e os aplicativos da tag ``update`` ou ``install``, com as
-dependências das roles; ficam de fora ``pgweb`` e ``temporal-ui``, que o setup escreve mas não sobe) e baixa as que
-faltam em segundo plano, 3 por vez, enquanto as demais etapas seguem. Com
+Ligado por padrão no ``setup.sh`` (``prefetch=false`` desliga). Logo depois do *Default setup* (login no Docker), o
+setup lista as imagens dos composes que a execução vai subir (infraestrutura, apps padrões e os aplicativos da tag
+``update`` ou ``install``, com as dependências das roles; ficam de fora ``pgweb`` e ``temporal-ui``, que o setup
+escreve mas não sobe) e baixa as que faltam em segundo plano, 3 por vez, enquanto as demais etapas seguem. Com
 ``apps`` vazio, os aplicativos licenciados entram numa segunda lista assim que são obtidos. O setup não depende do
-resultado: o compose continua baixando na hora o que ainda não tiver chegado (o Docker compartilha o download de
-uma imagem pedida pelos dois ao mesmo tempo) e uma falha só é registrada. Na finalização (com sucesso ou erro), o
+resultado: o compose continua baixando na hora o que ainda não tiver chegado (o Docker compartilha o download de uma
+imagem pedida pelos dois ao mesmo tempo) e uma falha só é registrada. Na finalização (com sucesso ou erro), o
 processo é encerrado e o resumo aparece no log. Status: ``/etc/korp/ansible/prefetch/status.json``.
 
 Ganha tempo quando há muito a baixar (versão nova, instalação nova). Sem imagens novas não muda nada.
