@@ -1,0 +1,23 @@
+# Composes que sobraram de uma reorganização das roles (ex.: o logistica-compose.yml da raiz, dividido em
+# logistica-saldo, produto, ajuste-estoque e inventario na 2025.1). Nenhuma role gera mais o arquivo, ninguém o
+# atualiza e ele duplica serviços dos composes atuais (o qa-pr para em "encontrados 2"). Regra genérica, sem lista
+# de nomes: vale para qualquer compose renomeado ou dividido daqui para frente (detalhes no módulo
+# roles/utils/library/korp_compose_obsoletos.py).
+# O arquivo é movido para backup, sem parar nem recriar containers; um órfão com serviço que só existe nele fica.
+# Só a pasta desta versão e, se esta é a versão mais nova instalada, a pasta compartilhada (não versionados).
+- name: Retirada de composes obsoletos
+  korp_compose_obsoletos:
+    compose_dir: "{{ compose_dir_path }}"
+    roles_dir: "{{ playbook_dir }}/roles"
+    backup_root: "{{ korp_dir_path }}/backups/composes-obsoletos"
+    version: "{{ version_without_build }}"
+    installed_apps_file: "{{ config_dir_path }}/installed_apps.yml"
+  become: true
+  register: korp_composes_obsoletos
+
+- name: Composes obsoletos retirados
+  ansible.builtin.debug:
+    msg: >-
+      {{ korp_composes_obsoletos.moved | map(attribute='arquivo') | join(', ') }} movido(s) para
+      {{ korp_composes_obsoletos.backup_dir }} (desfazer: veja LEIAME.txt na pasta)
+  when: korp_composes_obsoletos.moved | default([]) | length > 0 and not ansible_check_mode
