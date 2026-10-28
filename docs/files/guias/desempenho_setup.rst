@@ -146,6 +146,30 @@ processo é encerrado e o resumo aparece no log. Status: ``/etc/korp/ansible/pre
 
 Ganha tempo quando há muito a baixar (versão nova, instalação nova). Sem imagens novas não muda nada.
 
+Composes obsoletos
+==================
+
+Quando uma reorganização das roles renomeia ou divide um compose (ex.: na 2025.1, o ``logistica-compose.yml`` da
+raiz virou ``logistica-saldo``, ``produto``, ``ajuste-estoque`` e ``inventario``, e o ``2025.1.0/LOG103-compose.yml``
+foi para o ``wms``), o arquivo antigo ficava no servidor: ninguém mais o atualizava e ele duplicava serviços dos
+composes novos (o qa-pr parava em "Esperado um compose para ...; encontrados 2").
+
+No fim de ``install``, ``update``, ``update-versioned`` e ``install-versioned-only``, o setup retira esses arquivos
+com uma regra genérica, sem lista de nomes (``roles/utils/library/korp_compose_obsoletos.py``). Um
+``*-compose.yml`` sai quando:
+
+#. nenhuma role do repositório gera mais esse arquivo naquela pasta; e
+#. todos os serviços dele estão definidos (mesmo nome de serviço ou de container) nos composes que as roles geram
+   na mesma pasta.
+
+- O arquivo é movido para ``/etc/korp/backups/composes-obsoletos/<data-hora>/``, com um ``LEIAME.txt`` que tem o
+  comando para desfazer. Nenhum container é parado ou recriado.
+- Um arquivo que nenhuma role gera, mas que é a única definição de algum serviço, fica e aparece como aviso no log
+  (ex.: o ``logistica-compose.yml`` antigo onde ``ajuste-estoque`` e ``inventario`` ainda não foram instalados).
+- Cada setup só olha o que é dele: a pasta da própria versão e, se ela é a versão mais nova instalada, a pasta
+  compartilhada dos não versionados. Num servidor com 2024.2 e 2025.1, a 2024.2 ainda gera arquivos que a 2025.1
+  dividiu; se as duas limpassem a pasta compartilhada, uma retiraria os composes da outra a cada execução.
+
 Desligando as otimizações
 =========================
 
