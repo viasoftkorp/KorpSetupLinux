@@ -29,10 +29,11 @@ create_random_string() {
 #   skip_salt_test=<bool> - OPCIONAL, padrão false
 #   should_update_rabbitmq=<bool> - OPCIONAL, padrão false
 #   fast_path=<bool> - OPCIONAL, padrão true - false executa as tarefas originais por serviço (sem as otimizações de desempenho)
-#   progress=<bool> - OPCIONAL, padrão false - true executa o playbook principal em segundo plano e mostra o andamento
-#     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar). O log completo continua em
-#     /etc/korp/ansible/logs. O setup não é interrompido se a sessão SSH cair.
-#   prefetch=<bool> - OPCIONAL, padrão false - true baixa em segundo plano, desde o início, as imagens dos composes que o setup vai subir
+#   progress=<bool> - OPCIONAL, padrão true - executa o playbook principal em segundo plano e mostra o andamento
+#     numa tela (Ctrl+C fecha só a tela; para voltar: sudo korp-setup-acompanhar; para interromper:
+#     sudo systemctl stop korp-setup). O log completo continua em /etc/korp/ansible/logs. O setup não é
+#     interrompido se a sessão SSH cair. false executa o playbook nesta sessão, como antes.
+#   prefetch=<bool> - OPCIONAL, padrão true - baixa em segundo plano, desde o início, as imagens dos composes que o setup vai subir; false desliga
 #
 ##### variaveis salvas no inventário:
 #   db_suffix="<db_suffix>" - OPCIONAL, sufixo utilizado na criação dos bancos e nas ConnectionStrings do Consul KV
@@ -67,13 +68,13 @@ http_use_secure_only_tls_protocols="";
 cert_type=""; custom_cert_has_pass=""; custom_cert_path=""; certbot_email="";
 skip_salt_test=false;
 fast_path=true;
-prefetch=false;
+prefetch=true;
 
 # ansible-core mínimo: o setup instala a versão mais recente de community.docker, que exige 2.17
 korp_min_ansible_core="2.17"
 
 # modo de acompanhamento (progress=true)
-progress=false;
+progress=true;
 korp_progress_dir=/etc/korp/ansible/progress
 korp_progress_unit=korp-setup
 
@@ -128,10 +129,10 @@ then
    fast_path=true
 fi
 
-if [ "$prefetch" != "true" ];
-then
-   prefetch=false
-fi
+# progress e prefetch só desligam com "false" (maiúsculas ou minúsculas); outro valor ou vazio (ex.: "prefetch=")
+# mantém o padrão, ligado
+if [ "${progress,,}" == "false" ]; then progress=false; else progress=true; fi
+if [ "${prefetch,,}" == "false" ]; then prefetch=false; else prefetch=true; fi
 
 # Um setup em segundo plano usa /tmp/KorpSetupLinux até terminar: nenhum outro setup pode começar antes disso
 korp_running_pid=""
