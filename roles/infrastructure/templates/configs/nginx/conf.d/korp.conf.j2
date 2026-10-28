@@ -3,6 +3,14 @@ server {
     listen {{ reverse_proxy.http_ports.frontend }};
 
     include /etc/nginx/default_conf;
+{% if certs.certbot_automated.certificate %}
+
+    # Desafio do Let's Encrypt também neste servidor: atrás de um proxy que repassa em HTTPS (ex.: Azure Front Door)
+    # ou nas portas HTTP do proxy reverso externo, a renovação não chega na porta 80 (acme-challenge.conf)
+    location ^~ /.well-known/acme-challenge/ {
+        root /letsencrypt/;
+    }
+{% endif %}
 
     include /etc/nginx/conf.d/korp.locations;
 }
@@ -13,6 +21,14 @@ server {
 
     include /etc/nginx/ssl_conf;
     include /etc/nginx/default_conf;
+{% if certs.certbot_automated.certificate %}
+
+    # Desafio do Let's Encrypt também neste servidor: atrás de um proxy que repassa em HTTPS (ex.: Azure Front Door)
+    # ou nas portas HTTP do proxy reverso externo, a renovação não chega na porta 80 (acme-challenge.conf)
+    location ^~ /.well-known/acme-challenge/ {
+        root /letsencrypt/;
+    }
+{% endif %}
 
     include /etc/nginx/conf.d/korp.ssl-locations;
 }
