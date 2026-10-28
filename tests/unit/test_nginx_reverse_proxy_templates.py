@@ -19,6 +19,7 @@ class Placeholder(jinja2.ChainableUndefined):
 NGINX = "roles/infrastructure/templates/configs/nginx/conf.d"
 COMPOSE = "roles/infrastructure/templates/composes/infrastructure-compose.yml.j2"
 PORTS = {"api": "9875", "cdn": "9876", "frontend": "9877", "dns_api_gateway": "9878"}
+SEM_CERTBOT = {"certbot_automated": {"certificate": False}}
 DNS = {"api": "korp-api.local", "cdn": "korp-cdn.local", "frontend": "korp.local", "api_gateway": "api.korp.local"}
 
 
@@ -45,7 +46,7 @@ def nginx_ports(external, dns=DNS, http_ports=None):
 class ApiGatewayServerTest(unittest.TestCase):
     def conf(self, external, http_ports=None):
         return render(f"{NGINX}/korp-api-gateway.conf.j2",
-                      {"reverse_proxy": reverse_proxy(external, http_ports), "dns": DNS})
+                      {"reverse_proxy": reverse_proxy(external, http_ports), "dns": DNS, "certs": SEM_CERTBOT})
 
     def test_external_listens_on_inventory_port(self):
         conf = self.conf(True)
@@ -68,7 +69,8 @@ class ApiGatewayServerTest(unittest.TestCase):
 
     def test_other_servers_unchanged(self):
         for name, key in (("korp", "frontend"), ("korp-api", "api"), ("korp-cdn", "cdn")):
-            conf = render(f"{NGINX}/{name}.conf.j2", {"reverse_proxy": reverse_proxy(True), "dns": DNS})
+            conf = render(f"{NGINX}/{name}.conf.j2", {"reverse_proxy": reverse_proxy(True), "dns": DNS,
+                                                         "certs": SEM_CERTBOT})
             self.assertIn(f"listen {PORTS[key]};", conf)
 
 
