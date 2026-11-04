@@ -52,6 +52,9 @@
 
 - name: "Garantia dos KVs no Consul dos serviços de {{ id }}"
   korp_consul_kv_batch:
+    # módulo da role: o module_defaults da play (porta do Consul) não chega nele
+    host: 127.0.0.1
+    port: "{{ korp_consul_port | default(8500) }}"
     items: "{{ korp_kv_render.results | default([]) | korp_kv_batch_items(services) }}"
     default_kv_overwrite: "{{ default_kv_overwrite }}"
     custom_kv_overwrite: "{{ custom_kv_overwrite | default(omit) }}"

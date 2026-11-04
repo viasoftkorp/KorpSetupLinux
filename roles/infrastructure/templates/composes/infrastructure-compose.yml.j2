@@ -34,6 +34,10 @@ services:
       - "{{ reverse_proxy.http_ports.dns_api_gateway | default('9878') }}:{{ reverse_proxy.http_ports.dns_api_gateway | default('9878') }}"
 {% endif %}
 {% endif %}
+{% if korp_consul_basic_auth %}
+      # Consul para fora do servidor, com o tenant como usuário e senha (conf.d/consul.conf)
+      - "8500:8500"
+{% endif %}
 
     volumes:
       - "{{ config_dir_path }}/nginx/default_conf:/etc/nginx/default_conf"
@@ -55,12 +59,16 @@ services:
     restart: always
     command: "agent -server -bootstrap-expect=1"
     ports:
+      # Porta do setup e do suporte no próprio servidor, sem autenticação
+      - "127.0.0.1:{{ korp_consul_local_port }}:8500"
+{% if not korp_consul_basic_auth %}
       - "8300:8300"
       - "8301:8301/tcp"
       - "8301:8301/udp"
       - "8500:8500"
       - "8600:8600/tcp"
       - "8600:8600/udp"
+{% endif %}
     volumes:
       - "{{ config_dir_path }}/consul-server.json:/consul/config/server.json"
       - "{{ dados_docker_dir_path }}/consul-server/:/consul/data/"
