@@ -22,7 +22,12 @@ do
    export "$KEY"="$VALUE"
 done
 
-consulUrl='http://localhost:8500'
+# Porta local do Consul (sem autenticação); a 8500 do servidor pode exigir o tenant (nginx). Servidor ainda sem a
+# porta local: a 8500 de antes.
+consulUrl='http://127.0.0.1:18500'
+if ! curl --silent --output /dev/null --max-time 5 "$consulUrl/v1/status/leader"; then
+  consulUrl='http://localhost:8500'
+fi
 
 LegacyEltServiceName='Korp.Legacy.ELT'
 TenantManagementServiceName='Viasoft.TenantManagement'
