@@ -55,6 +55,10 @@ create_random_string() {
 #   external_reverse_proxy=<bool> - OPCIONAL - Habilita o proxy reverso para ser feito fora do servidor de Linux
 ## Porta Postgres
 # expose_postgres=<bool> - OPCIONAL - Expõe banco para fora da rede docker (5432:5432) - padrão false
+## Consul
+# consul_basic_auth=<bool> - OPCIONAL - padrão true - O acesso ao Consul de fora do servidor (porta 8500: serviços
+#   Delphi, UI) passa pelo nginx e exige o tenant do servidor como usuário e senha. Com false, a 8500 volta a ser
+#   aberta sem autenticação. O valor fica salvo no inventário; só muda quando o parâmetro for passado de novo.
 
 apps=""; docker_account=""; ansible_tags="";
 gateway_url="https://gateway.korp.com.br"
@@ -320,7 +324,8 @@ cat > /tmp/vars.json <<EOF
     "http_use_secure_only_tls_protocols": "$http_use_secure_only_tls_protocols",
     "external_reverse_proxy": "$external_reverse_proxy",
     "use_servergc": "$use_servergc",
-    "expose_postgres": "$expose_postgres"
+    "expose_postgres": "$expose_postgres",
+    "consul_basic_auth": "$consul_basic_auth"
   }
 }
 EOF
