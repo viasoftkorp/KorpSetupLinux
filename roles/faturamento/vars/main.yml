@@ -13,5 +13,3 @@ services:
       type: mssql
       
   Korp.Faturamento.DFe.Integracao:
-
-  Korp.Fiscal.DFe.Tributacao:
