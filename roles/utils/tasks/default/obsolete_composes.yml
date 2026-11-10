@@ -6,18 +6,25 @@
 # O arquivo é movido para backup, sem parar nem recriar containers; um órfão com serviço que só existe nele fica.
 # Só a pasta desta versão e, se esta é a versão mais nova instalada, a pasta compartilhada (não versionados).
 - name: Retirada de composes obsoletos
-  korp_compose_obsoletos:
-    compose_dir: "{{ compose_dir_path }}"
-    roles_dir: "{{ playbook_dir }}/roles"
-    backup_root: "{{ korp_dir_path }}/backups/composes-obsoletos"
-    version: "{{ version_without_build }}"
-    installed_apps_file: "{{ config_dir_path }}/installed_apps.yml"
-  become: true
-  register: korp_composes_obsoletos
+  block:
+    - name: Retirada de composes obsoletos
+      korp_compose_obsoletos:
+        compose_dir: "{{ compose_dir_path }}"
+        roles_dir: "{{ playbook_dir }}/roles"
+        backup_root: "{{ korp_dir_path }}/backups/composes-obsoletos"
+        version: "{{ version_without_build }}"
+        installed_apps_file: "{{ config_dir_path }}/installed_apps.yml"
+      # o play usa become_user korp: sem root, um /etc/korp/backups que não é do korp impede o backup
+      become: true
+      become_user: root
+      register: korp_composes_obsoletos
 
-- name: Composes obsoletos retirados
-  ansible.builtin.debug:
-    msg: >-
-      {{ korp_composes_obsoletos.moved | map(attribute='arquivo') | join(', ') }} movido(s) para
-      {{ korp_composes_obsoletos.backup_dir }} (desfazer: veja LEIAME.txt na pasta)
-  when: korp_composes_obsoletos.moved | default([]) | length > 0 and not ansible_check_mode
+    - name: Composes obsoletos retirados
+      ansible.builtin.debug:
+        msg: >-
+          {{ korp_composes_obsoletos.moved | map(attribute='arquivo') | join(', ') }} movido(s) para
+          {{ korp_composes_obsoletos.backup_dir }} (desfazer: veja LEIAME.txt na pasta)
+      when: korp_composes_obsoletos.moved | default([]) | length > 0 and not ansible_check_mode
+  # Necessário porque o main.yml inclui este arquivo com include_role, que não repassa as tags do setup às tarefas
+  # daqui: sem 'always', o include aparecia no log e o módulo nunca rodava.
+  tags: always
