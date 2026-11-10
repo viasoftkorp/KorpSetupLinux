@@ -141,6 +141,81 @@ class PlanoTest(Fixture):
         self.assertEqual(self.plano(), ([], [], []))
 
 
+class ServicoQueFoiParaACompartilhadaTest(Fixture):
+    """Serviço que saiu do compose versionado para o compartilhado com o mesmo container_name (DEVO-7740: o
+    Korp.Legacy.Authentication saiu de <versão>/infrastructure-desktop-compose.yml). O arquivo antigo da pasta da
+    versão não tem mais serviço só dele, mas a definição nova está em outra pasta."""
+
+    def setUp(self):
+        super().setUp()
+        write(f"{self.roles}/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2")
+        write(f"{self.roles}/wms/templates/composes/2024.2.0/wms-compose.yml.j2")
+
+    def desktop(self, versao):
+        self.servidor(f"{versao}/wms-compose.yml", compose(conferencia=f"ConferenciaSaida-{versao}"))
+        self.servidor(f"{versao}/infrastructure-desktop-compose.yml", compose(**{
+            "korp-legacy-authentication-" + versao.replace(".", "-"): f"Korp.Legacy.Authentication-{versao}"}))
+
+    def compartilhada(self, versao):
+        self.servidor("infrastructure-desktop-compose.yml", compose(**{
+            "korp-legacy-authentication": f"Korp.Legacy.Authentication-{versao}",
+            "viasoft-email": f"Viasoft.Email-{versao}"}))
+
+    def test_versionado_antigo_sai_quando_a_compartilhada_e_deste_setup(self):
+        self.desktop("2025.1.0")
+        self.compartilhada("2025.1.0")
+        antigo = os.path.join(self.composes, "2025.1.0", "infrastructure-desktop-compose.yml")
+        for mais_nova in (None, "2025.1.0", "2024.2.0"):
+            obsoletos, mantidos, _ = self.plano(mais_nova=mais_nova)
+            self.assertEqual([o["arquivo"] for o in obsoletos], [antigo], mais_nova)
+            self.assertEqual(mantidos, [])
+
+    def test_antes_de_a_compartilhada_ter_o_servico_o_versionado_fica(self):
+        # ex.: um update-versioned antes do primeiro setup que grava o compose compartilhado novo
+        self.desktop("2025.1.0")
+        self.servidor("infrastructure-desktop-compose.yml", compose(**{"viasoft-email": "Viasoft.Email-2025.1.0"}))
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication-2025-1-0"]])
+
+    def test_versao_mais_antiga_nao_usa_a_compartilhada(self):
+        # 2024.2 e 2025.1 no mesmo servidor: a compartilhada é da 2025.1; o legacy-authentication da 2024.2 só
+        # existe no arquivo antigo e continua rodando a partir dele, mesmo que a compartilhada tenha o mesmo nome
+        self.desktop("2024.2.0")
+        self.compartilhada("2024.2.0")
+        obsoletos, mantidos, _ = self.plano("2024.2.0", mais_nova="2025.1.0")
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication-2024-2-0"]])
+
+    def test_versao_mais_nova_nao_mexe_na_pasta_da_outra(self):
+        self.desktop("2024.2.0")
+        self.desktop("2025.1.0")
+        self.compartilhada("2025.1.0")
+        obsoletos, mantidos, _ = self.plano("2025.1.0", mais_nova="2025.1.0")
+        self.assertEqual([o["arquivo"] for o in obsoletos],
+                         [os.path.join(self.composes, "2025.1.0", "infrastructure-desktop-compose.yml")])
+        self.assertEqual(mantidos, [])
+
+    def test_da_compartilhada_so_conta_o_nome_do_container(self):
+        # mesmo nome de serviço em outra pasta é outro projeto compose, logo outro container
+        self.servidor("2025.1.0/wms-compose.yml", compose(conferencia="ConferenciaSaida-2025.1.0"))
+        self.servidor("2025.1.0/infrastructure-desktop-compose.yml",
+                      compose(**{"korp-legacy-authentication": "Outro-2025.1.0"}))
+        self.compartilhada("2025.1.0")
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication"]])
+
+    def test_orfao_da_compartilhada_nao_conta_como_definicao(self):
+        self.desktop("2025.1.0")
+        self.servidor("wms-compose.yml", compose(outro="Outro"))
+        self.servidor("velho-compose.yml", compose(**{"legacy": "Korp.Legacy.Authentication-2025.1.0"}))
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual(sorted(os.path.basename(m["arquivo"]) for m in mantidos),
+                         ["infrastructure-desktop-compose.yml", "velho-compose.yml"])
+
+
 class VersaoMaisNovaTest(Fixture):
     def instalados(self, texto):
         write(os.path.join(self.dir, "installed_apps.yml"), texto)
