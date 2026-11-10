@@ -137,24 +137,26 @@ def plano(compose_dir, roles_dir, versao, mais_nova=None):
 
 
 def retirar(obsoletos, compose_dir, backup_root, agora=None):
+    """Move cada obsoleto para o backup e registra no LEIAME.txt logo depois de cada um: se um mover falha no
+    meio, os que já foram têm o comando para desfazer e só eles ganham 'backup'."""
     destino = os.path.join(backup_root, time.strftime('%Y%m%d-%H%M%S', time.localtime(agora)))
-    linhas = []
+    leiame = os.path.join(destino, 'LEIAME.txt')
     for item in obsoletos:
         relativo = os.path.relpath(item['arquivo'], compose_dir)
         backup = os.path.join(destino, relativo)
         if not os.path.isdir(os.path.dirname(backup)):
             os.makedirs(os.path.dirname(backup))
+        if not os.path.exists(leiame):
+            with open(leiame, 'a') as f:
+                f.write('Composes retirados pelo setup em %s: nenhuma role os gera mais e todos os serviços deles\n'
+                        'estão definidos nos composes atuais da mesma pasta (ou, pelo nome do container, da pasta\n'
+                        'compartilhada). Nenhum container foi parado.\n\n'
+                        % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(agora)))
         shutil.move(item['arquivo'], backup)
         item['backup'] = backup
-        linhas.append('%s (serviços: %s)\n  desfazer: mv %s %s\n'
-                      % (item['arquivo'], ', '.join(item['servicos']) or '-', backup, item['arquivo']))
-    if obsoletos:
-        with open(os.path.join(destino, 'LEIAME.txt'), 'a') as f:
-            f.write('Composes retirados pelo setup em %s: nenhuma role os gera mais e todos os serviços deles\n'
-                    'estão definidos nos composes atuais da mesma pasta (ou, pelo nome do container, da pasta\n'
-                    'compartilhada). Nenhum container foi parado.\n\n'
-                    % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(agora)))
-            f.writelines(linhas)
+        with open(leiame, 'a') as f:
+            f.write('%s (serviços: %s)\n  desfazer: mv %s %s\n'
+                    % (item['arquivo'], ', '.join(item['servicos']) or '-', backup, item['arquivo']))
     return destino
 
 
@@ -187,7 +189,10 @@ def main():
         try:
             backup_dir = retirar(obsoletos, p['compose_dir'], p['backup_root'])
         except (IOError, OSError) as e:
-            module.fail_json(msg='Falha ao mover compose obsoleto para o backup: %s' % e, moved=obsoletos)
+            movidos = [o for o in obsoletos if 'backup' in o]
+            module.fail_json(msg='Falha ao mover compose obsoleto para o backup: %s (%d de %d movidos; desfazer: '
+                                 'LEIAME.txt em %s)' % (e, len(movidos), len(obsoletos), p['backup_root']),
+                             moved=movidos, not_moved=[o['arquivo'] for o in obsoletos if 'backup' not in o])
     module.exit_json(changed=bool(obsoletos), moved=obsoletos, kept=mantidos, unreadable=ilegiveis,
                      backup_dir=backup_dir)
 
