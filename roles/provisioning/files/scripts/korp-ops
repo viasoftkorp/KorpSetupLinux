@@ -1,0 +1,472 @@
+#!/usr/bin/env python3
+"""korp-ops: operações que o AWX (via Zabbix) pode executar neste servidor onpremise.
+
+O agente Zabbix só tem permissão para rodar `sudo -n /usr/local/sbin/korp-ops <operação> <args>`.
+Não existe outra forma de execução remota: somente as operações de OPERATIONS, com todos os
+argumentos validados antes de qualquer execução e sem shell em nenhum subprocesso.
+
+Toda resposta é um único objeto JSON em uma linha ({"ok": true|false, ...}), porque o Zabbix
+devolve ao AWX só a saída do comando, não o código de saída.
+
+Operações longas (job) rodam em segundo plano (systemd-run, ou setsid sem systemd) e são
+acompanhadas com `korp-ops status <job_id>`; o estado fica em /var/lib/korp-ops/jobs/<job_id>/.
+
+Gerenciado pelo KorpSetupLinux (roles/provisioning/files/scripts/korp-ops): não edite no servidor.
+"""
+import datetime
+import hashlib
+import json
+import os
+import re
+import secrets
+import shutil
+import string
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+import zipfile
+
+VERSION = "1"
+
+# Variáveis de ambiente existem só para os testes: o sudo descarta o ambiente de quem chama.
+STATE_DIR = os.environ.get("KORP_OPS_STATE_DIR", "/var/lib/korp-ops")
+SCRIPTS_DIR = os.environ.get("KORP_OPS_SCRIPTS_DIR", "/etc/korp/scripts")
+EMAIL_DATA_DIR = os.environ.get("KORP_OPS_EMAIL_DATA_DIR", "/etc/korp/dados-docker/viasoft-email/data")
+DOCKER_ROOT = os.environ.get("KORP_OPS_DOCKER_ROOT", "/var/lib/docker")
+USE_SYSTEMD = os.environ.get("KORP_OPS_NO_SYSTEMD") != "1"
+JOBS_DIR = os.path.join(STATE_DIR, "jobs")
+
+JOB_RETENTION_SECONDS = 7 * 24 * 3600
+MAX_OUTPUT_BYTES = 4 * 1024 * 1024
+STATUS_LOG_TAIL_BYTES = 8 * 1024
+B2_MAX_SIMPLE_UPLOAD = 5_000_000_000
+EMAIL_CONTAINER = "Viasoft.Email"
+
+CONTAINER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
+GUID_RE = re.compile(r"^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$")
+UPLOAD_URL_RE = re.compile(r"^https://pod-[0-9-]+\.backblaze\.com/b2api/v[0-9]+/b2_upload_file/[A-Za-z0-9]+/[A-Za-z0-9_]+$")
+UPLOAD_TOKEN_RE = re.compile(r"^[A-Za-z0-9_=+/.-]{20,512}$")
+B2_FILE_NAME_RE = re.compile(r"^temp/[A-Za-z0-9][A-Za-z0-9._-]{0,200}$")
+JOB_ID_RE = re.compile(r"^[a-z-]+-[0-9]{8}T[0-9]{6}-[0-9a-f]{6}$")
+LINES_RE = re.compile(r"^[0-9]{1,4}$")
+
+
+class OpsError(Exception):
+    """Erro esperado: vira {"ok": false, "error": ...}."""
+
+
+# ---------------------------------------------------------------- validação
+
+def container(value):
+    if not CONTAINER_RE.match(value):
+        raise OpsError(f"nome de container inválido: {value!r}")
+    return value
+
+
+def guid(value):
+    if not GUID_RE.match(value):
+        raise OpsError(f"GUID inválido: {value!r}")
+    return value
+
+
+def upload_url(value):
+    if not UPLOAD_URL_RE.match(value):
+        raise OpsError("URL de upload inválida (aceita só https://pod-*.backblaze.com/b2api/.../b2_upload_file/...)")
+    return value
+
+
+def upload_token(value):
+    if not UPLOAD_TOKEN_RE.match(value):
+        raise OpsError("token de upload inválido")
+    return value
+
+
+def b2_file_name(value):
+    if not B2_FILE_NAME_RE.match(value):
+        raise OpsError(f"nome de arquivo no Backblaze inválido: {value!r} (esperado temp/<nome>)")
+    return value
+
+
+def job_id(value):
+    if not JOB_ID_RE.match(value):
+        raise OpsError(f"job_id inválido: {value!r}")
+    return value
+
+
+def lines(value):
+    if not LINES_RE.match(value) or not 1 <= int(value) <= 2000:
+        raise OpsError("quantidade de linhas deve estar entre 1 e 2000")
+    return value
+
+
+# ---------------------------------------------------------------- utilidades
+
+def run(cmd, timeout, **kwargs):
+    """Subprocesso sem shell; devolve CompletedProcess com stdout+stderr juntos em texto."""
+    try:
+        return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout,
+                              text=True, errors="replace", check=False, **kwargs)
+    except FileNotFoundError as exc:
+        raise OpsError(f"comando não encontrado: {cmd[0]}") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise OpsError(f"tempo limite de {timeout}s excedido: {' '.join(cmd[:2])}") from exc
+
+
+def truncate(text, limit=MAX_OUTPUT_BYTES):
+    data = text.encode("utf-8", errors="replace")
+    if len(data) <= limit:
+        return text
+    return data[-limit:].decode("utf-8", errors="replace")
+
+
+def docker_inspect(name, template):
+    result = run(["docker", "inspect", "--format", template, name], timeout=30)
+    if result.returncode != 0:
+        raise OpsError(f"container não encontrado: {name}")
+    return result.stdout.strip()
+
+
+def utc_now():
+    return datetime.datetime.now(datetime.timezone.utc)
+
+
+def write_json(path, data):
+    tmp = f"{path}.tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as handle:
+        json.dump(data, handle, ensure_ascii=False)
+    os.replace(tmp, path)
+
+
+def read_json(path):
+    try:
+        with open(path) as handle:
+            return json.load(handle)
+    except FileNotFoundError:
+        return None
+
+
+def pid_alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+# ---------------------------------------------------------------- operações diretas
+
+def op_version():
+    return {"version": VERSION}
+
+
+def op_logs(name, tail="200"):
+    container(name)
+    lines(tail)
+    result = run(["docker", "logs", "--tail", tail, name], timeout=40)
+    if result.returncode != 0:
+        raise OpsError(truncate(result.stdout.strip()) or f"falha ao obter logs de {name}")
+    return {"output": truncate(result.stdout)}
+
+
+def op_services():
+    names = run(["docker", "ps", "--format", "{{.Names}}"], timeout=30)
+    if names.returncode != 0:
+        raise OpsError(names.stdout.strip() or "falha ao listar containers")
+    containers = [n for n in names.stdout.split() if n]
+    if not containers:
+        return {"services": []}
+    template = '{{.Name}};{{ index .Config.Labels "br.com.korp.commit" }};{{ index .Config.Labels "br.com.korp.version" }}'
+    result = run(["docker", "inspect", "--format", template, *containers], timeout=60)
+    if result.returncode != 0:
+        raise OpsError(result.stdout.strip() or "falha ao ler labels dos containers")
+    services = [line.lstrip("/") for line in result.stdout.splitlines() if line.strip()]
+    return {"services": services}
+
+
+def op_labels(name):
+    container(name)
+    commit, _, version = docker_inspect(
+        name, '{{ index .Config.Labels "br.com.korp.commit" }} {{ index .Config.Labels "br.com.korp.version" }}'
+    ).partition(" ")
+    return {"commit": commit, "version": version}
+
+
+def op_salt_minion_restart():
+    result = run(["systemctl", "restart", "salt-minion"], timeout=90)
+    if result.returncode != 0:
+        raise OpsError(result.stdout.strip() or "falha ao reiniciar o salt-minion")
+    active = run(["systemctl", "is-active", "salt-minion"], timeout=30).stdout.strip()
+    return {"salt_minion": active}
+
+
+# ---------------------------------------------------------------- jobs (segundo plano)
+
+def job_restart(log, name):
+    result = subprocess.run(["docker", "restart", name], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
+    if result.returncode != 0:
+        raise OpsError(f"docker restart terminou com código {result.returncode}")
+    return {}
+
+
+def job_update(log, name):
+    script = os.path.join(SCRIPTS_DIR, "containers_update.sh")
+    result = subprocess.run([script, name], stdout=log, stderr=subprocess.STDOUT, timeout=1800, check=False,
+                            cwd=SCRIPTS_DIR, env={**os.environ, "TERM": "dumb"})
+    if result.returncode != 0:
+        raise OpsError(f"containers_update.sh terminou com código {result.returncode}")
+    return op_labels(name)
+
+
+def job_elt(log, environment_id):
+    script = os.path.join(SCRIPTS_DIR, "carga_inicial_elt.sh")
+    result = subprocess.run([script, f"environmentId={environment_id}"], stdout=log, stderr=subprocess.STDOUT,
+                            timeout=7200, check=False, cwd=SCRIPTS_DIR, env={**os.environ, "TERM": "dumb"})
+    if result.returncode != 0:
+        raise OpsError(f"carga_inicial_elt.sh terminou com código {result.returncode}")
+    return {}
+
+
+def b2_upload(log, path, url, token, name):
+    size = os.path.getsize(path)
+    if size > B2_MAX_SIMPLE_UPLOAD:
+        raise OpsError("arquivo maior que 5 GB, não suportado pelo envio simples do Backblaze")
+    sha1 = hashlib.sha1()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            sha1.update(chunk)
+    print(f"Enviando {name} ({size} bytes) para o Backblaze", file=log, flush=True)
+    with open(path, "rb") as handle:
+        request = urllib.request.Request(url, data=handle, method="POST", headers={
+            "Authorization": token,
+            "X-Bz-File-Name": urllib.parse.quote(name, safe="/"),
+            "Content-Type": "b2/x-auto",
+            "Content-Length": str(size),
+            "X-Bz-Content-Sha1": sha1.hexdigest(),
+        })
+        try:
+            with urllib.request.urlopen(request, timeout=600) as response:
+                response.read()
+        except urllib.error.HTTPError as exc:
+            raise OpsError(f"Backblaze recusou o upload (HTTP {exc.code})") from exc
+        except urllib.error.URLError as exc:
+            raise OpsError(f"falha de conexão com o Backblaze: {exc.reason}") from exc
+    return {"b2_file_name": name, "size": size}
+
+
+def job_upload_logs(log, name, url, token, b2_name, work_dir):
+    container_id = docker_inspect(name, "{{.Id}}")
+    log_dir = os.path.join(DOCKER_ROOT, "containers", container_id)
+    files = sorted(f for f in os.listdir(log_dir) if f.startswith(f"{container_id}-json.log"))
+    if not files:
+        raise OpsError(f"nenhum arquivo de log encontrado para {name}")
+    zip_path = os.path.join(work_dir, "upload.zip")
+    try:
+        with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for file in files:
+                archive.write(os.path.join(log_dir, file), arcname=file)
+        return b2_upload(log, zip_path, url, token, b2_name)
+    finally:
+        if os.path.exists(zip_path):
+            os.remove(zip_path)
+
+
+def ensure_zip(log):
+    if shutil.which("zip"):
+        return
+    print("Instalando zip", file=log, flush=True)
+    subprocess.run(["apt-get", "install", "-y", "zip"], stdout=log, stderr=subprocess.STDOUT, timeout=600, check=False,
+                   env={**os.environ, "DEBIAN_FRONTEND": "noninteractive"})
+    if not shutil.which("zip"):
+        raise OpsError("zip não está instalado e não foi possível instalá-lo")
+
+
+def job_upload_email_db(log, tenant, url, token, b2_name, work_dir):
+    db_path = os.path.join(EMAIL_DATA_DIR, tenant, f"{tenant}.db")
+    if not os.path.isfile(db_path):
+        raise OpsError(f"banco do Viasoft.Email não encontrado: {db_path}")
+    ensure_zip(log)
+    alphabet = string.ascii_letters + string.digits
+    password = "".join(secrets.choice(alphabet) for _ in range(64))
+    zip_path = os.path.join(work_dir, "upload.zip")
+    try:
+        print(f"Parando {EMAIL_CONTAINER}", file=log, flush=True)
+        subprocess.run(["docker", "stop", EMAIL_CONTAINER], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
+        try:
+            zipped = subprocess.run(["zip", "-q", "-j", "-P", password, zip_path, db_path], stdout=log,
+                                    stderr=subprocess.STDOUT, timeout=1800, check=False)
+        finally:
+            print(f"Iniciando {EMAIL_CONTAINER}", file=log, flush=True)
+            subprocess.run(["docker", "start", EMAIL_CONTAINER], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
+        running = run(["docker", "inspect", "--format", "{{.State.Running}}", EMAIL_CONTAINER], timeout=30).stdout.strip() == "true"
+        if zipped.returncode != 0:
+            raise OpsError(f"falha ao compactar o banco (zip código {zipped.returncode}); {EMAIL_CONTAINER} em execução: {running}")
+        result = b2_upload(log, zip_path, url, token, b2_name)
+        return {**result, "zip_password": password, "email_running": running}
+    finally:
+        if os.path.exists(zip_path):
+            os.remove(zip_path)
+
+
+# operação -> (função, validadores dos argumentos, alvo para impedir jobs simultâneos)
+JOBS = {
+    "restart": (job_restart, (container,), 0),
+    "update": (job_update, (container,), 0),
+    "elt": (job_elt, (guid,), 0),
+    "upload-logs": (job_upload_logs, (container, upload_url, upload_token, b2_file_name), 0),
+    "upload-email-db": (job_upload_email_db, (guid, upload_url, upload_token, b2_file_name), 0),
+}
+WORK_DIR_JOBS = {"upload-logs", "upload-email-db"}
+
+
+def cleanup_old_jobs():
+    if not os.path.isdir(JOBS_DIR):
+        return
+    limit = time.time() - JOB_RETENTION_SECONDS
+    for entry in os.listdir(JOBS_DIR):
+        path = os.path.join(JOBS_DIR, entry)
+        if JOB_ID_RE.match(entry) and os.path.isdir(path) and os.path.getmtime(path) < limit and job_state(entry)["state"] != "running":
+            shutil.rmtree(path, ignore_errors=True)
+
+
+def job_state(job):
+    path = os.path.join(JOBS_DIR, job)
+    request = read_json(os.path.join(path, "request.json"))
+    if request is None:
+        raise OpsError(f"job não encontrado: {job}")
+    status = read_json(os.path.join(path, "status.json")) or {}
+    state = status.get("state", "starting")
+    if state in ("starting", "running"):
+        pid = status.get("pid")
+        started = request.get("created", 0)
+        if pid and not pid_alive(pid):
+            state = "error"
+            status["error"] = "o job foi interrompido antes de terminar"
+        elif not pid and time.time() - started > 120:
+            state = "error"
+            status["error"] = "o job não iniciou"
+        else:
+            state = "running"
+    return {**status, "state": state, "op": request["op"], "target": request.get("target")}
+
+
+def start_job(op, args):
+    function, validators, target_index = JOBS[op]
+    if len(args) != len(validators):
+        raise OpsError(f"uso: korp-ops {op} " + " ".join(f"<{v.__name__}>" for v in validators))
+    for validator, value in zip(validators, args):
+        validator(value)
+    target = args[target_index]
+    os.makedirs(JOBS_DIR, mode=0o700, exist_ok=True)
+    cleanup_old_jobs()
+    for entry in sorted(os.listdir(JOBS_DIR)):
+        request = read_json(os.path.join(JOBS_DIR, entry, "request.json")) if JOB_ID_RE.match(entry) else None
+        if request and request["op"] == op and request.get("target") == target and job_state(entry)["state"] == "running":
+            raise OpsError(f"já existe um job '{op}' em execução para {target}: {entry}")
+    job = f"{op}-{utc_now():%Y%m%dT%H%M%S}-{secrets.token_hex(3)}"
+    path = os.path.join(JOBS_DIR, job)
+    os.mkdir(path, 0o700)
+    write_json(os.path.join(path, "request.json"), {"op": op, "args": args, "target": target, "created": time.time()})
+    runner = [sys.executable, os.path.realpath(__file__), "_run", job]
+    if USE_SYSTEMD and os.path.isdir("/run/systemd/system") and shutil.which("systemd-run"):
+        launched = subprocess.run(["systemd-run", f"--unit=korp-ops-{job}", "--collect", "--quiet", *runner],
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=30, check=False)
+        if launched.returncode != 0:
+            raise OpsError(f"falha ao iniciar o job: {launched.stdout.strip()}")
+    else:
+        # Sem o SUDO_* do ambiente: o '_run' recusa execução vinda direto do sudo
+        environment = {k: v for k, v in os.environ.items() if not k.startswith("SUDO_")}
+        subprocess.Popen(runner, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True, close_fds=True, env=environment)
+    return {"job_id": job, "state": "started"}
+
+
+def run_job(job):
+    """Executado só pelo próprio korp-ops (systemd-run/setsid), nunca pelo agente Zabbix."""
+    job_id(job)
+    path = os.path.join(JOBS_DIR, job)
+    request = read_json(os.path.join(path, "request.json"))
+    if request is None:
+        raise OpsError(f"job não encontrado: {job}")
+    try:
+        os.close(os.open(os.path.join(path, "started"), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600))
+    except FileExistsError as exc:
+        raise OpsError(f"job já executado: {job}") from exc
+    status_path = os.path.join(path, "status.json")
+    write_json(status_path, {"state": "running", "pid": os.getpid(), "started": time.time()})
+    function = JOBS[request["op"]][0]
+    args = list(request["args"])
+    if request["op"] in WORK_DIR_JOBS:
+        args.append(path)
+    fd = os.open(os.path.join(path, "output.log"), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+    with os.fdopen(fd, "a", buffering=1) as log:
+        try:
+            result = function(log, *args)
+            final = {"state": "ok", "result": result}
+        except OpsError as exc:
+            final = {"state": "error", "error": str(exc)}
+        except subprocess.TimeoutExpired as exc:
+            final = {"state": "error", "error": f"tempo limite de {exc.timeout}s excedido"}
+        except Exception as exc:  # pylint: disable=broad-except
+            final = {"state": "error", "error": f"erro inesperado: {exc.__class__.__name__}: {exc}"}
+        print(f"Fim: {final['state']}", file=log, flush=True)
+    write_json(status_path, {**final, "pid": os.getpid(), "finished": time.time()})
+
+
+def op_status(job):
+    job_id(job)
+    state = job_state(job)
+    log_path = os.path.join(JOBS_DIR, job, "output.log")
+    tail = ""
+    if os.path.exists(log_path):
+        with open(log_path, "rb") as handle:
+            handle.seek(max(0, os.path.getsize(log_path) - STATUS_LOG_TAIL_BYTES))
+            tail = handle.read().decode("utf-8", errors="replace")
+    state.pop("pid", None)
+    return {"job_id": job, **state, "log": tail}
+
+
+# ---------------------------------------------------------------- entrada
+
+DIRECT = {
+    "version": (op_version, 0, 0),
+    "logs": (op_logs, 1, 2),
+    "services": (op_services, 0, 0),
+    "labels": (op_labels, 1, 1),
+    "salt-minion-restart": (op_salt_minion_restart, 0, 0),
+    "status": (op_status, 1, 1),
+}
+
+
+def main(argv):
+    if not argv:
+        raise OpsError("uso: korp-ops <operação> [args]; operações: " + ", ".join(sorted([*DIRECT, *JOBS])))
+    op, args = argv[0], argv[1:]
+    if op == "_run" and len(args) == 1:
+        if os.environ.get("SUDO_USER"):
+            raise OpsError("operação interna")
+        run_job(args[0])
+        return None
+    if op in DIRECT:
+        function, minimum, maximum = DIRECT[op]
+        if not minimum <= len(args) <= maximum:
+            raise OpsError(f"número de argumentos inválido para {op}")
+        return function(*args)
+    if op in JOBS:
+        return start_job(op, args)
+    raise OpsError(f"operação desconhecida: {op!r}")
+
+
+if __name__ == "__main__":
+    try:
+        response = main(sys.argv[1:])
+    except OpsError as error:
+        print(json.dumps({"ok": False, "op": sys.argv[1] if len(sys.argv) > 1 else None, "error": str(error)}, ensure_ascii=False))
+        sys.exit(1)
+    if response is not None:
+        print(json.dumps({"ok": True, "op": sys.argv[1], **response}, ensure_ascii=False))
