@@ -214,9 +214,11 @@ def job_restart(log, name):
     return {}
 
 
+# Os scripts do setup rodam com bash, como pelo salt (cmd.run via bash): o containers_update.sh não tem shebang, e
+# executá-lo direto falha com "Exec format error"
 def job_update(log, name):
     script = os.path.join(SCRIPTS_DIR, "containers_update.sh")
-    result = subprocess.run([script, name], stdout=log, stderr=subprocess.STDOUT, timeout=1800, check=False,
+    result = subprocess.run(["/bin/bash", script, name], stdout=log, stderr=subprocess.STDOUT, timeout=1800, check=False,
                             cwd=SCRIPTS_DIR, env={**os.environ, "TERM": "dumb"})
     if result.returncode != 0:
         raise OpsError(f"containers_update.sh terminou com código {result.returncode}")
@@ -225,7 +227,7 @@ def job_update(log, name):
 
 def job_elt(log, environment_id):
     script = os.path.join(SCRIPTS_DIR, "carga_inicial_elt.sh")
-    result = subprocess.run([script, f"environmentId={environment_id}"], stdout=log, stderr=subprocess.STDOUT,
+    result = subprocess.run(["/bin/bash", script, f"environmentId={environment_id}"], stdout=log, stderr=subprocess.STDOUT,
                             timeout=7200, check=False, cwd=SCRIPTS_DIR, env={**os.environ, "TERM": "dumb"})
     if result.returncode != 0:
         raise OpsError(f"carga_inicial_elt.sh terminou com código {result.returncode}")

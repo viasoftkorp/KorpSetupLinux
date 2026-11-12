@@ -184,6 +184,22 @@ class JobTests(KorpOpsCase):
         self.assertNotIn("pid", status)
         self.assertEqual(self.korp_ops("update", "Korp.Compras.Gateway-2025.2.0")["state"], "started")
 
+    def test_update_runs_the_script_without_shebang_with_bash(self):
+        # o containers_update.sh do setup (template) não tem shebang; pelo salt ele roda via bash
+        self.write(os.path.join(self.dir, "scripts", "containers_update.sh"),
+                   "# Para atualizar apenas um container, execute './containers_update.sh <container_name>'\n"
+                   "[[ -n \"$1\" ]] && echo \"bash: atualizando $1\"\n", executable=True)
+        status = self.wait_job(self.korp_ops("update", "Korp.Compras.Gateway-2025.2.0")["job_id"])
+        self.assertEqual(status["state"], "ok", status)
+        self.assertIn("bash: atualizando Korp.Compras.Gateway-2025.2.0", status["log"])
+
+    def test_elt_runs_the_script_without_shebang_with_bash(self):
+        self.write(os.path.join(self.dir, "scripts", "carga_inicial_elt.sh"), "[[ -n \"$1\" ]] && echo \"bash: $1\"\n",
+                   executable=True)
+        status = self.wait_job(self.korp_ops("elt", TENANT)["job_id"])
+        self.assertEqual(status["state"], "ok", status)
+        self.assertIn(f"bash: environmentId={TENANT}", status["log"])
+
     def test_failed_script_ends_the_job_with_error(self):
         self.write(os.path.join(self.dir, "scripts", "containers_update.sh"), "#!/bin/sh\necho falhou\nexit 3\n", executable=True)
         status = self.wait_job(self.korp_ops("update", "Korp.Teste")["job_id"])
