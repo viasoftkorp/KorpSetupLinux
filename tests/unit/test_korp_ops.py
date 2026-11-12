@@ -124,7 +124,9 @@ class ValidationTests(KorpOpsCase):
             (("upload-logs", "Korp.Teste", "http://pod-000-1.backblaze.com/b2api/v2/b2_upload_file/a/b", UPLOAD_TOKEN, "temp/a.zip"), "URL de upload inválida"),
             (("upload-logs", "Korp.Teste", UPLOAD_URL, "curto", "temp/a.zip"), "token de upload inválido"),
             (("upload-logs", "Korp.Teste", UPLOAD_URL, UPLOAD_TOKEN, "outro/a.zip"), "nome de arquivo no Backblaze inválido"),
-            (("upload-email-db", "nao-e-guid", UPLOAD_URL, UPLOAD_TOKEN, "temp/a.zip"), "GUID inválido"),
+            (("upload-logs", "Korp.Teste", UPLOAD_URL, UPLOAD_TOKEN, "dbs/a.zip"), "nome de arquivo no Backblaze inválido"),
+            (("upload-email-db", "nao-e-guid", UPLOAD_URL, UPLOAD_TOKEN, "dbs/a.zip"), "GUID inválido"),
+            (("upload-email-db", TENANT, UPLOAD_URL, UPLOAD_TOKEN, "temp/a.zip"), "nome de arquivo no Backblaze inválido"),
             (("status", "../x"), "job_id inválido"),
             (("labels",), "número de argumentos"),
             (("update", "a", "b"), "uso: korp-ops update"),
@@ -259,6 +261,13 @@ class UploadTests(KorpOpsCase):
         with mock.patch.dict(os.environ, self.env, clear=True), mock.patch.object(self.module.urllib.request, "urlopen", self.fake_urlopen):
             return function(self.log, *args, self.work)
 
+    def test_logs_go_to_temp_and_the_email_database_to_dbs(self):
+        # Mesmos prefixos do AWX: logs em temp/ (chave BackblazeLogs) e bancos em dbs/ (chave Backblaze)
+        for op, name in (("upload-logs", "temp/id-Korp.Teste-json.zip"), ("upload-email-db", f"dbs/{TENANT}.zip")):
+            with self.subTest(op=op):
+                validate_name = self.module.JOBS[op][1][-1]
+                self.assertEqual(validate_name(name), name)
+
     def test_upload_logs_zips_rotated_logs_and_sends_token_only_in_header(self):
         log_dir = os.path.join(self.dir, "docker", "containers", "id-Korp.Teste")
         os.makedirs(log_dir)
@@ -286,7 +295,7 @@ class UploadTests(KorpOpsCase):
         os.makedirs(db_dir)
         self.write(os.path.join(db_dir, f"{TENANT}.db"), "sqlite\n")
 
-        result = self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"temp/{TENANT}.zip")
+        result = self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"dbs/{TENANT}.zip")
 
         calls = [c for c in self.docker_calls() if c.split()[0] in ("stop", "start")]
         self.assertEqual(calls, ["stop Viasoft.Email", "start Viasoft.Email"])
@@ -303,7 +312,7 @@ class UploadTests(KorpOpsCase):
         self.write(os.path.join(self.dir, "bin", "zip"), "#!/bin/sh\nexit 12\n", executable=True)
 
         with self.assertRaises(self.module.OpsError) as error:
-            self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"temp/{TENANT}.zip")
+            self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"dbs/{TENANT}.zip")
 
         self.assertIn("zip código 12", str(error.exception))
         self.assertIn("start Viasoft.Email", self.docker_calls())

@@ -49,7 +49,8 @@ CONTAINER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 GUID_RE = re.compile(r"^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$")
 UPLOAD_URL_RE = re.compile(r"^https://pod-[0-9-]+\.backblaze\.com/b2api/v[0-9]+/b2_upload_file/[A-Za-z0-9]+/[A-Za-z0-9_]+$")
 UPLOAD_TOKEN_RE = re.compile(r"^[A-Za-z0-9_=+/.-]{20,512}$")
-B2_FILE_NAME_RE = re.compile(r"^temp/[A-Za-z0-9][A-Za-z0-9._-]{0,200}$")
+# Prefixos do AWX no Backblaze: logs em temp/ (chave BackblazeLogs) e bancos em dbs/ (chave Backblaze)
+B2_FILE_NAME_RE = r"^{prefix}/[A-Za-z0-9][A-Za-z0-9._-]{{0,200}}$"
 JOB_ID_RE = re.compile(r"^[a-z-]+-[0-9]{8}T[0-9]{6}-[0-9a-f]{6}$")
 LINES_RE = re.compile(r"^[0-9]{1,4}$")
 
@@ -84,10 +85,14 @@ def upload_token(value):
     return value
 
 
-def b2_file_name(value):
-    if not B2_FILE_NAME_RE.match(value):
-        raise OpsError(f"nome de arquivo no Backblaze inválido: {value!r} (esperado temp/<nome>)")
-    return value
+def b2_file_name(prefix):
+    pattern = re.compile(B2_FILE_NAME_RE.format(prefix=prefix))
+
+    def validate(value):
+        if not pattern.match(value):
+            raise OpsError(f"nome de arquivo no Backblaze inválido: {value!r} (esperado {prefix}/<nome>)")
+        return value
+    return validate
 
 
 def job_id(value):
@@ -320,8 +325,8 @@ JOBS = {
     "restart": (job_restart, (container,), 0),
     "update": (job_update, (container,), 0),
     "elt": (job_elt, (guid,), 0),
-    "upload-logs": (job_upload_logs, (container, upload_url, upload_token, b2_file_name), 0),
-    "upload-email-db": (job_upload_email_db, (guid, upload_url, upload_token, b2_file_name), 0),
+    "upload-logs": (job_upload_logs, (container, upload_url, upload_token, b2_file_name("temp")), 0),
+    "upload-email-db": (job_upload_email_db, (guid, upload_url, upload_token, b2_file_name("dbs")), 0),
 }
 WORK_DIR_JOBS = {"upload-logs", "upload-email-db"}
 

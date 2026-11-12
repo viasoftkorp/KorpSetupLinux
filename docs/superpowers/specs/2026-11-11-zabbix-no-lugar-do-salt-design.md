@@ -102,8 +102,8 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
    | `restart <container>` | `docker restart` | job |
    | `update <container>` | `/etc/korp/scripts/containers_update.sh <container>` | job |
    | `elt <environmentId>` | `/etc/korp/scripts/carga_inicial_elt.sh environmentId=<id>` | job |
-   | `upload-logs <container> <upload_url> <upload_token> <arquivo_b2>` | zipa os logs json do container (incl. rotacionados) e envia ao B2 | job |
-   | `upload-email-db <upload_url> <upload_token> <arquivo_b2>` | para o Viasoft.Email, zipa o `.db` com senha gerada no cliente, religa sempre, envia ao B2; a senha volta no resultado | job |
+   | `upload-logs <container> <upload_url> <upload_token> <arquivo_b2>` | zipa os logs json do container (incl. rotacionados) e envia ao B2 (`arquivo_b2` em `temp/`) | job |
+   | `upload-email-db <tenant> <upload_url> <upload_token> <arquivo_b2>` | para o Viasoft.Email, zipa o `.db` com senha gerada no cliente, religa sempre, envia ao B2 (`arquivo_b2` em `dbs/`, como no salt desde o awx #242); a senha volta no resultado | job |
    | `salt-minion-restart` | reinicia o salt-minion (resgate para o salt sob demanda) | direto |
    | `status <job_id>` | estado do job (`running`/`ok`/`error`), código, final do log e resultado | direto |
 
