@@ -2,6 +2,9 @@
 - name: Instalação de pacote de zabbix
   ansible.builtin.apt:
     deb: "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2%2Bubuntu{{ ansible_facts['distribution_version'] | default('22.04') }}_all.deb"
+    # O add-apt-repository do setup.sh reescreve todos os .list do apt, e o dpkg passa a tratar o zabbix.list como
+    # alterado: com o padrão (force-confdef,force-confold) manteria o repositório 6.2 e gravaria o novo em .dpkg-dist
+    dpkg_options: force-confnew
   register: zabbix_install_output
   ignore_errors: true
 
@@ -21,6 +24,19 @@
     name: zabbix-agent2
     state: latest
   notify: Reinicio de zabbix-agent2
+
+- name: Versão do zabbix-agent2
+  ansible.builtin.command: zabbix_agent2 -V
+  register: zabbix_agent2_version
+  changed_when: false
+
+# Sem o 7.0 o AWX não consegue executar o korp-ops (comandos remotos em agente ativo) e seguiria pelo salt sem aviso
+- name: Validação da versão do zabbix-agent2
+  ansible.builtin.fail:
+    msg: >-
+      zabbix-agent2 instalado não é o 7.0 ({{ zabbix_agent2_version.stdout_lines | first | default('') }}).
+      Verifique o repositório em /etc/apt/sources.list.d/zabbix.list.
+  when: zabbix_agent2_version.stdout is not search('[(]Zabbix[)] 7[.]0[.]')
 
 # Única execução remota permitida ao agente (ver AllowKey em zabbix-agent.conf.j2)
 - name: Instalação do korp-ops

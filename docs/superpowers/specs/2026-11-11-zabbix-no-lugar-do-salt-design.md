@@ -70,6 +70,22 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
 - Jobs: atualização de 40 s acompanhada por `status` até o fim; segundo job igual recusado;
   ELT, `upload-logs` e `upload-email-db` com upload real no `korp-onpremise-logs`.
 
+## Validado em produção (12/11/2026)
+
+- Zabbix: papel "AWX API", grupo "AWX", usuário `awx` com token e script `korp-ops` criados; `Timeout=30` no
+  zabbix-server (`ZBX_TIMEOUT=30` no compose do monitoring). Pelo token do AWX, o `korp-ops version` num agente 6.2
+  agora espera os 30 s e falha ("timeout while retrieving result"), então o `auto` leva ~30 s a mais por workflow
+  em cliente ainda não atualizado antes de seguir pelo salt.
+- qa-dev: a primeira atualização instalou o `zabbix-release` 7.0, mas o agente ficou no 6.2.9 sem erro. O
+  `zabbix.list` é conffile do `zabbix-release`, e o `add-apt-repository` que o `setup.sh` roda para o PPA do Ansible
+  reescreve todos os `.list` (o comentário `#deb` vira `# deb`); com o padrão do módulo apt (`force-confdef,force-confold`)
+  o dpkg mantém o repositório 6.2 e grava o novo em `zabbix.list.dpkg-dist`. Reproduzido no cliente do laboratório
+  (mesmo md5 da qa-dev depois do `add-apt-repository`). Correção: `dpkg_options: force-confnew` na instalação do
+  `zabbix-release` e falha do setup se o agente instalado não for o 7.0. Na qa-dev, que já tinha o `zabbix-release`
+  7.0, o `zabbix.list` foi trocado à mão pelo `.dpkg-dist`; depois disso o setup instalou o 7.0.32.
+- Com o token do AWX: `version`, `services` e `logs` na qa-dev pelo Zabbix; entrada com `;` recusada pelo servidor;
+  `select_backend.yaml` em `auto` escolhe o Zabbix na qa-dev e o salt na QA1 (agente 6.2).
+
 ## Desenho
 
 ### Cliente (KorpSetupLinux)
@@ -142,10 +158,10 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
 ## Rollout
 
 1. Merge dos PRs (nada muda em produção).
-2. Hardening de contas do Zabbix; criar papel, grupo, usuário e token do AWX; gravar `ZabbixApi` (`Address`, `Token`)
-   no Vault; criar o script `korp-ops` com a tag `zabbix_korp_ops_script` do AWX.
+2. Hardening de contas do Zabbix (pendente); criar papel, grupo, usuário e token do AWX (feito); gravar `ZabbixApi` (`Address`, `Token`)
+   no Vault (pendente); criar o script `korp-ops` com a tag `zabbix_korp_ops_script` do AWX (feito).
 3. Atualizar o agente nos clientes (setup com tag `update`, ou rollout em massa pelo salt enquanto
-   ele ainda está ligado), começando pelo qa-dev.
+   ele ainda está ligado), começando pelo qa-dev (feito em 12/11/2026).
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
