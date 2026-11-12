@@ -117,24 +117,36 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
 
 ### AWX
 
-- `roles/utils/tasks/zabbix_api/`: chamada genérica (token Bearer), resolução de host
-  (`zabbix-agent_<tenant>`), execução do `korp-ops` e acompanhamento de job (status a cada 10 s
-  até o limite da operação).
-- `onpremise_backend` (`salt` padrão, `zabbix`, `auto`): em `auto` o AWX testa `korp-ops version`
-  no host e usa o Zabbix se responder, senão o salt — permite rollout gradual.
-- `create_link.yaml` dividido em preparar upload (B2) e gerar link, para servir aos dois backends.
-- Inventário (`map_onpremise_tenants`): no Zabbix, clientes = hosts `zabbix-agent_*` do grupo dos
-  clientes com agente ativo disponível; em `auto`, une com os minions do salt se o master
-  estiver ligado.
+Implementado no repositório awx (branch `DEVO-8135-zabbix-korp-ops`):
+
+- `roles/utils/tasks/zabbix_api/`: chamada genérica (JSON-RPC com token Bearer), execução do `korp-ops` no host
+  `zabbix-agent_<tenant>` com a mesma validação do script do Zabbix, acompanhamento de job (status a cada 10 s até o
+  limite da operação) e escolha do backend.
+- `onpremise_backend` (`salt` padrão, `zabbix`, `auto`): definido nas variáveis do inventário `Korp Inventory` ou como
+  variável extra (não no grupo `onpremise`, cujas variáveis o mapeamento regrava). Em `auto` o AWX testa
+  `korp-ops version` no host e usa o Zabbix se responder, senão o salt — permite rollout gradual.
+- `create_link.yaml` dividido em preparar upload (B2) e gerar link, usados pelos dois backends.
+- Inventário (`map_onpremise_tenants`): no Zabbix, clientes = hosts `zabbix-agent_*` visíveis ao AWX com agente ativo
+  disponível; em `auto`, une com os minions do salt e segue só com o Zabbix se a salt-api estiver desligada.
+- Script `korp-ops` no Zabbix criado/atualizado pela tag `zabbix_korp_ops_script` (só roda quando pedida), com o token de
+  um Super admin informado na execução (`zabbix_admin_token`); esse token não fica no Vault.
+
+Validado no laboratório com um usuário de API restrito (papel tipo User, sem acesso à interface, API em lista de
+permissões `host.get`, `script.get`, `script.execute` e a ação "Execute scripts"; grupo de usuários sem acesso ao
+frontend, com leitura em `Korp Clients`): todos os workflows pelo Zabbix (serviços, logs no terminal, atualização com
+job de 40 s, ELT, logs e banco do Viasoft.Email por e-mail com upload real no B2 e senha conferida), modo `auto` nos
+dois sentidos e mapeamento de clientes (portal e API do AWX simulados). Qualquer outra chamada desse token é recusada ("No permissions to call").
+Atenção: esse usuário também pode executar outros scripts de ação manual liberados para todos os grupos de usuários
+(por padrão Ping e Traceroute, que rodam no servidor); os que rodam no agente precisam ficar restritos a outros grupos.
 
 ## Rollout
 
 1. Merge dos PRs (nada muda em produção).
-2. Hardening de contas do Zabbix; criar usuário/papel/token do AWX e o script `korp-ops`
-   (task do AWX); gravar `ZabbixApi` no Vault.
+2. Hardening de contas do Zabbix; criar papel, grupo, usuário e token do AWX; gravar `ZabbixApi` (`Address`, `Token`)
+   no Vault; criar o script `korp-ops` com a tag `zabbix_korp_ops_script` do AWX.
 3. Atualizar o agente nos clientes (setup com tag `update`, ou rollout em massa pelo salt enquanto
    ele ainda está ligado), começando pelo qa-dev.
-4. `onpremise_backend: auto` no AWX; acompanhar uma semana.
+4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
 
