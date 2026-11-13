@@ -98,3 +98,21 @@ services:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
     networks:
       - servicos
+
+  # Um só por servidor, o da versão do setup, como os demais deste compose. Até a DEVO-7740 havia um compose
+  # versionado por versão só com ele; num servidor que já o tem, o container troca de projeto compose, com o mesmo
+  # nome, pela migração de reconciled_compose_up.yml.
+  korp-legacy-authentication:
+    image: "{{ docker_account }}/korp.legacy.authentication:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Legacy.Authentication-{{ version_without_build }}"
+    restart: always
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+    networks:
+      - servicos
