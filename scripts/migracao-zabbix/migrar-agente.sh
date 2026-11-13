@@ -58,9 +58,15 @@ if ! grep -q '^deb .*/zabbix/7\.0/' "$ZBX_LIST"; then
 fi
 grep -q '^deb .*/zabbix/7\.0/' "$ZBX_LIST" || fail "$ZBX_LIST não aponta para o 7.0"
 
-# Atualiza só o repositório do Zabbix (outros repositórios com problema não interrompem a migração)
-"${APT[@]}" update -o Dir::Etc::sourcelist="$ZBX_LIST" -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
-"${APT[@]}" -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install zabbix-agent2
+# Atualiza só os repositórios do Zabbix, do agente e dos plugins (outros repositórios com problema não interrompem a migração)
+for list in "$ZBX_LIST" /etc/apt/sources.list.d/zabbix-agent2-plugins.list; do
+  [[ -f $list ]] || continue
+  "${APT[@]}" update -o Dir::Etc::sourcelist="$list" -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
+done
+# Plugins carregáveis instalados (mongodb, mssql, postgresql) vão junto: com plugins 6.x o agente 7.0 trava no -T que o
+# systemd roda antes de subir o serviço (visto na Leclair)
+mapfile -t plugins < <(dpkg-query -W -f='${Package} ${Status}\n' 'zabbix-agent2-plugin-*' 2>/dev/null | awk '/ installed$/{print $1}')
+"${APT[@]}" -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install zabbix-agent2 "${plugins[@]}"
 version=$(zabbix_agent2 -V | head -1)
 [[ $version =~ \(Zabbix\)\ 7\.0\. ]] || fail "zabbix-agent2 instalado não é o 7.0: $version"
 
@@ -81,18 +87,22 @@ if [[ -n $psk && -f $psk ]]; then
   chown root:zabbix "$psk"
   chmod 0440 "$psk"
 fi
-zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf > /dev/null || fail "configuração do agente inválida (backup em $backup)"
+timeout 60 zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf > /dev/null || fail "configuração do agente inválida (backup em $backup)"
 
+# Com systemd vale o estado do serviço: um -T travado também aparece como processo zabbix_agent2
 if [[ -d /run/systemd/system ]]; then
   systemctl restart zabbix-agent2
+  running() { systemctl is-active --quiet zabbix-agent2; }
 else
   service zabbix-agent2 restart
+  sleep 3
+  running() { pgrep -x zabbix_agent2 > /dev/null; }
 fi
 for _ in $(seq 30); do
-  pgrep -x zabbix_agent2 > /dev/null && break
+  running && break
   sleep 1
 done
-pgrep -x zabbix_agent2 > /dev/null || fail "zabbix-agent2 não voltou (backup em $backup)"
+running || fail "zabbix-agent2 não voltou (backup em $backup)"
 
 result=$(sudo -u zabbix sudo -n /usr/local/sbin/korp-ops version)
 [[ $result == *'"ok": true'* ]] || fail "korp-ops não respondeu pelo usuário zabbix: $result"

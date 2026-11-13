@@ -61,6 +61,21 @@ class MigrationScriptTests(unittest.TestCase):
         self.assertIn(f'chown {psk["owner"]}:{psk["group"]} "$psk"', self.script)
         self.assertIn(f'chmod {psk["mode"]} "$psk"', self.script)
 
+    def test_loadable_plugins_are_upgraded_with_the_agent(self):
+        # Leclair (13/11/2026): plugins mongodb/mssql/postgresql 6.0 instalados; o agente 7.0 sobe o plugin no -T do
+        # systemd, fica esperando o protocolo novo e o serviço não inicia. Os plugins vêm de outra lista do apt.
+        self.assertIn("/etc/apt/sources.list.d/zabbix-agent2-plugins.list", self.script)
+        self.assertIn("dpkg-query -W -f='${Package} ${Status}\\n' 'zabbix-agent2-plugin-*'", self.script)
+        install = [line for line in self.script.splitlines() if line.rstrip().endswith('install zabbix-agent2 "${plugins[@]}"')]
+        self.assertEqual(len(install), 1, "o agente e os plugins instalados no mesmo apt-get install")
+
+    def test_waits_for_the_service_to_be_active_with_systemd(self):
+        # Um -T travado também se chama zabbix_agent2: com systemd vale o estado do serviço, não o processo
+        self.assertIn("running() { systemctl is-active --quiet zabbix-agent2; }", self.script)
+
+    def test_configuration_check_cannot_hang(self):
+        self.assertIn("timeout 60 zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf", self.script)
+
     def test_sudoers_line_is_the_same_as_the_setup(self):
         line = re.search(r"^SUDOERS_LINE='([^']+)'$", self.script, re.M).group(1)
         self.assertEqual(line + "\n", self.copy_task("Permissão de sudo do zabbix somente para o korp-ops")["content"])
