@@ -39,9 +39,11 @@
       register: result
       ignore_errors: true
 
-    - name: Validação de resultado de registro
-      ansible.builtin.fail:
-        msg: "Ocorreu um problema durante registro do minion: {{ result }}"
+    # O salt-master fica desligado fora de operações pontuais (DEVO-8135): o cadastro não pode parar o setup.
+    # Sem o cadastro, o minion fica pendente até o setup rodar de novo com o salt-master ligado.
+    - name: Aviso de cadastro do salt-minion não concluído
+      ansible.builtin.debug:
+        msg: "Aviso: não foi possível cadastrar o salt-minion agora (o salt-master pode estar desligado); o setup continua. Retorno: {{ result.status | default(result.msg | default('sem resposta')) }}"
       when: (result.status | default(0)) not in [200, 201]
 
     - name: Teste de conexão com salt
@@ -77,4 +79,4 @@
           when: >-
             (first_try_result.status | default(0)) != 200 and
             (second_try_result.status | default(0)) != 200
-      when: not skip_salt_test | default(false)
+      when: not skip_salt_test | default(false) and (result.status | default(0)) in [200, 201]
