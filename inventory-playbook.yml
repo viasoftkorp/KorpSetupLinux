@@ -52,6 +52,7 @@
       external_reverse_proxy: false
       use_servergc: false
       expose_postgres: false
+      consul_basic_auth: ""
     
 
   tasks:
@@ -501,6 +502,9 @@
     # Todas as variáveis do inventário são definidas nessa tasks
     # Caso a propriedade já tenha um valor, ele não será alterado
     # caso o valor da propriedade seja nulo (nunca foi definido), irá utilizar a função `default`, inserindo o valor desejado
+    # Exceção: 'consul.basic_auth' (acesso ao Consul de fora do servidor só com o tenant, pelo nginx na 8500) é ligado
+    # por padrão, inclusive em instalações existentes, e o parâmetro 'consul_basic_auth' do setup.sh, quando passado,
+    # substitui o valor salvo: só "false" (maiúsculas ou minúsculas) desliga; outro valor religa.
 
     - name: Definição dos valores de inventário
       ansible.builtin.set_fact:
@@ -591,6 +595,11 @@
               }
             },
             'tenant_id': shrink_inventory.tenant_id | default (response_tenant_id),
+            'consul': {
+              'basic_auth': (custom_setup_info.consul_basic_auth | default('') | string | lower != 'false')
+                if (custom_setup_info.consul_basic_auth | default('') | string | length > 0)
+                else (shrink_inventory.consul.basic_auth | default(true) | bool)
+            },
             'use_servergc': shrink_inventory.use_servergc | default (custom_setup_info.use_servergc | bool),
             'watchtower_cron': shrink_inventory.watchtower_cron | default ('0 0 3 * * *')
           }, recursive=True) }}"
