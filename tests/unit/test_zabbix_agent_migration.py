@@ -54,6 +54,13 @@ class MigrationScriptTests(unittest.TestCase):
             with self.subTest(dest=task["dest"]):
                 self.assertEqual(self.installed(task["dest"]), (task["owner"], task["group"], task["mode"]))
 
+    def test_restricts_the_psk_like_the_setup(self):
+        psk = self.copy_task("Criação de arquivo de contendo a PSK de zabbix-agent2")
+        # A PSK continua a mesma; o arquivo vem do TLSPSKFile do korp-default.conf
+        self.assertIn("sed -n 's/^TLSPSKFile=//p' \"$CONF_DIR/korp-default.conf\"", self.script)
+        self.assertIn(f'chown {psk["owner"]}:{psk["group"]} "$psk"', self.script)
+        self.assertIn(f'chmod {psk["mode"]} "$psk"', self.script)
+
     def test_sudoers_line_is_the_same_as_the_setup(self):
         line = re.search(r"^SUDOERS_LINE='([^']+)'$", self.script, re.M).group(1)
         self.assertEqual(line + "\n", self.copy_task("Permissão de sudo do zabbix somente para o korp-ops")["content"])

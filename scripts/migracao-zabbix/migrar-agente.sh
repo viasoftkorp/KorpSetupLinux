@@ -2,8 +2,9 @@
 # Migra o agente Zabbix de um cliente onpremise já instalado para o 7.0 com o korp-ops (DEVO-8135), sem rodar o setup.
 #
 # Instala o mesmo que roles/provisioning/tasks/zabbix_setup.yml acrescentou: zabbix-release 7.0, zabbix-agent2 7.0,
-# /usr/local/sbin/korp-ops, /etc/sudoers.d/korp-ops e /etc/zabbix/zabbix_agent2.d/korp-ops.conf. Não usa o token do
-# cliente: mantém o korp-default.conf e a PSK como estão. Faz backup em /root/backup-zabbix-korp-ops-<data>.
+# /usr/local/sbin/korp-ops, /etc/sudoers.d/korp-ops e /etc/zabbix/zabbix_agent2.d/korp-ops.conf, e a PSK legível só por
+# root e pelo agente. Não usa o token do cliente: mantém o korp-default.conf e a PSK como estão. Faz backup em
+# /root/backup-zabbix-korp-ops-<data>.
 #
 # Uso (root): migrar-agente.sh <ref do KorpSetupLinux, de preferência o commit>
 # Pelo salt:  salt -G 'tenant:<id>' cmd.script salt://migrar-agente.sh args='<commit>' timeout=600
@@ -72,6 +73,13 @@ install -o root -g root -m 0644 "$work/korp-ops.conf" /etc/zabbix/zabbix_agent2.
 if grep -qF 'AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops' "$CONF_DIR/korp-default.conf"; then
   grep -vxFf "$CONF_DIR/korp-ops.conf" "$CONF_DIR/korp-default.conf" > "$work/korp-default.conf" || true
   cat "$work/korp-default.conf" > "$CONF_DIR/korp-default.conf"
+fi
+# Mesma permissão do setup para a PSK (era 0444 nos setups antigos)
+psk=$(sed -n 's/^TLSPSKFile=//p' "$CONF_DIR/korp-default.conf" | tail -1)
+if [[ -n $psk && -f $psk ]]; then
+  stat -c '%U:%G %a %n' "$psk" > "$backup/psk-permissao.txt"
+  chown root:zabbix "$psk"
+  chmod 0440 "$psk"
 fi
 zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf > /dev/null || fail "configuração do agente inválida (backup em $backup)"
 
