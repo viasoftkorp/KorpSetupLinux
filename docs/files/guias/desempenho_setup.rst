@@ -160,7 +160,9 @@ com uma regra genérica, sem lista de nomes (``roles/utils/library/korp_compose_
 
 #. nenhuma role do repositório gera mais esse arquivo naquela pasta; e
 #. todos os serviços dele estão definidos (mesmo nome de serviço ou de container) nos composes que as roles geram
-   na mesma pasta.
+   na mesma pasta. Na pasta da versão também vale o mesmo nome de container num compose da pasta compartilhada,
+   quando ela também é deste setup: é o serviço que saiu do compose versionado para o compartilhado (ex.: o
+   ``Korp.Legacy.Authentication``, que deixou o ``<versão>/infrastructure-desktop-compose.yml`` na DEVO-7740).
 
 - O arquivo é movido para ``/etc/korp/backups/composes-obsoletos/<data-hora>/``, com um ``LEIAME.txt`` que tem o
   comando para desfazer. Nenhum container é parado ou recriado.

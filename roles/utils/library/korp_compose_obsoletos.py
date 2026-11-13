@@ -17,6 +17,10 @@ description:
     os serviços dele estão definidos, com o mesmo nome de serviço ou de container, nos composes atuais da mesma pasta
     (os que alguma role gera). É o que sobra quando um compose é renomeado ou dividido; ele duplica serviços, e o
     qa-pr para em "Esperado um compose para ...; encontrados 2".
+  - Na pasta da versão também vale um container (mesmo container_name) dos composes atuais da pasta compartilhada,
+    quando ela também é deste setup: é o serviço que saiu do compose versionado para o compartilhado (ex.:
+    Korp.Legacy.Authentication, que saiu de <versão>/infrastructure-desktop-compose.yml). Só o nome do container:
+    o mesmo nome de serviço em outra pasta é outro projeto compose, logo outro container.
   - O obsoleto é movido para backup_root/<data-hora>/, com o mesmo caminho relativo; nada é apagado e nenhum
     container é parado ou recriado. Um arquivo que nenhuma role gera, mas com serviço que só existe nele, é mantido
     (é a única definição desse container) e vira aviso.
@@ -102,17 +106,23 @@ def pastas(compose_dir, versao, mais_nova):
 def plano(compose_dir, roles_dir, versao, mais_nova=None):
     """(obsoletos, mantidos, ilegiveis): obsoletos [{arquivo, servicos}], mantidos [{arquivo, so_nele}]."""
     obsoletos, mantidos, ilegiveis = [], [], []
+    # containers dos composes atuais da pasta compartilhada, se ela é deste setup (pastas() a devolve primeiro)
+    compartilhados = set()
     for versao, pasta in pastas(compose_dir, versao, mais_nova):
         gerados = gerados_pelo_repositorio(roles_dir, versao)
         arquivos = sorted(p for p in glob.glob(os.path.join(pasta, '*-compose.yml')) if os.path.isfile(p))
         atuais = [p for p in arquivos if os.path.basename(p) in gerados]
         orfaos = [p for p in arquivos if os.path.basename(p) not in gerados]
-        if not atuais or not orfaos:
-            continue
         definidos = set()
         for p in atuais:
             for servico, config in (servicos(p) or {}).items():
                 definidos |= identidades(servico, config)
+        if not versao:
+            compartilhados = {i for i in definidos if i[0] == 'container'}
+        else:
+            definidos |= compartilhados
+        if not atuais or not orfaos:
+            continue
         for p in orfaos:
             proprios = servicos(p)
             if proprios is None:
@@ -127,23 +137,26 @@ def plano(compose_dir, roles_dir, versao, mais_nova=None):
 
 
 def retirar(obsoletos, compose_dir, backup_root, agora=None):
+    """Move cada obsoleto para o backup e registra no LEIAME.txt logo depois de cada um: se um mover falha no
+    meio, os que já foram têm o comando para desfazer e só eles ganham 'backup'."""
     destino = os.path.join(backup_root, time.strftime('%Y%m%d-%H%M%S', time.localtime(agora)))
-    linhas = []
+    leiame = os.path.join(destino, 'LEIAME.txt')
     for item in obsoletos:
         relativo = os.path.relpath(item['arquivo'], compose_dir)
         backup = os.path.join(destino, relativo)
         if not os.path.isdir(os.path.dirname(backup)):
             os.makedirs(os.path.dirname(backup))
+        if not os.path.exists(leiame):
+            with open(leiame, 'a') as f:
+                f.write('Composes retirados pelo setup em %s: nenhuma role os gera mais e todos os serviços deles\n'
+                        'estão definidos nos composes atuais da mesma pasta (ou, pelo nome do container, da pasta\n'
+                        'compartilhada). Nenhum container foi parado.\n\n'
+                        % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(agora)))
         shutil.move(item['arquivo'], backup)
         item['backup'] = backup
-        linhas.append('%s (serviços: %s)\n  desfazer: mv %s %s\n'
-                      % (item['arquivo'], ', '.join(item['servicos']) or '-', backup, item['arquivo']))
-    if obsoletos:
-        with open(os.path.join(destino, 'LEIAME.txt'), 'a') as f:
-            f.write('Composes retirados pelo setup em %s: nenhuma role os gera mais e todos os serviços deles\n'
-                    'estão definidos nos composes atuais da mesma pasta. Nenhum container foi parado.\n\n'
-                    % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(agora)))
-            f.writelines(linhas)
+        with open(leiame, 'a') as f:
+            f.write('%s (serviços: %s)\n  desfazer: mv %s %s\n'
+                    % (item['arquivo'], ', '.join(item['servicos']) or '-', backup, item['arquivo']))
     return destino
 
 
@@ -176,7 +189,10 @@ def main():
         try:
             backup_dir = retirar(obsoletos, p['compose_dir'], p['backup_root'])
         except (IOError, OSError) as e:
-            module.fail_json(msg='Falha ao mover compose obsoleto para o backup: %s' % e, moved=obsoletos)
+            movidos = [o for o in obsoletos if 'backup' in o]
+            module.fail_json(msg='Falha ao mover compose obsoleto para o backup: %s (%d de %d movidos; desfazer: '
+                                 'LEIAME.txt em %s)' % (e, len(movidos), len(obsoletos), p['backup_root']),
+                             moved=movidos, not_moved=[o['arquivo'] for o in obsoletos if 'backup' not in o])
     module.exit_json(changed=bool(obsoletos), moved=obsoletos, kept=mantidos, unreadable=ilegiveis,
                      backup_dir=backup_dir)
 

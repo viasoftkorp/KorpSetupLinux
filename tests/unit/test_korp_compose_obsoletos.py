@@ -141,6 +141,81 @@ class PlanoTest(Fixture):
         self.assertEqual(self.plano(), ([], [], []))
 
 
+class ServicoQueFoiParaACompartilhadaTest(Fixture):
+    """Serviço que saiu do compose versionado para o compartilhado com o mesmo container_name (DEVO-7740: o
+    Korp.Legacy.Authentication saiu de <versão>/infrastructure-desktop-compose.yml). O arquivo antigo da pasta da
+    versão não tem mais serviço só dele, mas a definição nova está em outra pasta."""
+
+    def setUp(self):
+        super().setUp()
+        write(f"{self.roles}/infrastructure-desktop/templates/composes/infrastructure-desktop-compose.yml.j2")
+        write(f"{self.roles}/wms/templates/composes/2024.2.0/wms-compose.yml.j2")
+
+    def desktop(self, versao):
+        self.servidor(f"{versao}/wms-compose.yml", compose(conferencia=f"ConferenciaSaida-{versao}"))
+        self.servidor(f"{versao}/infrastructure-desktop-compose.yml", compose(**{
+            "korp-legacy-authentication-" + versao.replace(".", "-"): f"Korp.Legacy.Authentication-{versao}"}))
+
+    def compartilhada(self, versao):
+        self.servidor("infrastructure-desktop-compose.yml", compose(**{
+            "korp-legacy-authentication": f"Korp.Legacy.Authentication-{versao}",
+            "viasoft-email": f"Viasoft.Email-{versao}"}))
+
+    def test_versionado_antigo_sai_quando_a_compartilhada_e_deste_setup(self):
+        self.desktop("2025.1.0")
+        self.compartilhada("2025.1.0")
+        antigo = os.path.join(self.composes, "2025.1.0", "infrastructure-desktop-compose.yml")
+        for mais_nova in (None, "2025.1.0", "2024.2.0"):
+            obsoletos, mantidos, _ = self.plano(mais_nova=mais_nova)
+            self.assertEqual([o["arquivo"] for o in obsoletos], [antigo], mais_nova)
+            self.assertEqual(mantidos, [])
+
+    def test_antes_de_a_compartilhada_ter_o_servico_o_versionado_fica(self):
+        # ex.: um update-versioned antes do primeiro setup que grava o compose compartilhado novo
+        self.desktop("2025.1.0")
+        self.servidor("infrastructure-desktop-compose.yml", compose(**{"viasoft-email": "Viasoft.Email-2025.1.0"}))
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication-2025-1-0"]])
+
+    def test_versao_mais_antiga_nao_usa_a_compartilhada(self):
+        # 2024.2 e 2025.1 no mesmo servidor: a compartilhada é da 2025.1; o legacy-authentication da 2024.2 só
+        # existe no arquivo antigo e continua rodando a partir dele, mesmo que a compartilhada tenha o mesmo nome
+        self.desktop("2024.2.0")
+        self.compartilhada("2024.2.0")
+        obsoletos, mantidos, _ = self.plano("2024.2.0", mais_nova="2025.1.0")
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication-2024-2-0"]])
+
+    def test_versao_mais_nova_nao_mexe_na_pasta_da_outra(self):
+        self.desktop("2024.2.0")
+        self.desktop("2025.1.0")
+        self.compartilhada("2025.1.0")
+        obsoletos, mantidos, _ = self.plano("2025.1.0", mais_nova="2025.1.0")
+        self.assertEqual([o["arquivo"] for o in obsoletos],
+                         [os.path.join(self.composes, "2025.1.0", "infrastructure-desktop-compose.yml")])
+        self.assertEqual(mantidos, [])
+
+    def test_da_compartilhada_so_conta_o_nome_do_container(self):
+        # mesmo nome de serviço em outra pasta é outro projeto compose, logo outro container
+        self.servidor("2025.1.0/wms-compose.yml", compose(conferencia="ConferenciaSaida-2025.1.0"))
+        self.servidor("2025.1.0/infrastructure-desktop-compose.yml",
+                      compose(**{"korp-legacy-authentication": "Outro-2025.1.0"}))
+        self.compartilhada("2025.1.0")
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual([m["so_nele"] for m in mantidos], [["korp-legacy-authentication"]])
+
+    def test_orfao_da_compartilhada_nao_conta_como_definicao(self):
+        self.desktop("2025.1.0")
+        self.servidor("wms-compose.yml", compose(outro="Outro"))
+        self.servidor("velho-compose.yml", compose(**{"legacy": "Korp.Legacy.Authentication-2025.1.0"}))
+        obsoletos, mantidos, _ = self.plano()
+        self.assertEqual(obsoletos, [])
+        self.assertEqual(sorted(os.path.basename(m["arquivo"]) for m in mantidos),
+                         ["infrastructure-desktop-compose.yml", "velho-compose.yml"])
+
+
 class VersaoMaisNovaTest(Fixture):
     def instalados(self, texto):
         write(os.path.join(self.dir, "installed_apps.yml"), texto)
@@ -192,6 +267,45 @@ class RetirarTest(Fixture):
             self.assertTrue(os.path.exists(os.path.join(self.composes, rel)))
         self.assertEqual(self.plano(), ([], [], []))
 
+    def test_falha_no_meio_deixa_o_leiame_dos_que_ja_foram(self):
+        self.servidor("2025.1.0/wms-compose.yml", compose(c="C", d="D"))
+        self.servidor("2025.1.0/velho-a-compose.yml", compose(c="C"))
+        self.servidor("2025.1.0/velho-b-compose.yml", compose(d="D"))
+        obsoletos, _, _ = self.plano()
+        self.assertEqual(len(obsoletos), 2)
+        original = shutil.move
+        chamadas = []
+
+        def move(origem, destino):
+            chamadas.append(origem)
+            if len(chamadas) == 2:
+                raise OSError(28, "No space left on device")
+            return original(origem, destino)
+
+        mod.shutil.move = move
+        self.addCleanup(setattr, mod.shutil, "move", original)
+        with self.assertRaises(OSError):
+            mod.retirar(obsoletos, self.composes, self.backup, agora=0)
+        primeiro, segundo = obsoletos
+        self.assertIn("backup", primeiro)
+        self.assertNotIn("backup", segundo)
+        with open(os.path.join(os.path.dirname(os.path.dirname(primeiro["backup"])), "LEIAME.txt")) as f:
+            leiame = f.read()
+        self.assertIn("desfazer: mv %s %s" % (primeiro["backup"], primeiro["arquivo"]), leiame)
+        self.assertNotIn(segundo["arquivo"], leiame)
+        self.assertTrue(os.path.exists(segundo["arquivo"]))
+
+
+class TarefaTest(unittest.TestCase):
+    def test_roda_como_root(self):
+        # o play do main.yml usa become_user korp: só 'become: true' rodaria como korp, que não escreve num
+        # /etc/korp/backups do root (era o caso da QA12)
+        with open(os.path.join(REPO, "roles/utils/tasks/default/obsolete_composes.yml")) as f:
+            bloco = yaml.safe_load(f)[0]
+        tarefa = [t for t in bloco["block"] if "korp_compose_obsoletos" in t][0]
+        self.assertTrue(tarefa["become"])
+        self.assertEqual(tarefa["become_user"], "root")
+
 
 def ansible_available():
     try:
@@ -235,6 +349,33 @@ class TarefaAnsibleTest(Fixture):
         rc, out = self.run_play()
         self.assertEqual(rc, 0, out)
         self.assertIn("changed=0", out)
+
+    def test_roda_pelo_include_role_do_main_com_a_tag_do_setup(self):
+        # como o main.yml inclui (include_role com as tags do setup) e como o setup.sh roda (--tags update): o
+        # include_role não repassa as tags para as tarefas do arquivo, que precisam de 'always'. Sem isso, o
+        # include aparecia no log e o módulo nunca rodava
+        self.logistica_dividida()
+        play = os.path.join(self.dir, "main.yml")
+        with open(play, "w") as f:
+            yaml.safe_dump([{"hosts": "localhost", "connection": "local", "gather_facts": False, "tasks": [
+                {"name": "Retirada de composes obsoletos",
+                 "ansible.builtin.include_role": {"name": "utils", "tasks_from": "default/obsolete_composes.yml"},
+                 "tags": ["default-setup", "install", "install-only", "update", "update-only", "update-versioned",
+                          "install-versioned-only"]}]}], f)
+        variaveis = {"compose_dir_path": self.composes, "korp_dir_path": self.dir, "config_dir_path": self.dir,
+                     "version_without_build": "2025.1.0", "ansible_become": False}
+        env = dict(os.environ, ANSIBLE_NOCOLOR="1", ANSIBLE_LOCALHOST_WARNING="false", HOME=self.dir,
+                   ANSIBLE_INVENTORY_UNPARSED_WARNING="false", ANSIBLE_RETRY_FILES_ENABLED="false",
+                   ANSIBLE_ROLES_PATH=os.path.join(REPO, "roles"))
+        for tags, retirado in (("update", True), ("infrastructure", False)):
+            with self.subTest(tags=tags):
+                self.logistica_dividida()
+                p = subprocess.run(["ansible-playbook", "-i", "localhost,", play, "-e", json.dumps(variaveis),
+                                    "--tags", tags], cwd=self.dir, env=env, capture_output=True, text=True,
+                                   stdin=subprocess.DEVNULL, timeout=300)
+                self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+                self.assertEqual(not os.path.exists(os.path.join(self.composes, "logistica-compose.yml")), retirado,
+                                 p.stdout)
 
     def test_check_mode_nao_move(self):
         self.logistica_dividida()
