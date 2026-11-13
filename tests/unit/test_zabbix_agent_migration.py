@@ -73,6 +73,15 @@ class MigrationScriptTests(unittest.TestCase):
         # Um -T travado também se chama zabbix_agent2: com systemd vale o estado do serviço, não o processo
         self.assertIn("running() { systemctl is-active --quiet zabbix-agent2; }", self.script)
 
+    def test_unexpected_failures_say_where(self):
+        # METALURGICA_REIS (13/11/2026): o script saiu calado pelo set -e logo depois do apt; o trap mostra linha e comando
+        self.assertIn("trap 'echo \"ERRO: falhou na linha $LINENO: $BASH_COMMAND\"' ERR", self.script)
+
+    def test_version_is_read_without_cutting_the_pipe(self):
+        # Com pipefail, '| head -1' pode matar o zabbix_agent2 com SIGPIPE e encerrar o script pelo set -e
+        self.assertNotRegex(self.script, r"zabbix_agent2 -V[^\n]*\| *head")
+        self.assertIn("version=$(zabbix_agent2 -V | sed -n 1p)", self.script)
+
     def test_configuration_check_cannot_hang(self):
         self.assertIn("timeout 60 zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf", self.script)
 

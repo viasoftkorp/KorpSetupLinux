@@ -10,6 +10,7 @@
 # Pelo salt:  salt -G 'tenant:<id>' cmd.script salt://migrar-agente.sh args='<commit>' timeout=600
 set -euo pipefail
 export LC_ALL=C.UTF-8 DEBIAN_FRONTEND=noninteractive
+trap 'echo "ERRO: falhou na linha $LINENO: $BASH_COMMAND"' ERR
 
 REF=${1:-}
 [[ $REF =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "uso: migrar-agente.sh <ref do KorpSetupLinux>"; exit 2; }
@@ -26,7 +27,7 @@ fail() { echo "ERRO: $*"; exit 1; }
 # shellcheck disable=SC1091
 . /etc/os-release
 [[ $ID == ubuntu ]] || fail "só Ubuntu (encontrado: $ID $VERSION_ID)"
-echo "antes: $(zabbix_agent2 -V | head -1)"
+echo "antes: $(zabbix_agent2 -V | sed -n 1p)"
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
@@ -67,7 +68,8 @@ done
 # systemd roda antes de subir o serviço (visto na Leclair)
 mapfile -t plugins < <(dpkg-query -W -f='${Package} ${Status}\n' 'zabbix-agent2-plugin-*' 2>/dev/null | awk '/ installed$/{print $1}')
 "${APT[@]}" -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install zabbix-agent2 "${plugins[@]}"
-version=$(zabbix_agent2 -V | head -1)
+# sed lê a saída toda: com pipefail, '| head -1' pode matar o zabbix_agent2 com SIGPIPE
+version=$(zabbix_agent2 -V | sed -n 1p)
 [[ $version =~ \(Zabbix\)\ 7\.0\. ]] || fail "zabbix-agent2 instalado não é o 7.0: $version"
 
 install -o root -g root -m 0755 "$work/korp-ops" /usr/local/sbin/korp-ops
@@ -91,7 +93,7 @@ timeout 60 zabbix_agent2 -T -c /etc/zabbix/zabbix_agent2.conf > /dev/null || fai
 
 # Com systemd vale o estado do serviço: um -T travado também aparece como processo zabbix_agent2
 if [[ -d /run/systemd/system ]]; then
-  systemctl restart zabbix-agent2
+  systemctl restart zabbix-agent2 || fail "systemctl restart zabbix-agent2 falhou (backup em $backup)"
   running() { systemctl is-active --quiet zabbix-agent2; }
 else
   service zabbix-agent2 restart
@@ -104,6 +106,6 @@ for _ in $(seq 30); do
 done
 running || fail "zabbix-agent2 não voltou (backup em $backup)"
 
-result=$(sudo -u zabbix sudo -n /usr/local/sbin/korp-ops version)
+result=$(sudo -u zabbix sudo -n /usr/local/sbin/korp-ops version) || fail "korp-ops não respondeu pelo usuário zabbix: $result"
 [[ $result == *'"ok": true'* ]] || fail "korp-ops não respondeu pelo usuário zabbix: $result"
 echo "depois: $version; korp-ops: $result"
