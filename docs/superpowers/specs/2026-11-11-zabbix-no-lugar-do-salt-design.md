@@ -85,6 +85,14 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
   7.0, o `zabbix.list` foi trocado à mão pelo `.dpkg-dist`; depois disso o setup instalou o 7.0.32.
 - Com o token do AWX: `version`, `services` e `logs` na qa-dev pelo Zabbix; entrada com `;` recusada pelo servidor;
   `select_backend.yaml` em `auto` escolhe o Zabbix na qa-dev e o salt na QA1 (agente 6.2).
+- AWX de produção (projeto temporário com a branch do awx #240): serviços, logs no terminal, atualização e logs por
+  e-mail na qa-dev pelo Zabbix. A atualização falhou primeiro com "Exec format error": o `containers_update.sh` do
+  setup não tem shebang; o `korp-ops` passou a rodar os scripts com `/bin/bash`, como o salt.
+- QA1 (13/11/2026, 2025.1, agente 6.2.9 com o `zabbix.list` alterado segundo o `dpkg --verify`): a atualização só do
+  agente com esta branch instalou o 7.0.32 de primeira (`force-confnew`, o antigo ficou em `zabbix.list.dpkg-old`);
+  a configuração só ganhou as linhas `AllowKey`/`DenyKey`; `version` e `services` pela API e o fluxo de serviços pelo
+  AWX funcionaram. O container do e-mail lá é `Viasoft.Email-2025.1.0` (nome que o setup cria), e o salt e o
+  `korp-ops` paravam só `Viasoft.Email`; o `korp-ops` passou a parar e religar os dois formatos de nome.
 
 ## Desenho
 
@@ -161,7 +169,7 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
 2. Hardening de contas do Zabbix (pendente); criar papel, grupo, usuário e token do AWX (feito); gravar `ZabbixApi` (`Address`, `Token`)
    no Vault (pendente); criar o script `korp-ops` com a tag `zabbix_korp_ops_script` do AWX (feito).
 3. Atualizar o agente nos clientes (setup com tag `update`, ou rollout em massa pelo salt enquanto
-   ele ainda está ligado), começando pelo qa-dev (feito em 12/11/2026).
+   ele ainda está ligado), começando pelo qa-dev (feito em 12/11/2026) e pela QA1 (feito em 13/11/2026).
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
