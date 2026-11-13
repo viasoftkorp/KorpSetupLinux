@@ -187,7 +187,11 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
    tira as regras antigas do `korp-default.conf` (qa-dev e QA1) e corrige o `zabbix.list` 6.2 com o `zabbix-release`
    7.0 já instalado (caso da qa-dev). Em 13/11/2026: qa-dev pelo salt (8 s), QA2 (6.2.9) e QA1 por SSH (as QAs não são
    minions aceitos no salt); as três respondem ao `korp-ops` pelo Zabbix de produção, com as regras só no
-   `korp-ops.conf` e a PSK em root:zabbix 0440.
+   `korp-ops.conf` e a PSK em root:zabbix 0440. Ainda em 13/11/2026, 47 clientes pelo salt, um por vez, cada um
+   conferido pelo `korp-ops` no Zabbix de produção. Ficaram de fora: AMAZING, INOBRAM, ORIGINAL, PALMASOLA e
+   BUBAMASTER (salt-minion sem resposta), DEDINI e BrasilPack (duas máquinas no mesmo host) e os hosts sem dados no
+   Zabbix. Achados na rodada e corrigidos no script: plugins carregáveis 6.x travam o `-T` do agente 7.0 (Leclair) e
+   uma saída calada logo depois do apt (METALURGICA_REIS).
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
