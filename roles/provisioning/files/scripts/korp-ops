@@ -43,7 +43,8 @@ JOB_RETENTION_SECONDS = 7 * 24 * 3600
 MAX_OUTPUT_BYTES = 4 * 1024 * 1024
 STATUS_LOG_TAIL_BYTES = 8 * 1024
 B2_MAX_SIMPLE_UPLOAD = 5_000_000_000
-EMAIL_CONTAINER = "Viasoft.Email"
+# O setup cria o container como Viasoft.Email-<versão>; instalações antigas usam só Viasoft.Email
+EMAIL_CONTAINER_RE = re.compile(r"^Viasoft\.Email(-[0-9][0-9.]*)?$")
 
 CONTAINER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 GUID_RE = re.compile(r"^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$")
@@ -301,18 +302,24 @@ def job_upload_email_db(log, tenant, url, token, b2_name, work_dir):
     alphabet = string.ascii_letters + string.digits
     password = "".join(secrets.choice(alphabet) for _ in range(64))
     zip_path = os.path.join(work_dir, "upload.zip")
+    names = run(["docker", "ps", "-a", "--format", "{{.Names}}"], timeout=30).stdout.split()
+    containers = sorted(name for name in names if EMAIL_CONTAINER_RE.match(name))
     try:
-        print(f"Parando {EMAIL_CONTAINER}", file=log, flush=True)
-        subprocess.run(["docker", "stop", EMAIL_CONTAINER], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
+        print(f"Parando {containers or 'nenhum container do Viasoft.Email encontrado'}", file=log, flush=True)
+        if containers:
+            subprocess.run(["docker", "stop", *containers], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
         try:
             zipped = subprocess.run(["zip", "-q", "-j", "-P", password, zip_path, db_path], stdout=log,
                                     stderr=subprocess.STDOUT, timeout=1800, check=False)
         finally:
-            print(f"Iniciando {EMAIL_CONTAINER}", file=log, flush=True)
-            subprocess.run(["docker", "start", EMAIL_CONTAINER], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
-        running = run(["docker", "inspect", "--format", "{{.State.Running}}", EMAIL_CONTAINER], timeout=30).stdout.strip() == "true"
+            if containers:
+                print(f"Iniciando {containers}", file=log, flush=True)
+                subprocess.run(["docker", "start", *containers], stdout=log, stderr=subprocess.STDOUT, timeout=300, check=False)
+        running = bool(containers) and all(
+            run(["docker", "inspect", "--format", "{{.State.Running}}", name], timeout=30).stdout.strip() == "true"
+            for name in containers)
         if zipped.returncode != 0:
-            raise OpsError(f"falha ao compactar o banco (zip código {zipped.returncode}); {EMAIL_CONTAINER} em execução: {running}")
+            raise OpsError(f"falha ao compactar o banco (zip código {zipped.returncode}); Viasoft.Email em execução: {running}")
         result = b2_upload(log, zip_path, url, token, b2_name)
         return {**result, "zip_password": password, "email_running": running}
     finally:

@@ -39,7 +39,7 @@ DOCKER_FALSO = """#!/bin/sh
 echo "$*" >> "$DOCKER_CHAMADAS"
 case "$1" in
   logs) [ "$4" = nao-existe ] && { echo "Error: No such container: $4" >&2; exit 1; }; echo "log de $4 (tail $3)" ;;
-  ps) printf 'Korp.Compras.Gateway-2025.2.0\\nViasoft.Email\\n' ;;
+  ps) printf '%b' "${DOCKER_PS:-Korp.Compras.Gateway-2025.2.0\\nViasoft.Email\\n}" ;;
   inspect)
     fmt=$3; shift 3
     for n in "$@"; do
@@ -304,6 +304,33 @@ class UploadTests(KorpOpsCase):
         with zipfile.ZipFile(io.BytesIO(self.sent[0]["body"])) as archive:
             self.assertEqual(archive.read(f"{TENANT}.db", pwd=result["zip_password"].encode()), b"sqlite\n")
         self.assertEqual(os.listdir(self.work), [])
+
+    @unittest.skipUnless(shutil.which("zip"), "zip não instalado")
+    def test_upload_email_db_stops_the_versioned_container_of_the_setup(self):
+        # O setup cria o container como Viasoft.Email-<versão> (QA1: Viasoft.Email-2025.1.0)
+        self.env["DOCKER_PS"] = "Viasoft.Emailing-2025.1.0\nViasoft.Email-2025.1.0\nKorp.Compras.Gateway-2025.1.0\n"
+        db_dir = os.path.join(self.dir, "email", TENANT)
+        os.makedirs(db_dir)
+        self.write(os.path.join(db_dir, f"{TENANT}.db"), "sqlite\n")
+
+        result = self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"dbs/{TENANT}.zip")
+
+        calls = [c for c in self.docker_calls() if c.split()[0] in ("stop", "start")]
+        self.assertEqual(calls, ["stop Viasoft.Email-2025.1.0", "start Viasoft.Email-2025.1.0"])
+        self.assertTrue(result["email_running"])
+
+    @unittest.skipUnless(shutil.which("zip"), "zip não instalado")
+    def test_upload_email_db_sends_the_database_even_without_the_container(self):
+        self.env["DOCKER_PS"] = "Korp.Compras.Gateway-2025.1.0\n"
+        db_dir = os.path.join(self.dir, "email", TENANT)
+        os.makedirs(db_dir)
+        self.write(os.path.join(db_dir, f"{TENANT}.db"), "sqlite\n")
+
+        result = self.run_job(self.module.job_upload_email_db, TENANT, UPLOAD_URL, UPLOAD_TOKEN, f"dbs/{TENANT}.zip")
+
+        self.assertEqual([c for c in self.docker_calls() if c.split()[0] in ("stop", "start")], [])
+        self.assertFalse(result["email_running"], "o AWX avisa que o serviço não está em execução")
+        self.assertEqual(len(self.sent), 1)
 
     def test_upload_email_db_starts_the_container_again_when_zip_fails(self):
         db_dir = os.path.join(self.dir, "email", TENANT)
