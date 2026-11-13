@@ -177,7 +177,9 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
    `/root/backup-zabbix-korp-ops-<data>`. Validado no laboratório (13/11/2026): cliente 6.2.9 com o `zabbix.list`
    alterado passou para o 7.0.32 em 21 s e respondeu ao `korp-ops` pelo servidor; repetir no mesmo cliente funciona,
    tira as regras antigas do `korp-default.conf` (qa-dev e QA1) e corrige o `zabbix.list` 6.2 com o `zabbix-release`
-   7.0 já instalado (caso da qa-dev).
+   7.0 já instalado (caso da qa-dev). Em 13/11/2026: qa-dev pelo salt (8 s), QA2 (6.2.9) e QA1 por SSH (as QAs não são
+   minions aceitos no salt); as três respondem ao `korp-ops` pelo Zabbix de produção, com as regras só no
+   `korp-ops.conf` e a PSK em root:zabbix 0440.
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
