@@ -121,8 +121,10 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
    - Upload só para `https://pod-*.backblaze.com/b2api/...` (não serve para mandar arquivo para
      outro lugar); o token vai no cabeçalho pela biblioteca do Python, fora da lista de processos.
 3. sudoers: `zabbix ALL=(root) NOPASSWD: /usr/local/sbin/korp-ops` (validado com `visudo -c`).
-4. Agente (`korp-default.conf`): `DenyKey` para metacaracteres de shell antes de
-   `AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops *,*]` e `DenyKey=system.run[*]` no fim.
+4. Agente (`/etc/zabbix/zabbix_agent2.d/korp-ops.conf`, de `files/configs/zabbix-korp-ops.conf`): `DenyKey` para
+   metacaracteres de shell antes de `AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops *,*]` e
+   `DenyKey=system.run[*]` no fim. Fica fora do `korp-default.conf` porque os setups das releases sem este PR
+   reescrevem o `korp-default.conf`; o template dele não muda.
 5. O cadastro no salt deixa de ser fatal no setup (com o master desligado o setup não pode parar).
 
 ### Servidor Zabbix

@@ -38,7 +38,7 @@
       Verifique o repositório em /etc/apt/sources.list.d/zabbix.list.
   when: zabbix_agent2_version.stdout is not search('[(]Zabbix[)] 7[.]0[.]')
 
-# Única execução remota permitida ao agente (ver AllowKey em zabbix-agent.conf.j2)
+# Única execução remota permitida ao agente (ver files/configs/zabbix-korp-ops.conf)
 - name: Instalação do korp-ops
   ansible.builtin.copy:
     src: scripts/korp-ops
@@ -55,6 +55,16 @@
     group: root
     mode: '0440'
     validate: /usr/sbin/visudo -cf %s
+
+# Arquivo próprio: um setup de branch sem o korp-ops reescreve o korp-default.conf, mas não remove este
+- name: Regras de comandos remotos do zabbix-agent2 (somente korp-ops)
+  ansible.builtin.copy:
+    src: configs/zabbix-korp-ops.conf
+    dest: /etc/zabbix/zabbix_agent2.d/korp-ops.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reinicio de zabbix-agent2
 
 - name: Verificação de diretório de certs
   ansible.builtin.stat:

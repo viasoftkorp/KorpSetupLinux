@@ -31,6 +31,8 @@ from _loader import REPO
 KORP_OPS = os.path.join(REPO, "roles/provisioning/files/scripts/korp-ops")
 AGENT_TEMPLATE = "roles/provisioning/templates/configs/zabbix-agent.conf.j2"
 ZABBIX_SETUP = "roles/provisioning/tasks/zabbix_setup.yml"
+# Regras de comandos remotos num arquivo próprio: setups de branches sem o korp-ops reescrevem o korp-default.conf
+AGENT_RULES = "roles/provisioning/files/configs/zabbix-korp-ops.conf"
 TENANT = "11111111-2222-3333-4444-555555555555"
 UPLOAD_URL = "https://pod-000-1005-03.backblaze.com/b2api/v2/b2_upload_file/4a48fe8875c6214145260818/c001_v0001005_t0014"
 UPLOAD_TOKEN = "4_0018228b62563a9000000001c_01b2c3d4_d20261111_m203000_c001_v0001005_t0014_tUPL"
@@ -353,9 +355,16 @@ class AgentConfigTests(unittest.TestCase):
         text = env.get_template(AGENT_TEMPLATE).render(services_secrets=secrets, tenant_id=TENANT, korp_dir_path="/etc/korp")
         return [line for line in text.splitlines() if line and not line.startswith("#")]
 
+    def rules_file(self):
+        with open(os.path.join(REPO, AGENT_RULES)) as handle:
+            return [line.rstrip("\n") for line in handle if line.strip() and not line.startswith("#")]
+
+    def test_korp_default_conf_has_no_remote_command_rules(self):
+        self.assertEqual([line for line in self.render() if line.startswith(("AllowKey=", "DenyKey="))], [])
+
     def test_only_korp_ops_is_allowed_and_shell_metacharacters_are_denied_first(self):
-        lines = self.render()
-        rules = [line for line in lines if line.startswith(("AllowKey=", "DenyKey="))]
+        rules = self.rules_file()
+        self.assertTrue(all(line.startswith(("AllowKey=", "DenyKey=")) for line in rules), rules)
         allow = rules.index("AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops *,*]")
         self.assertEqual([r for r in rules if r.startswith("AllowKey=")], [rules[allow]])
         self.assertEqual(rules[-1], "DenyKey=system.run[*]")
@@ -386,6 +395,13 @@ class ZabbixSetupTasksTests(unittest.TestCase):
         self.assertEqual(sudoers["validate"], "/usr/sbin/visudo -cf %s")
         script = self.tasks["Instalação do korp-ops"]["ansible.builtin.copy"]
         self.assertEqual((script["dest"], script["owner"], script["mode"]), ("/usr/local/sbin/korp-ops", "root", "0755"))
+
+    def test_remote_command_rules_are_installed_in_their_own_file(self):
+        task = self.tasks["Regras de comandos remotos do zabbix-agent2 (somente korp-ops)"]
+        copy = task["ansible.builtin.copy"]
+        self.assertEqual((copy["src"], copy["dest"]), ("configs/zabbix-korp-ops.conf", "/etc/zabbix/zabbix_agent2.d/korp-ops.conf"))
+        self.assertEqual((copy["owner"], copy["group"], copy["mode"]), ("root", "root", "0644"))
+        self.assertEqual(task["notify"], "Reinicio de zabbix-agent2")
 
     def test_psk_is_readable_only_by_root_and_the_agent(self):
         psk = self.tasks["Criação de arquivo de contendo a PSK de zabbix-agent2"]["ansible.builtin.copy"]

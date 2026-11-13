@@ -5,13 +5,3 @@ HostMetadata={{ tenant_id }}
 TLSConnect=psk
 TLSPSKIdentity={{ services_secrets.Others.Zabbix.PSK.Identity }}
 TLSPSKFile={{ korp_dir_path }}/certs/zabbix.psk
-
-# Comandos remotos: o AWX só pode executar o korp-ops (operações fechadas, argumentos validados).
-# Os DenyKey de metacaracteres são uma camada extra; a proteção principal é a validação da entrada
-# no script do servidor Zabbix, as contas do Zabbix e o sudo restrito ao korp-ops.
-# A ordem importa: a primeira regra que casar com a chave decide.
-{% for character in [';', '|', '&', '`', '$', '>', '<', '(', ')', '{', '}', '\\', "'", '"'] %}
-DenyKey=system.run[*{{ character }}*,*]
-{% endfor %}
-AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops *,*]
-DenyKey=system.run[*]
