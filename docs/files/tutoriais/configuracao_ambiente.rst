@@ -32,7 +32,8 @@ Configurando o envio de e-mail de falha
 
 Essa configuração serve para avisar o usuário caso haja um problema com o envio do seu email. Para configurar:
 
-#. Acessar o endereço ``http://<dns_frontend>:8500/ui/dc1/kv/Viasoft.Email/edit``
+#. Acessar o endereço ``http://<dns_frontend>:8500/ui/dc1/kv/Viasoft.Email/edit``, informando o tenant do servidor
+   como usuário e senha (:doc:`../guias/acesso_consul`)
 #. Preencher as seguintes propriedades conforme o seu provedor de email
 
     :FromAddress: endereço de remetente do email de falha

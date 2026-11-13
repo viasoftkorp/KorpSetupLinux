@@ -76,12 +76,62 @@
   loop:
     "{{ lookup('fileglob', 'templates/composes/*', wantlist=True) | select('search', '.yml.j2') }}"
 
+# A porta 8500 do servidor muda de dono quando o acesso ao Consul com autenticação é ligado (do consul-server para o
+# nginx) ou desligado (volta). O compose recria os dois, mas pode subir o novo dono antes de parar o antigo, com a
+# porta ainda ocupada: o dono antigo é parado antes (o compose o recria em seguida, sem a 8500).
+- name: Verificação do dono atual da porta 8500
+  community.docker.docker_container_info:
+    name: "{{ item }}"
+  loop:
+    - nginx
+    - consul-server
+  register: korp_consul_port_owners
+
+- name: Parada do dono antigo da porta 8500
+  ansible.builtin.command:
+    argv:
+      - docker
+      - stop
+      - "{{ item.item }}"
+  loop: "{{ korp_consul_port_owners.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item.exists
+    - item.container.State.Running | default(false)
+    - item.item != ('nginx' if korp_consul_basic_auth | bool else 'consul-server')
+    - >-
+      item.container.HostConfig.PortBindings | default({}, true) | dict2items | map(attribute='value')
+      | select | flatten | selectattr('HostPort', 'equalto', '8500') | list | length > 0
+
 - name: Criação e inicialização de infrastructure-compose
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir_path }}/"
     env_files: ["{{ docker_env_file_path }}"]
     files:
       - infrastructure-compose.yml
+
+# Daqui em diante o setup fala com o Consul pela porta local, que o compose acabou de garantir
+- name: Definição da porta local do Consul para o setup
+  ansible.builtin.set_fact:
+    korp_consul_port: "{{ korp_consul_local_port }}"
+
+- name: Espera pelo Consul na porta local
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ korp_consul_local_port }}/v1/status/leader"
+    return_content: true
+  register: korp_consul_leader
+  until: korp_consul_leader.status | default(0) == 200 and korp_consul_leader.content | default('') | trim | length > 2
+  retries: 30
+  delay: 2
+
+- name: Reload de nginx com o acesso externo ao Consul
+  community.docker.docker_container_exec:
+    container: nginx
+    command: bash -c "/usr/sbin/nginx -s reload"
+  when: >-
+    nginx_consul_htpasswd_status is changed or nginx_consul_conf_status is changed
+    or nginx_consul_removal_status is changed
 
 # Configuração de certificado vem depois de configuração do compose pois é necessário nginx para configurá-lo
 - name: Configuração de certificado automatizado
