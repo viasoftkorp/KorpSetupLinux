@@ -89,6 +89,13 @@
     content: "{{ services_secrets.Others.Zabbix.PSK.Key }}"
   notify: Reinicio de zabbix-agent2
 
+# Segunda máquina do mesmo cliente (mesmo tenant): 'zabbix_hostname_suffix' no inventory.yml dela dá um host próprio no
+# Zabbix (zabbix-agent_<tenant>_<sufixo>). Sem isso as duas usam o mesmo host e os comandos do AWX podem ir para qualquer uma
+- name: Validação de 'zabbix_hostname_suffix'
+  ansible.builtin.fail:
+    msg: "zabbix_hostname_suffix inválido: '{{ zabbix_hostname_suffix }}' (use letras, números, '.', '_' ou '-', até 60)"
+  when: (zabbix_hostname_suffix | default('')) != '' and zabbix_hostname_suffix is not match('^[A-Za-z0-9._-]{1,60}$')
+
 - name: Configuração de zabbix-agent2
   ansible.builtin.template:
     dest: "/etc/zabbix/zabbix_agent2.d/korp-default.conf"

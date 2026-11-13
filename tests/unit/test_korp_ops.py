@@ -14,6 +14,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -349,11 +350,20 @@ class UploadTests(KorpOpsCase):
 
 
 class AgentConfigTests(unittest.TestCase):
-    def render(self):
+    def render(self, **extra):
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(REPO), undefined=jinja2.StrictUndefined, trim_blocks=True)
         secrets = {"Others": {"Zabbix": {"ServerAdress": "zabbix.exemplo:10051", "PSK": {"Identity": "id", "Key": "k"}}}}
-        text = env.get_template(AGENT_TEMPLATE).render(services_secrets=secrets, tenant_id=TENANT, korp_dir_path="/etc/korp")
+        text = env.get_template(AGENT_TEMPLATE).render(services_secrets=secrets, tenant_id=TENANT, korp_dir_path="/etc/korp",
+                                                       **extra)
         return [line for line in text.splitlines() if line and not line.startswith("#")]
+
+    def test_other_machine_of_the_same_tenant_gets_its_own_hostname(self):
+        # O AWX procura zabbix-agent_<tenant>: uma segunda máquina do mesmo cliente (ex.: DEDINI srvl072) não pode usar
+        # o mesmo nome, ou os comandos do Zabbix podem ir para qualquer uma das duas
+        lines = self.render(zabbix_hostname_suffix="srvl072")
+        self.assertIn(f"Hostname=zabbix-agent_{TENANT}_srvl072", lines)
+        self.assertIn(f"HostMetadata={TENANT}", lines)
+        self.assertIn(f"Hostname=zabbix-agent_{TENANT}", self.render(zabbix_hostname_suffix=""))
 
     def rules_file(self):
         with open(os.path.join(REPO, AGENT_RULES)) as handle:
@@ -402,6 +412,16 @@ class ZabbixSetupTasksTests(unittest.TestCase):
         self.assertEqual((copy["src"], copy["dest"]), ("configs/zabbix-korp-ops.conf", "/etc/zabbix/zabbix_agent2.d/korp-ops.conf"))
         self.assertEqual((copy["owner"], copy["group"], copy["mode"]), ("root", "root", "0644"))
         self.assertEqual(task["notify"], "Reinicio de zabbix-agent2")
+
+    def test_hostname_suffix_is_validated_before_the_agent_configuration(self):
+        names = list(self.tasks)
+        check = self.tasks["Validação de 'zabbix_hostname_suffix'"]
+        self.assertLess(names.index("Validação de 'zabbix_hostname_suffix'"), names.index("Configuração de zabbix-agent2"))
+        pattern = re.search(r"is not match[(]'([^']+)'[)]", check["when"]).group(1)
+        for valid in ("srvl072", "VM004-AplicacaoLinux02", "qa4.linux_2"):
+            self.assertRegex(valid, pattern)
+        for invalid in ("a b", "x;y", "", "a" * 61):
+            self.assertNotRegex(invalid, pattern)
 
     def test_psk_is_readable_only_by_root_and_the_agent(self):
         psk = self.tasks["Criação de arquivo de contendo a PSK de zabbix-agent2"]["ansible.builtin.copy"]

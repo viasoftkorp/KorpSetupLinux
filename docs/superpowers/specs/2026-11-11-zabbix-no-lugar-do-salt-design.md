@@ -125,7 +125,15 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
    metacaracteres de shell antes de `AllowKey=system.run[sudo -n /usr/local/sbin/korp-ops *,*]` e
    `DenyKey=system.run[*]` no fim. Fica fora do `korp-default.conf` porque os setups das releases sem este PR
    reescrevem o `korp-default.conf`; o template dele não muda.
-5. O cadastro no salt deixa de ser fatal no setup (com o master desligado o setup não pode parar).
+5. Duas máquinas do mesmo cliente (mesmo tenant) não podem usar o mesmo host do Zabbix: os comandos remotos de agente
+   ativo vão para a que pedir as checagens primeiro. A máquina que o AWX opera (a do salt) fica com
+   `zabbix-agent_<tenant>`; a outra ganha `zabbix_hostname_suffix: <hostname da máquina>` no inventory.yml dela
+   (`sudo ansible-vault edit /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key`, em
+   `all.children.nodes.hosts.localhost`) e vira `zabbix-agent_<tenant>_<sufixo>`, que o autorregistro cria como host
+   próprio. Sem setup, basta trocar a linha `Hostname=` do `korp-default.conf` e reiniciar o agente. Em 13/11/2026:
+   DEDINI (srvl071/srvl072), BrasilPack (korpservices/VM004 do Azure) e QA_12 (qa12-linux/qa4-linux), achados pelo
+   `system.hostname` alternando no mesmo host.
+6. O cadastro no salt deixa de ser fatal no setup (com o master desligado o setup não pode parar).
 
 ### Servidor Zabbix
 
