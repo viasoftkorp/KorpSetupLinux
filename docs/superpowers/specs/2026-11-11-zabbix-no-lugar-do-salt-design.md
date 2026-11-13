@@ -170,8 +170,14 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
 1. Merge dos PRs (nada muda em produção).
 2. Hardening de contas do Zabbix (pendente); criar papel, grupo, usuário e token do AWX (feito); gravar `ZabbixApi` (`Address`, `Token`)
    no Vault (pendente); criar o script `korp-ops` com a tag `zabbix_korp_ops_script` do AWX (feito).
-3. Atualizar o agente nos clientes (setup com tag `update`, ou rollout em massa pelo salt enquanto
-   ele ainda está ligado), começando pelo qa-dev (feito em 12/11/2026) e pela QA1 (feito em 13/11/2026).
+3. Atualizar o agente nos clientes, começando pelo qa-dev (feito em 12/11/2026) e pela QA1 (feito em 13/11/2026).
+   Em massa, pelo salt enquanto ele ainda está ligado, com `scripts/migracao-zabbix/migrar-agente.sh <commit>`
+   (`salt -G 'tenant:<id>' cmd.script salt://migrar-agente.sh args='<commit>'`), em lotes: não precisa do token do
+   cliente, mantém `korp-default.conf` e PSK, instala o mesmo que o `zabbix_setup.yml` acrescentou e faz backup em
+   `/root/backup-zabbix-korp-ops-<data>`. Validado no laboratório (13/11/2026): cliente 6.2.9 com o `zabbix.list`
+   alterado passou para o 7.0.32 em 21 s e respondeu ao `korp-ops` pelo servidor; repetir no mesmo cliente funciona,
+   tira as regras antigas do `korp-default.conf` (qa-dev e QA1) e corrige o `zabbix.list` 6.2 com o `zabbix-release`
+   7.0 já instalado (caso da qa-dev).
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
