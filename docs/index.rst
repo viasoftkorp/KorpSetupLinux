@@ -29,6 +29,7 @@ Documentação
    files/guias/disponibilizacao_externa
    files/guias/atualizacao_servicos_web
    files/guias/objectstorage
+   files/guias/acesso_consul
    files/guias/desempenho_setup
    files/guias/desempenho_setup_resultados
 

@@ -10,6 +10,15 @@
       - FAT02_W
       - FAT01
     korp_prefetch_status: "{{ korp_dir_path }}/ansible/prefetch/status.json"
+    # Acesso ao Consul de fora do servidor (porta 8500) só pelo nginx, com o tenant como usuário e senha; sem tenant
+    # não há como autenticar, e a 8500 fica como antes. O setup usa a porta local, só em 127.0.0.1 e sem
+    # autenticação, que o consul-server publica sempre (korp_consul_port, definida no default_setup.yml).
+    korp_consul_basic_auth: "{{ (consul.basic_auth | default(true) | bool) and (tenant_id | default('') | string | length > 0) }}"
+    korp_consul_local_port: 18500
+  module_defaults:
+    community.general.consul_kv:
+      host: 127.0.0.1
+      port: "{{ korp_consul_port | default(8500) }}"
   become_user: "{{ linux_korp.user }}"
   become: true
 
