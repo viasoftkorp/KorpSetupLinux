@@ -1,14 +1,14 @@
 {
   "summary": {
-    "total_roles_scanned": 75,
+    "total_roles_scanned": 77,
     "exclusive_services": {
-      "total_found": 157,
-      "valid": 157,
+      "total_found": 159,
+      "valid": 159,
       "invalid": 0
     },
     "non_exclusive_services": {
-      "total_found": 199,
-      "valid": 199,
+      "total_found": 201,
+      "valid": 201,
       "invalid": 0
     }
   },
@@ -287,6 +287,15 @@
           }
         },
         {
+          "role": "FATPDV_W",
+          "file_path": "roles/FATPDV_W/templates/composes/FATPDV_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-faturamento-pdv-gateway",
+            "image": "{{ docker_account }}/korp.faturamento.pdv.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Faturamento.Pdv.Gateway-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "FIN63_W",
           "file_path": "roles/FIN63_W/templates/composes/FIN63_W-compose.yml.j2",
           "details": {
@@ -428,6 +437,15 @@
             "service_name": "viasoft-vendas-mobile-sincronismo",
             "image": "{{ docker_account }}/viasoft.vendas.mobile.sincronismo:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Vendas.Mobile.Sincronismo-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "pdv",
+          "file_path": "roles/pdv/templates/composes/pdv-compose.yml.j2",
+          "details": {
+            "service_name": "korp-faturamento-pdv-core",
+            "image": "{{ docker_account }}/korp.faturamento.pdv.core:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Faturamento.Pdv.Core-{{ version_without_build }}"
           }
         },
         {
@@ -1822,6 +1840,26 @@
             "service_name": "FAT12-2025-2-0",
             "image": "{{ docker_account }}/viasoft.billing.cte-frontend:2025.2.0.x{{ docker_image_suffix }}",
             "container_name": "FAT12-2025.2.0"
+          }
+        },
+        {
+          "role": "FATPDV_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/FATPDV_W/templates/composes/2025.2.0/FATPDV_W-compose.yml.j2",
+          "details": {
+            "service_name": "FATPDV_W-2025-2-0",
+            "image": "{{ docker_account }}/korp.faturamento.pdv-frontend:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "FATPDV_W-2025.2.0"
+          }
+        },
+        {
+          "role": "FATPDV_W",
+          "version_folder": "2025.2.0",
+          "file_path": "roles/FATPDV_W/templates/composes/2025.2.0/FATPDV_W-compose.yml.j2",
+          "details": {
+            "service_name": "FAT.PDV-2025-2-0",
+            "image": "{{ docker_account }}/fat.pdv-parcel:2025.2.0.x{{ docker_image_suffix }}",
+            "container_name": "FAT.PDV-2025.2.0"
           }
         },
         {
