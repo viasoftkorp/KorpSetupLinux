@@ -1,9 +1,9 @@
 {
   "summary": {
-    "total_roles_scanned": 72,
+    "total_roles_scanned": 74,
     "exclusive_services": {
-      "total_found": 157,
-      "valid": 157,
+      "total_found": 159,
+      "valid": 159,
       "invalid": 0
     },
     "non_exclusive_services": {
@@ -278,6 +278,15 @@
           }
         },
         {
+          "role": "FATPDV_W",
+          "file_path": "roles/FATPDV_W/templates/composes/FATPDV_W-compose.yml.j2",
+          "details": {
+            "service_name": "korp-faturamento-pdv-gateway",
+            "image": "{{ docker_account }}/korp.faturamento.pdv.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Faturamento.Pdv.Gateway-{{ version_without_build }}"
+          }
+        },
+        {
           "role": "FIN63_W",
           "file_path": "roles/FIN63_W/templates/composes/FIN63_W-compose.yml.j2",
           "details": {
@@ -419,6 +428,15 @@
             "service_name": "viasoft-vendas-mobile-sincronismo",
             "image": "{{ docker_account }}/viasoft.vendas.mobile.sincronismo:{{ version_without_build }}.x{{ docker_image_suffix }}",
             "container_name": "Viasoft.Vendas.Mobile.Sincronismo-{{ version_without_build }}"
+          }
+        },
+        {
+          "role": "pdv",
+          "file_path": "roles/pdv/templates/composes/pdv-compose.yml.j2",
+          "details": {
+            "service_name": "korp-faturamento-pdv-core",
+            "image": "{{ docker_account }}/korp.faturamento.pdv.core:{{ version_without_build }}.x{{ docker_image_suffix }}",
+            "container_name": "Korp.Faturamento.Pdv.Core-{{ version_without_build }}"
           }
         },
         {
