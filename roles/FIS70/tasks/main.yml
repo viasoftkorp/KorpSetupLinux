@@ -12,3 +12,10 @@
   with_dict: "{{ services }}"
   loop_control:
     extended: true
+
+# A rota do portal para a tela (/fiscal/apuracao-cbs/) fica no korp.locations e no korp.ssl-locations, que a role
+# infrastructure grava sem recarregar o nginx (fora do certbot). Com a configuração inválida, o reload mantém a anterior.
+- name: Reload de nginx para a rota da tela de FIS70
+  community.docker.docker_container_exec:
+    container: nginx
+    command: bash -c "/usr/sbin/nginx -s reload"
