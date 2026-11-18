@@ -15,6 +15,19 @@ location ~ /reporting/stimulsoft/* {
     proxy_pass http://fabio_upstream;
 }
 
+# Apuração de CBS (FIS70): a tela que a casca abre num iframe na mesma origem do portal. O nome é resolvido na
+# requisição (DNS do Docker), então o nginx sobe sem o FIS70 instalado; nesse caso este caminho responde 502.
+location ^~ /fiscal/apuracao-cbs/ {
+    resolver 127.0.0.11 valid=30s ipv6=off;
+    set $korp_apuracaocbs_parcel http://korp-fiscal-apuracaocbs-parcel:80;
+
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header Host $host;
+
+    proxy_pass $korp_apuracaocbs_parcel;
+}
+
 location / {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $remote_addr;
