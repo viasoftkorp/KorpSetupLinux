@@ -1,0 +1,7 @@
+services:
+  Korp.Fiscal.ApuracaoCbs.Core:
+    db:
+      name: Korp_Fiscal_ApuracaoCbs_Core
+      type: mssql
+
+  Korp.Fiscal.ApuracaoCbs.Gateway:
