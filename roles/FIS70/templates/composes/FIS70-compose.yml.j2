@@ -47,3 +47,19 @@ services:
       - servicos
     volumes:
       - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  # Tela da Apuração de CBS. A casca (FIS70-<versão>) a abre num iframe na mesma origem do portal, em
+  # <portal>/fiscal/apuracao-cbs/; o nginx do portal chega aqui pelo alias abaixo (korp.locations e korp.ssl-locations
+  # da role infrastructure). Fica no compose exclusivo, na versão do Gateway com quem fala. Provisório: sai quando a
+  # tela virar parcel do single-spa.
+  korp-fiscal-apuracaocbs-parcel:
+    image: "{{ docker_account }}/korp.fiscal.apuracaocbs-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Fiscal.ApuracaoCbs.Parcel-{{ version_without_build }}"
+    restart: unless-stopped
+    environment:
+      # Origens do gateway que entram no connect-src da CSP da tela; sem ela o container não sobe (csp.envsh da imagem)
+      - GATEWAY_ORIGIN={{ [frontend.endpoints.gateway_url, frontend.endpoints.api_gateway_url | default('')] | select | join(' ') }}
+    networks:
+      servicos:
+        aliases:
+          - korp-fiscal-apuracaocbs-parcel
