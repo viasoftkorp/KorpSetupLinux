@@ -274,7 +274,6 @@
     "release/2024.2.0.x": "1.0.x",
     "release/2025.1.0.x": "1.0.x"
   },
-  "viasoft.workflow.elsa.replica1": {},
   "viasoft.workflow.orchestrator": {
     "release/2023.4.0.x": "1.6.x",
     "release/2024.1.0.x": "1.6.x",

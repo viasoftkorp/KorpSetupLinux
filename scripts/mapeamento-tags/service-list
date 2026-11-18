@@ -67,7 +67,6 @@ viasoft.vault.manager
 viasoft.videoplayer
 viasoft.welcomepage.dashboard
 viasoft.workflow.elsa
-viasoft.workflow.elsa.replica1
 viasoft.workflow.orchestrator
 viasoft.workflow.orchestrator-frontend
 viasoft.authentication
