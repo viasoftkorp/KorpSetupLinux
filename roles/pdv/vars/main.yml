@@ -1,0 +1,6 @@
+services:
+  Korp.Faturamento.Pdv.Core:
+    db:
+      type: mssql
+    # Dados fixos da Korp como software house responsável; atualizados nas instalações existentes
+    custom_kv_overwrite: ["Emissao.ResponsavelTecnico"]
