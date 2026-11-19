@@ -1,5 +1,5 @@
 ServerActive={{ services_secrets.Others.Zabbix.ServerAdress }}
-Hostname=zabbix-agent_{{ tenant_id }}
+Hostname=zabbix-agent_{{ tenant_id }}{{ ('_' ~ zabbix_hostname_suffix) if zabbix_hostname_suffix | default('') else '' }}
 HostMetadata={{ tenant_id }}
 
 TLSConnect=psk
