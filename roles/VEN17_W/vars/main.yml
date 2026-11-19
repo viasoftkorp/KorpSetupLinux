@@ -1,0 +1,4 @@
+services:
+  Korp.Vendas.Comissao.Core:
+
+  Korp.Vendas.Comissao.Gateway:
