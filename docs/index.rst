@@ -28,6 +28,7 @@ Documentação
    files/guias/guia_portainer
    files/guias/disponibilizacao_externa
    files/guias/atualizacoes_korp
+   files/guias/acesso_consul
    files/guias/desempenho_setup
    files/guias/desempenho_setup_resultados
 

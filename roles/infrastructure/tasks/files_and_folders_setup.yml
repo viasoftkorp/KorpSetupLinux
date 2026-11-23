@@ -153,6 +153,41 @@
             )
           }}
 
+# Acesso ao Consul de fora do servidor (serviços Delphi, UI): a porta 8500 passa a ser do nginx, que exige o tenant
+# como usuário e senha. O consul-server deixa de publicar suas portas para fora (infrastructure-compose.yml.j2).
+- name: Configuração do acesso externo ao Consul no nginx
+  block:
+    - name: Usuário do acesso externo ao Consul
+      community.general.htpasswd:
+        path: "{{ config_dir_path }}/nginx/conf.d/consul.htpasswd"
+        name: "{{ tenant_id }}"
+        password: "{{ tenant_id }}"
+        crypt_scheme: apr_md5_crypt
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0644'
+      register: nginx_consul_htpasswd_status
+
+    - name: Configuração e transferência de 'consul.conf' do nginx
+      ansible.builtin.template:
+        dest: "{{ config_dir_path }}/nginx/conf.d/consul.conf"
+        src: "configs/nginx/conf.d/consul.conf.j2"
+        owner: "{{ linux_korp.user }}"
+        group: root
+        mode: '0644'
+      register: nginx_consul_conf_status
+  when: korp_consul_basic_auth | bool
+
+- name: Remoção do acesso externo ao Consul no nginx
+  ansible.builtin.file:
+    path: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+    state: absent
+  loop:
+    - consul.conf
+    - consul.htpasswd
+  register: nginx_consul_removal_status
+  when: not korp_consul_basic_auth | bool
+
 # como estamos usando 'template' para configurar os arquivos de compose, o diretório "{{ korp_dir_path }}/composes/"" deve existir.
 # essas duas tasks asseguram que o diretório será criado se necessário.
 - name: Verificação de diretório de composes
