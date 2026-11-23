@@ -1,0 +1,36 @@
+# Acesso ao Consul de fora do servidor (serviços Delphi, UI): a porta 8500 do servidor é do nginx, que só repassa ao
+# Consul com o tenant do servidor como usuário e senha (Basic). Os containers usam consul-server:8500 pela rede docker
+# e não passam por aqui; o setup e o suporte, no próprio servidor, usam a porta local do consul-server (127.0.0.1).
+
+# Só as recusas vão para o log (docker logs nginx): os serviços consultam o Consul o tempo todo
+map $status $korp_consul_recusado {
+    401     1;
+    default 0;
+}
+
+server {
+    listen 8500;
+
+    access_log /var/log/nginx/access.log combined if=$korp_consul_recusado;
+
+    location / {
+        auth_basic "Consul";
+        auth_basic_user_file /etc/nginx/conf.d/consul.htpasswd;
+
+        # Resolvido a cada requisição (DNS do docker): o nginx sobe mesmo com o consul-server fora do ar ou sendo
+        # recriado
+        resolver 127.0.0.11 valid=10s ipv6=off;
+        set $korp_consul http://consul-server:8500;
+        proxy_pass $korp_consul;
+
+        # A credencial é do nginx; o Consul não a recebe
+        proxy_set_header Authorization "";
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_buffering off;
+
+        # Consultas bloqueantes do Consul (?index=...&wait=...) esperam até 10 minutos, mais uma margem
+        proxy_read_timeout 11m;
+        proxy_send_timeout 11m;
+    }
+}

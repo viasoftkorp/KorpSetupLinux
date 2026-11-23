@@ -5,6 +5,19 @@
         name: utils
         tasks_from: default/variables_setup.yml
 
+    # O setup fala com o Consul pela porta local (127.0.0.1:korp_consul_local_port, sem autenticação). Num servidor em
+    # que o infrastructure-compose ainda não foi atualizado ela não existe: até a infraestrutura subir, usa a 8500.
+    - name: Verificação da porta local do Consul
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ korp_consul_local_port }}/v1/status/leader"
+        timeout: 5
+      register: korp_consul_local_port_check
+      failed_when: false
+
+    - name: Definição da porta do Consul usada pelo setup
+      ansible.builtin.set_fact:
+        korp_consul_port: "{{ korp_consul_local_port if korp_consul_local_port_check.status | default(-1) == 200 else 8500 }}"
+
     - name: Verificação de grupos do usuário korp
       ansible.builtin.command: id -Gn {{ linux_korp.user }}
       register: korp_groups_check

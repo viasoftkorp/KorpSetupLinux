@@ -87,10 +87,16 @@ def mask_secrets(obj):
 
 
 def consul_kv():
-    try:
-        raw = urllib.request.urlopen("http://127.0.0.1:8500/v1/kv/?recurse=true", timeout=10).read()
-    except Exception as exc:  # consul ainda não existe
-        return {"<error>": str(exc)}
+    # porta local do consul-server (sem autenticação); servidores ainda sem ela: a 8500 de antes
+    raw = None
+    for porta in (18500, 8500):
+        try:
+            raw = urllib.request.urlopen("http://127.0.0.1:%d/v1/kv/?recurse=true" % porta, timeout=10).read()
+            break
+        except Exception as exc:  # consul ainda não existe
+            erro = exc
+    if raw is None:
+        return {"<error>": str(erro)}
     result = {}
     for item in json.loads(raw):
         value = base64.b64decode(item["Value"]).decode("utf-8", "replace") if item.get("Value") else None
