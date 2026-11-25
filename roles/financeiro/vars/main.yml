@@ -2,6 +2,11 @@ services:
   Viasoft.Financeiro.Core:
     custom_kv_overwrite: ["EnableEnvironmentDependentConnectionString"]
 
+  Viasoft.Financeiro.ContasPagar:
+    db:
+      name: Viasoft_FinancialAccounting_AccountsPayable
+      type: mssql
+
   Viasoft.FinancialAccounting.Installment:
     db:
       name: Viasoft_FinancialAccounting_Installment
