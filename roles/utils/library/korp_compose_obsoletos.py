@@ -272,16 +272,21 @@ def composes_das_copias(retirar, compose_dir, roles_dir, exclusivos, versao):
             mantidos.append({'arquivo': arquivo, 'motivo': 'fora de %s' % compose_dir})
             continue
         versao_pasta = '' if pasta == os.curdir else pasta
-        if os.path.basename(arquivo) in gerados_pelo_repositorio(roles_dir, versao_pasta):
-            # compose atual (ex.: o compartilhado, que o layout antigo usava junto com o da versão): é do setup
-            continue
         proprios = servicos(arquivo)
+        copias = sorted(s for s, cfg in (proprios or {}).items()
+                        if copia_antiga(cfg.get('container_name') if isinstance(cfg, dict) else None,
+                                        exclusivos, versao))
+        if os.path.basename(arquivo) in gerados_pelo_repositorio(roles_dir, versao_pasta):
+            # compose atual: é do setup (ex.: o compartilhado, que o layout antigo usava junto com o da versão);
+            # só avisa se ele ainda define a cópia, porque o setup daquela versão a recriaria
+            if copias:
+                mantidos.append({'arquivo': arquivo, 'motivo': 'o setup da versão %s gera esse arquivo com %s'
+                                 % (versao_pasta or 'compartilhada', ', '.join(copias))})
+            continue
         if proprios is None:
             mantidos.append({'arquivo': arquivo, 'motivo': 'não pôde ser lido'})
             continue
-        outros = sorted(s for s, cfg in proprios.items()
-                        if not copia_antiga(cfg.get('container_name') if isinstance(cfg, dict) else None,
-                                            exclusivos, versao))
+        outros = sorted(set(proprios) - set(copias))
         if outros:
             mantidos.append({'arquivo': arquivo, 'motivo': 'também define %s' % ', '.join(outros)})
         else:
