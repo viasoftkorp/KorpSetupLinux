@@ -1,0 +1,65 @@
+version: "3.8"
+
+x-extra_hosts:
+  &default-extra_hosts
+  - "db_mssql:$DB_MSSQL"
+  - "testing_db_mssql:$TESTING_DB_MSSQL"
+  - "app_server:$APP_SERVER"
+  - "{{ dns.api }}:$API_GATEWAY"
+  - "{{ dns.frontend }}:$PORTAL_GATEWAY"
+  - "{{ dns.cdn }}:$CDN_GATEWAY"
+{% if dns.api_gateway is defined and dns.api_gateway != "" %}
+  - "{{ dns.api_gateway }}:$API_GATEWAY_GATEWAY"
+{% endif %}
+
+networks:
+  servicos:
+    external:
+      name: servicos
+
+services:
+  korp-fiscal-apuracaocbs-core:
+    image: "{{ docker_account }}/korp.fiscal.apuracaocbs.core:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Fiscal.ApuracaoCbs.Core-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  korp-fiscal-apuracaocbs-gateway:
+    image: "{{ docker_account }}/korp.fiscal.apuracaocbs.gateway:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Fiscal.ApuracaoCbs.Gateway-{{ version_without_build }}"
+    restart: unless-stopped
+    extra_hosts: *default-extra_hosts
+    environment:
+      - ON_PREMISE_MODE=true
+      - USE_SERVERGC=$USE_SERVERGC
+      - URL_CONSUL=http://consul-server:8500
+      - CERT_FILE_PATH={{ containers_cert_path }}
+    networks:
+      - servicos
+    volumes:
+      - "{{ certs_directory }}/:{{ certs_directory }}/"
+
+  # Tela da Apuração de CBS. A casca (FIS70-<versão>) a abre num iframe na mesma origem do portal, em
+  # <portal>/fiscal/apuracao-cbs/; o nginx do portal chega aqui pelo alias abaixo (korp.locations e korp.ssl-locations
+  # da role infrastructure). Fica no compose exclusivo, na versão do Gateway com quem fala. Provisório: sai quando a
+  # tela virar parcel do single-spa.
+  korp-fiscal-apuracaocbs-parcel:
+    image: "{{ docker_account }}/korp.fiscal.apuracaocbs-parcel:{{ version_without_build }}.x{{ docker_image_suffix }}"
+    container_name: "Korp.Fiscal.ApuracaoCbs.Parcel-{{ version_without_build }}"
+    restart: unless-stopped
+    environment:
+      # Origens do gateway que entram no connect-src da CSP da tela; sem ela o container não sobe (csp.envsh da imagem)
+      - GATEWAY_ORIGIN={{ [frontend.endpoints.gateway_url, frontend.endpoints.api_gateway_url | default('')] | select | join(' ') }}
+    networks:
+      servicos:
+        aliases:
+          - korp-fiscal-apuracaocbs-parcel

@@ -1,0 +1,34 @@
+- name: Definição de variáveis
+  ansible.builtin.set_fact:
+    services: "{{ (lookup('ansible.builtin.template', 'vars/main.yml') | from_yaml)['services'] }}"
+
+- name: Adição de serviços de FIS70
+  ansible.builtin.include_role:
+    name: utils
+    tasks_from: services/add_service
+  vars:
+    service_name: "{{ item.key }}"
+    id: FIS70
+  with_dict: "{{ services }}"
+  loop_control:
+    extended: true
+
+# A tela abre num iframe em <portal>/fiscal/apuracao-cbs/. A rota fica no korp.locations e no korp.ssl-locations (templates
+# da role infrastructure). A role os grava também, porque o install-only não roda a infrastructure, e recarrega o nginx,
+# que só lê a rota no reload (a infrastructure não recarrega, fora do certbot). Com a configuração inválida, o reload
+# mantém a anterior.
+- name: Rota do portal para a tela de FIS70 no nginx
+  ansible.builtin.template:
+    dest: "{{ config_dir_path }}/nginx/conf.d/{{ item }}"
+    src: "{{ playbook_dir }}/roles/infrastructure/templates/configs/nginx/conf.d/{{ item }}.j2"
+    owner: "{{ linux_korp.user }}"
+    group: root
+    mode: '0644'
+  loop:
+    - korp.locations
+    - korp.ssl-locations
+
+- name: Reload de nginx para a rota da tela de FIS70
+  community.docker.docker_container_exec:
+    container: nginx
+    command: bash -c "/usr/sbin/nginx -s reload"
