@@ -388,13 +388,13 @@ class TarefaAnsibleTest(Fixture):
 
 # ---------------------------------------------------------------- cópias antigas de serviços exclusivos
 #
-# Casos reais (25/11/2026): Korp.Legacy.Authentication-2024.2.0 ao lado do -2025.1.0 em 6 clientes que foram para a
-# 2025.1 depois da DEVO-7740 (projeto 202420, do antigo 2024.2.0/infrastructure-desktop-compose.yml só com ele); na
-# ATI o Korp.Legacy.Authorization-2024.2.0 (2024.2.0/infrastructure-web-compose.yml só com ele); na LAM, layout
-# antigo, Authorization/login/portal-2024.2.0 no próprio projeto "composes", com config_files = compose
-# compartilhado + 2024.2.0/infrastructure-web-compose.yml, que também tem ADM01/REL01 (versionados legítimos). As
-# duas versões se registram na mesma rota do Fabio e revezam; o PUT /legacy-authentication/integrations/user dá 404
-# na 2024.2. Parado com restart=no não basta: na ALLBRANDS voltou a rodar depois de um reboot.
+# Casos reais (25/11/2026), em clientes que foram para a 2025.1 depois da DEVO-7740: Korp.Legacy.Authentication-2024.2.0
+# ao lado do -2025.1.0 (projeto 202420, do antigo 2024.2.0/infrastructure-desktop-compose.yml só com ele);
+# Korp.Legacy.Authorization-2024.2.0 (2024.2.0/infrastructure-web-compose.yml só com ele); e, no layout antigo,
+# Authorization/login/portal-2024.2.0 no próprio projeto "composes", com config_files = compose compartilhado +
+# 2024.2.0/infrastructure-web-compose.yml, que também tem ADM01/REL01 (versionados legítimos). As duas versões se
+# registram na mesma rota do Fabio e revezam; o PUT /legacy-authentication/integrations/user dá 404 na 2024.2.
+# Parado com restart=no não basta: num cliente, a cópia voltou a rodar depois de um reboot.
 
 C = "/etc/korp/composes"
 
@@ -444,7 +444,7 @@ class ExclusivosFixture(Fixture):
         return ps_linha("Korp.Legacy.Authentication-2024.2.0", estado, "202420", "korp-legacy-authentication",
                         os.path.join(self.composes, "2024.2.0"), [self.desktop_antigo], C + "/.env")
 
-    def copias_lam(self):
+    def copias_layout_antigo(self):
         self.servidor("2024.2.0/infrastructure-web-compose.yml", yaml.safe_dump({"services": {
             "korp-legacy-authorization-2024-2-0": svc("Korp.Legacy.Authorization-2024.2.0",
                                                       "korp/korp.legacy.authorization:2024.2.0.x"),
@@ -498,7 +498,7 @@ class ExclusivosPlanoTest(ExclusivosFixture):
         self.assertEqual([c["nome"] for c in retirar], ["Korp.Legacy.Authentication-2024.2.0"])
 
     def test_layout_antigo_no_projeto_compartilhado(self):
-        retirar, avisos = self.plano_copias(self.atuais() + self.copias_lam())
+        retirar, avisos = self.plano_copias(self.atuais() + self.copias_layout_antigo())
         self.assertEqual(avisos, [])
         self.assertEqual(sorted(c["nome"] for c in retirar), ["Korp.Legacy.Authorization-2024.2.0", "login-2024.2.0"])
 
@@ -536,8 +536,8 @@ class ExclusivosComposesTest(ExclusivosFixture):
         self.assertEqual(mantidos, [])
 
     def test_arquivo_com_versionado_legitimo_fica(self):
-        # LAM: o compartilhado (gerado) é ignorado; o da versão tem ADM01 e fica, com aviso
-        mover, mantidos = self.composes_de(self.copias_lam())
+        # Layout antigo: o compartilhado (gerado) é ignorado; o da versão tem ADM01 e fica, com aviso
+        mover, mantidos = self.composes_de(self.copias_layout_antigo())
         self.assertEqual(mover, [])
         self.assertEqual(mantidos, [{"arquivo": self.web_antigo, "motivo": "também define adm01"}])
 
@@ -545,7 +545,7 @@ class ExclusivosComposesTest(ExclusivosFixture):
         # ex.: no master, os templates históricos 2024.2.0/infrastructure-web-compose.yml ainda têm o
         # Korp.Legacy.Authorization-2024.2.0: o setup da 2024.2 o recriaria
         write(f"{self.roles}/infrastructure-web/templates/composes/2024.2.0/infrastructure-web-compose.yml.j2")
-        mover, mantidos = self.composes_de(self.copias_lam())
+        mover, mantidos = self.composes_de(self.copias_layout_antigo())
         self.assertEqual(mover, [])
         self.assertEqual(mantidos, [{"arquivo": self.web_antigo, "motivo": "o setup da versão 2024.2.0 gera esse "
                                      "arquivo com korp-legacy-authorization-2024-2-0, login-2024-2-0"}])
@@ -627,7 +627,7 @@ class ExclusivosRetirarTest(ExclusivosFixture):
         self.assertIn("antes de recriar: mv %s %s" % (backup, self.desktop_antigo), leiame)
 
     def test_parado_so_e_removido(self):
-        docker, (retirados, _, _, _) = self.retirar(self.copias_lam())
+        docker, (retirados, _, _, _) = self.retirar(self.copias_layout_antigo())
         self.assertEqual(docker.chamadas[1:], [["rm", "Korp.Legacy.Authorization-2024.2.0"],
                                                ["stop", "login-2024.2.0"], ["rm", "login-2024.2.0"]])
         self.assertEqual(len(retirados), 2)
@@ -638,7 +638,7 @@ class ExclusivosRetirarTest(ExclusivosFixture):
 
     def test_falha_do_docker_nao_impede_os_outros_e_o_compose_fica(self):
         docker, (retirados, falhas, movidos, _) = self.retirar(
-            [self.copia_desktop()] + self.copias_lam(), falha_em={"Korp.Legacy.Authentication-2024.2.0"})
+            [self.copia_desktop()] + self.copias_layout_antigo(), falha_em={"Korp.Legacy.Authentication-2024.2.0"})
         self.assertEqual([f["container"] for f in falhas], ["Korp.Legacy.Authentication-2024.2.0"])
         self.assertIn("falha simulada", falhas[0]["erro"])
         self.assertEqual(sorted(c["nome"] for c in retirados), ["Korp.Legacy.Authorization-2024.2.0", "login-2024.2.0"])
@@ -744,7 +744,7 @@ class ExclusivosTarefaAnsibleTest(ExclusivosFixture):
         self.assertTrue(os.path.exists(self.desktop_antigo))
 
     def test_aviso_quando_o_compose_fica(self):
-        log = self.preparar(self.atuais() + self.copias_lam())
+        log = self.preparar(self.atuais() + self.copias_layout_antigo())
         rc, out = self.run_play()
         self.assertEqual(rc, 0, out)
         self.assertEqual(self.chamadas(log), ["ps", "container inspect", "rm", "stop", "rm"])
