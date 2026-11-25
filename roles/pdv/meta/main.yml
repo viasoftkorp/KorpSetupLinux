@@ -1,0 +1,7 @@
+dependencies:
+  - role: faturamento
+  - role: contabil
+  - role: produto
+  - role: ERP_ACL
+  - role: temporal
+  - role: VEN65
