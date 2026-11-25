@@ -12,6 +12,14 @@
     "EnableSchemaProvisioning": "false"
   },
   "EnableEnvironmentDependentConnectionString": "true",
+{# O Core assina a cópia do certificado A1 para o emissor de NF-e com o mesmo segredo do Viasoft.Faturamento.NotaFiscal.Core.
+   Sem o segredo no Vault o bloco fica de fora: um valor vazio ficaria no KV, porque o merge não sobrescreve chave existente. #}
+{% set nuvem_fiscal_emissor_secret = services_secrets.get('Viasoft.Faturamento.NotaFiscal.Core', {}).get('NuvemFiscalEmissorNFe', {}).get('Secret', '') %}
+{% if nuvem_fiscal_emissor_secret %}
+  "NuvemFiscalEmissorNFe": {
+    "Secret": "{{ nuvem_fiscal_emissor_secret }}"
+  },
+{% endif %}
   "Emissao": {
     "ResponsavelTecnico": {
       "Cnpj": "03623045000100",
