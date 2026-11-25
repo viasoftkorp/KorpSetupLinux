@@ -385,5 +385,363 @@ class TarefaAnsibleTest(Fixture):
         self.assertFalse(os.path.exists(self.backup))
 
 
+
+# ---------------------------------------------------------------- cópias antigas de serviços exclusivos
+#
+# Casos reais (25/11/2026): Korp.Legacy.Authentication-2024.2.0 ao lado do -2025.1.0 em 6 clientes que foram para a
+# 2025.1 depois da DEVO-7740 (projeto 202420, do antigo 2024.2.0/infrastructure-desktop-compose.yml só com ele); na
+# ATI o Korp.Legacy.Authorization-2024.2.0 (2024.2.0/infrastructure-web-compose.yml só com ele); na LAM, layout
+# antigo, Authorization/login/portal-2024.2.0 no próprio projeto "composes", com config_files = compose
+# compartilhado + 2024.2.0/infrastructure-web-compose.yml, que também tem ADM01/REL01 (versionados legítimos). As
+# duas versões se registram na mesma rota do Fabio e revezam; o PUT /legacy-authentication/integrations/user dá 404
+# na 2024.2. Parado com restart=no não basta: na ALLBRANDS voltou a rodar depois de um reboot.
+
+C = "/etc/korp/composes"
+
+
+def svc(container, imagem):
+    return {"image": imagem, "container_name": container}
+
+
+def ps_linha(nome, estado="running", projeto="", servico="", dir_="", arquivos=(), env=""):
+    return "\t".join([nome, estado, projeto, servico, dir_, ",".join(arquivos), env])
+
+
+class ExclusivosFixture(Fixture):
+    def setUp(self):
+        super().setUp()
+        for role in ("infrastructure-desktop", "infrastructure-web", "infrastructure"):
+            write(f"{self.roles}/{role}/templates/composes/{role}-compose.yml.j2")
+        write(f"{self.roles}/VEN27/templates/composes/2025.1.0/VEN27-compose.yml.j2")
+        self.servidor("infrastructure-desktop-compose.yml", yaml.safe_dump({"services": {
+            "korp-legacy-authentication": svc("Korp.Legacy.Authentication-2025.1.0",
+                                              "korp/korp.legacy.authentication:2025.1.0.x"),
+            "viasoft-email": svc("Viasoft.Email-2025.1.0", "korp/viasoft.email:2025.1.0.x"),
+            "atualizacao": svc("Korp.AtualizacaoSistema", "korp/korp.atualizacaosistema:latest")}}))
+        self.servidor("infrastructure-web-compose.yml", yaml.safe_dump({"services": {
+            "korp-legacy-authorization": svc("Korp.Legacy.Authorization-2025.1.0",
+                                             "korp/korp.legacy.authorization:2025.1.0.x"),
+            "login": svc("login-2025.1.0", "korp/viasoft.authentication-frontend:2025.1.0.x"),
+            "portal-frontend": svc("portal-2025.1.0", "korp/viasoft.portal-frontend:2025.1.0.x-arm64")}}))
+        # exclusivo sem versão no nome: o compose substitui sozinho, não é caso daqui
+        self.servidor("infrastructure-compose.yml", yaml.safe_dump({"services": {
+            "frontend-router": svc("Korp.Legacy.Frontend-router", "korp/korp.legacy.frontend-router:2025.1.0.x")}}))
+        # versionado que convive de propósito
+        self.servidor("2025.1.0/VEN27-compose.yml", yaml.safe_dump({"services": {
+            "ven27": svc("VEN27-2025.1.0", "korp/ven27:v2025.1.0.x")}}))
+        self.servidor("2024.2.0/VEN27-compose.yml", yaml.safe_dump({"services": {
+            "ven27": svc("VEN27-2024.2.0", "korp/ven27:v2024.2.0.x")}}))
+        self.desktop_antigo = os.path.join(self.composes, "2024.2.0", "infrastructure-desktop-compose.yml")
+        self.web_antigo = os.path.join(self.composes, "2024.2.0", "infrastructure-web-compose.yml")
+
+    def exclusivos(self, versao="2025.1.0", mais_nova=None):
+        return mod.plano_completo(self.composes, self.roles, versao, mais_nova)[3]
+
+    def copia_desktop(self, estado="running"):
+        self.servidor("2024.2.0/infrastructure-desktop-compose.yml", yaml.safe_dump({"services": {
+            "korp-legacy-authentication": svc("Korp.Legacy.Authentication-2024.2.0",
+                                              "korp/korp.legacy.authentication:2024.2.0.x")}}))
+        return ps_linha("Korp.Legacy.Authentication-2024.2.0", estado, "202420", "korp-legacy-authentication",
+                        os.path.join(self.composes, "2024.2.0"), [self.desktop_antigo], C + "/.env")
+
+    def copias_lam(self):
+        self.servidor("2024.2.0/infrastructure-web-compose.yml", yaml.safe_dump({"services": {
+            "korp-legacy-authorization-2024-2-0": svc("Korp.Legacy.Authorization-2024.2.0",
+                                                      "korp/korp.legacy.authorization:2024.2.0.x"),
+            "login-2024-2-0": svc("login-2024.2.0", "korp/viasoft.authentication-frontend:2024.2.0.x"),
+            "adm01": svc("ADM01-2024.2.0", "korp/adm01:v2024.2.0.x")}}))
+        arquivos = [os.path.join(self.composes, "infrastructure-web-compose.yml"), self.web_antigo]
+        return [ps_linha("Korp.Legacy.Authorization-2024.2.0", "exited", "composes",
+                         "korp-legacy-authorization-2024-2-0", self.composes, arquivos, C + "/.env"),
+                ps_linha("login-2024.2.0", "running", "composes", "login-2024-2-0", self.composes, arquivos,
+                         C + "/.env"),
+                ps_linha("ADM01-2024.2.0", "running", "composes", "adm01", self.composes, arquivos, C + "/.env")]
+
+    def atuais(self, autenticacao="running"):
+        return [ps_linha("Korp.Legacy.Authentication-2025.1.0", autenticacao, "composes",
+                         "korp-legacy-authentication"),
+                ps_linha("Korp.Legacy.Authorization-2025.1.0", "running", "composes", "korp-legacy-authorization"),
+                ps_linha("login-2025.1.0", "running", "composes", "login"),
+                ps_linha("portal-2025.1.0", "running", "composes", "portal-frontend"),
+                ps_linha("Korp.Legacy.Frontend-router", "running", "composes", "frontend-router"),
+                ps_linha("VEN27-2025.1.0", "running", "202510", "ven27"),
+                ps_linha("VEN27-2024.2.0", "running", "202420", "ven27")]
+
+    def plano_copias(self, linhas, versao="2025.1.0"):
+        return mod.plano_exclusivos(self.exclusivos(versao), mod.ler_containers("\n".join(linhas) + "\n"), versao)
+
+
+class ExclusivosPlanoTest(ExclusivosFixture):
+    def test_exclusivos_vem_da_compartilhada(self):
+        self.assertEqual(self.exclusivos(), {
+            "Korp.Legacy.Authentication": "Korp.Legacy.Authentication-2025.1.0",
+            "Viasoft.Email": "Viasoft.Email-2025.1.0",
+            "Korp.Legacy.Authorization": "Korp.Legacy.Authorization-2025.1.0",
+            "login": "login-2025.1.0", "portal": "portal-2025.1.0"})
+
+    def test_setup_que_nao_e_o_mais_novo_nao_tem_exclusivos(self):
+        # 2024.2 num servidor com 2025.1: a pasta compartilhada é da 2025.1 (e o módulo nem chama o docker)
+        self.assertEqual(self.exclusivos("2024.2.0", mais_nova="2025.1.0"), {})
+        self.assertEqual(self.exclusivos("2025.1.0", mais_nova="2025.1.0")["login"], "login-2025.1.0")
+
+    def test_nada_a_fazer(self):
+        self.assertEqual(self.plano_copias(self.atuais()), ([], []))
+
+    def test_copia_em_outro_projeto_sai(self):
+        retirar, avisos = self.plano_copias(self.atuais() + [self.copia_desktop()])
+        self.assertEqual(avisos, [])
+        self.assertEqual([(c["nome"], c["projeto"], c["atual"]) for c in retirar],
+                         [("Korp.Legacy.Authentication-2024.2.0", "202420", "Korp.Legacy.Authentication-2025.1.0")])
+
+    def test_copia_parada_tambem_sai(self):
+        retirar, _ = self.plano_copias(self.atuais() + [self.copia_desktop("exited")])
+        self.assertEqual([c["nome"] for c in retirar], ["Korp.Legacy.Authentication-2024.2.0"])
+
+    def test_layout_antigo_no_projeto_compartilhado(self):
+        retirar, avisos = self.plano_copias(self.atuais() + self.copias_lam())
+        self.assertEqual(avisos, [])
+        self.assertEqual(sorted(c["nome"] for c in retirar), ["Korp.Legacy.Authorization-2024.2.0", "login-2024.2.0"])
+
+    def test_atual_parado_nao_retira(self):
+        retirar, avisos = self.plano_copias(self.atuais(autenticacao="exited") + [self.copia_desktop()])
+        self.assertEqual(retirar, [])
+        self.assertEqual(len(avisos), 1)
+        self.assertIn("Korp.Legacy.Authentication-2025.1.0, que o substitui, não está rodando (exited)", avisos[0])
+        retirar, avisos = self.plano_copias(self.atuais()[1:] + [self.copia_desktop()])
+        self.assertEqual(retirar, [])
+        self.assertIn("(não existe)", avisos[0])
+
+    def test_versao_mais_nova_e_versionados_nao_sao_tocados(self):
+        linhas = self.atuais() + [ps_linha("Korp.Legacy.Authentication-2025.2.0", "running", "202520", "x"),
+                                  ps_linha("Korp.Legacy.Authentication-2025.1.0-backup", "exited", "composes", "x"),
+                                  ps_linha("Korp.Legacy.Frontend-router-2024.2.0", "exited", "202420", "x")]
+        self.assertEqual(self.plano_copias(linhas), ([], []))
+
+    def test_le_o_docker_ps(self):
+        texto = "a\trunning\tp\ts\t/d\t/d/x.yml,/d/y.yml\t/d/.env\nb,c/alias\texited\t\t\t\t\t\n\n"
+        self.assertEqual(mod.ler_containers(texto), [
+            {"nome": "a", "estado": "running", "projeto": "p", "servico": "s", "dir": "/d",
+             "arquivos": ["/d/x.yml", "/d/y.yml"], "env": "/d/.env"},
+            {"nome": "b", "estado": "exited", "projeto": "", "servico": "", "dir": "", "arquivos": [], "env": ""}])
+
+
+class ExclusivosComposesTest(ExclusivosFixture):
+    def composes_de(self, linhas):
+        retirar, _ = self.plano_copias(self.atuais() + linhas)
+        return mod.composes_das_copias(retirar, self.composes, self.roles, self.exclusivos(), "2025.1.0")
+
+    def test_arquivo_so_com_a_copia_vai_para_o_backup(self):
+        mover, mantidos = self.composes_de([self.copia_desktop()])
+        self.assertEqual(mover, [{"arquivo": self.desktop_antigo, "servicos": ["korp-legacy-authentication"]}])
+        self.assertEqual(mantidos, [])
+
+    def test_arquivo_com_versionado_legitimo_fica(self):
+        # LAM: o compartilhado (gerado) é ignorado; o da versão tem ADM01 e fica, com aviso
+        mover, mantidos = self.composes_de(self.copias_lam())
+        self.assertEqual(mover, [])
+        self.assertEqual(mantidos, [{"arquivo": self.web_antigo, "motivo": "também define adm01"}])
+
+    def test_arquivo_ja_retirado_ou_fora_da_pasta(self):
+        fora = os.path.join(self.dir, "outro", "velho-compose.yml")
+        write(fora, yaml.safe_dump({"services": {"x": svc("login-2024.2.0", "korp/login:2024.2.0.x")}}))
+        linhas = [ps_linha("login-2024.2.0", "running", "velho", "x", os.path.dirname(fora), [fora]),
+                  ps_linha("Korp.Legacy.Authentication-2024.2.0", "exited", "202420", "korp-legacy-authentication",
+                           os.path.join(self.composes, "2024.2.0"), [self.desktop_antigo])]
+        mover, mantidos = self.composes_de(linhas)
+        self.assertEqual(mover, [])
+        self.assertEqual(mantidos, [{"arquivo": fora, "motivo": "fora de %s" % self.composes}])
+
+
+class FakeDocker:
+    """run_command falso: docker ps/inspect/stop/rm sobre uma lista de containers."""
+
+    def __init__(self, linhas, falha_em=()):
+        self.containers = mod.ler_containers("\n".join(linhas))
+        self.chamadas = []
+        self.falha_em = set(falha_em)
+
+    def __call__(self, argv):
+        self.chamadas.append(argv[1:])
+        acao, nomes = argv[1], argv[2:]
+        if acao == "container" and nomes[0] == "inspect":
+            achados = [c for c in self.containers if c["nome"] in nomes[1:]]
+            return (0 if len(achados) == len(nomes) - 1 else 1,
+                    json.dumps([{"Name": "/" + c["nome"], "Config": {"Labels": {}}} for c in achados]), "")
+        nome = nomes[0]
+        if nome in self.falha_em:
+            return 1, "", "Error response from daemon: falha simulada"
+        if acao == "stop":
+            for c in self.containers:
+                if c["nome"] == nome:
+                    c["estado"] = "exited"
+            return 0, nome, ""
+        if acao == "rm":
+            self.containers = [c for c in self.containers if c["nome"] != nome]
+            return 0, nome, ""
+        raise AssertionError(argv)
+
+
+class ExclusivosRetirarTest(ExclusivosFixture):
+    def retirar(self, linhas, falha_em=()):
+        retirar, _ = self.plano_copias(self.atuais() + linhas)
+        mover, _ = mod.composes_das_copias(retirar, self.composes, self.roles, self.exclusivos(), "2025.1.0")
+        docker = FakeDocker(self.atuais() + linhas, falha_em)
+        resultado = mod.retirar_exclusivos(docker, "docker", retirar, mover, self.composes, self.backup, "2025.1.0",
+                                           agora=0)
+        return docker, resultado
+
+    def test_para_remove_guarda_inspect_e_move_o_compose(self):
+        with open(os.path.join(self.composes, "2024.2.0", "VEN27-compose.yml")) as f:
+            ven27 = f.read()
+        docker, (retirados, falhas, movidos, destino) = self.retirar([self.copia_desktop()])
+        self.assertEqual(falhas, [])
+        self.assertEqual(docker.chamadas, [["container", "inspect", "Korp.Legacy.Authentication-2024.2.0"],
+                                           ["stop", "Korp.Legacy.Authentication-2024.2.0"],
+                                           ["rm", "Korp.Legacy.Authentication-2024.2.0"]])
+        backup = os.path.join(destino, "2024.2.0", "infrastructure-desktop-compose.yml")
+        self.assertEqual(movidos, {self.desktop_antigo: backup})
+        self.assertFalse(os.path.exists(self.desktop_antigo))
+        self.assertTrue(os.path.exists(backup))
+        with open(os.path.join(self.composes, "2024.2.0", "VEN27-compose.yml")) as f:
+            self.assertEqual(f.read(), ven27)
+        with open(os.path.join(destino, "containers", "Korp.Legacy.Authentication-2024.2.0.json")) as f:
+            self.assertEqual(json.load(f)["Name"], "/Korp.Legacy.Authentication-2024.2.0")
+        desfazer = retirados[0]["desfazer"]
+        self.assertEqual(desfazer, "mv %s %s && docker compose -p 202420 --project-directory %s --env-file %s "
+                                   "-f %s up -d --no-deps korp-legacy-authentication"
+                         % (backup, self.desktop_antigo, os.path.join(self.composes, "2024.2.0"), C + "/.env",
+                            self.desktop_antigo))
+        with open(os.path.join(destino, "LEIAME.txt")) as f:
+            leiame = f.read()
+        self.assertIn("Korp.Legacy.Authentication-2024.2.0 (projeto 202420) parado e removido; substituído por "
+                      "Korp.Legacy.Authentication-2025.1.0", leiame)
+        self.assertIn("antes de recriar: mv %s %s" % (backup, self.desktop_antigo), leiame)
+
+    def test_parado_so_e_removido(self):
+        docker, (retirados, _, _, _) = self.retirar(self.copias_lam())
+        self.assertEqual(docker.chamadas[1:], [["rm", "Korp.Legacy.Authorization-2024.2.0"],
+                                               ["stop", "login-2024.2.0"], ["rm", "login-2024.2.0"]])
+        self.assertEqual(len(retirados), 2)
+        # o compose da versão (com ADM01) e o compartilhado ficam
+        self.assertTrue(os.path.exists(self.web_antigo))
+        self.assertTrue(os.path.exists(os.path.join(self.composes, "infrastructure-web-compose.yml")))
+        self.assertNotIn("ADM01-2024.2.0", [c[-1] for c in docker.chamadas])
+
+    def test_falha_do_docker_nao_impede_os_outros_e_o_compose_fica(self):
+        docker, (retirados, falhas, movidos, _) = self.retirar(
+            [self.copia_desktop()] + self.copias_lam(), falha_em={"Korp.Legacy.Authentication-2024.2.0"})
+        self.assertEqual([f["container"] for f in falhas], ["Korp.Legacy.Authentication-2024.2.0"])
+        self.assertIn("falha simulada", falhas[0]["erro"])
+        self.assertEqual(sorted(c["nome"] for c in retirados), ["Korp.Legacy.Authorization-2024.2.0", "login-2024.2.0"])
+        self.assertEqual(movidos, {})
+        self.assertTrue(os.path.exists(self.desktop_antigo))
+
+    def test_estado_ja_ajustado_a_mao_e_nada_a_fazer(self):
+        # cópia já removida e compose já no backup (como feito nos clientes em 25/11): nada a retirar
+        self.assertEqual(self.plano_copias(self.atuais()), ([], []))
+
+
+def fake_docker(pasta, linhas):
+    """Binário docker falso para o teste com ansible-playbook: estado em JSON, chamadas em chamadas.log."""
+    estado = os.path.join(pasta, "estado.json")
+    with open(estado, "w") as f:
+        json.dump(mod.ler_containers("\n".join(linhas)), f)
+    script = os.path.join(pasta, "docker")
+    with open(script, "w") as f:
+        f.write(textwrap.dedent("""\
+            #!/usr/bin/env python3
+            import json, sys
+            ESTADO, LOG = %r, %r
+            cs = json.load(open(ESTADO))
+            open(LOG, "a").write(" ".join(sys.argv[1:]) + "\\n")
+            a = sys.argv[1:]
+            if a[0] == "ps":
+                for c in cs:
+                    print("\\t".join([c["nome"], c["estado"], c["projeto"], c["servico"], c["dir"],
+                                     ",".join(c["arquivos"]), c["env"]]))
+            elif a[:2] == ["container", "inspect"]:
+                print(json.dumps([{"Name": "/" + c["nome"]} for c in cs if c["nome"] in a[2:]]))
+            elif a[0] == "stop":
+                for c in cs:
+                    if c["nome"] == a[1]:
+                        c["estado"] = "exited"
+            elif a[0] == "rm":
+                cs = [c for c in cs if c["nome"] != a[1]]
+            json.dump(cs, open(ESTADO, "w"))
+            """ % (estado, os.path.join(pasta, "chamadas.log"))))
+    os.chmod(script, 0o755)
+    return os.path.join(pasta, "chamadas.log")
+
+
+@unittest.skipUnless(ansible_available(), "ansible-playbook indisponível")
+class ExclusivosTarefaAnsibleTest(ExclusivosFixture):
+    def run_play(self, versao="2025.1.0", *extra_args):
+        play = os.path.join(self.dir, "play.yml")
+        tarefas = os.path.join(REPO, "roles/utils/tasks/default/obsolete_composes.yml")
+        with open(play, "w") as f:
+            yaml.safe_dump([{"hosts": "localhost", "connection": "local", "gather_facts": False,
+                             "tasks": [{"ansible.builtin.include_tasks": tarefas}]}], f)
+        variaveis = {"compose_dir_path": self.composes, "korp_dir_path": self.dir, "config_dir_path": self.dir,
+                     "version_without_build": versao, "ansible_become": False}
+        env = dict(os.environ, ANSIBLE_NOCOLOR="1", ANSIBLE_LOCALHOST_WARNING="false", HOME=self.dir,
+                   ANSIBLE_INVENTORY_UNPARSED_WARNING="false", ANSIBLE_RETRY_FILES_ENABLED="false",
+                   ANSIBLE_LIBRARY=os.path.join(REPO, "roles/utils/library"),
+                   PATH=self.bin + os.pathsep + os.environ.get("PATH", ""))
+        p = subprocess.run(["ansible-playbook", "-i", "localhost,", play, "-e", json.dumps(variaveis)] +
+                           list(extra_args), cwd=self.dir, env=env, capture_output=True, text=True,
+                           stdin=subprocess.DEVNULL, timeout=300)
+        return p.returncode, p.stdout + p.stderr
+
+    def preparar(self, linhas, instalados="versioned:\n  2024.2.0: [ERP]\n  2025.1.0: [ERP]\n"):
+        self.bin = os.path.join(self.dir, "bin")
+        os.makedirs(self.bin)
+        write(os.path.join(self.dir, "installed_apps.yml"), instalados)
+        return fake_docker(self.bin, linhas)
+
+    def chamadas(self, log):
+        if not os.path.exists(log):
+            return []
+        with open(log) as f:
+            return [l.split()[0] if not l.startswith("container") else " ".join(l.split()[:2])
+                    for l in f.read().splitlines()]
+
+    def test_retira_mostra_e_na_segunda_vez_so_le(self):
+        log = self.preparar(self.atuais() + [self.copia_desktop()])
+        rc, out = self.run_play()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.chamadas(log), ["ps", "container inspect", "stop", "rm"])
+        texto = " ".join(out.split())
+        self.assertIn("Korp.Legacy.Authentication-2024.2.0 (projeto 202420) parado e removido: duplicava "
+                      "Korp.Legacy.Authentication-2025.1.0, que está rodando. Desfazer: mv", texto)
+        self.assertFalse(os.path.exists(self.desktop_antigo))
+        os.remove(log)
+        rc, out = self.run_play()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("changed=0", out)
+        self.assertEqual(self.chamadas(log), ["ps"])
+
+    def test_check_mode_nao_remove(self):
+        log = self.preparar(self.atuais() + [self.copia_desktop()])
+        rc, out = self.run_play("2025.1.0", "--check")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.chamadas(log), ["ps"])
+        self.assertTrue(os.path.exists(self.desktop_antigo))
+
+    def test_setup_da_versao_mais_antiga_nem_chama_o_docker(self):
+        log = self.preparar(self.atuais() + [self.copia_desktop()])
+        rc, out = self.run_play("2024.2.0")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.chamadas(log), [])
+        self.assertTrue(os.path.exists(self.desktop_antigo))
+
+    def test_aviso_quando_o_compose_fica(self):
+        log = self.preparar(self.atuais() + self.copias_lam())
+        rc, out = self.run_play()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(self.chamadas(log), ["ps", "container inspect", "rm", "stop", "rm"])
+        self.assertIn("%s, de onde vinha Korp.Legacy.Authorization-2024.2.0, login-2024.2.0, fica (também define "
+                      "adm01)" % self.web_antigo, " ".join(out.split()))
+
+
 if __name__ == "__main__":
     unittest.main()
