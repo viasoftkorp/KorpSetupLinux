@@ -541,6 +541,15 @@ class ExclusivosComposesTest(ExclusivosFixture):
         self.assertEqual(mover, [])
         self.assertEqual(mantidos, [{"arquivo": self.web_antigo, "motivo": "também define adm01"}])
 
+    def test_compose_gerado_que_ainda_define_a_copia_fica_com_aviso(self):
+        # ex.: no master, os templates históricos 2024.2.0/infrastructure-web-compose.yml ainda têm o
+        # Korp.Legacy.Authorization-2024.2.0: o setup da 2024.2 o recriaria
+        write(f"{self.roles}/infrastructure-web/templates/composes/2024.2.0/infrastructure-web-compose.yml.j2")
+        mover, mantidos = self.composes_de(self.copias_lam())
+        self.assertEqual(mover, [])
+        self.assertEqual(mantidos, [{"arquivo": self.web_antigo, "motivo": "o setup da versão 2024.2.0 gera esse "
+                                     "arquivo com korp-legacy-authorization-2024-2-0, login-2024-2-0"}])
+
     def test_arquivo_ja_retirado_ou_fora_da_pasta(self):
         fora = os.path.join(self.dir, "outro", "velho-compose.yml")
         write(fora, yaml.safe_dump({"services": {"x": svc("login-2024.2.0", "korp/login:2024.2.0.x")}}))
