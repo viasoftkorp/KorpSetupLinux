@@ -65,7 +65,7 @@ for list in "$ZBX_LIST" /etc/apt/sources.list.d/zabbix-agent2-plugins.list; do
   "${APT[@]}" update -o Dir::Etc::sourcelist="$list" -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
 done
 # Plugins carregáveis instalados (mongodb, mssql, postgresql) vão junto: com plugins 6.x o agente 7.0 trava no -T que o
-# systemd roda antes de subir o serviço (visto na Leclair)
+# systemd roda antes de subir o serviço (visto num cliente)
 mapfile -t plugins < <(dpkg-query -W -f='${Package} ${Status}\n' 'zabbix-agent2-plugin-*' 2>/dev/null | awk '/ installed$/{print $1}')
 "${APT[@]}" -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install zabbix-agent2 "${plugins[@]}"
 # sed lê a saída toda: com pipefail, '| head -1' pode matar o zabbix_agent2 com SIGPIPE

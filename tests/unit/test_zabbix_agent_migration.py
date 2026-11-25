@@ -62,7 +62,7 @@ class MigrationScriptTests(unittest.TestCase):
         self.assertIn(f'chmod {psk["mode"]} "$psk"', self.script)
 
     def test_loadable_plugins_are_upgraded_with_the_agent(self):
-        # Leclair (13/11/2026): plugins mongodb/mssql/postgresql 6.0 instalados; o agente 7.0 sobe o plugin no -T do
+        # Visto num cliente (13/11/2026): plugins mongodb/mssql/postgresql 6.0 instalados; o agente 7.0 sobe o plugin no -T do
         # systemd, fica esperando o protocolo novo e o serviço não inicia. Os plugins vêm de outra lista do apt.
         self.assertIn("/etc/apt/sources.list.d/zabbix-agent2-plugins.list", self.script)
         self.assertIn("dpkg-query -W -f='${Package} ${Status}\\n' 'zabbix-agent2-plugin-*'", self.script)
@@ -74,7 +74,7 @@ class MigrationScriptTests(unittest.TestCase):
         self.assertIn("running() { systemctl is-active --quiet zabbix-agent2; }", self.script)
 
     def test_unexpected_failures_say_where(self):
-        # METALURGICA_REIS (13/11/2026): o script saiu calado pelo set -e logo depois do apt; o trap mostra linha e comando
+        # Visto num cliente (13/11/2026): o script saiu calado pelo set -e logo depois do apt; o trap mostra linha e comando
         self.assertIn("trap 'echo \"ERRO: falhou na linha $LINENO: $BASH_COMMAND\"' ERR", self.script)
 
     def test_version_is_read_without_cutting_the_pipe(self):
