@@ -206,7 +206,7 @@ def retirar(obsoletos, compose_dir, backup_root, agora=None):
             with open(leiame, 'a') as f:
                 f.write('Composes retirados pelo setup em %s: nenhuma role os gera mais e todos os serviços deles\n'
                         'estão definidos nos composes atuais da mesma pasta (ou, pelo nome do container, da pasta\n'
-                        'compartilhada). Nenhum container foi parado.\n\n'
+                        'compartilhada). Mover estes arquivos não parou nenhum container.\n\n'
                         % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(agora)))
         shutil.move(item['arquivo'], backup)
         item['backup'] = backup
