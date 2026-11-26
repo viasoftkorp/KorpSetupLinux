@@ -165,12 +165,39 @@ com uma regra genérica, sem lista de nomes (``roles/utils/library/korp_compose_
    ``Korp.Legacy.Authentication``, que deixou o ``<versão>/infrastructure-desktop-compose.yml`` na DEVO-7740).
 
 - O arquivo é movido para ``/etc/korp/backups/composes-obsoletos/<data-hora>/``, com um ``LEIAME.txt`` que tem o
-  comando para desfazer. Nenhum container é parado ou recriado.
+  comando para desfazer. Nenhum container é parado ou recriado (as cópias antigas de serviços exclusivos, abaixo,
+  são o único caso em que um container sai).
 - Um arquivo que nenhuma role gera, mas que é a única definição de algum serviço, fica e aparece como aviso no log
   (ex.: o ``logistica-compose.yml`` antigo onde ``ajuste-estoque`` e ``inventario`` ainda não foram instalados).
 - Cada setup só olha o que é dele: a pasta da própria versão e, se ela é a versão mais nova instalada, a pasta
   compartilhada dos não versionados. Num servidor com 2024.2 e 2025.1, a 2024.2 ainda gera arquivos que a 2025.1
   dividiu; se as duas limpassem a pasta compartilhada, uma retiraria os composes da outra a cada execução.
+
+Cópias antigas de serviços exclusivos
+-------------------------------------
+
+Serviço exclusivo é o que existe uma vez só por servidor: fica num compose da pasta compartilhada, com
+``container_name`` ``<Base>-<versão>`` e imagem ``<versão>.x`` (ex.: ``Korp.Legacy.Authentication-2025.1.0``,
+``Korp.Legacy.Authorization-2025.1.0``, ``login-2025.1.0``). Quando o servidor vai para uma versão nova, o compose
+compartilhado substitui o container da versão anterior só se ele já estava no mesmo projeto e serviço. A cópia que
+rodava de outro lugar ficava: o ``Korp.Legacy.Authentication-2024.2.0`` do antigo
+``2024.2.0/infrastructure-desktop-compose.yml`` (projeto ``202420``), ou, no layout antigo, ``login-2024.2.0`` no
+próprio projeto ``composes`` com outro nome de serviço. As duas versões se registram na mesma rota do Fabio e
+revezam as requisições (ex.: o ``PUT /legacy-authentication/integrations/user`` dá 404 na 2024.2 e 200 na 2025.1).
+
+Na mesma chamada do ``korp_compose_obsoletos``, quando a pasta compartilhada é deste setup:
+
+- Uma cópia ``<Base>-<versão anterior>``, rodando ou parada, em qualquer projeto compose ou sem projeto, é parada e
+  removida, desde que o container desta versão esteja rodando; senão fica, com aviso. Parar com ``restart=no`` não
+  basta: uma cópia assim voltou a rodar depois de um reboot.
+- Antes, o ``docker inspect`` dela é gravado em ``/etc/korp/backups/composes-obsoletos/<data-hora>/containers/``,
+  e o ``LEIAME.txt`` da mesma pasta tem o comando para recriá-la.
+- O compose de onde ela veio vai para o backup quando nenhuma role o gera e todos os serviços dele são cópias
+  antigas de exclusivos. Se ele define outra coisa (ex.: ``ADM01-2024.2.0``), fica, com aviso.
+- Versões mais novas e containers versionados que convivem de propósito (ex.: ``VEN27-2024.2.0``, de um compose
+  versionado) não são tocados.
+- Custo sem nada a retirar: um ``docker ps --all`` (cerca de 30 ms com 200 containers), sem tarefa nova no
+  Ansible. ``stop``, ``rm`` e ``inspect`` só rodam quando há cópia.
 
 Desligando as otimizações
 =========================
