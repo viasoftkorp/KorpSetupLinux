@@ -5,6 +5,9 @@
 # roles/utils/library/korp_compose_obsoletos.py).
 # O arquivo é movido para backup, sem parar nem recriar containers; um órfão com serviço que só existe nele fica.
 # Só a pasta desta versão e, se esta é a versão mais nova instalada, a pasta compartilhada (não versionados).
+# Na mesma chamada, se a pasta compartilhada é deste setup: a cópia de versão anterior de um serviço exclusivo
+# (ex.: Korp.Legacy.Authentication-2024.2.0 ao lado do -2025.1.0, revezando a rota no Fabio) é parada e removida
+# quando o container desta versão está rodando. Custo sem nada a retirar: um "docker ps --all".
 - name: Retirada de composes obsoletos
   block:
     - name: Retirada de composes obsoletos
@@ -19,12 +22,10 @@
       become_user: root
       register: korp_composes_obsoletos
 
-    - name: Composes obsoletos retirados
+    - name: Composes obsoletos e cópias antigas de serviços exclusivos retirados
       ansible.builtin.debug:
-        msg: >-
-          {{ korp_composes_obsoletos.moved | map(attribute='arquivo') | join(', ') }} movido(s) para
-          {{ korp_composes_obsoletos.backup_dir }} (desfazer: veja LEIAME.txt na pasta)
-      when: korp_composes_obsoletos.moved | default([]) | length > 0 and not ansible_check_mode
+        msg: "{{ korp_composes_obsoletos.summary }}"
+      when: korp_composes_obsoletos.summary | default([]) | length > 0 and not ansible_check_mode
   # Necessário porque o main.yml inclui este arquivo com include_role, que não repassa as tags do setup às tarefas
   # daqui: sem 'always', o include aparecia no log e o módulo nunca rodava.
   tags: always
