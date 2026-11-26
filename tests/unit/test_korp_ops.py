@@ -358,10 +358,10 @@ class AgentConfigTests(unittest.TestCase):
         return [line for line in text.splitlines() if line and not line.startswith("#")]
 
     def test_other_machine_of_the_same_tenant_gets_its_own_hostname(self):
-        # O AWX procura zabbix-agent_<tenant>: uma segunda máquina do mesmo cliente (ex.: DEDINI srvl072) não pode usar
+        # O AWX procura zabbix-agent_<tenant>: uma segunda máquina do mesmo cliente (ex.: homologação) não pode usar
         # o mesmo nome, ou os comandos do Zabbix podem ir para qualquer uma das duas
-        lines = self.render(zabbix_hostname_suffix="srvl072")
-        self.assertIn(f"Hostname=zabbix-agent_{TENANT}_srvl072", lines)
+        lines = self.render(zabbix_hostname_suffix="homolog")
+        self.assertIn(f"Hostname=zabbix-agent_{TENANT}_homolog", lines)
         self.assertIn(f"HostMetadata={TENANT}", lines)
         self.assertIn(f"Hostname=zabbix-agent_{TENANT}", self.render(zabbix_hostname_suffix=""))
 
@@ -418,7 +418,7 @@ class ZabbixSetupTasksTests(unittest.TestCase):
         check = self.tasks["Validação de 'zabbix_hostname_suffix'"]
         self.assertLess(names.index("Validação de 'zabbix_hostname_suffix'"), names.index("Configuração de zabbix-agent2"))
         pattern = re.search(r"is not match[(]'([^']+)'[)]", check["when"]).group(1)
-        for valid in ("srvl072", "VM004-AplicacaoLinux02", "qa4.linux_2"):
+        for valid in ("homolog", "VM01-Aplicacao02", "qa4.linux_2"):
             self.assertRegex(valid, pattern)
         for invalid in ("a b", "x;y", "", "a" * 61):
             self.assertNotRegex(invalid, pattern)

@@ -130,9 +130,8 @@ clientes (`cmd.run`). No desenho novo, o servidor do cliente só aceita um scrip
    `zabbix-agent_<tenant>`; a outra ganha `zabbix_hostname_suffix: <hostname da máquina>` no inventory.yml dela
    (`sudo ansible-vault edit /etc/korp/ansible/inventory.yml --vault-id /etc/korp/ansible/.vault_key`, em
    `all.children.nodes.hosts.localhost`) e vira `zabbix-agent_<tenant>_<sufixo>`, que o autorregistro cria como host
-   próprio. Sem setup, basta trocar a linha `Hostname=` do `korp-default.conf` e reiniciar o agente. Em 13/11/2026:
-   DEDINI (srvl071/srvl072), BrasilPack (korpservices/VM004 do Azure) e QA_12 (qa12-linux/qa4-linux), achados pelo
-   `system.hostname` alternando no mesmo host.
+   próprio. Sem setup, basta trocar a linha `Hostname=` do `korp-default.conf` e reiniciar o agente. Em 13/11/2026
+   havia três hosts nessa situação, achados pelo `system.hostname` alternando no mesmo host.
 6. O cadastro no salt deixa de ser fatal no setup (com o master desligado o setup não pode parar).
 
 ### Servidor Zabbix
@@ -188,10 +187,9 @@ Atenção: esse usuário também pode executar outros scripts de ação manual l
    7.0 já instalado (caso da qa-dev). Em 13/11/2026: qa-dev pelo salt (8 s), QA2 (6.2.9) e QA1 por SSH (as QAs não são
    minions aceitos no salt); as três respondem ao `korp-ops` pelo Zabbix de produção, com as regras só no
    `korp-ops.conf` e a PSK em root:zabbix 0440. Ainda em 13/11/2026, 47 clientes pelo salt, um por vez, cada um
-   conferido pelo `korp-ops` no Zabbix de produção. Ficaram de fora: AMAZING, INOBRAM, ORIGINAL, PALMASOLA e
-   BUBAMASTER (salt-minion sem resposta), DEDINI e BrasilPack (duas máquinas no mesmo host) e os hosts sem dados no
-   Zabbix. Achados na rodada e corrigidos no script: plugins carregáveis 6.x travam o `-T` do agente 7.0 (Leclair) e
-   uma saída calada logo depois do apt (METALURGICA_REIS).
+   conferido pelo `korp-ops` no Zabbix de produção. Ficaram de fora os servidores com o salt-minion sem
+   resposta, os com duas máquinas no mesmo host e os hosts sem dados no Zabbix. Achados na rodada e corrigidos no
+   script: plugins carregáveis 6.x travam o `-T` do agente 7.0, e uma saída calada logo depois do apt.
 4. `onpremise_backend: auto` nas variáveis do inventário `Korp Inventory`; acompanhar uma semana.
 5. `onpremise_backend: zabbix`; tirar os monitores de salt do Uptime Kuma e a conta `uptime.kuma`;
    desligar salt-master e salt-api; ligar só quando necessário, com desligamento automático.
